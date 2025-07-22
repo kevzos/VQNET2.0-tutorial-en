@@ -4854,3 +4854,167 @@ RowParallelLinear
         time2 = time()
 
         print(f'Accuracy of the model on the 10000 Train images: {train_acc}% time cost {time2 - time1}')
+
+Qubit Reordering
+=================================
+
+Quantum bit reordering technology is a technology in bit parallelism. Its core is to reduce the number of bit transformations that need to be performed in bit parallelism by changing the arrangement order of quantum logic gates in the bit parallel process. The following are the modules required when building a large bit quantum circuit based on bit parallelism. `Lazy Qubit Reordering for Accelerating Parallel State-Vector-based Quantum Circuit Simulation <https://export.arxiv.org/abs/2410.04252>`__ 。
+
+DistributeQMachine
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. py:class:: pyvqnet.distributed.qubits_reorder.DistributeQMachine(num_wires,dtype,grad_mode)
+
+    A simulation class for variational quantum computation in bit parallelism. The states contained in it are the initial states of quantum circuits in bit parallelism.
+
+    :param num_wires: The number of bits in a complete quantum circuit.
+    :param dtype: The data type of the calculated data. The default is pyvqnet.kcomplex64, and the corresponding parameter precision is pyvqnet.kfloat32.
+    :param grad_mode: setting ``adjoint`` during ``DistQuantumLayerAdjoint`` backpropagation.
+
+    .. note::
+
+        The number of bits input is the number of bits required for the entire quantum circuit. DistributeQMachine will build a quantum simulator with a small number of bits based on global_qubit. The number of bits is ``nums_wires - global_qubit``.
+        Backpropagation must be based on ``DistQuantumLayerAdjoint``.
+
+    .. warning::
+
+        The bit-parallelism parameters in ``DistributeQMachine`` must be configured as shown in the example.
+
+    Examples::
+
+        from pyvqnet.distributed import get_rank
+        from pyvqnet import tensor
+        from pyvqnet.qnn.vqc import rx, ry, cnot, MeasureAll,rz
+        import pyvqnet
+        from pyvqnet.distributed.qubits_reorder import DistributeQMachine,DistQuantumLayerAdjoint
+        pyvqnet.utils.set_random_seed(123)
+
+
+        qubit = 10
+        batch_size = 5
+
+        class QModel(pyvqnet.nn.Module):
+            def __init__(self, num_wires, dtype, grad_mode=""):
+                super(QModel, self).__init__()
+
+                self._num_wires = num_wires
+                self._dtype = dtype
+                self.qm = DistributeQMachine(num_wires, dtype=dtype, grad_mode=grad_mode)
+                
+                self.qm.set_just_defined(True)
+                self.qm.set_save_op_history_flag(True) # open save op
+                self.qm.set_qubit_reordered({"qubit": num_wires, # open qubit reordered, set config
+                                        "global_qubit": 1}) # global_qubit == log2(nproc)
+                
+                self.params = pyvqnet.nn.Parameter([qubit])
+
+                self.measure = MeasureAll(obs={
+                    "X5":1.0
+                })
+
+            def forward(self, x, *args, **kwargs):
+                self.qm.reset_states(x.shape[0])
+
+                for i in range(qubit):
+                    rx(q_machine=self.qm, params=self.params[i], wires=i)
+                    ry(q_machine=self.qm, params=self.params[3], wires=i)
+                    rz(q_machine=self.qm, params=self.params[4], wires=i)
+                cnot(q_machine=self.qm,  wires=[0, 1])
+                rlt = self.measure(q_machine=self.qm)
+                return rlt
+
+
+        input_x = tensor.QTensor([[0.1, 0.2, 0.3]], requires_grad=True).toGPU(pyvqnet.DEV_GPU_0+get_rank())
+
+        input_x = tensor.broadcast_to(input_x, [2, 3])
+
+        input_x.requires_grad = True
+
+        quantum_model = QModel(num_wires=qubit,
+                            dtype=pyvqnet.kcomplex64,
+                            grad_mode="adjoint").toGPU(pyvqnet.DEV_GPU_0+get_rank())
+
+        adjoint_model = DistQuantumLayerAdjoint(quantum_model)
+        adjoint_model.train()
+
+        batch_y = adjoint_model(input_x)
+        batch_y.backward()
+
+        print(batch_y)
+        # mpirun -n 2 python test.py
+
+
+DistQuantumLayerAdjoint
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. py:class:: pyvqnet.distributed.qubits_reorder.DistQuantumLayerAdjoint(vqc_module,name)
+
+    DistQuantumLayer layer that uses adjoint matrices to calculate the gradient of parameters in bit-parallel computation
+
+    :param vqc_module: Input implies the ``DistributeQMachine`` module.
+    :param name: The name of the module.
+
+    .. note::
+
+        The input vqc_module module must contain ``DistributeQMachine``, which performs adjoint backpropagation gradient calculation in bit parallel, as shown below.
+
+    Examples::
+
+        from pyvqnet.distributed import get_rank
+        from pyvqnet import tensor
+        from pyvqnet.qnn.vqc import rx, ry, cnot, MeasureAll,rz
+        import pyvqnet
+        from pyvqnet.distributed.qubits_reorder import DistributeQMachine,DistQuantumLayerAdjoint
+        pyvqnet.utils.set_random_seed(123)
+
+
+        qubit = 10
+        batch_size = 5
+
+        class QModel(pyvqnet.nn.Module):
+            def __init__(self, num_wires, dtype, grad_mode=""):
+                super(QModel, self).__init__()
+
+                self._num_wires = num_wires
+                self._dtype = dtype
+                self.qm = DistributeQMachine(num_wires, dtype=dtype, grad_mode=grad_mode)
+                
+                self.qm.set_just_defined(True)
+                self.qm.set_save_op_history_flag(True) # open save op
+                self.qm.set_qubit_reordered({"qubit": num_wires, # open qubit reordered, set config
+                                            "global_qubit": 1}) # global_qubit == log2(nproc)
+                
+                self.params = pyvqnet.nn.Parameter([qubit])
+
+                self.measure = MeasureAll(obs={
+                    "X5":1.0
+                })
+
+            def forward(self, x, *args, **kwargs):
+                self.qm.reset_states(x.shape[0])
+
+                for i in range(qubit):
+                    rx(q_machine=self.qm, params=self.params[i], wires=i)
+                    ry(q_machine=self.qm, params=self.params[3], wires=i)
+                    rz(q_machine=self.qm, params=self.params[4], wires=i)
+                cnot(q_machine=self.qm,  wires=[0, 1])
+                rlt = self.measure(q_machine=self.qm)
+                return rlt
+
+
+        input_x = tensor.QTensor([[0.1, 0.2, 0.3]], requires_grad=True).toGPU(pyvqnet.DEV_GPU_0+get_rank())
+
+        input_x = tensor.broadcast_to(input_x, [2, 3])
+
+        input_x.requires_grad = True
+
+        quantum_model = QModel(num_wires=qubit,
+                            dtype=pyvqnet.kcomplex64,
+                            grad_mode="adjoint").toGPU(pyvqnet.DEV_GPU_0+get_rank())
+
+        adjoint_model = DistQuantumLayerAdjoint(quantum_model)
+        adjoint_model.train()
+
+        batch_y = adjoint_model(input_x)
+        batch_y.backward()
+
+        print(batch_y)
+        # mpirun -n 2 python test.py
