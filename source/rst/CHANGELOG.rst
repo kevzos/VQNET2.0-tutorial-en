@@ -1,6 +1,18 @@
 VQNet Changelog
 ###############################
 
+[v2.17.1] - 2025-7-22
+***************************
+
+Added
+===================
+
+- Added qubit parallel interface to support quantum circuit qubit parallel operation, added qubit reordering function to reduce the number of qubit exchanges.
+
+Fixed
+====================
+- Solve distributed communication interface synchronization delays.
+
 [v2.17.0] - 2025-4-22
 ***************************
 
