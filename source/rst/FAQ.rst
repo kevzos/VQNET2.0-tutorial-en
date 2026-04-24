@@ -15,7 +15,7 @@ When calling ``backward()`` of ``Module``, the user-built model can be automatic
 
 In VQNet, we use `parameter-shift <https://arxiv.org/abs/1803.00745>`_ to calculate the gradient of quantum variational circuits. Users can use the interface under :ref:`QuantumLayer_pq3` provided by VQNet to encapsulate the automatic differentiation of quantum variational circuits. Users only need to define quantum variational circuits as parameters in a certain format to build the above classes.
 
-In VQNet, we can also use the method based on automatic differentiation to calculate the gradient of quantum variational circuits. Users can use the interface in :ref:`vqc_api` to build a trainable circuit. This circuit does not rely on pyQPanda, but splits the encoding, logic gate evolution, and measurement in the circuit into differentiable operators, so as to achieve the function of calculating the gradient of the parameters. .
+In VQNet, we can also use the method based on automatic differentiation to calculate the gradient of quantum variational circuits. Users can use the interface in :ref:`vqc_api` to build a trainable circuit. This circuit does not rely on pyQPanda, but splits the encoding, logic gate evolution, and measurement in the circuit into differentiable operators, so as to achieve the function of calculating the gradient of the parameters.
 
 For details, please refer to the relevant interfaces and sample codes in this document.
 
@@ -23,7 +23,7 @@ For details, please refer to the relevant interfaces and sample codes in this do
 
 Answer: Users may need to install the VC++ runtime library on Windows.
 Refer to https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170 to install the appropriate runtime library.
-In addition, VQNet currently only supports python3.9,3.10,3.11 version, so please confirm your python version.
+In addition, VQNet currently only supports python3.10, 3.11, 3.12 version, so please confirm your python version.
 
 **Q: How to call the original quantum cloud and quantum chip for calculation**
 
@@ -43,7 +43,7 @@ If the user wants to use a list containing multiple modules as a submodule in `M
          from pyvqnet.nn import Module,Linear,ModuleList
          from pyvqnet.qnn import ProbsMeasure, QuantumLayer
          import pyqpanda as pq
-         def pqctest(input, param, qubits, cubits, m_machine):
+         def pqctest(input, param, qubits, cbits, m_machine):
              circuit = pq. QCircuit()
              circuit.insert(pq.H(qubits[0]))
              circuit.insert(pq.H(qubits[1]))
@@ -92,7 +92,7 @@ If the user wants to use a list containing multiple modules as a submodule in `M
 
 **Q: Why did the original code not run in version 2.0.7**
 
-Answer: In version v2.0.7, we added different data types and dtype attributes to QTensor, and restricted input based on PyTorch. For example, the Emedding layer input needs to be kint64, CategoricalCrossEntropy, CrossEntropyLoss, SoftmaxCrossEntropy, NLL_Loss layers's label for Loss and needs to be kint64.
+Answer: In version v2.0.7, we added different data types and dtype attributes to QTensor, and restricted input based on PyTorch. For example, the Embedding layer input needs to be kint64, CategoricalCrossEntropy, CrossEntropyLoss, SoftmaxCrossEntropy, NLL_Loss layers's label for Loss and needs to be kint64.
 
 You can use the 'astype()' interface to convert the type to the specified data type, or initialize the QTensor using the corresponding data type numpy array.
 

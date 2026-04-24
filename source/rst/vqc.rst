@@ -4184,12 +4184,12 @@ Quantum machine learning model interface
 Quanvolution
 ---------------------------------------------------------------
 
-.. py:class:: pyvqnet.qnn.qcnn.Quanvolution(params_shape, strides=(1, 1), kernel_initializer=quantum_uniform, machine_type_or_cloud_token: str = "cpu")
+.. py:class:: pyvqnet.qnn.qcnn.Quanvolution(params_shape, stride=(1, 1), kernel_initializer=quantum_uniform, machine_type_or_cloud_token: str = "cpu")
 
     Based on the quantum convolution implemented in "Quanvolutional Neural Networks: Powering Image Recognition with Quantum Circuits" (https://arxiv.org/abs/1904.04767), the classical convolution filter is replaced by a variational quantum circuit to obtain a quantum convolutional neural network with a quantum convolution filter.
 
     :param params_shape: The shape of the parameters, which should be two-dimensional.
-    :param strides: The step size of the slice window, the default is (1,1).
+    :param stride: The step size of the slice window, the default is (1,1).
     :param kernel_initializer: Convolution kernel initializer parameters.
     :param machine_type_or_cloud_token: Machine type string or Qcloud token, default is "cpu".
     :return: A Quanvolution instance.

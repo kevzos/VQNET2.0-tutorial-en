@@ -97,46 +97,46 @@ In this example, 1 qubit is used, multiple parameterized rotation gates `RZ`, `R
         x1 = input.squeeze()
         param1 = weights.squeeze()
         # Build quantum circuit instance using pyqpanda3 interface
-        circult = pq.QCircuit()
+        circuit = pq.QCircuit()
         # Insert RZ gate on the first qubit with parameter x1[0]
-        circult << pq.RZ(qlist[0], x1[0])
+        circuit << pq.RZ(qlist[0], x1[0])
         # Insert RY gate on the first qubit with parameter x1[1]
-        circult << pq.RY(qlist[0], x1[1])
+        circuit << pq.RY(qlist[0], x1[1])
         # Insert RZ gate on the first qubit with parameter x1[2]
-        circult << pq.RZ(qlist[0], x1[2])
+        circuit << pq.RZ(qlist[0], x1[2])
         # Insert RZ gate on the first qubit with parameter param1[0]
-        circult << pq.RZ(qlist[0], param1[0])
+        circuit << pq.RZ(qlist[0], param1[0])
         # Insert RY gate on the first qubit with parameter param1[1]
-        circult << pq.RY(qlist[0], param1[1])
+        circuit << pq.RY(qlist[0], param1[1])
         # Insert RZ gate on the first qubit with parameter param1[2]
-        circult << pq.RZ(qlist[0], param1[2])
+        circuit << pq.RZ(qlist[0], param1[2])
         # Insert RZ gate on the first qubit with parameter x1[0]
-        circult << pq.RZ(qlist[0], x1[0])
+        circuit << pq.RZ(qlist[0], x1[0])
         # Insert RY gate on the first qubit with parameter x1[1]
-        circult << pq.RY(qlist[0], x1[1])
+        circuit << pq.RY(qlist[0], x1[1])
         # Insert RZ gate on the first qubit with parameter x1[2]
-        circult << pq.RZ(qlist[0], x1[2])
+        circuit << pq.RZ(qlist[0], x1[2])
         # Insert RZ gate on the first qubit with parameter param1[3]
-        circult << pq.RZ(qlist[0], param1[3])
+        circuit << pq.RZ(qlist[0], param1[3])
         # Insert RY gate on the first qubit with parameter param1[4]
-        circult << pq.RY(qlist[0], param1[4])
+        circuit << pq.RY(qlist[0], param1[4])
         # Insert RZ gate on the first qubit with parameter param1[5]
-        circult << pq.RZ(qlist[0], param1[5])
+        circuit << pq.RZ(qlist[0], param1[5])
         # Insert RZ gate on the first qubit with parameter x1[0]
-        circult << pq.RZ(qlist[0], x1[0])
+        circuit << pq.RZ(qlist[0], x1[0])
         # Insert RY gate on the first qubit with parameter x1[1]
-        circult << pq.RY(qlist[0], x1[1])
+        circuit << pq.RY(qlist[0], x1[1])
         # Insert RZ gate on the first qubit with parameter x1[2]
-        circult << pq.RZ(qlist[0], x1[2])
+        circuit << pq.RZ(qlist[0], x1[2])
         # Insert RZ gate on the first qubit with parameter param1[6]
-        circult << pq.RZ(qlist[0], param1[6])
+        circuit << pq.RZ(qlist[0], param1[6])
         # Insert RY gate on the first qubit with parameter param1[7]
-        circult << pq.RY(qlist[0], param1[7])
+        circuit << pq.RY(qlist[0], param1[7])
         # Insert RZ gate on the first qubit with parameter param1[8]
-        circult << pq.RZ(qlist[0], param1[8])
+        circuit << pq.RZ(qlist[0], param1[8])
         # Build quantum program
         prog = pq.QProg()
-        prog << circult
+        prog << circuit
         # Get probability measurement
         prob = probs_measure(machine ,prog,  qlist)
 

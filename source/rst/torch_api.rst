@@ -1202,7 +1202,7 @@ Dynamic_GRU
     :param batch_first: If True, the input shape is provided as [batch size, sequence length, feature dimension]. If False, the input shape is provided as [sequence length, batch size, feature dimension]. Default value: True.
     :param use_bias: If False, the bias weights b_ih and b_hh are not used for this layer. Default value: True.
     :param bidirectional: If true, it becomes a bidirectional GRU. Default value: False.
-    :param dtype: The data type of the parameter, defaults: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
+    :param dtype: The data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
     :param name: The name of this module, defaults to "".
 
     :return: A Dynamic_GRU class
@@ -1283,7 +1283,7 @@ Dynamic_RNN
     :param batch_first: If True, the input shape is [batch size, sequence length, feature dimension],If False, the input shape is [sequence length, batch size, feature dimension], default is True.
     :param use_bias: If False, this module does not apply bias, default: True.
     :param bidirectional: If True, it becomes a bidirectional RNN, default: False.
-    :param dtype: The data type of the parameter, defaults: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
+    :param dtype: The data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
     :param name: The name of this module, default is "".
 
     :return: Dynamic_RNN instance
@@ -1373,7 +1373,7 @@ Dynamic_LSTM
     :param batch_first: If True, the input shape is [batch size, sequence length, feature dimension],If False, the input shape is [sequence length, batch size, feature dimension], default is True.
     :param use_bias: If False, this module does not apply bias, default: True.
     :param bidirectional: If True, it becomes a bidirectional LSTM, default: False.
-    :param dtype: The data type of the parameter, defaults: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
+    :param dtype: The data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
     :param name: The name of this module, default is "".
 
     :return: Dynamic_LSTM instance
@@ -2161,7 +2161,7 @@ If you are more familiar with pyQPanda2 syntax, you can use the interface TorchQ
     :param para_num: `int` - number of parameters.
     :param diff_method: Method for solving quantum circuit parameter gradients, "parameter shift" or "finite difference", default parameter shift.
     :param delta: \delta when calculating gradients by finite difference.
-    :param dtype: Data type of parameter, defaults: None, use default data type: kfloat32, representing 32-bit floating point numbers.
+    :param dtype: Data type of parameter, default: None, use default data type: kfloat32, representing 32-bit floating point numbers.
     :param name: The name of this module, default is "".
 
     :return: A module that can calculate quantum circuits.
@@ -2176,7 +2176,7 @@ If you are more familiar with pyQPanda2 syntax, you can use the interface TorchQ
 
         If qprog_with_measure requires quantum measure, the user also needs to manually create and allocate cbits: https://pyqpanda-toturial.readthedocs.io/zh/latest/Measure.html
 
-        The use of the quantum circuit function qprog_with_measure (input, param, nqubits, ncubits) can refer to the following example.
+        The use of the quantum circuit function qprog_with_measure (input, param, nqubits, ncbits) can refer to the following example.
 
         `input`: Input one-dimensional classical data. If none, input None.
 
@@ -2249,7 +2249,7 @@ TorchQcloudQuantumLayer
 
 When you install the latest version of pyqpanda2, you can use this interface to define a variational circuit and submit it to the real chip of originqc for running.
 
-.. py:class:: pyvqnet.qnn.vqc.torch.TorchQcloudQuantumLayer(origin_qprog_func, qcloud_token, para_num, num_qubits, num_cubits, pauli_str_dict=None, shots = 1000, initializer=None, dtype=None, name="", diff_method="parameter_shift", submit_kwargs={}, query_kwargs={})
+.. py:class:: pyvqnet.qnn.vqc.torch.TorchQcloudQuantumLayer(origin_qprog_func, qcloud_token, para_num, num_qubits, num_cbits, pauli_str_dict=None, shots = 1000, initializer=None, dtype=None, name="", diff_method="parameter_shift", submit_kwargs={}, query_kwargs={})
     
     An abstract computing module for the real chip of originqc using pyqpanda QCloud starting from version 3.8.2.2. It submits parameterized quantum circuits to the real chip and obtains measurement results.
     If diff_method == "random_coordinate_descent" , the layer will randomly select a single parameter to calculate the gradient, and other parameters will remain zero. Reference: https://arxiv.org/abs/2311.00088
@@ -2272,7 +2272,7 @@ When you install the latest version of pyqpanda2, you can use this interface to 
 
         `qubits`: The quantum bits created by the simulator QCloud created by QuantumBatchAsyncQcloudLayer, the number is `num_qubits`, the type is pyQpanda.Qubits, no user needs to define it in the function.
 
-        `cbits`: The classical bits allocated by QuantumBatchAsyncQcloudLayer, the number is `num_cubits`, the type is pyQpanda.ClassicalCondition, no user needs to define it in the function. .
+        `cbits`: The classical bits allocated by QuantumBatchAsyncQcloudLayer, the number is `num_cbits`, the type is pyQpanda.ClassicalCondition, no user needs to define it in the function. .
 
     .. note::
 
@@ -2283,7 +2283,7 @@ When you install the latest version of pyqpanda2, you can use this interface to 
     :param qcloud_token: `str` - The type of quantum machine or the cloud token used for execution.
     :param para_num: `int` - The number of parameters, the parameter is a QTensor of size [para_num].
     :param num_qubits: `int` - The number of qubits in the quantum circuit.
-    :param num_cubits: `int` - The number of classical bits used for measurement in the quantum circuit.
+    :param num_cbits: `int` - The number of classical bits used for measurement in the quantum circuit.
     :param pauli_str_dict: `dict|list` - A dictionary or list of dictionaries representing Pauli operators in the quantum circuit. The default is "None", which means measurement operations are performed. If a dictionary of Pauli operators is entered, a single expectation or multiple expectations are calculated.
     :param shot: `int` - The number of measurements. The default value is 1000.
     :param initializer: Initializer for parameter values. The default is "None", which uses a 0~2*pi normal distribution.
@@ -2302,7 +2302,7 @@ When you install the latest version of pyqpanda2, you can use this interface to 
         from pyvqnet.qnn.vqc.torch import TorchQcloudQuantumLayer
 
         pyvqnet.backends.set_backend("torch")
-        def qfun(input,param, m_machine, m_qlist,cubits):
+        def qfun(input,param, m_machine, m_qlist,cbits):
             measure_qubits = [0,2]
             m_prog = pq.QProg()
             cir = pq.QCircuit()
@@ -2316,7 +2316,7 @@ When you install the latest version of pyqpanda2, you can use this interface to 
             m_prog.insert(cir)
 
             for idx, ele in enumerate(measure_qubits):
-                m_prog << pq.Measure(m_qlist[ele], cubits[idx])  # pylint: disable=expression-not-assigned
+                m_prog << pq.Measure(m_qlist[ele], cbits[idx])  # pylint: disable=expression-not-assigned
             return m_prog
 
         l = TorchQcloudQuantumLayer(qfun,
@@ -2339,7 +2339,7 @@ When you install the latest version of pyqpanda2, you can use this interface to 
         print(l.m_para.grad)
         print(x.grad)
 
-        def qfun2(input,param, m_machine, m_qlist,cubits):
+        def qfun2(input,param, m_machine, m_qlist,cbits):
             measure_qubits = [0,2]
             m_prog = pq.QProg()
             cir = pq.QCircuit()
@@ -2437,7 +2437,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
         def qfun(input,param):
 
             m_qlist = range(6)
-            cubits = range(6)
+            cbits = range(6)
             measure_qubits = [0,2]
             m_prog = pq.QProg()
             cir = pq.QCircuit()
@@ -2451,7 +2451,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
             m_prog<<cir
 
             for idx, ele in enumerate(measure_qubits):
-                m_prog << pq.measure(m_qlist[ele], cubits[idx])  # pylint: disable=expression-not-assigned
+                m_prog << pq.measure(m_qlist[ele], cbits[idx])  # pylint: disable=expression-not-assigned
             return m_prog
 
         l = TorchQcloud3QuantumLayer(qfun,
@@ -2475,7 +2475,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
         def qfun2(input,param ):
 
             m_qlist = range(6)
-            cubits = range(6)
+            cbits = range(6)
             measure_qubits = [0,2]
             m_prog = pq.QProg()
             cir = pq.QCircuit()
@@ -2521,7 +2521,7 @@ If you are more familiar with pyQPanda3 syntax, you can use the interface TorchQ
     :param para_num: `int` - number of parameters.
     :param diff_method: method for solving quantum circuit parameter gradients, "parameter shift" or "finite difference", default parameter shift.
     :param delta: \delta when calculating gradients by finite difference.
-    :param dtype: data type of parameter, defaults: None, use default data type: kfloat32, representing 32-bit floating point numbers.
+    :param dtype: data type of parameter, default: None, use default data type: kfloat32, representing 32-bit floating point numbers.
     :param name: the name of this module, default is "".
 
     :return: a module that can calculate quantum circuits.
@@ -2532,7 +2532,7 @@ If you are more familiar with pyQPanda3 syntax, you can use the interface TorchQ
 
         This function must include the following parameters as function inputs (even if a parameter is not actually used), otherwise it will not work properly in this function.
 
-        The use of the quantum circuit function qprog_with_measure (input,param,nqubits,ncubits) can refer to the following example.
+        The use of the quantum circuit function qprog_with_measure (input,param,nqubits,ncbits) can refer to the following example.
 
         `input`: Input one-dimensional classical data. If not, input None.
 
@@ -5143,7 +5143,7 @@ TNQModule
                     CNOT(wires = [nqubits[len(nqubits) - 1], nqubits[0]])(q_machine = qm)
 
 
-                def build_circult(weights, xx, nqubits,qm):
+                def build_circuit(weights, xx, nqubits,qm):
                     def Rot(weights_j, nqubits,qm):#pylint:disable=invalid-name
                         VQC_RotCircuit(qm,nqubits,weights_j)
 
@@ -5163,7 +5163,7 @@ TNQModule
                             Rot(weights_j, nqubits[j],qm)
                         get_cnot(nqubits,qm)
 
-                build_circult(self.w, x,range(4),self.qm)
+                build_circuit(self.w, x,range(4),self.qm)
 
                 y= qmeasure.MeasureAll(obs={'Z0': 1})(self.qm)
                 return y
@@ -5229,7 +5229,7 @@ TNQMachine
                     CNOT(wires = [nqubits[len(nqubits) - 1], nqubits[0]])(q_machine = qm)
 
 
-                def build_circult(weights, xx, nqubits,qm):
+                def build_circuit(weights, xx, nqubits,qm):
                     def Rot(weights_j, nqubits,qm):#pylint:disable=invalid-name
                         VQC_RotCircuit(qm,nqubits,weights_j)
 
@@ -5249,7 +5249,7 @@ TNQMachine
                             Rot(weights_j, nqubits[j],qm)
                         get_cnot(nqubits,qm)
 
-                build_circult(self.w, x,range(4),self.qm)
+                build_circuit(self.w, x,range(4),self.qm)
 
                 y= qmeasure.MeasureAll(obs={'Z0': 1})(self.qm)
                 return y
@@ -8463,7 +8463,7 @@ CommController
                     p.join()
 
  
-    .. py:method:: split_group(rankL)
+    .. py:method:: split_groups(rankL)
         :no-index:
 
         The process number list set according to the input parameter is used to divide multiple communication groups.
@@ -8489,7 +8489,7 @@ CommController
                 os.environ['LOCAL_RANK'] = f"{rank}"
                 Comm_OP = CommController("gloo", rank=rank, world_size=size)
 
-                group = Comm_OP.split_group([[1,3]])
+                group = Comm_OP.split_groups([[1,3]])
 
                 num = tensor.to_tensor(np.random.rand(1, 5)+get_local_rank()*10)
                 print(f"before rank {Comm_OP.getRank()}  {num}\n")
@@ -8837,7 +8837,7 @@ CommController
 
         :param tensor: Input data.
         :param c_op: Calculation method.
-        :param group: Communication group generated from `split_group` or `init_group` .
+        :param group: Communication group generated from `split_groups` or `init_group` .
 
         Examples::
 
@@ -8858,7 +8858,7 @@ CommController
                 Comm_OP = CommController("gloo", rank=rank, world_size=size)
 
                 rankL = [[0,1],[2,3]]
-                groups = Comm_OP.split_group(rankL)
+                groups = Comm_OP.split_groups(rankL)
                 num = tensor.to_tensor(np.ones(5)+get_local_rank()*1000)
 
                 print(f"before rank {Comm_OP.getRank()}  {num}")
@@ -8894,7 +8894,7 @@ CommController
         :param tensor: Input data.
         :param root: Specify the process number.
         :param c_op: Calculation method.
-        :param group: Communication group generated from `split_group` or `init_group` .
+        :param group: Communication group generated from `split_groups` or `init_group` .
 
         Examples::
 
@@ -8914,7 +8914,7 @@ CommController
                 os.environ['LOCAL_RANK'] = f"{rank}"
                 Comm_OP = CommController("gloo", rank=rank, world_size=size)
                 rankL = [[1,3],[0,2]]
-                group = Comm_OP.split_group([[1,3],[0,2]])
+                group = Comm_OP.split_groups([[1,3],[0,2]])
 
                 num = tensor.to_tensor(np.random.rand(1, 5)+get_local_rank()*10)
                 print(f"before rank {Comm_OP.getRank()}  {num}\n")
@@ -8945,7 +8945,7 @@ CommController
 
         :param tensor: Input data.
         :param root: Specify the process ID.
-        :param group: Communication group generated from `split_group` or `init_group` .
+        :param group: Communication group generated from `split_groups` or `init_group` .
 
         Examples::
             
@@ -8966,7 +8966,7 @@ CommController
                 Comm_OP = CommController("gloo", rank=rank, world_size=size)
 
                 rankL = [[2,3],[0,1,4]]
-                group = Comm_OP.split_group(rankL)
+                group = Comm_OP.split_groups(rankL)
 
                 num = tensor.to_tensor(np.random.rand(1, 5))+ rank*1000
                 print(f"before rank {Comm_OP.getRank()}  {num}")
@@ -8998,7 +8998,7 @@ CommController
         Allgather communication interface within the group.
 
         :param tensor: input data.
-        :param group: Communication group generated from `split_group` or `init_group` .
+        :param group: Communication group generated from `split_groups` or `init_group` .
 
         Examples::
             
@@ -9018,13 +9018,13 @@ CommController
                 os.environ['LOCAL_RANK'] = f"{rank}"
                 Comm_OP = CommController("nccl", rank=rank, world_size=size)
 
-                group = Comm_OP.split_group([[0,1]])
+                group = Comm_OP.split_groups([[0,1]])
                 print(f"get_world_size {get_world_size()}")
 
                 num = tensor.QTensor(np.random.rand(5,4)+get_local_rank()*100,device=pyvqnet.DEV_GPU_0+get_local_rank())
                 print(f"before rank {Comm_OP.getRank()}  {num}\n")
 
-                num = Comm_OP.all_gather_group(num,group[0])
+                num = Comm_OP.allgather_group(num,group[0])
                 print(f"after rank {Comm_OP.getRank()}  {num}\n")
 
 
