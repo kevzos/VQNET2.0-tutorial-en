@@ -100,7 +100,7 @@ You can use the 'astype()' interface to convert the type to the specified data t
 
 Answer: VQNet does not depend on torch, nor does it automatically install torch.
 
-To use the following features, you need to install torch>=2.4.0 yourself. Since v2.15.0, we support using `torch >=2.4.0 <https://docs.pytorch.org/docs/stable/index.html>`_ as the computing backend for classical neural networks, quantum variational circuits, distributed computing, etc.
+To use the following features, you need to install torch>=2.11.0 yourself. Since v2.15.0, we support using `torch >=2.11.0 <https://docs.pytorch.org/docs/stable/index.html>`_ as the computing backend for classical neural networks, quantum variational circuits, distributed computing, etc.
 After using ``pyvqnet.backends.set_backend("torch")``, the interface remains unchanged, but the ``data`` member variables of VQNet's ``QTensor`` all use ``torch.Tensor`` to store data,
 and use torch for computing. The classes under ``pyvqnet.nn.torch`` and ``pyvqnet.qnn.vqc.torch`` inherit from ``torch.nn.Module`` and can form ``torch`` models.
 

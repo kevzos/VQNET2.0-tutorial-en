@@ -10,7 +10,7 @@ Starting from version 2.15.0, this software supports using `torch` as the comput
 
     .. important::
 
-        To use the following features, please install torch>=2.4.0 yourself. This software does not automatically install torch during installation.
+        To use the following features, please install torch>=2.11.0 yourself. If installing a GPU version of torch, you need to use a version compatible with CUDA 12.6, otherwise your torch may not work due to NVIDIA CUDA runtime library issues. This software does not automatically install torch during installation.
 
     .. note::
 

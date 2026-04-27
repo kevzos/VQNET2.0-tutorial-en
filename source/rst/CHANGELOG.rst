@@ -16,6 +16,7 @@ Changed
 - Default backend changed to ``pyvqnet-ad``.
 - Removed deprecated ``QuantumLayerMultiProcess``, ``DataParallelHybirdVQCQpandaQVMLayer``, ``HybirdVQCQpanda3QVMLayer`` interfaces.
 - ``split_group`` renamed to ``split_groups``.
+- Depends on NVIDIA runtime for CUDA 12.6.
 
 Fixed
 ===================
