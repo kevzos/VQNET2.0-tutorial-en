@@ -1467,7 +1467,7 @@ SDPA
 
 .. py:class:: pyvqnet.nn.torch.SDPA(attn_mask=None,dropout_p=0.,scale=None,is_causal=False)
 
-    Constructs a class that computes scaled dot product attention for query, key, and value tensors. If the input is a QTensor under cpu, it is calculated using a mathematical formula, and if the input is a QTensor under gpu, it is calculated using the flash-attention method.
+    Constructs a class that computes scaled dot product attention for query, key, and value tensors.
 
     This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
 
@@ -1487,7 +1487,7 @@ SDPA
 
    .. py:method:: forward(query,key,value)
 
-        Performs forward computation. If the input is a QTensor on the CPU, the calculation is performed using a mathematical formula. If the input is a QTensor on the GPU, the calculation is performed using the flash-attention method.
+        Performs forward computation.
 
         :param query: The query input QTensor.
         :param key: The key input QTensor.

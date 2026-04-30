@@ -1901,7 +1901,7 @@ SDPA
 =================================
 .. py:class:: pyvqnet.transformer.e2eqvit.SDPA(attn_mask=None,dropout_p=0.,scale=None,is_causal=False)
 
-    SDPA scaling dot product attention mechanism, math method on cpu, flash method on gpu.
+    SDPA scaling dot product attention mechanism.
 
     :param attn_mask: Attention mask; shape must be broadcastable to the shape of attention weights.
     :param dropout_p: Dropout probability; if greater than 0.0, dropout is applied.
