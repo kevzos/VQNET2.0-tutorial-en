@@ -1294,8 +1294,8 @@ Measure quantum circuits
 expval
 ============================
 
-.. py:function:: pyvqnet.qnn.pq3.measure.expval(machine,prog,pauli_str_dict)
-    
+.. py:function:: pyvqnet.qnn.pq3.measure.expval(machine,prog,pauli_str_dict,shots=1000,noise_model=None)
+
     The expected value of the provided Hamiltonian observation.
 
     If the observation is :math:`0.7Z\otimes X\otimes I+0.2I\otimes Z\otimes I`,
@@ -1306,6 +1306,8 @@ expval
     :param machine: The quantum machine created by pyQPanda3.
     :param prog: The quantum program created by pyQPanda3.
     :param pauli_str_dict: Hamiltonian observed value.
+    :param shots: Number of measurements, default is 1000.
+    :param noise_model: Noise model to apply, default is None (ideal simulation).
 
     :return: expected value.
 
@@ -1333,8 +1335,8 @@ expval
 QuantumMeasure
 =============================
 
-.. py:function:: pyvqnet.qnn.pq3.measure.QuantumMeasure(machine,prog,measure_qubits:list,shots:int = 1000, qcloud_option="")
-    
+.. py:function:: pyvqnet.qnn.pq3.measure.QuantumMeasure(machine,prog,measure_qubits:list,shots:int = 1000, qcloud_option="",noise_model=None)
+
     Computes quantum circuit measurements. Returns measurements obtained by Monte Carlo methods.
 
     For more details, please visit https://pyqpanda-toturial.readthedocs.io/zh/latest/Measure.html?highlight=measure_all .
@@ -1346,6 +1348,7 @@ QuantumMeasure
     :param measure_qubits: List containing the measurement bit indices.
     :param shots: The number of measurements, the default value is 1000.
     :param qcloud_option: Set the qcloud configuration, the default value is "", you can pass in a QCloudOptions class, which is only useful when using qcloud.
+    :param noise_model: Noise model to apply, default is None (ideal simulation).
     :return: Returns the measurement results obtained by the Monte Carlo method.
 
     Example::
@@ -1371,6 +1374,52 @@ QuantumMeasure
 
         measure_result = quantum_measure(machine,prog,[2,0])
         print(measure_result)
+
+
+ProbsMeasure
+============================
+
+.. py:function:: pyvqnet.qnn.pq3.measure.ProbsMeasure(machine,prog,measure_qubits:list,shots=1,noise_model=None)
+
+    Compute circuit probability measurements.
+
+    For more details, please visit https://pyqpanda-toturial.readthedocs.io/zh/latest/PMeasure.html.
+
+    The ProbsMeasure api currently only supports pyQPanda ``CPUQVM`` or ``QCloud``.
+
+    :param measure_qubits: List containing the measurement qubit indices.
+    :param prog: The quantum program created by qpanda.
+    :param machine: The quantum virtual machine allocated by pyQPanda.
+    :param shots: Number of measurements, default is 1, which computes the theoretical value.
+    :param noise_model: Noise model to apply, default is None (ideal simulation).
+    :return: Measure qubits in lexicographic order.
+
+
+    Example::
+
+        from pyqpanda3.core import *
+        from pyvqnet.qnn.pq3.measure import probs_measure
+        circuit = QCircuit(3)
+        circuit << H(0)
+        circuit << P(2, 0.2)
+        circuit << RX(1, 0.9)
+        circuit << RX(0, 0.6)
+        circuit << RX(1, 0.3)
+        circuit << RY(1, 0.3)
+        circuit << RY(2, 2.7)
+        circuit << RX(0, 1.5)
+
+        prog = QProg()
+        prog.append(circuit)
+        prog.append(measure(0, 0))
+        prog.append(measure(1, 1))
+        prog.append(measure(2, 2))
+
+        machine = CPUQVM()
+
+        measure_result = probs_measure(machine,prog,[2,0])
+        print(measure_result)
+        #[0.04796392899146941, 0, 0.4760180355042653, 0.4760180355042653]
 
 
 DensityMatrixFromQstate
