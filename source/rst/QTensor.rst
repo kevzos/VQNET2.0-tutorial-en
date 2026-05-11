@@ -3283,7 +3283,7 @@ permute
 
 .. py:function:: pyvqnet.tensor.permute(t: pyvqnet.tensor.QTensor, dim: list)
 
-    Reverse or permute the axes of an array.if dims = None, revsers the dim.
+    Reverse or permute the axes of an array.
 
     :param t: input QTensor
     :param dim: the new order of the dimensions (list of integers)
