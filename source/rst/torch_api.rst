@@ -5086,7 +5086,11 @@ The following interface is based on the ``torch`` backend, which provides functi
 Constructing quantum lines in the MPS way makes up for the support for large-bit quantum line construction.
 
 .. warning::
-        
+
+        Using the following features in this module requires additional installation of ``tensornetwork`` and ``torch``. The default installation of ``pyvqnet`` does not include these two dependencies. Please install them using ``pip install tensornetwork torch``.
+
+.. warning::
+
         Enables MPS to build quantum lines via the ``use_mps`` parameter in ``TNQMachine``, which supports large-bit (100 and above) quantum line implementations.
 
 .. warning::
