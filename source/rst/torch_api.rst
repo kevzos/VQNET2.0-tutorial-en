@@ -2144,7 +2144,7 @@ The following is the training variational quantum circuit interface for circuit 
 
 .. warning::
 
-    The quantum computing part of the following TorchQpandaQuantumLayer, TorchQcloudQuantumLayer uses pyqpanda2 https://pyqpanda-toturial.readthedocs.io/zh/latest/.
+    The quantum computing part of the following TorchQpandaQuantumLayer uses pyqpanda2 https://pyqpanda-toturial.readthedocs.io/zh/latest/.
 
     Due to the compatibility issues between pyqpanda2 and pyqpanda3, you need to install pyqpnda2 yourself, `pip install pyqpanda`
 
