@@ -17,6 +17,8 @@ Changed
 - Removed deprecated ``QuantumLayerMultiProcess``, ``DataParallelHybirdVQCQpandaQVMLayer``, ``HybirdVQCQpanda3QVMLayer`` interfaces.
 - ``split_group`` renamed to ``split_groups``.
 - Depends on NVIDIA runtime for CUDA 12.6.
+- "chip_id" default changed to "WK_C180".
+- ``ComplexEntangelingTemplate`` renamed to ``ComplexEntanglingTemplate``.
 
 Fixed
 ===================
@@ -24,6 +26,7 @@ Fixed
 - Fixed ``cuda_masked_fill`` support for complex64/complex128 types.
 - Fixed ``log_softmax`` forward computation producing incorrect +inf values under ``bfloat16``.
 - Fixed device errors caused by missing ``CUDAGuard`` during cross-GPU memory access.
+- Fixed many typos.
 
 
 [v2.17.3] - 2026-03-31

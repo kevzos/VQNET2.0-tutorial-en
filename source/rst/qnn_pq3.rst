@@ -38,9 +38,9 @@ If you are familiar with pyQPanda3 syntax, you can use the interface QuantumLaye
 
         The use of the quantum circuit function qprog_with_measure (input, param) can be referred to the example below.
 
-        `input`: Input one-dimensional classical data. If not, input None.
+        `input`: Input one-dimensional classical data. If not, input None
 
-        `param`: Input one-dimensional variational quantum circuit parameters to be trained.
+        `param`: Input one-dimensional variational quantum circuit parameters to be trained
 
     .. note::
 
@@ -132,9 +132,9 @@ QpandaQProgVQCLayer
 
         origin_qprog_func (input,param )
 
-        `input`: user-defined array class input 1-dimensional classical data.
+        `input`: user-defined array class input 1-dimensional classical data
 
-        `param`: array_like input user-defined 1-dimensional quantum circuit parameters.
+        `param`: array_like input user-defined 1-dimensional quantum circuit parameters
 
     .. note::
 
@@ -213,9 +213,9 @@ When you install the latest version of pyqpanda3, you can use this interface to 
 
         origin_qprog_func(input,param)
 
-        `input`: Input 1~2D classical data. In the case of 2D, the first dimension is the batch size.
+            `input`: Input 1~2D classical data. In the case of 2D, the first dimension is the batch size
 
-        `param`: Input the parameters to be trained for the 1D variational quantum circuit.
+            `param`: Input the parameters to be trained for the 1D variational quantum circuit
 
     .. note::
 
@@ -494,7 +494,7 @@ VQCQCloudLayer
     :param pauli_str_dict: Pauli operator dictionary for expectation value computation. Default is None, which performs measurement operation.
     :param shots: Number of measurements. Default is 1000.
     :param name: Module name. Default is empty string.
-    :param submit_kwargs: Additional keyword arguments for submitting quantum circuits. Default: {"chip_id":"origin_wukong","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False}. When test_qcloud_fake is set to True, it uses local CPUQVM simulation.
+    :param submit_kwargs: Additional keyword parameters for submitting quantum circuits, default: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, when test_qcloud_fake is set to True, local CPUQVM simulation.
     :param query_kwargs: Additional keyword arguments for querying quantum results. Default: {"timeout":1,"total_timeout":60, "print_query_info":True,"sub_circuits_split_size":1}.
 
     Example::

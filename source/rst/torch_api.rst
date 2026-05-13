@@ -2244,136 +2244,6 @@ If you are more familiar with pyQPanda2 syntax, you can use the interface TorchQ
         print(pqc.m_para.grad)
         print(input.grad)
 
-TorchQcloudQuantumLayer
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When you install the latest version of pyqpanda2, you can use this interface to define a variational circuit and submit it to the real chip of originqc for running.
-
-.. py:class:: pyvqnet.qnn.vqc.torch.TorchQcloudQuantumLayer(origin_qprog_func, qcloud_token, para_num, num_qubits, num_cbits, pauli_str_dict=None, shots = 1000, initializer=None, dtype=None, name="", diff_method="parameter_shift", submit_kwargs={}, query_kwargs={})
-    
-    An abstract computing module for the real chip of originqc using pyqpanda QCloud starting from version 3.8.2.2. It submits parameterized quantum circuits to the real chip and obtains measurement results.
-    If diff_method == "random_coordinate_descent" , the layer will randomly select a single parameter to calculate the gradient, and other parameters will remain zero. Reference: https://arxiv.org/abs/2311.00088
-
-    .. note::
-
-        qcloud_token is the api token you applied for at https://qcloud.originqc.com.cn/.
-
-        origin_qprog_func needs to return data of type pypqanda.QProg. If pauli_str_dict is not set, it is necessary to ensure that the measure has been inserted into the QProg.
-
-        origin_qprog_func must be in the following format:
-
-        origin_qprog_func(input,param,qubits,cbits,machine)
-
-        `input`: Input 1~2D classical data. In the case of 2D, the first dimension is the batch size.
-
-        `param`: Input the parameters to be trained for the 1D variational quantum circuit.
-
-        `machine`: The simulator QCloud created by QuantumBatchAsyncQcloudLayer, no user needs to define it in the function.
-
-        `qubits`: The quantum bits created by the simulator QCloud created by QuantumBatchAsyncQcloudLayer, the number is `num_qubits`, the type is pyQpanda.Qubits, no user needs to define it in the function.
-
-        `cbits`: The classical bits allocated by QuantumBatchAsyncQcloudLayer, the number is `num_cbits`, the type is pyQpanda.ClassicalCondition, no user needs to define it in the function. .
-
-    .. note::
-
-        In the current version, the default total timeout for a single circuit's submission to the QCloud is 60 seconds. If a timeout occurs due to QCloud being busy, you can set the value of the `total_timeout` key in ``query_kwargs`` to the desired number of waiting seconds.
-
-
-    :param origin_qprog_func: The variational quantum circuit function constructed by QPanda, must return QProg.
-    :param qcloud_token: `str` - The type of quantum machine or the cloud token used for execution.
-    :param para_num: `int` - The number of parameters, the parameter is a QTensor of size [para_num].
-    :param num_qubits: `int` - The number of qubits in the quantum circuit.
-    :param num_cbits: `int` - The number of classical bits used for measurement in the quantum circuit.
-    :param pauli_str_dict: `dict|list` - A dictionary or list of dictionaries representing Pauli operators in the quantum circuit. The default is "None", which means measurement operations are performed. If a dictionary of Pauli operators is entered, a single expectation or multiple expectations are calculated.
-    :param shot: `int` - The number of measurements. The default value is 1000.
-    :param initializer: Initializer for parameter values. The default is "None", which uses a 0~2*pi normal distribution.
-    :param dtype: The data type of the parameter. The default value is None, which uses the default data type pyvqnet.kfloat32.
-    :param name: The name of the module. The default is an empty string.
-    :param diff_method: Differentiation method for gradient calculation. Default is "parameter_shift", "random_coordinate_descent".
-    :param submit_kwargs: Additional keyword parameters for submitting quantum circuits, default: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, when test_qcloud_fake is set to True, local CPUQVM simulation.
-    :param query_kwargs: Additional keyword parameters for querying quantum results, default: {"timeout":1,"total_timeout":60,"print_query_info":True,"sub_circuits_split_size":1}.
-    :return: A module that can calculate quantum circuits.
-
-
-    Example::
-
-        import pyqpanda as pq
-        import pyvqnet
-        from pyvqnet.qnn.vqc.torch import TorchQcloudQuantumLayer
-
-        pyvqnet.backends.set_backend("torch")
-        def qfun(input,param, m_machine, m_qlist,cbits):
-            measure_qubits = [0,2]
-            m_prog = pq.QProg()
-            cir = pq.QCircuit()
-            cir.insert(pq.RZ(m_qlist[0],input[0]))
-            cir.insert(pq.CNOT(m_qlist[0],m_qlist[1]))
-            cir.insert(pq.RY(m_qlist[1],param[0]))
-            cir.insert(pq.CNOT(m_qlist[0],m_qlist[2]))
-            cir.insert(pq.RZ(m_qlist[1],input[1]))
-            cir.insert(pq.RY(m_qlist[2],param[1]))
-            cir.insert(pq.H(m_qlist[2]))
-            m_prog.insert(cir)
-
-            for idx, ele in enumerate(measure_qubits):
-                m_prog << pq.Measure(m_qlist[ele], cbits[idx])  # pylint: disable=expression-not-assigned
-            return m_prog
-
-        l = TorchQcloudQuantumLayer(qfun,
-                        "3047DE8A59764BEDAC9C3282093B16AF1",
-                        2,
-                        6,
-                        6,
-                        pauli_str_dict=None,
-                        shots = 1000,
-                        initializer=None,
-                        dtype=None,
-                        name="",
-                        diff_method="parameter_shift",
-                        submit_kwargs={"test_qcloud_fake":True},
-                        query_kwargs={})
-        x = pyvqnet.tensor.QTensor([[0.56,1.2],[0.56,1.2],[0.56,1.2],[0.56,1.2],[0.56,1.2]],requires_grad= True)
-        y = l(x)
-        print(y)
-        y.backward()
-        print(l.m_para.grad)
-        print(x.grad)
-
-        def qfun2(input,param, m_machine, m_qlist,cbits):
-            measure_qubits = [0,2]
-            m_prog = pq.QProg()
-            cir = pq.QCircuit()
-            cir.insert(pq.RZ(m_qlist[0],input[0]))
-            cir.insert(pq.CNOT(m_qlist[0],m_qlist[1]))
-            cir.insert(pq.RY(m_qlist[1],param[0]))
-            cir.insert(pq.CNOT(m_qlist[0],m_qlist[2]))
-            cir.insert(pq.RZ(m_qlist[1],input[1]))
-            cir.insert(pq.RY(m_qlist[2],param[1]))
-            cir.insert(pq.H(m_qlist[2]))
-            m_prog.insert(cir)
-
-            return m_prog
-        l = TorchQcloudQuantumLayer(qfun2,
-                "3047DE8A59764BEDAC9C3282093B16AF",
-                2,
-                6,
-                6,
-                pauli_str_dict={'Z0 X1':10,'':-0.5,'Y2':-0.543},
-                shots = 1000,
-                initializer=None,
-                dtype=None,
-                name="",
-                diff_method="parameter_shift",
-                submit_kwargs={"test_qcloud_fake":True},
-                query_kwargs={})
-        x = pyvqnet.tensor.QTensor([[0.56,1.2],[0.56,1.2],[0.56,1.2],[0.56,1.2]],requires_grad= True)
-        y = l(x)
-        print(y)
-        y.backward()
-        print(l.m_para.grad)
-        print(x.grad)
-
-
 
 .. warning::
 
@@ -2422,7 +2292,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
     :param dtype: Data type of the parameter. The default value is None, which means using the default data type pyvqnet.kfloat32.
     :param name: The name of the module. The default value is an empty string.
     :param diff_method: Differentiation method for gradient calculation. The default value is "parameter_shift", "random_coordinate_descent".
-    :param submit_kwargs: Additional keyword parameters for submitting quantum circuits, default: {"chip_id":"origin_wukong","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False}, when test_qcloud_fake is set to True, local CPUQVM simulation is used.
+    :param submit_kwargs: Additional keyword parameters for submitting quantum circuits, default: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, when test_qcloud_fake is set to True, local CPUQVM simulation.
     :param query_kwargs: Additional keyword parameters for querying quantum results, default: {"timeout":2,"print_query_info":True,"sub_circuits_split_size":1}.
     :return: A module that can calculate quantum circuits.
 
