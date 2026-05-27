@@ -74,59 +74,9 @@ To solve the problem of incompatibility between mpi4py and python versions, you 
 NCCL Installation
 ^^^^^^^^^^^^^^^^^^^^^^
 
-NCCL is a common library for communication between GPUs, and the distributed computing function of GPUs in VQNet is realized based on NCCL, 
-and the following introduces how to install NCCL in Linux system (at present, the distributed computing function based on GPUs is realized only on Linux).
+NCCL is a common library for communication between GPUs, and the distributed computing function of GPUs in VQNet is realized based on NCCL.
+This software installs the NCCL dynamic link library by default at installation time, so it is generally not necessary to install NCCL.
 This section requires MPI support, so the MPI environment needs to be deployed as well.
-
-Pull the NCCL repositories from github to local
-
-.. code-block::
-
-    git clone https://github.com/NVIDIA/nccl.git
-
-Go to the nccl root directory and compile
-
-.. code-block::
-    
-    cd nccl
-    make -j src.build
-
-If cuda is not installed in the default path /usr/local/cuda, you need to define the path to CUDA, and compile it using the following code
-
-.. code-block::
-
-    make src.build CUDA_HOME=<path to cuda install>
-
-And you can specify the installation directory according to BUILDDIR, the command is as follows
-
-.. code-block::
-    
-    make src.build CUDA_HOME=<path to cuda install> BUILDDIR=/usr/local/nccl
-
-Add configuration to the .bashrc file after installation is complete
-
-.. code-block::
-    
-    vim ~/.bashrc
-
-    # Add at the bottom
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/nccl/lib
-    export PATH=$PATH:/usr/local/nccl/bin
-
-After saving, execute
-
-.. code-block::
-    
-    source ~/.bashrc
-
-It can be verified with nccl-test
-
-.. code-block::
-    
-    git clone https://github.com/NVIDIA/nccl-tests.git
-    cd nccl-tests
-    make -j12 CUDA_HOME=/usr/local/cuda
-    ./build/all_reduce_perf -b 8 -e 256M -f 2 -g 1
 
 Inter-node communication environment deployment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
