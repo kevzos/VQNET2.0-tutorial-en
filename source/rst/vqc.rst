@@ -52,6 +52,62 @@ We can use VQC operators to form complex neural networks like other `Modules`. T
     print(y)
 
 
+The following example demonstrates variational quantum computing on GPU (including data encoding and parameterized variational circuits):
+
+.. code-block::
+
+    from pyvqnet.nn import Module,Linear,ModuleList
+    from pyvqnet.qnn.vqc.qcircuit import VQC_HardwareEfficientAnsatz,RZZ,RZ,rz,ry,cnot
+    from pyvqnet.qnn.vqc import Probability,QMachine
+    from pyvqnet import tensor
+    from pyvqnet import DEV_GPU
+    class QM(Module):
+        def __init__(self, name=""):
+            super().__init__(name)
+            self.linearx = Linear(4,2)
+            self.ansatz = VQC_HardwareEfficientAnsatz(4, ["rx", "RY", "rz"],
+                                        entangle_gate="cnot",
+                                        entangle_rules="linear",
+                                        depth=2)
+            #VQC based RZ on 0 bits
+            self.encode1 = RZ(wires=0)
+            #VQC based RZ on 1 bit
+            self.encode2 = RZ(wires=1)
+            #RZ with trainable parameters has_params = True, trainable = True
+            self.vqc = RZ(has_params = True,trainable = True,wires=1)
+            #VQC-based probability measurement on 0, 2 bits
+            self.measure = Probability(wires=[0,2])
+            #Quantum device QMachine, uses 4 bits.
+            self.device = QMachine(4)
+        def forward(self, x, *args, **kwargs):
+            #States must be reset to the same batchsize as the input.
+            self.device.reset_states(x.shape[0])
+            y = self.linearx(x)
+            #Encode the input to the RZ gate. Note that the input must be of shape [batchsize,1]
+            self.encode1(params = y[:, 0],q_machine = self.device,)
+            #Encode the input to the RZ gate. Note that the input must be of shape [batchsize,1]
+            self.encode2(params = y[:, 1],q_machine = self.device,)
+            #Variational circuit composed of RZ gates, will be included in training.
+            self.vqc(q_machine =self.device)
+            self.ansatz(q_machine =self.device)
+            return self.measure(q_machine =self.device)
+
+    bz =3
+    #create tensor on GPU
+    inputx = tensor.arange(1.0,bz*4+1,device=DEV_GPU).reshape([bz,4])
+    inputx.requires_grad= True
+    #Define like other Modules
+    qlayer = QM()
+    #move module to GPU
+    qlayer = qlayer.to(DEV_GPU)
+    #Forward
+    y = qlayer(inputx)
+    #Backward
+    y.backward()
+    print(y)
+
+
+
 Simulator
 =======================================
 
