@@ -19,6 +19,8 @@ Changed
 - Depends on NVIDIA runtime for CUDA 12.6.
 - "chip_id" default changed to "WK_C180".
 - ``ComplexEntangelingTemplate`` renamed to ``ComplexEntanglingTemplate``.
+- ``vqc.rst``: added "Test 2: 10-Qubit VQC Gradient Comparison" benchmark section comparing VQNet / TorchQuantum / DeepQuantum / Pennylane / MindQuantum.
+- Updated benchmark spec table with CUDA 12.6, torchquantum 0.2.0, mindquantum 0.12.0.
 
 Fixed
 ===================
