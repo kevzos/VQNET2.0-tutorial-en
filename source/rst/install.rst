@@ -4,11 +4,17 @@ Steps of VQNet Installation
 VQNet python package Installation
 ----------------------------------
 
-We provide precompiled Python packages for installation on Linux, Windows, macOS 13+ (arm64), supporting **python3.10**.
+We provide precompiled Python packages for installation on Linux, Windows, macOS 13+ (arm64), supporting **Python 3.10**.
+
+Download the corresponding archive from the official website, extract it, navigate to the extracted directory, and run the following steps:
 
 .. code-block::
 
-    pip install pyvqnet --upgrade
+    # For Windows
+    ./install.batch
+    # For macOS and Linux
+    ./install.sh
+ 
 
 
 For Windows and Linux systems, the pyvqnet package includes built-in acceleration features for classic neural network computations based on Nvidia CUDA, which depends on the specific version of NVIDIA CUDA 12.6 runtime libraries (automatically installed with the package).
