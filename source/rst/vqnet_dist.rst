@@ -4,16 +4,16 @@
 VQNet Naive Distributed Computing Module
 *********************************************************
 
-Environment deployment
+Environment Deployment
 =================================
 
-The following describes the VQNet deployment of the environment under the Linux system based on CPU and GPU distributed computing, respectively.
+This section describes how to deploy the VQNet environment on Linux for CPU and GPU distributed computing.
 
 MPI Installation
 ^^^^^^^^^^^^^^^^^^^^^^
 
-MPI is a common library for inter-CPU communication, and the distributed computing function of CPU in VQNet is realized based on MPI, 
-and the following section describes how to install MPI in Linux system (at present, the distributed computing function based on CPU is realized only on Linux).
+MPI is a common library for inter-CPU communication, and the distributed computing function of CPU in VQNet is implemented based on MPI. 
+The following section describes how to install MPI on a Linux system (at present, the distributed computing function based on CPU is only supported on Linux).
 
 Detect if gcc, gfortran compilers are installed.
 
@@ -22,8 +22,8 @@ Detect if gcc, gfortran compilers are installed.
     which gcc 
     which gfortran
 
-When the paths to gcc and gfortran are shown, you can proceed to the next step of installation, if you do not have the corresponding compilers, 
-please install the compilers first. When the compilers have been checked, use the wget command to download them.
+When the paths to gcc and gfortran are shown, you can proceed to the next step of installation. If you do not have the corresponding compilers, 
+please install them first. Once the compilers have been verified, use the wget command to download mpich.
 
 .. code-block::
         
@@ -34,7 +34,7 @@ please install the compilers first. When the compilers have been checked, use th
     make 
     make install 
 
-Finish compiling and installing mpich and configure its environment variables.
+After compiling and installing mpich, configure its environment variables.
 
 .. code-block::
         
@@ -43,7 +43,7 @@ Finish compiling and installing mpich and configure its environment variables.
     # At the bottom of the document, add
     export PATH="/usr/local/mpich/bin:$PATH"
 
-After saving and exiting, use source to execute
+After saving and exiting, use source to apply the changes.
 
 .. code-block::
 
@@ -51,81 +51,37 @@ After saving and exiting, use source to execute
 
 Use which to verify that the environment variables are configured correctly. If the path is displayed, the installation has completed successfully.
 
-In addition, you can install mpi4py via pip install, if you get the following error
+In addition, you can install mpi4py via pip install. If you encounter the following error:
 
 .. image:: ./images/mpi_bug.png
     :align: center
 
 |
 
-To solve the problem of incompatibility between mpi4py and python versions, you can do the following
+To resolve mpi4py and Python version incompatibility, you can do the following:
 
 .. code-block::
 
-    # Staging the compiler for the current python environment with the following code
+    # Back up the compiler for the current Python environment
     pushd /root/anaconda3/envs/$CONDA_DEFAULT_ENV/compiler_compat && mv ld ld.bak && popd
 
-    # Re-installation
+    # Re-install mpi4py
     pip install mpi4py
 
-    # reduction
+    # Restore the original compiler
     pushd /root/anaconda3/envs/$CONDA_DEFAULT_ENV/compiler_compat && mv ld.bak ld && popd
 
 NCCL Installation
 ^^^^^^^^^^^^^^^^^^^^^^
 
-NCCL is a common library for communication between GPUs, and the distributed computing function of GPUs in VQNet is realized based on NCCL.
-This software installs the NCCL dynamic link library by default at installation time, so it is generally not necessary to install NCCL.
+NCCL is a common library for GPU communication, and the distributed computing function of GPUs in VQNet is implemented based on NCCL.
+This software installs the NCCL dynamic link library by default at installation time, so it is generally not necessary to install NCCL separately.
 This section requires MPI support, so the MPI environment needs to be deployed as well.
-
-Inter-node communication environment deployment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    To implement distributed computing on multiple nodes, first **you need to ensure the consistency of the mpich environment and the python environment on multiple nodes**, and secondly, you need to set up **secret-free communication between nodes**.
-    .. code-block::
-
-        # Execute on each node
-        ssh-keygen
-        
-        # After that, keep entering to generate a public key (id_rsa.pub) and a private key (id_rsa) in the .ssh folder
-        # Add the public keys of both of its other nodes to the authorized_keys file of the first node.
-        # Then pass the authorized_keys file from the first node to the other two nodes to achieve password-free communication between the nodes.
-        # Execute on child node node1
-        cat ~/.ssh/id_dsa.pub >> node0:~/.ssh/authorized_keys
-
-        # Execute on child node node2
-        cat ~/.ssh/id_dsa.pub >> node0:~/.ssh/authorized_keys
-        
-        # After deleting the authorized_keys files on node1 and node2, copy the authorized_keys file on node0 to the other two nodes.
-        scp ~/.ssh/authorized_keys  node1:~/.ssh/authorized_keys
-        scp ~/.ssh/authorized_keys  node2:~/.ssh/authorized_keys
-
-        # After deleting the authorized_keys files on node1 and node2, copy the authorized_keys file on node0 to the other two nodes.
-
-    In addition to this, it is also a good idea to set up a shared directory so that when files in the shared directory are changed, 
-    files in different nodes are also changed, preventing files in different nodes from being out of sync when the model is run on multiple nodes.
-    The shared directory is implemented using nfs-utils and rpcbind.
-
-    .. code-block::
-
-        # Installation of software packages
-        yum -y install nfs* rpcbind  
-
-        # Edit the configuration file on the master node
-        vim /etc/exports  
-        /data/mpi *(rw,sync,no_all_squash,no_subtree_check)
-
-        # Start the service on the master node
-        systemctl start rpcbind
-        systemctl start nfs
-
-        # Mount the master node node0's shared directory on all child nodes node1,node2.
-        mount node0:/data/mpi /data/mpi
 
 Distributed launch
 =================================
  
-Using the Distributed Computing Interface, started by the ``vqnetrun`` command, the parameters of ``vqnetrun`` are described.
+Using the Distributed Computing Interface started by the ``vqnetrun`` command, the parameters of ``vqnetrun`` are described below.
 
 n, np
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -143,55 +99,6 @@ The ``vqnetrun`` interface allows you to control the number of processes started
 
         # vqnetrun -n 2 python test.py
         # vqnetrun -np 2 python test.py
-
-H, hosts
-^^^^^^^^^^^^^^^^^^^^^^
-
-The ``vqnetrun`` interface allows you to specify nodes and process assignments for cross-node execution via the ``-H``, ``--hosts`` interfaces (you must configure the node's environment successfully to execute in the same environment under the same path when running across nodes), with the following execution example.
-
-    Example::
-
-        from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("mpi") # init mpi controller
-        
-        rank = Comm_OP.getRank()
-        size = Comm_OP.getSize()
-        print(f"rank: {rank}, size {size}")
-        print(f"LocalRank {Comm_OP.getLocalRank()} hosts name {get_host_name()}")
-
-        # vqnetrun -np 4 -H node0:1,node2:1 python test.py
-        # vqnetrun -np 4 --hosts node0:1,node2:1 python test.py
-
-
-.. _hostfile:
-
-hostfile, f, hostfile
-^^^^^^^^^^^^^^^^^^^^^^
-
-The ``vqnetrun`` interface allows you to specify nodes and process assignments across nodes by specifying a hosts file (when running across nodes, you must configure the node's environment successfully, executing in the same environment and under the same path), with the command line arguments ``-hostfile``, ``-f``, and ``--hostfile``.
-
-Each line within the file must be formatted as <hostname> slots=<slots> as;
-
-node0 slots=1
-
-node2 slots=1
-
-A sample implementation is as follows
-
-    Example::
-
-        from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("mpi") # init mpi controller
-        
-        rank = Comm_OP.getRank()
-        size = Comm_OP.getSize()
-        print(f"rank: {rank}, size {size}")
-        print(f"LocalRank {Comm_OP.getLocalRank()} hosts name {get_host_name()}")
-
-        # vqnetrun -np 4 -f hosts python test.py
-        # vqnetrun -np 4 -hostfile hosts python test.py
-        # vqnetrun -np 4 --hostfile hosts python test.py
-
 
 output-filename
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -216,7 +123,7 @@ A sample implementation is as follows:
 verbose
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface can be used with the command line parameter ``--verbose`` to instrument inter-node communication and additionally output the results of the instrumentation.
+The ``vqnetrun`` interface can be used with the command line parameter ``--verbose`` to enable detailed communication logging and output the results.
 
 A sample implementation is as follows
 
@@ -267,13 +174,13 @@ A sample implementation is as follows
 CommController
 =================================
 
-    Distributed computing is used to control the data communication of different processes under cpu and gpu, generate different controllers for cpu (mpi) and gpu (nccl), and call the communication method to complete the communication and synchronization of data between different processes.
+    Distributed computing is used to control data communication between different processes under CPU and GPU. It generates different controllers for CPU (MPI) and GPU (NCCL), and calls the communication methods to complete data communication and synchronization between different processes.
 
 __init__
 ^^^^^^^^^^^^^^^^^^^^^^
 .. py:class:: pyvqnet.distributed.ControlComm.CommController(backend,rank=None,world_size=None)
     
-    CommController is used to control the controller of data communication under cpu and gpu, by setting the parameter `backend` to generate the controller for cpu(mpi) and gpu(nccl). (Currently, the distributed computing function only supports the use of linux operating system system )
+    CommController is used to control data communication under CPU and GPU. By setting the parameter `backend`, it generates the controller for CPU (MPI) or GPU (NCCL). (Currently, the distributed computing function only supports Linux.)
 
     :param backend: used to generate the data communication controller for cpu or gpu.
     :param rank: This parameter is only useful in non-pyvqnet backends, the default value is: None.

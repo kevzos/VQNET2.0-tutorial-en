@@ -4,7 +4,7 @@ Steps of VQNet Installation
 VQNet python package Installation
 ----------------------------------
 
-We provide precompiled Python packages for installation on Linux, Windows, macOS 13+ (arm64), supporting **python3.10, python3.11, or python3.12**.
+We provide precompiled Python packages for installation on Linux, Windows, macOS 13+ (arm64), supporting **python3.10**.
 
 .. code-block::
 
@@ -42,9 +42,9 @@ Testing GPU Functionality in VQNet
 
 A simple case of VQNet
 --------------------------
-Here we introduced a case which consisted with classical neural network modules and quantum modules of VQNet to describing the workflow of quantum machine learning. 
+Here we introduce a case that consists of classical neural network modules and quantum modules of VQNet to describe the workflow of quantum machine learning. 
 It refers to `Data re-uploading for a universal quantum classifier <https://arxiv.org/abs/1907.02085>`_ .
-Generally, there are following parts of quantum computing module in quantum machine learning:
+Generally, there are the following parts of quantum computing module in quantum machine learning:
 
 (1)Encoder:encoding classical data into quantum state;
 
@@ -52,7 +52,7 @@ Generally, there are following parts of quantum computing module in quantum mach
 
 (3)Measurement: measuring the value of a qubit(projection of qubit's quantum state in a specified axis).
 
-Quantum computing module is the theoretical basis of the hybrid model of quantum classical neural network, which is also differentiable like the module of classical neural network. VQNet supports quantum computing module and classical computing module to form a hybrid machine learning model, and provides a variety of optimization algorithm optimization parameters. (e.g. Convolution layer, pooling layer, full connection layer, activation function, etc.)
+Quantum computing module is the theoretical basis of the hybrid model of quantum classical neural network, which is also differentiable like classical neural network modules. VQNet supports quantum computing modules and classical computing modules to form a hybrid machine learning model, and provides various optimization algorithms for parameter optimization. (e.g. Convolution layer, pooling layer, fully connected layer, activation function, etc.)
 
 .. figure:: ./images/classic-quantum.PNG
 
@@ -117,8 +117,8 @@ In this example, 1 qubit is used, multiple parameterized rotation gates `RZ`, `R
 
         return prob
 
-Our task is to classify these data which is generated randomly based on binary classification algorithm. In this task,
-0 is a circle's center, points within radius by 1 colored in red are one category, the samples are labeled in blue are another category.
+Our task is to classify this randomly generated data using a binary classification approach. In this task,
+the center of a circle is at the origin, points within radius 1 colored in red belong to one category, and the samples colored in blue belong to another category.
 
 .. figure:: ./images/origin_circle.png
 
@@ -135,9 +135,9 @@ The pipeline of the training process
     from pyvqnet.nn.module import Module
 
 
-Defining a model, where ``__init__`` function defines the internal neural network modules and quantum modules, and ``forward`` function defines the forward function, ``QuantumLayer`` is an abstract class
+Defining a model: the ``__init__`` function defines the internal neural network modules and quantum modules, and the ``forward`` function defines the forward computation. ``QuantumLayer`` is an abstract class
 that encapsulates quantum computing.
-VQNet will calculate the parameters' gradient automatically with `qdrl_circuit`, `param_num`.
+VQNet will automatically calculate the parameter gradients for `qdrl_circuit` with `param_num`.
 
 
 .. code-block::
@@ -157,11 +157,11 @@ VQNet will calculate the parameters' gradient automatically with `qdrl_circuit`,
             x = self.pqc(x)
             return x
 
-Definiting some functions of training model 
+Defining some functions for training the model 
 
 .. code-block::
 
-    # a function to generating the raw data randomly
+    # a function to generate the raw data randomly
     def circle(samples:int,  rads =  np.sqrt(2/np.pi)) :
         data_x, data_y = [], []
         for i in range(samples):
@@ -173,13 +173,13 @@ Definiting some functions of training model
             data_y.append(y)
         return np.array(data_x,dtype=np.float32), np.array(data_y,np.int64)
 
-    # a funntion to loading data
+    # a function to load data
     def get_minibatch_data(x_data, label, batch_size):
         for i in range(0,x_data.shape[0]-batch_size+1,batch_size):
             idxs = slice(i, i + batch_size)
             yield x_data[idxs], label[idxs]
 
-    # a function to computing the accuracy
+    # a function to compute the accuracy
     def get_score(pred, label):
         pred, label = np.array(pred.data), np.array(label.data)
         pred = np.argmax(pred,axis=1)
@@ -187,7 +187,7 @@ Definiting some functions of training model
         score = np.sum(pred == score)
         return score
 
-VQNet follows the general workflow of machine learning: loading the data iteratively, front propagation, calculating loss function, back propagation, updating the parameter.
+VQNet follows the general workflow of machine learning: loading the data iteratively, forward propagation, calculating the loss function, back propagation, and updating the parameters.
 
 .. code-block::
 
@@ -218,7 +218,7 @@ A function to train the model
             count = 0
             loss = 0
             for data, label in get_minibatch_data(x_train, y_train,batch_size):
-                # clear the cache of optimizer
+                # clear the gradients of optimizer
                 optimizer.zero_grad()
                 # forward computing
                 output = model(data)
@@ -226,7 +226,7 @@ A function to train the model
                 losss = Closs(label, output)
                 # anti-propagation
                 losss.backward()
-                # update the parameter of optimizer
+                # update the optimizer parameters
                 optimizer._step()
                 # calculate the accuracy
                 accuracy += get_score(output,label)

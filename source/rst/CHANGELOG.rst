@@ -7,20 +7,20 @@ VQNet Changelog
 
 Added
 ===================
-- ``vqnetrun`` now supports ``--backend nccl`` mode, with distributed startup controllable via ``--nproc_per_node``, ``--nnodes``, ``--node_rank``, ``--master_addr``, ``--master_port``, ``--nccl_socket_ifname`` parameters.
+- ``vqnetrun`` now supports ``--backend nccl`` mode, with distributed startup controllable via ``--nproc_per_node``, ``--nccl_socket_ifname`` parameters.
 - Added ``VQCQCloudLayer`` interface for submitting VQC Module to QCloud real chips or pyqpanda3 local simulators, supporting parameter_shift backpropagation.
-- ``CommController`` adds ``destroy()`` method for NCCL communication resource cleanup.
+- ``CommController`` adds a ``destroy()`` method for NCCL communication resource cleanup.
 
 Changed
 ===================
 - Default backend changed to ``pyvqnet-ad``.
-- Removed deprecated ``QuantumLayerMultiProcess``, ``DataParallelHybirdVQCQpandaQVMLayer``, ``HybirdVQCQpanda3QVMLayer`` interfaces.
+- Removed deprecated ``QuantumLayerMultiProcess``, ``DataParallelHybirdVQCQpandaQVMLayer``, and ``HybirdVQCQpanda3QVMLayer`` interfaces.
 - ``split_group`` renamed to ``split_groups``.
 - Depends on NVIDIA runtime for CUDA 12.6.
 - "chip_id" default changed to "WK_C180".
-- ``ComplexEntangelingTemplate`` renamed to ``ComplexEntanglingTemplate``.
+- ``ComplexEntangelingTemplate`` has been renamed to ``ComplexEntanglingTemplate``.
 - ``vqc.rst``: added "Test 2: 10-Qubit VQC Gradient Comparison" benchmark section comparing VQNet / TorchQuantum / DeepQuantum / Pennylane / MindQuantum.
-- Updated benchmark spec table with CUDA 12.6, torchquantum 0.2.0, mindquantum 0.12.0.
+- Updated benchmark spec table with CUDA 12.6, torchquantum 0.2.0, and mindquantum 0.12.0.
 
 Fixed
 ===================
@@ -37,8 +37,8 @@ Fixed
 Added
 ===================
 - Added bfloat16 data type.
-- Added asynchronous NCCL communication interfaces: ``nccl_async_all_gather``, ``nccl_async_all_reduce``, ``nccl_async_reduce``, ``nccl_async_broadcast``, ``nccl_async_send``, ``nccl_async_recv``.
-- Added support for the latest Origin Quantum chip with chip ID ``WK_C180``
+- Added asynchronous NCCL communication interfaces: ``nccl_async_all_gather``, ``nccl_async_all_reduce``, ``nccl_async_reduce``, ``nccl_async_broadcast``, ``nccl_async_send``, and ``nccl_async_recv``.
+- Added support for the latest Origin Quantum chip with chip ID ``WK_C180``.
 - Added ``data_ptr`` and other interfaces, experimentally added support for `triton <https://triton-lang.org/main/index.html>`_.
 
 Changed
@@ -52,12 +52,12 @@ Changed
 - Modified QTensor pickle logic, no longer pickles grad.
 - Removed is_dense.
 - Removed pq2 ``QuantumBatchAsyncQcloudLayer``.
-- Change doc for pq3 ``QuantumBatchAsyncQcloudLayer``.
+- Updated documentation for pq3 ``QuantumBatchAsyncQcloudLayer``.
 
 Fixed
 ===================
 - Fixed the error of ``Linear`` when ``use_bias=False``.
-- Fixed the MAX_GPUS issue, current maximum number of GPUs is 16.
+- Fixed the ``MAX_GPUS`` issue; the current maximum number of GPUs is now 16.
 - Fixed import error on windows jupyter.
 
 
@@ -68,20 +68,20 @@ Fixed
 Added
 ===================
 
-- Add support for the `torch` backend through the quantum natural gradient QNG interface;
-- Add the `pyvqnet-ad` backend, which uses a C++ automatic differential backend similar to torch. The data structure still adopts the original _core.Tensor and supports the vast majority of current existing interfaces.
-- Add the "Benchmarking of Variational Quantum Circuit's Gradients for Batch Data" document;
+- Added support for the `torch` backend through the quantum natural gradient QNG interface.
+- Added the `pyvqnet-ad` backend, which uses a C++ automatic differential backend similar to torch. The data structure still uses the original ``_core.Tensor`` and supports the vast majority of existing interfaces.
+- Added the "Benchmarking of Variational Quantum Circuit's Gradients for Batch Data" documentation.
 
 Changed
 ===================
 
 - delete `HybirdVQCQpanda3QVMLayer`, `QuantumLayerMultiProcess`, `TorchHybirdVQCQpanda3QVMLayer`;
 - delete `is_csr`, `csr_members` , `SparseHamiltonian` , `csr_to_dense` , `dense_to_csr` ;
-- Add the `QiskitLayer` and `CirqLayer` interfaces;
-- for `QuantumBatchAsyncQcloudLayer` layer increased `if_print_qcloud_log` support print qcloud log;
-- Change the installation command to `pip install pyvqnet --upgrade`
-- The supported python versions are changed to `Python 3.10` , `Python 3.11` , and `Python 3.12` .
-- Modify the specified mpicxx installation command;
+- Added the `QiskitLayer` and `CirqLayer` interfaces.
+- Added `if_print_qcloud_log` support to the `QuantumBatchAsyncQcloudLayer` layer for printing qcloud logs.
+- Changed the installation command to `pip install pyvqnet --upgrade`.
+- The supported python version is `Python 3.10`.
+- Modified the specified mpicxx installation command.
 
 
 
@@ -100,7 +100,7 @@ Fixed
 Added
 ===================
 
-- Added the quantum natural gradient SPSA algorithm (qnspsa) interface, quantum circuit born machine (QBM), the quantum natural gradient interface with momentum, and a pure quantum qgru example.
+- Added the quantum natural gradient SPSA algorithm (qnspsa) interface, quantum circuit born machine (QBM), the quantum natural gradient interface with momentum, and a pure quantum QGRU example.
 - Added the ``torch_native`` backend.
 - Added a bit-parallel interface to support bit-parallel quantum circuits, and added a bit reordering function to reduce the number of bit swaps.
 - Added the ``split_groups`` method.
@@ -109,14 +109,14 @@ Changed
 ==================
 - Changed the Linear layer implementation from `:math:`y = Ax + b` to `:math:`y = x@A.T + b`
 - Modified the ``obs`` parameter in the `MeasureAll` interface.
-- Removed the ``QuantumLayerES`` interface. - Changed parameter names from ControllComm to ControlComm, `allgather_group`, `allreduce_group`, `reduce_group`, `broadcast_group`, and other interfaces.
+- Removed the ``QuantumLayerES`` interface. Changed parameter names from ControllComm to ControlComm in `allgather_group`, `allreduce_group`, `reduce_group`, `broadcast_group`, and other interfaces.
 - Removed the `ncclsplitGroup` interface.
 
 Fixed
 ===================
 - Resolved synchronization delay issues with distributed communication interfaces.
 - Modified distributed communication interface definitions.
-- Resolved an issue where adjoint gradient calculations did not support `PauliX`, `PauliY`, and `PauliZ`.
+- Resolved an issue where adjoint gradient calculations did not support ``PauliX``, ``PauliY``, and ``PauliZ``.
 
 
 [v2.17.0] - 2025-4-22
@@ -125,8 +125,8 @@ Fixed
 Added
 ===================
 
-- Added tensor network backend implementation for quantum circuit module, including support for basic logic gates, measurement, and complex quantum circuits.
-- Added tensor network backend implementation for constructing large-bit quantum circuits.
+- Added tensor network backend implementation for quantum circuit modules, including support for basic logic gates, measurement, and complex quantum circuits.
+- Added tensor network backend implementation for constructing large-qubit quantum circuits.
 - Added QTensor.swapaxes interface, another name is swapaxis.
 
 Changed
@@ -138,9 +138,9 @@ Changed
 
 Fixed
 ====================
-- Solve the problem of QMachine states when saving model.
-- Solve the problem of layernorm, groupnorm when affine=False.
-- Solve the problem of QuantumLayerAdjoint in eval mode.
+- Resolved the problem of QMachine states when saving models.
+- Resolved the problem with layernorm and groupnorm when ``affine=False``.
+- Resolved the problem with ``QuantumLayerAdjoint`` in eval mode.
 
 [v2.16.0] - 2025-1-15
 ***************************
@@ -155,18 +155,18 @@ Added
 Changed
 ===================
 
-- Removed outdated ONNX functions, removed most of the interfaces that integrated pyqpanda, and retained some interfaces used in the sample code.
-- VQC_QuantumEmbedding interface modification
-- When installing this package, pyqpanda is no longer installed at the same time, but pyqpanda3 is installed at the same time.
+- Removed outdated ONNX functions and most interfaces that integrated pyqpanda, while retaining some interfaces used in the sample code.
+- Modified the ``VQC_QuantumEmbedding`` interface.
+- When installing this package, pyqpanda is no longer installed; instead, pyqpanda3 is installed.
 - The VQC interface supports the use of `x[:,:2]` as input parameters, which originally only supported the `x[:,[2]]` format.
-- This software supports Python 3.9, 3.10, 3.11, and no longer supports Python 3.8
+- This software supports Python 3.10.
 
 Fixed
 ====================
-- Solve the memory leak problem found;
-- Solve the GPU random number problem found;
-- For reduce related operations, the maximum dimension of the supported array is increased from 8 to 30;
-- Optimize the code and improve the running speed of Python code in some cases;
+- Resolved the memory leak issue.
+- Resolved the GPU random number issue.
+- For reduce-related operations, the maximum supported array dimension has been increased from 8 to 30.
+- Optimized the code and improved Python code running speed in some cases.
   
   
 [v2.15.0] - 2024-11-19
@@ -177,7 +177,6 @@ Added
 
 - Added `pyvqnet.backends.set_backend()` interface. When users install `torch`, `torch` can be used to perform matrix calculations and variational quantum circuit calculations of QTensor. For details, see the document :ref:`torch_api`.
 - Added `pyvqnet.nn.torch` to inherit the neural network interface and variational quantum circuit neural interface of `torch.nn.Module`. For details, see the document :ref:`torch_api`.
-- Add a section on fine-tuning large quantum models, with detailed steps available in the documentation :ref:`llm`.
 
 Changed
 ===================
@@ -188,8 +187,8 @@ Changed
 
 Fixed
 ===================
-- Some random number implementations cannot fix the seed because omp.
-- Fix some bugs in distributed startup.
+- Some random number implementations could not fix the seed due to OpenMP.
+- Fixed some bugs in distributed startup.
 
 
 [v2.14.0] - 2024-09-30
@@ -198,26 +197,26 @@ Fixed
 Added
 ===================
 
-- Added block-encoding algorithms of `VQC_LCU`, `VQC_FABLE`, `VQC_QSVT`, and qpanda algorithm implementation `QPANDA_QSVT`, `QPANDA_LCU`, `QPANDA_FABLE` interfaces.
-- Added integer addition to quantum bits `vqc_qft_add_to_register`, addition of numbers on two quantum bits `vqc_qft_add_two_register`, and multiplication of numbers on two quantum bits `vqc_qft_mul`.
-- Added hybrid qpanda and vqc training module `HybirdVQCQpandaQVMLayer`.
-- Added `einsum`, `moveaxis`, `eigh`, `diagonal` and other interface implementations.
-- Added tensor parallel computing functions in distributed computing `ColumnParallelLinear`, `RowParallelLinear`.
-- Added Zero in distributed computing stage-1 function `ZeroModelInitial`.
-- `QuantumBatchAsyncQcloudLayer` specifies diff_method == "random_coordinate_descent" and does not use PSR but randomly selects a quantum parameter for gradient calculation.
+- Added block-encoding algorithms: ``VQC_LCU``, ``VQC_FABLE``, ``VQC_QSVT``, and qpanda algorithm implementations ``QPANDA_QSVT``, ``QPANDA_LCU``, ``QPANDA_FABLE``.
+- Added integer addition on quantum bits ``vqc_qft_add_to_register``, addition of numbers on two quantum bits ``vqc_qft_add_two_register``, and multiplication of numbers on two quantum bits ``vqc_qft_mul``.
+- Added hybrid qpanda and vqc training module ``HybirdVQCQpandaQVMLayer``.
+- Added ``einsum``, ``moveaxis``, ``eigh``, ``diagonal``, and other interface implementations.
+- Added tensor parallel computing functions in distributed computing: ``ColumnParallelLinear``, ``RowParallelLinear``.
+- Added Zero stage-1 function in distributed computing: ``ZeroModelInitial``.
+- ``QuantumBatchAsyncQcloudLayer``: when ``diff_method == "random_coordinate_descent"``, uses random parameter selection for gradient calculation instead of PSR.
 
 Changed
 ====================
 - Deleted the xtensor part.
-- The api document was partially modified. Distinguished between quantum machine learning examples based on automatic differentiation and machine learning examples based on qpanda, and distinguished between quantum machine learning interfaces based on automatic differentiation and machine learning example interfaces based on qpanda.
+- The API documentation has been partially restructured. Distinguished between quantum machine learning examples based on automatic differentiation and those based on qpanda, and distinguished between quantum machine learning interfaces based on automatic differentiation and example interfaces based on qpanda.
 - `matmul` supports 1d@1d, 2d@1d, 1d@2d.
-- Added some quantum computing layer aliases: `QpandaQCircuitVQCLayer`` = `QuantumLayer`, `QpandaQCircuitVQCLayerLite` = `QuantumLayerV2`, `QpandaQProgVQCLayer` = `QuantumLayerV3`.
+- Added some quantum computing layer aliases: ``QpandaQCircuitVQCLayer`` = ``QuantumLayer``, ``QpandaQCircuitVQCLayerLite`` = ``QuantumLayerV2``, ``QpandaQProgVQCLayer`` = ``QuantumLayerV3``.
 
 Fixed
 ====================
-- Modified the underlying communication interfaces `allreduce`, `allgather`, `reduce`, `broadcast` in the distributed computing function, and added support for `core.Tensor` data communication
-- Solved the bug in random number generation.
-- Solved the error in converting VQC's `RXX`, `RYY`, `RZZ`, `RZX` to originIR.
+- Modified the underlying communication interfaces ``allreduce``, ``allgather``, ``reduce``, ``broadcast`` in the distributed computing function, and added support for ``core.Tensor`` data communication.
+- Resolved the bug in random number generation.
+- Resolved the error in converting VQC's ``RXX``, ``RYY``, ``RZZ``, ``RZX`` to originIR.
 
 
 [v2.13.0] - 2024-07-30
@@ -428,7 +427,7 @@ Changed
 fixed
 ==================
 
-- Solve the problem that the stack function is incorrectly calculated under some parameters.
+- Resolved the problem where the stack function calculated incorrectly under certain parameters.
 
 
 [v2.0.3] - 2022-07-15
@@ -451,10 +450,10 @@ Changed
 fixed
 ==================
 
-- Solve the problem that some python import methods cannot be imported
-- Solve the problem of repeated calculation of batch normalization BN layer
-- Solve the bug that the QTensor.reshape and transpose interfaces cannot calculate the gradient
-- Add input parameter shape judgment for tensor.power interface
+- Resolved the issue where some Python import methods failed to import.
+- Resolved the issue of repeated batch normalization (BN) layer calculations.
+- Resolved the bug where ``QTensor.reshape`` and ``transpose`` interfaces could not compute gradients.
+- Added input parameter shape validation for the ``tensor.power`` interface.
 
 [v2.0.2] - 2022-05-15
 ***************************
@@ -479,9 +478,9 @@ Changed
 fixed
 ==================
 
-- Solve the problem that convolution, batch normalization, deconvolution, pooling layer and other layers do not cache internal variables, resulting in the calculation of gradients during multiple back-passes after one forward pass
+- Resolved the issue where convolution, batch normalization, deconvolution, pooling layers, and other layers did not cache internal variables, causing gradient calculation issues during multiple back-passes after one forward pass.
 - Fixed implementation and example of QLinear layer
-- Solve the problem of Image not load when MAC imports VQNet in the conda environment.
+- Resolved the issue where Image failed to load when importing VQNet in a conda environment on macOS.
 
 
 
@@ -493,7 +492,7 @@ fixed
 Added
 ==================
 
-- More than 100 basic data structure QTenor interfaces have been added, including creation functions, logic functions, mathematical functions, and matrix operations.
+- More than 100 basic QTensor data structure interfaces have been added, including creation functions, logic functions, mathematical functions, and matrix operations.
 - Added 14 basic neural network functions, including convolution, deconvolution, pooling, etc.
 - Add 4 loss functions, including MSE, BCE, CCE, SCE, etc.
 - Add 10 activation functions, including ReLu, Sigmoid, ELU, etc.
