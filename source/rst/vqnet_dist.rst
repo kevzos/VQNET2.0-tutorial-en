@@ -100,6 +100,39 @@ The ``vqnetrun`` interface allows you to control the number of processes started
         # vqnetrun -n 2 python test.py
         # vqnetrun -np 2 python test.py
 
+backend
+^^^^^^^^^^^^^^^^^^^^^^
+
+The ``vqnetrun`` interface allows you to select the distributed backend with the ``--backend`` parameter, supporting ``mpi`` (default) and ``nccl`` modes.
+MPI mode is for CPU-based distributed computing, and NCCL mode is for GPU-based distributed computing.
+
+    Example::
+
+        from pyvqnet.distributed import CommController
+        Comm_OP = CommController("nccl")
+
+        rank = Comm_OP.getRank()
+        size = Comm_OP.getSize()
+        print(f"rank: {rank}, size {size}")
+
+        # vqnetrun --backend nccl --nproc_per_node 2 python test.py
+
+nproc_per_node
+^^^^^^^^^^^^^^^^^^^^^^
+
+The ``vqnetrun`` interface allows you to control the number of processes started on each node with the ``--nproc_per_node`` parameter, only available in NCCL mode.
+
+    Example::
+
+        from pyvqnet.distributed import CommController
+        Comm_OP = CommController("nccl")
+
+        rank = Comm_OP.getRank()
+        size = Comm_OP.getSize()
+        print(f"rank: {rank}, size {size}")
+
+        # vqnetrun --backend nccl --nproc_per_node 4 python test.py
+
 output-filename
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1234,8 +1267,7 @@ ColumnParallelLinear
 
     The usage is similar to that of the classic Linear layer.
 
-    Multi-process usage based on `# vqnetrun --backend nccl --nproc_per_node 2 python test.py
-`.
+    Multi-process usage based on `# vqnetrun --backend nccl --nproc_per_node 2 python test.py`.
 
     Examples::
 
@@ -1410,8 +1442,7 @@ RowParallelLinear
 
     The usage is similar to that of the classic Linear layer.
 
-    Multi-process usage based on `# vqnetrun --backend nccl --nproc_per_node 2 python test.py
-`.
+    Multi-process usage based on `# vqnetrun --backend nccl --nproc_per_node 2 python test.py`.
 
     Examples::
 
