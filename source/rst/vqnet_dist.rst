@@ -224,8 +224,8 @@ __init__
             Comm_OP = CommController("nccl") # init nccl controller
             
             Comm_OP.getSize()
-            # vqnetrun -n 2 python test.py 
-            # 2
+            # vqnetrun --backend nccl --nproc_per_node 2 python test.py
+
 
 
 
@@ -242,7 +242,7 @@ __init__
             Comm_OP = CommController("nccl") # init nccl controller
             
             Comm_OP.getLocalRank()
-            # vqnetrun -n 2 python test.py 
+            # vqnetrun --backend nccl --nproc_per_node 2 python test.py
 
 
     .. py:method:: split_groups(rankL)
@@ -463,7 +463,7 @@ __init__
 
             Comm_OP.allreduce_group(complex_data, c_op="sum",group = groups[0])
             print(f"allreduce_group after rank {get_rank()}: {complex_data}")
-            # vqnetrun -n 2 python test.py
+            # vqnetrun --backend nccl --nproc_per_node 2 python test.py
 
  
     .. py:method:: reduce_group(tensor, root = 0, c_op = "avg", group = None)
@@ -490,7 +490,8 @@ __init__
 
             Comm_OP.reduce_group(complex_data, c_op="sum",group = groups[0])
             print(f"reduce_group after rank {get_rank()}: {complex_data}")
-            # vqnetrun -n 2 python test.py
+            # vqnetrun --backend nccl --nproc_per_node 2 python test.py
+
 
  
     .. py:method:: broadcast_group(tensor, root = 0, group = None)
@@ -517,7 +518,7 @@ __init__
             Comm_OP.broadcast_group(complex_data,group = groups[0])
             Comm_OP.barrier()
             print(f"broadcast_group after rank {get_rank()}: {complex_data}")
-            # vqnetrun -n 2 python test.py
+            # vqnetrun --backend nccl --nproc_per_node 2 python test.py
 
 
  
@@ -543,7 +544,7 @@ __init__
 
             complex_data = Comm_OP.allgather_group(complex_data,group = groups[0])
             print(f"allgather_group after rank {get_rank()}: {complex_data}")
-            # vqnetrun -n 2 python test.py
+            # vqnetrun --backend nccl --nproc_per_node 2 python test.py
 
 
  
@@ -590,7 +591,9 @@ __init__
                 if get_rank() == 0 :
                     print(f"rank {get_rank()} grad is {model.parameters()[0].grad} para {model.parameters()[0]} after")
                 opti.step()
-            # vqnetrun -n 2 python test.py
+            Comm_OP.destroy()
+            # vqnetrun --backend nccl --nproc_per_node 2 python test.py
+
 
  
     .. py:method:: param_allreduce(model)
@@ -1231,7 +1234,8 @@ ColumnParallelLinear
 
     The usage is similar to that of the classic Linear layer.
 
-    Multi-process usage based on `vqnetrun -n 2 python test.py`.
+    Multi-process usage based on `# vqnetrun --backend nccl --nproc_per_node 2 python test.py
+`.
 
     Examples::
 
@@ -1406,7 +1410,8 @@ RowParallelLinear
 
     The usage is similar to that of the classic Linear layer.
 
-    Multi-process usage based on `vqnetrun -n 2 python test.py`.
+    Multi-process usage based on `# vqnetrun --backend nccl --nproc_per_node 2 python test.py
+`.
 
     Examples::
 
