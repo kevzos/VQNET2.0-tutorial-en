@@ -4275,5 +4275,4 @@ The following example builds a QGRU model for time series data prediction using 
             loss = mse(QTensor(batch_y,dtype=kfloat32),pred)
             loss.backward()
             optim.step()
-            print("i")
             print(loss)

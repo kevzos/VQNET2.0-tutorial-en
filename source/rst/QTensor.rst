@@ -15,7 +15,7 @@ QTensor's Functions and Attributes
 QTensor
 ==============================
 
-.. py:class:: yvqnet.tensor.tensor.QTensor(data, requires_grad=False, nodes=None, device=0, dtype=None, name='')
+.. py:class:: pyvqnet.tensor.tensor.QTensor(data, requires_grad=False, nodes=None, device=0, dtype=None, name='')
 
     Wrapper of data structure with dynamic computational graph construction
     and automatic differentiation.
@@ -3921,7 +3921,7 @@ pack_pad_sequence
     For unsorted sequences, use ``enforce_sorted`` is False. If :attr:`enforce_sorted` is ``True``, sequences should be sorted in descending order by length.
     
     :param input: 'QTensor' - variable-length sequence batches for padding.
-    :parma lengths: 'list' - list of sequence lengths for each batch
+    :param lengths: 'list' - list of sequence lengths for each batch
          element.
     :param batch_first: 'bool' - if ``True``, the input is expected to be ``B x T x *``
          format, default: False.

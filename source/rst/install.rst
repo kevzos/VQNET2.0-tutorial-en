@@ -11,7 +11,7 @@ Download the corresponding archive from the official website, extract it, naviga
 .. code-block::
 
     # For Windows
-    ./install.batch
+    ./install.bat
     # For macOS and Linux
     ./install.sh
  
