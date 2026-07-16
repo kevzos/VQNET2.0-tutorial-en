@@ -1499,7 +1499,8 @@ These samples are divided into training data training_data and testing data test
     from pyvqnet.tensor import tensor
     from pyvqnet.tensor import QTensor
     import pyqpanda as pq
-
+    import pyvqnet
+    pyvqnet.utils.set_random_seed(142)
     import numpy as np
     import matplotlib.pyplot as plt
     import matplotlib
@@ -1643,7 +1644,7 @@ In this example, we use the `pyQPanda2 <https://pyqpanda-tutorial-en.readthedocs
     from pyqpanda import *
     import pyqpanda as pq
     import numpy as np
-    def circuit(weights):
+    def circuit(x ,weights):
         num_qubits = 1
         #Use pyQPanda2 to create a simulator 
         machine = pq.CPUQVM()
@@ -1655,21 +1656,22 @@ In this example, we use the `pyQPanda2 <https://pyqpanda-tutorial-en.readthedocs
         #Construct circuits
         circuit = pq.QCircuit()
         circuit.insert(pq.H(qubits[0]))
-        circuit.insert(pq.RY(qubits[0], weights[0]))
+        circuit.insert(pq.RY(qubits[0], x[0]))
         #Construct quantum program
         prog = pq.QProg()
         prog.insert(circuit)
         #Defines measurement
         prog << measure_all(qubits, cbits)
-
+        shots = 1000
         #run quantum with quantum measurements
-        result = machine.run_with_configuration(prog, cbits, 100)
-        
-        counts = np.array(list(result.values()))
-        states = np.array(list(result.keys())).astype(float)
-        probabilities = counts / 100
-        expectation = np.sum(states * probabilities)
+        result = machine.run_with_configuration(prog, cbits,shots)
+        machine.finalize()
+        # Pad both outcomes: all shots could collapse to a single basis state
+        count0 = result.get("0", 0)
+        count1 = result.get("1", 0)
+        expectation = (count0 - count1) / shots   # ⟨Z⟩ = P(0) - P(1)
         return expectation
+        
 
 .. figure:: ./images/hqcnn_quantum_cir.png
    :width: 600 px
@@ -1690,38 +1692,7 @@ An automatic differentiation Model of convolution, quantum encoding, and measure
 .. code-block::
 
     #Quantum computing layer front pass and the definition of gradient calculation function, which need to be inherited from the abstract class Module
-    from pyvqnet.native.backprop_utils import AutoGradNode
-    class Hybrid(Module):
-        """ Hybrid quantum - Quantum layer definition """
-        def __init__(self, shift):
-            super(Hybrid, self).__init__()
-            self.shift = shift
-        def forward(self, input): 
-            self.input = input
-            expectation_z = circuit(np.array(input.data))
-            result = [[expectation_z]]
-            requires_grad = input.requires_grad
-            def _backward(g, input):
-                """ Backward pass computation """
-                input_list = np.array(input.data)
-                shift_right = input_list + np.ones(input_list.shape) * self.shift
-                shift_left = input_list - np.ones(input_list.shape) * self.shift
-
-                gradients = []
-                for i in range(len(input_list)):
-                    expectation_right = circuit(shift_right[i])
-                    expectation_left = circuit(shift_left[i])
-
-                    gradient = expectation_right - expectation_left
-                    gradients.append(gradient)
-                gradients = np.array([gradients]).T
-                return gradients * np.array(g)
-
-            nodes = []
-            if input.requires_grad:
-                nodes.append(AutoGradNode(tensor=input, df=lambda g: _backward(g, input)))
-            return QTensor(data=result, requires_grad=requires_grad, nodes=nodes)
-
+    from pyvqnet.qnn import QuantumLayerV2
     #Model definition
     class Net(Module):
         def __init__(self):
@@ -1732,7 +1703,7 @@ An automatic differentiation Model of convolution, quantum encoding, and measure
             self.maxpool2 = MaxPool2D([2, 2], [2, 2], padding="valid")
             self.fc1 = Linear(input_channels=256, output_channels=64)
             self.fc2 = Linear(input_channels=64, output_channels=1)
-            self.hybrid = Hybrid(np.pi / 2)
+            self.hybrid = QuantumLayerV2(circuit,0)
             self.fc3 = Linear(input_channels=1, output_channels=2)
 
         def forward(self, x):
@@ -1788,10 +1759,10 @@ and use the optimizer to optimize the parameters until the number of iterations 
     for epoch in range(1, epochs):
         total_loss = []
         model.train()
-        batch_size = 1
+        batch_size = 250
         correct = 0
         n_train = 0
-        for x, y in data_generator(x_train, y_train, batch_size=1, shuffle=True):
+        for x, y in data_generator(x_train, y_train, batch_size=batch_size, shuffle=True):
 
             x = x.reshape(-1, 1, 28, 28)
 
@@ -4807,131 +4778,6 @@ On the test data, the accuracy results on the test data can be obtained
 |
 
 
-
-Stochastic parameter shift algorithm
-===============================================================================
-
-In the quantum variational circuit, it is a common method to use the parameter shift method `parameter-shift` to calculate the gradient of the quantum parameter.
-The parameter shift method is not universally applicable to all quantum parametric logic gates.
-In cases where it does not hold (or is not known to hold), we either have to factorize the gates into compatible gates, or use an alternative estimator of the gradient, such as a finite difference approximation.
-However, both alternatives may have drawbacks due to increased circuit complexity or potential errors in gradient values.
-Banchi and Crooks 1 discovered a `Stochastic Parameter-Shift Rule <https://arxiv.org/abs/2005.10299>`_ that can be applied to any unitary matrix quantum logic gate.
-
-The following shows an example of applying VQNet to calculate the gradient using the random parameter offset method for a quantum variational circuit. An example line definition is as follows:
-
-.. code-block::
-
-    import pyqpanda as pq
-    import numpy as np
-    from pyvqnet.qnn.measure import expval
-    from scipy.linalg import expm
-    import matplotlib
-    try:
-        matplotlib.use('TkAgg')
-    except:
-        pass
-    import matplotlib.pyplot as plt
-    machine = pq.init_quantum_machine(pq.QMachineType.CPU)
-    q = machine.qAlloc_many(2)
-    c = machine.cAlloc_many(2)
-    # some basic Pauli matrices
-    I = np.eye(2)
-    X = np.array([[0, 1], [1, 0]])
-    Y = np.array([[0, -1j], [1j, 0]])
-    Z = np.array([[1, 0], [0, -1]])
-    def Generator(theta1, theta2, theta3):
-        G = theta1.item() * np.kron(X, I) - \
-            theta2 * np.kron(Z, X) + \
-            theta3 * np.kron(I, X)
-        return G
-    def pq_demo_circuit(gate_pars):
-        G = Generator(*gate_pars)
-        G = expm(-1j * G)
-        x = G.flatten().tolist()
-        cir = pq.matrix_decompose(q, x)
-        m_prog = pq.QProg()
-        m_prog.insert(cir)
-        pauli_dict = {'Z0': 1}
-        exp2 = expval(machine, m_prog, pauli_dict, q)
-        return exp2
-
-The stochastic parameter shift method first randomly samples a variable
- s from the uniform distribution of [0,1], 
- and then performs the following unitary matrix transformation on the lines:
-
-      a) :math:`e^{i(1-s)(\hat{H} + \theta\hat{V})}`
-      b) :math:`e^{+i\tfrac{\pi}{4}\hat{V}}`
-      c) :math:`e^{is(\hat{H} + \theta\hat{V})}`
-
-where :math:`\hat{V}` is a tensor product of Pauli operators, and :math:`\hat{H}` is a linear combination of any Pauli operator tensor product.
-We define the expected value of the observabley obtained at this time as :math:`\langle r_+ \rangle`.
-
-.. code-block::
-
-    def pq_SPSRgates(gate_pars, s, sign):
-        G = Generator(*gate_pars)
-        # step a)
-        G1 = expm(1j * (1 - s) * G)
-        x = G1.flatten().tolist()
-        cir = pq.matrix_decompose(q, x)
-        m_prog = pq.QProg()
-        m_prog.insert(cir)
-        # step b)
-        G2 = expm(1j * sign * np.pi / 4 * X)
-        x = G2.flatten().tolist()
-        cir = pq.matrix_decompose(q[0], x)
-        m_prog.insert(cir)
-        # step c)
-        G3 = expm(1j * s * G)
-        x = G3.flatten().tolist()
-        cir = pq.matrix_decompose(q, x)
-        m_prog.insert(cir)
-        pauli_dict = {'Z0': 1}
-        exp2 = expval(machine, m_prog, pauli_dict, q)
-        return exp2
-
-Change :math:`\tfrac{\pi}{4}` in the previous step to :math:`-\tfrac{\pi}{4}`,
-Repeat operations a, b, c to obtain observable
-
-The gradient formula calculated by the stochastic parameter shift algorithm is as follows:
-
- .. math::
-     \mathbb{E}_{s\in\mathcal{U}[0,1]}[\langle r_+ \rangle - \langle r_-\rangle]
-
-In the following figure, the gradient of the parameter :math:`\theta_1` is showed, using the stochastic parameter shift method.
-It can be seen that the observable is expected to 
-conform to the functional form of :math:`\cos(2\theta_1)`; 
-and the gradient is calculated using the random parameter shift method,
-
-Meets :math:`-2\sin(2\theta_1)` , which is exactly the differential of :math:`\cos(2\theta_1)`.
-
-.. code-block::
-
-    theta2, theta3 = -0.15, 1.6
-    angles = np.linspace(0, 2 * np.pi, 50)
-    pos_vals = np.array([[
-        pq_SPSRgates([theta1, theta2, theta3], s=s, sign=+1)
-        for s in np.random.uniform(size=10)
-    ] for theta1 in angles])
-    neg_vals = np.array([[
-        pq_SPSRgates([theta1, theta2, theta3], s=s, sign=-1)
-        for s in np.random.uniform(size=10)
-    ] for theta1 in angles])
-    # Plot the results
-    evals = [pq_demo_circuit([theta1, theta2, theta3]) for theta1 in angles]
-    spsr_vals = (pos_vals - neg_vals).mean(axis=1)
-    plt.plot(angles, evals, 'b', label="Expectation Value")
-    plt.plot(angles, spsr_vals, 'r', label="Stochastic parameter-shift rule")
-    plt.xlabel("theta1")
-    plt.legend()
-    plt.title("VQNet")
-    plt.show()
-
-.. image:: ./images/stochastic_parameter-shift.png
-   :width: 600 px
-   :align: center
-
-|
 
 Doubly Stochastic Gradient Descent
 ===============================================================================
