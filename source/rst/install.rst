@@ -1,33 +1,33 @@
-Steps of VQNet Installation
+Étapes d'installation de VQNet
 ==================================
 
-VQNet python package Installation
-----------------------------------
+Installation du package Python VQNet
+-------------------------------------
 
-We provide precompiled Python packages for installation on Linux, Windows, macOS 13+ (arm64), supporting **Python 3.10**.
+Nous fournissons des packages Python précompilés pour une installation sur Linux, Windows, macOS 13+ (arm64), prenant en charge **Python 3.10**.
 
-Download the corresponding archive from the official website, extract it, navigate to the extracted directory, and run the following steps:
+Téléchargez l'archive correspondante depuis le site officiel, extrayez-la, naviguez vers le répertoire extrait et exécutez les étapes suivantes :
 
 .. code-block::
 
-    # For Windows
+    # Pour Windows
     ./install.bat
-    # For macOS and Linux
+    # Pour macOS et Linux
     ./install.sh
  
 
 
-For Windows and Linux systems, the pyvqnet package includes built-in acceleration features for classic neural network computations based on Nvidia CUDA, which depends on the specific version of NVIDIA CUDA 12.6 runtime libraries (automatically installed with the package).
-The package is optimized for the following CUDA architectures:
-**sm_80** (NVIDIA A100, A30 series data center GPUs) and **sm_86** (NVIDIA GeForce RTX 30 series consumer GPUs). Please ensure you are using a GPU that supports these architectures; otherwise, the program may not function correctly.
+Pour les systèmes Windows et Linux, le package pyvqnet inclut des fonctionnalités d'accélération intégrées pour les calculs de réseaux neuronaux classiques basés sur Nvidia CUDA, qui dépendent de la version spécifique des bibliothèques d'exécution NVIDIA CUDA 12.6 (installées automatiquement avec le package).
+Le package est optimisé pour les architectures CUDA suivantes :
+**sm_80** (GPU de centre de données NVIDIA A100, série A30) et **sm_86** (GPU grand public NVIDIA GeForce série RTX 30). Veuillez vous assurer que vous utilisez un GPU prenant en charge ces architectures ; sinon, le programme pourrait ne pas fonctionner correctement.
 
     .. important::
 
-        Please note that since this package does not distinguish between CPU/GPU versions, it depends on NVIDIA CUDA runtime libraries under Windows and Linux, which are automatically installed with the package. This may cause conflicts with other software that depends on different versions.
+        Veuillez noter que ce package ne faisant pas de distinction entre les versions CPU/GPU, il dépend des bibliothèques d'exécution NVIDIA CUDA sous Windows et Linux, qui sont installées automatiquement avec le package. Cela peut entraîner des conflits avec d'autres logiciels qui dépendent de versions différentes.
 
 
-Validate VQNet's installation
-----------------------------------
+Validation de l'installation de VQNet
+----------------------------------------
 
 .. code-block::
 
@@ -36,8 +36,8 @@ Validate VQNet's installation
     a = arange(1,25).reshape([2, 3, 4])
     print(a)
 
-Testing GPU Functionality in VQNet
-----------------------------------
+Test des fonctionnalités GPU dans VQNet
+-----------------------------------------
 
 .. code-block::
 
@@ -46,27 +46,27 @@ Testing GPU Functionality in VQNet
     a = ones([4,5],device = DEV_GPU_0)
     print(a)
 
-A simple case of VQNet
---------------------------
-Here we introduce a case that consists of classical neural network modules and quantum modules of VQNet to describe the workflow of quantum machine learning. 
-It refers to `Data re-uploading for a universal quantum classifier <https://arxiv.org/abs/1907.02085>`_ .
-Generally, there are the following parts of quantum computing module in quantum machine learning:
+Un cas simple avec VQNet
+---------------------------
+Nous présentons ici un cas composé de modules de réseaux neuronaux classiques et de modules quantiques de VQNet pour décrire le flux de travail de l'apprentissage automatique quantique.
+Il fait référence à `Data re-uploading for a universal quantum classifier <https://arxiv.org/abs/1907.02085>`_ .
+Généralement, les parties suivantes du module de calcul quantique sont présentes dans l'apprentissage automatique quantique :
 
-(1)Encoder:encoding classical data into quantum state;
+(1) Codeur : encodage des données classiques en état quantique ;
 
-(2)Ansats: training the parameters in Parameterized Quantum Gates;
+(2) Ansatz : entraînement des paramètres dans les portes quantiques paramétrées ;
 
-(3)Measurement: measuring the value of a qubit(projection of qubit's quantum state in a specified axis).
+(3) Mesure : mesure de la valeur d'un qubit (projection de l'état quantique du qubit sur un axe spécifié).
 
-Quantum computing module is the theoretical basis of the hybrid model of quantum classical neural network, which is also differentiable like classical neural network modules. VQNet supports quantum computing modules and classical computing modules to form a hybrid machine learning model, and provides various optimization algorithms for parameter optimization. (e.g. Convolution layer, pooling layer, fully connected layer, activation function, etc.)
+Le module de calcul quantique est la base théorique du modèle hybride de réseau neuronal quantique-classique, qui est également différenciable comme les modules de réseaux neuronaux classiques. VQNet prend en charge les modules de calcul quantique et les modules de calcul classique pour former un modèle d'apprentissage automatique hybride, et fournit divers algorithmes d'optimisation pour l'optimisation des paramètres (par exemple, couche de convolution, couche de pooling, couche entièrement connectée, fonction d'activation, etc.).
 
 .. figure:: ./images/classic-quantum.PNG
 
-In the quantum computing module, VQNet supports the use of the efficient quantum software computing package pyqpanda3 to build quantum modules.
-Using the various commonly used interfaces provided by pyqpanda3, users can quickly build quantum computing modules.
+Dans le module de calcul quantique, VQNet prend en charge l'utilisation du package logiciel de calcul quantique efficace pyqpanda3 pour construire des modules quantiques.
+En utilisant les diverses interfaces couramment utilisées fournies par pyqpanda3, les utilisateurs peuvent rapidement construire des modules de calcul quantique.
 
-The following example uses pyqpanda3 to build a quantum computing module. Through VQNet, this quantum module can be directly embedded into a hybrid machine learning model for quantum circuit parameter training.
-In this example, 1 qubit is used, multiple parameterized rotation gates `RZ`, `RY`, `RZ` are used to encode the input x, and the `probs_measure` function is used to observe the probability measurement result of the qubit as output.
+L'exemple suivant utilise pyqpanda3 pour construire un module de calcul quantique. Via VQNet, ce module quantique peut être directement intégré dans un modèle d'apprentissage automatique hybride pour l'entraînement des paramètres du circuit quantique.
+Dans cet exemple, 1 qubit est utilisé, plusieurs portes de rotation paramétrées `RZ`, `RY`, `RZ` sont utilisées pour encoder l'entrée x, et la fonction `probs_measure` est utilisée pour observer le résultat de mesure de probabilité du qubit en sortie.
 
 .. code-block::
 
@@ -123,12 +123,12 @@ In this example, 1 qubit is used, multiple parameterized rotation gates `RZ`, `R
 
         return prob
 
-Our task is to classify this randomly generated data using a binary classification approach. In this task,
-the center of a circle is at the origin, points within radius 1 colored in red belong to one category, and the samples colored in blue belong to another category.
+Notre tâche est de classer ces données générées aléatoirement en utilisant une approche de classification binaire. Dans cette tâche,
+le centre d'un cercle est à l'origine, les points de rayon 1 colorés en rouge appartiennent à une catégorie, et les échantillons colorés en bleu appartiennent à une autre catégorie.
 
 .. figure:: ./images/origin_circle.png
 
-The pipeline of the training process
+Le pipeline du processus d'entraînement
 
 .. code-block::
 
@@ -141,9 +141,9 @@ The pipeline of the training process
     from pyvqnet.nn.module import Module
 
 
-Defining a model: the ``__init__`` function defines the internal neural network modules and quantum modules, and the ``forward`` function defines the forward computation. ``QuantumLayer`` is an abstract class
-that encapsulates quantum computing.
-VQNet will automatically calculate the parameter gradients for `qdrl_circuit` with `param_num`.
+Définition d'un modèle : la fonction ``__init__`` définit les modules de réseaux neuronaux internes et les modules quantiques, et la fonction ``forward`` définit le calcul direct. ``QuantumLayer`` est une classe abstraite
+qui encapsule le calcul quantique.
+VQNet calculera automatiquement les gradients des paramètres pour `qdrl_circuit` avec `param_num`.
 
 
 .. code-block::
@@ -163,7 +163,7 @@ VQNet will automatically calculate the parameter gradients for `qdrl_circuit` wi
             x = self.pqc(x)
             return x
 
-Defining some functions for training the model 
+Définition de quelques fonctions pour l'entraînement du modèle 
 
 .. code-block::
 
@@ -193,7 +193,7 @@ Defining some functions for training the model
         score = np.sum(pred == score)
         return score
 
-VQNet follows the general workflow of machine learning: loading the data iteratively, forward propagation, calculating the loss function, back propagation, and updating the parameters.
+VQNet suit le flux de travail général de l'apprentissage automatique : chargement itératif des données, propagation avant, calcul de la fonction de perte, rétropropagation et mise à jour des paramètres.
 
 .. code-block::
 
@@ -204,18 +204,18 @@ VQNet follows the general workflow of machine learning: loading the data iterati
     # using cross-entropy to define a loss function
     Closs = CategoricalCrossEntropy()
 
-A function to train the model
+Une fonction pour entraîner le modèle
 
 .. code-block::
 
     def train():
             
-        #  generate data to be trained randomly   
+        #  générer des données à entraîner aléatoirement
         x_train, y_train = circle(500)
         x_train = np.hstack((x_train, np.zeros((x_train.shape[0], 1),dtype=np.float32)))  
-        # define the number of data about each batch
+        # définir le nombre de données par lot
         batch_size = 32
-        # Maximum of training iteration times
+        # Nombre maximum d'itérations d'entraînement
         epoch = 10
         print("start training...........")
         for i in range(epoch):
@@ -224,17 +224,17 @@ A function to train the model
             count = 0
             loss = 0
             for data, label in get_minibatch_data(x_train, y_train,batch_size):
-                # clear the gradients of optimizer
+                # effacer les gradients de l'optimiseur
                 optimizer.zero_grad()
-                # forward computing
+                # calcul avant
                 output = model(data)
-                # calculating loss function
+                # calcul de la fonction de perte
                 losss = Closs(label, output)
-                # anti-propagation
+                # rétropropagation
                 losss.backward()
-                # update the optimizer parameters
+                # mettre à jour les paramètres de l'optimiseur
                 optimizer._step()
-                # calculate the accuracy
+                # calculer la précision
                 accuracy += get_score(output,label)
 
                 loss += losss.item()
@@ -243,7 +243,7 @@ A function to train the model
             print(f"epoch:{i}, train_accuracy:{accuracy/count}")
             print(f"epoch:{i}, train_loss:{loss/count}\n")
             
-A function to validate the model
+Une fonction pour valider le modèle
 
 .. code-block::
 
@@ -266,7 +266,7 @@ A function to validate the model
 
         print(f"test_accuracy:{test_accuracy/count}")
 
-Training and testing results
+Résultats de l'entraînement et du test
 
 .. code-block::
 
