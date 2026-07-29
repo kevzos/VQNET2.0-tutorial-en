@@ -4842,7 +4842,7 @@ vqc_to_originir_list
 
 .. py:function:: pyvqnet.qnn.vqc.vqc_to_originir_list(vqc_model: pyvqnet.nn.Module)
 
-    Convert VQNet vqc module to `originIR <https://qpanda-tutorial.readthedocs.io/zh/latest/QProgToOriginIR.html#id2>`_ .
+    Convert VQNet vqc module to originIR.
 
     vqc_model should run the forward function before this function to get the input data.
     If the input data is batch data. For each input it will return multiple IR strings.

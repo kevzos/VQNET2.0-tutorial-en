@@ -2144,7 +2144,7 @@ The following is the training variational quantum circuit interface for circuit 
 
 .. warning::
 
-    The quantum computing part of the following TorchQpandaQuantumLayer uses pyqpanda2 https://pyqpanda-toturial.readthedocs.io/zh/latest/.
+    The quantum computing part of the following TorchQpandaQuantumLayer uses pyqpanda2.
 
     Due to the compatibility issues between pyqpanda2 and pyqpanda3, you need to install pyqpnda2 yourself, `pip install pyqpanda`
 
@@ -2168,13 +2168,13 @@ If you are more familiar with pyQPanda2 syntax, you can use the interface TorchQ
 
     .. note::
 
-        qprog_with_measure is a quantum circuit function defined in pyQPanda2: https://pyqpanda-toturial.readthedocs.io/zh/latest/QCircuit.html.
+        qprog_with_measure is a quantum circuit function defined in pyQPanda2.
 
         This function must contain the following parameters as function input (even if a parameter is not actually used), otherwise it will not work properly in this function.
 
-        Compared with QuantumLayer. In the variational circuit running function passed in by this interface, the user should manually create quantum bits and simulators: https://pyqpanda-toturial.readthedocs.io/zh/latest/QuantumMachine.html,
+        Compared with QuantumLayer, in the variational circuit running function passed in by this interface, the user should manually create quantum bits and simulators.
 
-        If qprog_with_measure requires quantum measure, the user also needs to manually create and allocate cbits: https://pyqpanda-toturial.readthedocs.io/zh/latest/Measure.html
+        If qprog_with_measure requires quantum measure, the user also needs to manually create and allocate cbits.
 
         The use of the quantum circuit function qprog_with_measure (input, param, nqubits, ncbits) can refer to the following example.
 
@@ -2247,7 +2247,7 @@ If you are more familiar with pyQPanda2 syntax, you can use the interface TorchQ
 
 .. warning::
 
-    The quantum computing part of the following TorchQcloud3QuantumLayer and TorchQpanda3QuantumLayer interfaces uses pyqpanda3 https://qcloud.originqc.com.cn/document/qpanda-3/index.html.
+    The quantum computing part of the following TorchQcloud3QuantumLayer and TorchQpanda3QuantumLayer interfaces uses pyqpanda3.
 
     If you use the QCloud function under this module, there will be errors when importing pyqpanda2 in the code or using pyvqnet's pyqpanda2 related package interfaces.
 
@@ -2263,7 +2263,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
 
     .. note::
 
-        qcloud_token is the api token you applied for at https://qcloud.originqc.com.cn/.
+        qcloud_token is the api token you applied for from the cloud platform.
 
         origin_qprog_func needs to return data of type pypqanda3.core.QProg. If pauli_str_dict is not set, it is necessary to ensure that the measure has been inserted into the QProg.
 
@@ -2398,7 +2398,7 @@ If you are more familiar with pyQPanda3 syntax, you can use the interface TorchQ
 
     .. note::
 
-        qprog_with_measure is a quantum circuit function defined in pyQPanda: https://qcloud.originqc.com.cn/document/qpanda-3/db/d6c/tutorial_circuit_and_program.html..
+        qprog_with_measure is a quantum circuit function defined in pyQPanda.
 
         This function must include the following parameters as function inputs (even if a parameter is not actually used), otherwise it will not work properly in this function.
 
