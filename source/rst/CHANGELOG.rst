@@ -323,7 +323,7 @@ Added
 Changed
 ===================
 - version from v2.0.8 bumps to v2.9.0.
-- packages are uploaded in https://pypi.originqc.com.cn, use ``pip install pyvqnet --index-url https://pypi.originqc.com.cn`` .
+- packages are uploaded in the company's PyPI repository, use ``pip install pyvqnet --index-url <pypi_url>`` .
 
 
 [v2.0.8] - 2023-07-26

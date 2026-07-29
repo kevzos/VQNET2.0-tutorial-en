@@ -27,7 +27,7 @@ In addition, VQNet currently only supports python3.10 version, so please confirm
 
 **Q: How to call the original quantum cloud and quantum chip for calculation**
 
-Answer: You can use Origin Quantum's high-performance computing cluster or real quantum computers for quantum circuit simulation, replacing local quantum circuit simulation with cloud computing. Please refer to https://qcloud.originqc.com.cn/zh.
+Answer: You can use Origin Quantum's high-performance computing cluster or real quantum computers for quantum circuit simulation, replacing local quantum circuit simulation with cloud computing.
 In VQNet, users can use ``QuantumBatchAsyncQcloudLayer`` to build a variational quantum circuit module, enter the API KEYS applied for on the Origin official website, and submit the task to the real machine for execution.
 
 **Q: Why are the model parameters I defined not updated during training**

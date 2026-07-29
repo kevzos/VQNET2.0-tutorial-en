@@ -5,7 +5,7 @@ We use VQNet and pyqpanda2 or pyqpanda3 to implement multiple quantum machine le
 
 .. warning::
 
-    The quantum computing part of the following interface may use pyqpanda2 https://pyqpanda-toturial.readthedocs.io/zh/latest/.
+    The quantum computing part of the following interface may use pyqpanda2.
 
     You need to install pyqpanda additionally, `pip install pyqpanda`
 
@@ -1637,7 +1637,7 @@ These samples are divided into training data training_data and testing data test
 Construct Quantum Circuits
 ---------------------------------
 
-In this example, we use the `pyQPanda2 <https://pyqpanda-tutorial-en.readthedocs.io/en/latest/chapter2/index.html#quantum-circuit>`__ , A simple quantum circuit of 1 qubit is defined. The circuit takes the output of the classical neural network layer as input,encodes quantum data through ``H`` , ``RY``  quantum logic gates, and calculates the expected value of Hamiltonian in the z direction as output.
+In this example, we use pyQPanda2, a simple quantum circuit of 1 qubit is defined. The circuit takes the output of the classical neural network layer as input,encodes quantum data through ``H`` , ``RY``  quantum logic gates, and calculates the expected value of Hamiltonian in the z direction as output.
 
 .. code-block::
 
@@ -2589,7 +2589,7 @@ it is to give a picture and classify each pixel on the picture. Separate the pix
 to different objects. `Unet <https://arxiv.org/abs/1505.04597>`_ is a classical image segmentation algorithm.
 
 Here, we explore how to partially quantify the classical neural network to create a hybrid quantum classical
-`QUnet`  neural network. We will write a simple example of integrating `pyQPanda2 <https://pyqpanda-tutorial-en.readthedocs.io/en/latest/>`__ with `VQNet` .
+`QUnet`  neural network. We will write a simple example of integrating pyQPanda2 with VQNet.
 Qunet is mainly used to solve the technology of image segmentation.
 
 
@@ -3136,7 +3136,7 @@ Run classification on test set
 
 We introduce and analyze a proposed quantum multilayer perceptron (QMLP) architecture featuring fault-tolerant input embeddings, rich nonlinearities, and enhanced variational circuit simulations with parameterized two-qubit entanglement gates.
 `QMLP: An Error-Tolerant Nonlinear Quantum MLP Architecture using Parameterized Two-Qubit Gates <https://arxiv.org/pdf/2206.01345.pdf>`_ .
-We will write a simple example of integrating `pyQPanda2 <https://pyqpanda-toturial.readthedocs.io/zh/latest/>`_ with `VQNet`.
+We will write a simple example of integrating pyQPanda2 with VQNet.
 
 
 Building Hybrid Classical-Quantum Neural Networks
@@ -3477,7 +3477,7 @@ Loss situation on the training set.
 
 We introduce and analyze a proposed quantum reinforcement learning network (QDRL), whose features reshape classical deep reinforcement learning algorithms such as experience replay and target networks into representations of variational quantum circuits.
 Furthermore, we use a quantum information encoding scheme to reduce the number of model parameters compared to classical neural networks. `QDRL: Variational Quantum Circuits for Deep Reinforcement Learning <https://arxiv.org/pdf/1907.00397.pdf>`_.
-We will write a simple example of integrating `pyQPanda2 <https://pyqpanda-toturial.readthedocs.io/zh/latest/>`_ with `VQNet`.
+We will write a simple example of integrating pyQPanda2 with VQNet.
 
 
 

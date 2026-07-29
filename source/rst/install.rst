@@ -62,7 +62,7 @@ Quantum computing module is the theoretical basis of the hybrid model of quantum
 
 .. figure:: ./images/classic-quantum.PNG
 
-In the quantum computing module, VQNet supports the use of the efficient quantum software computing package `pyqpanda3 <https://qcloud.originqc.com.cn/document/qpanda-3/index.html>`_ to build quantum modules.
+In the quantum computing module, VQNet supports the use of the efficient quantum software computing package pyqpanda3 to build quantum modules.
 Using the various commonly used interfaces provided by pyqpanda3, users can quickly build quantum computing modules.
 
 The following example uses pyqpanda3 to build a quantum computing module. Through VQNet, this quantum module can be directly embedded into a hybrid machine learning model for quantum circuit parameter training.
