@@ -1,41 +1,41 @@
-Frequently Asked Questions
+Foire Aux Questions
 =============================
 
-**Q: What are the features of VQNet**
+**Q : Quelles sont les fonctionnalités de VQNet ?**
 
-Answer: VQNet is a quantum machine learning toolset developed based on pyQPanda by Origin Quantum. VQNet provides a rich set of easy-to-use interfaces for classical neural network computing modules, enabling convenient machine learning optimization.
-The model definition method is consistent with mainstream machine learning frameworks, which reduces the learning curve for users.
-At the same time, based on pyQPanda, a high-performance quantum simulator developed by Origin Quantum, VQNet can also support the operation of a large number of quantum bits on personal laptops. Finally, VQNet also provides rich :doc:`./qml_demo` examples for your reference and learning.
+R : VQNet est un ensemble d'outils d'apprentissage automatique quantique développé par Origin Quantum à partir de pyQPanda. VQNet fournit un ensemble riche d'interfaces faciles à utiliser pour les modules de calcul de réseaux neuronaux classiques, permettant une optimisation pratique de l'apprentissage automatique.
+La méthode de définition du modèle est cohérente avec les frameworks d'apprentissage automatique grand public, ce qui réduit la courbe d'apprentissage pour les utilisateurs.
+Parallèlement, basé sur pyQPanda, un simulateur quantique haute performance développé par Origin Quantum, VQNet peut également prendre en charge le fonctionnement d'un grand nombre de bits quantiques sur des ordinateurs portables personnels. Enfin, VQNet fournit également des exemples riches :doc:`./qml_demo` pour votre référence et votre apprentissage.
 
-**Q: How to use VQNet to train quantum machine learning models**
+**Q : Comment utiliser VQNet pour entraîner des modèles d'apprentissage automatique quantique ?**
 
-Answer: There is a type of quantum machine learning algorithm that builds differentiable quantum machine learning models based on quantum variational circuits.
-VQNet can use the gradient descent method to train this type of quantum machine learning model. The general steps are as follows: First, on the local computer, users can build a virtual machine through pyQPanda, and combine the interfaces provided in VQNet to build a quantum-classical hybrid model ``Module``; second, calling ``forward()`` of ``Module`` can perform quantum circuit simulation and classical neural network forward computation according to the user-defined operation mode;
-When calling ``backward()`` of ``Module``, the user-built model can be automatically differentiated like classical machine learning frameworks such as PyTorch, and calculate the parameter gradients in quantum variational circuits and classical computing layers; finally, combine the optimizer's ``step()`` function to optimize the parameters.
+R : Il existe un type d'algorithme d'apprentissage automatique quantique qui construit des modèles différenciables basés sur des circuits variationnels quantiques.
+VQNet peut utiliser la méthode de descente de gradient pour entraîner ce type de modèle. Les étapes générales sont les suivantes : Premièrement, sur l'ordinateur local, les utilisateurs peuvent construire une machine virtuelle via pyQPanda et combiner les interfaces fournies dans VQNet pour construire un modèle hybride quantique-classique ``Module`` ; deuxièmement, l'appel de ``forward()`` du ``Module`` peut effectuer la simulation du circuit quantique et le calcul direct du réseau neuronal classique selon le mode de fonctionnement défini par l'utilisateur ;
+Lors de l'appel de ``backward()`` du ``Module``, le modèle construit par l'utilisateur peut être automatiquement différencié comme dans les frameworks d'apprentissage automatique classiques tels que PyTorch, et calculer les gradients des paramètres dans les circuits variationnels quantiques et les couches de calcul classiques ; enfin, combinez la fonction ``step()`` de l'optimiseur pour optimiser les paramètres.
 
-In VQNet, we use `parameter-shift <https://arxiv.org/abs/1803.00745>`_ to calculate the gradient of quantum variational circuits. Users can use the interface under :ref:`QuantumLayer_pq3` provided by VQNet to encapsulate the automatic differentiation of quantum variational circuits. Users only need to define quantum variational circuits as parameters in a certain format to build the above classes.
+Dans VQNet, nous utilisons `parameter-shift <https://arxiv.org/abs/1803.00745>`_ pour calculer le gradient des circuits variationnels quantiques. Les utilisateurs peuvent utiliser l'interface sous :ref:`QuantumLayer_pq3` fournie par VQNet pour encapsuler la différenciation automatique des circuits variationnels quantiques. Les utilisateurs n'ont qu'à définir les circuits variationnels quantiques comme paramètres dans un certain format pour construire les classes ci-dessus.
 
-In VQNet, we can also use the method based on automatic differentiation to calculate the gradient of quantum variational circuits. Users can use the interface in :ref:`vqc_api` to build a trainable circuit. This circuit does not rely on pyQPanda, but splits the encoding, gate operations, and measurement in the circuit into differentiable operators, so as to achieve the function of calculating the gradient of the parameters.
+Dans VQNet, nous pouvons également utiliser la méthode basée sur la différenciation automatique pour calculer le gradient des circuits variationnels quantiques. Les utilisateurs peuvent utiliser l'interface dans :ref:`vqc_api` pour construire un circuit entraînable. Ce circuit ne dépend pas de pyQPanda, mais divise le codage, les opérations de porte et la mesure dans le circuit en opérateurs différenciables, afin de réaliser la fonction de calcul du gradient des paramètres.
 
-For details, please refer to the relevant interfaces and sample codes in this document.
+Pour plus de détails, veuillez vous référer aux interfaces pertinentes et aux exemples de code dans ce document.
 
-**Q: In Windows, I encountered an error when installing VQNet: "importError: DLL load failed while importing _core: The specified module could not be found."**
+**Q : Sous Windows, j'ai rencontré une erreur lors de l'installation de VQNet : "importError: DLL load failed while importing _core: The specified module could not be found."**
 
-Answer: Users may need to install the VC++ runtime library on Windows.
-Refer to https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170 to install the appropriate runtime library.
-In addition, VQNet currently only supports python3.10 version, so please confirm your python version.
+R : Les utilisateurs peuvent avoir besoin d'installer la bibliothèque d'exécution VC++ sur Windows.
+Référez-vous à https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170 pour installer la bibliothèque d'exécution appropriée.
+De plus, VQNet ne prend actuellement en charge que la version python3.10, veuillez donc confirmer votre version de python.
 
-**Q: How to call the original quantum cloud and quantum chip for calculation**
+**Q : Comment appeler le cloud quantique d'origine et la puce quantique pour le calcul ?**
 
-Answer: You can use Origin Quantum's high-performance computing cluster or real quantum computers for quantum circuit simulation, replacing local quantum circuit simulation with cloud computing.
-In VQNet, users can use ``QuantumBatchAsyncQcloudLayer`` to build a variational quantum circuit module, enter the API KEYS applied for on the Origin official website, and submit the task to the real machine for execution.
+R : Vous pouvez utiliser le cluster de calcul haute performance d'Origin Quantum ou de véritables ordinateurs quantiques pour la simulation de circuits quantiques, remplaçant ainsi la simulation locale de circuits quantiques par le cloud computing.
+Dans VQNet, les utilisateurs peuvent utiliser ``QuantumBatchAsyncQcloudLayer`` pour construire un module de circuit variationnel quantique, saisir les CLÉS API demandées sur le site officiel d'Origin et soumettre la tâche à la machine réelle pour exécution.
 
-**Q: Why are the model parameters I defined not updated during training**
+**Q : Pourquoi les paramètres du modèle que j'ai définis ne sont-ils pas mis à jour pendant l'entraînement ?**
 
-Answer: To build a VQNet model, it is necessary to ensure that all modules used in it are differentiable. When a module in the model cannot calculate the gradient, the module and the preceding modules will not be able to calculate the gradient using the chain rule.
-If the user customizes a quantum variational circuit, please use the interface under :ref:`QuantumLayer_pq3` provided by VQNet. For classical machine learning modules, you need to use the interfaces defined by :doc:`./QTensor` and :doc:`./nn`. These interfaces encapsulate the functions of gradient calculation, and VQNet can perform automatic differentiation.
+R : Pour construire un modèle VQNet, il est nécessaire de s'assurer que tous les modules utilisés sont différenciables. Lorsqu'un module du modèle ne peut pas calculer le gradient, ce module et les modules précédents ne pourront pas calculer le gradient en utilisant la règle de la chaîne.
+Si l'utilisateur personnalise un circuit variationnel quantique, veuillez utiliser l'interface sous :ref:`QuantumLayer_pq3` fournie par VQNet. Pour les modules d'apprentissage automatique classiques, vous devez utiliser les interfaces définies par :doc:`./QTensor` et :doc:`./nn`. Ces interfaces encapsulent les fonctions de calcul de gradient, et VQNet peut effectuer une différenciation automatique.
 
-If the user wants to use a list containing multiple modules as a submodule in `Module`, please do not use the built-in Python list. Instead, use pyvqnet.nn.module.ModuleList. This way, the training parameters of the sub-modules can be registered to the whole model, enabling automatic differentiation training. Here is an example:
+Si l'utilisateur souhaite utiliser une liste contenant plusieurs modules comme sous-module dans `Module`, veuillez ne pas utiliser la liste Python intégrée. Utilisez plutôt pyvqnet.nn.module.ModuleList. Ainsi, les paramètres d'entraînement des sous-modules peuvent être enregistrés dans l'ensemble du modèle, permettant un entraînement par différenciation automatique. Voici un exemple :
 
      Example::
 
@@ -90,16 +90,16 @@ If the user wants to use a list containing multiple modules as a submodule in `M
          mm = M()
          print(mm. state_dict(). keys())
 
-**Q: Why did the original code not run in version 2.0.7**
+**Q : Pourquoi le code d'origine ne fonctionnait-il pas dans la version 2.0.7 ?**
 
-Answer: In version v2.0.7, we added different data types and dtype attributes to QTensor, and restricted input formats based on PyTorch conventions. For example, the Embedding layer input needs to be kint64, and the labels for CategoricalCrossEntropy, CrossEntropyLoss, SoftmaxCrossEntropy, and NLL_Loss layers need to be kint64.
+R : Dans la version v2.0.7, nous avons ajouté différents types de données et attributs dtype à QTensor, et restreint les formats d'entrée selon les conventions PyTorch. Par exemple, l'entrée de la couche Embedding doit être de type kint64, et les étiquettes pour les couches CategoricalCrossEntropy, CrossEntropyLoss, SoftmaxCrossEntropy et NLL_Loss doivent être de type kint64.
 
-You can use the 'astype()' interface to convert the type to the specified data type, or initialize the QTensor using the corresponding data type numpy array.
+Vous pouvez utiliser l'interface 'astype()' pour convertir le type vers le type de données spécifié, ou initialiser le QTensor en utilisant un tableau numpy du type de données correspondant.
 
-**Q: Does VQNet depend on torch?**
+**Q : VQNet dépend-il de torch ?**
 
-Answer: VQNet does not depend on torch, nor does it automatically install torch.
+R : VQNet ne dépend pas de torch et n'installe pas torch automatiquement.
 
-To use the following features, you need to install torch>=2.11.0 yourself. Since v2.15.0, we support using `torch >=2.11.0 <https://docs.pytorch.org/docs/stable/index.html>`_ as the computing backend for classical neural networks, quantum variational circuits, distributed computing, etc.
-After calling ``pyvqnet.backends.set_backend("torch")``, the interface remains unchanged, but the ``data`` member variables of VQNet's ``QTensor`` all use ``torch.Tensor`` to store data,
-and use torch for computing. The classes under ``pyvqnet.nn.torch`` and ``pyvqnet.qnn.vqc.torch`` inherit from ``torch.nn.Module`` and can form ``torch`` models.
+Pour utiliser les fonctionnalités suivantes, vous devez installer torch>=2.11.0 vous-même. Depuis la v2.15.0, nous supportons l'utilisation de `torch >=2.11.0 <https://docs.pytorch.org/docs/stable/index.html>`_ comme moteur de calcul pour les réseaux neuronaux classiques, les circuits variationnels quantiques, le calcul distribué, etc.
+Après avoir appelé ``pyvqnet.backends.set_backend("torch")``, l'interface reste inchangée, mais les variables membres ``data`` du ``QTensor`` de VQNet utilisent toutes ``torch.Tensor`` pour stocker les données,
+et utilisent torch pour le calcul. Les classes sous ``pyvqnet.nn.torch`` et ``pyvqnet.qnn.vqc.torch`` héritent de ``torch.nn.Module`` et peuvent former des modèles ``torch``.
