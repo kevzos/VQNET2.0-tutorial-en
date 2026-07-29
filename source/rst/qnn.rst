@@ -4,7 +4,7 @@ Quantum Machine Learning API using QPanda2
 
 .. warning::
 
-    The quantum computing part of the following interface uses pyQPanda2 https://pyqpanda-toturial.readthedocs.io/zh/latest/.
+    The quantum computing part of the following interface uses pyQPanda2.
 
     Due to the compatibility issues between pyQPanda2 and pyqpanda3, you need to install pyqpnda2 yourself, `pip install pyqpanda`
 
@@ -47,7 +47,7 @@ It is theoretically possible to calculate the gradient of parameters about Hamil
 
     :param qprog_with_measure: callable quantum circuits functions ,cosntructed by pyQPanda2
     :param para_num: `int` - Number of parameter
-    :param machine_type_or_cloud_token: qpanda machine type or pyQPanda2 QCLOUD token : https://pyqpanda-toturial.readthedocs.io/zh/latest/Realchip.html
+    :param machine_type_or_cloud_token: qpanda machine type or pyQPanda2 QCLOUD token
     :param num_of_qubits: num of qubits
     :param num_of_cbits: num of classic bits
     :param diff_method: 'parameter_shift' or 'finite_diff'
@@ -58,7 +58,7 @@ It is theoretically possible to calculate the gradient of parameters about Hamil
     :return: a module can calculate quantum circuits .
 
     .. note::
-        qprog_with_measure is quantum circuits function defined in pyQPanda2 :https://pyqpanda-toturial.readthedocs.io/zh/latest/QCircuit.html.
+        qprog_with_measure is a quantum circuit function defined in pyQPanda2.
 
         This function should contain following parameters,otherwise it can not run properly in QuantumLayer.
 
@@ -154,13 +154,13 @@ If you are more familiar with pyQPanda2 syntax, please using QuantumLayerV2 clas
     :return: a module can calculate quantum circuits .
 
     .. note::
-        qprog_with_measure is quantum circuits function defined in pyQPanda :https://pyqpanda-toturial.readthedocs.io/zh/latest/QCircuit.html.
+        qprog_with_measure is a quantum circuit function defined in pyQPanda.
 
         This function should contains following parameters,otherwise it can not run properly in QuantumLayerV2.
 
-        Compare to QuantumLayer.you should allocate qubits and simulator: https://pyqpanda-toturial.readthedocs.io/zh/latest/QuantumMachine.html,
+        Compared to QuantumLayer, you should allocate qubits and simulator yourself,
 
-        you may also need to allocate cbits if qprog_with_measure needs quantum measure: https://pyqpanda-toturial.readthedocs.io/zh/latest/Measure.html
+        and you may also need to allocate cbits if qprog_with_measure needs quantum measure.
 
         qprog_with_measure (input,param)
 
@@ -242,7 +242,7 @@ NoiseQuantumLayer
 =================================
 
 In the real quantum computer, due to the physical characteristics of the quantum bit, there is always inevitable calculation error. In order to better simulate this error in quantum virtual machine, VQNet also supports quantum virtual machine with noise. The simulation of quantum virtual machine with noise is closer to the real quantum computer. We can customize the supported logic gate type and the noise model supported by the logic gate.
-The existing supported quantum noise model is defined in pyQPanda2 `NoiseQVM <https://pyqpanda-toturial.readthedocs.io/zh/latest/NoiseQVM.html>`_ .
+The existing supported quantum noise model is defined in pyQPanda2's ``NoiseQVM``.
 
 We can use ``NoiseQuantumLayer`` to define an automatic microclassification of quantum circuits. ``NoiseQuantumLayer`` supports pyQPanda2 quantum virtual machine with noise. You can define a function as an argument ``qprog_with_measure``. This function needs to contain the quantum circuit defined by pyQPanda, as also you need to pass in a argument ``noise_set_config``, by using the pyQPanda interface to set up the noise model.
 
@@ -267,7 +267,7 @@ We can use ``NoiseQuantumLayer`` to define an automatic microclassification of q
     :return: a module can calculate quantum circuits with noise model.
 
     .. note::
-        qprog_with_measure is quantum circuits function defined in pyQPanda :https://pyqpanda-toturial.readthedocs.io/zh/latest/QCircuit.html.
+        qprog_with_measure is a quantum circuit function defined in pyQPanda.
 
         This function should contains following parameters,otherwise it can not run properly in NoiseQuantumLayer.
 
@@ -913,8 +913,8 @@ The way to deal with qubits is called quantum gates. Using quantum gates, we con
 Basic quantum gates
 =================================
 
-In VQNet, we use each logic gate of `pyQPanda <https://pyqpanda-tutorial-en.readthedocs.io/en/latest/>`__ developed by the original quantum to build quantum circuit and conduct quantum simulation.
-The gates currently supported by pyQPanda can be defined in pyQPanda's `quantum gate <https://pyqpanda-tutorial-en.readthedocs.io/en/latest/chapter2/index.html#quantum-logic-gate>`_ section.
+In VQNet, we use each logic gate of pyQPanda developed by Origin Quantum to build quantum circuit and conduct quantum simulation.
+The gates currently supported by pyQPanda can be defined in pyQPanda's quantum gate section.
 In addition, VQNet also encapsulates some quantum gate combinations commonly used in quantum machine learning.
 
 

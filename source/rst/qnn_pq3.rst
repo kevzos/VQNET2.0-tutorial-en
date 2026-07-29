@@ -3,7 +3,7 @@ Use pyQPanda3 quantum machine learning module
 
 .. warning::
 
-    The quantum computing part of the following interface uses pyqpanda3 https://qcloud.originqc.com.cn/document/qpanda-3/index.html.
+    The quantum computing part of the following interface uses pyqpanda3.
 
     If you use the QCloud function under this module, there will be errors when importing pyqpanda2 in the code or using pyvqnet's pyqpanda2 related package interface.
 
@@ -32,7 +32,7 @@ If you are familiar with pyQPanda3 syntax, you can use the interface QuantumLaye
 
     .. note::
 
-        qprog_with_measure is a quantum circuit function defined in pyQPanda3: https://qcloud.originqc.com.cn/document/qpanda-3/dc/d12/tutorial_quantum_program.html.
+        qprog_with_measure is a quantum circuit function defined in pyQPanda3.
 
         This function must contain two parameters, input and parameter, as function input (even if a parameter is not actually used), and the output is the measurement result or expected value of the circuit (needs to be np.ndarray or a list containing values), otherwise it will not run properly in QpandaQCircuitVQCLayerLite.
 
@@ -125,8 +125,7 @@ QpandaQProgVQCLayer
 
     .. note::
 
-        origin_qprog_func is a quantum circuit function defined by the user using pyQPanda3:
-        https://qcloud.originqc.com.cn/document/qpanda-3/dc/d12/tutorial_quantum_program.html. .
+        origin_qprog_func is a quantum circuit function defined by the user using pyQPanda3.
 
         This function must contain two parameters, input and parameter, as function input (even if a parameter is not actually used), and the output is pyqpanda3.core.QProg type data, otherwise it cannot run properly in QuantumLayerV3.
 
@@ -205,7 +204,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
 
     .. note::
 
-        qcloud_token is the api token you applied for at https://qcloud.originqc.com.cn/.
+        qcloud_token is the api token you applied for from the cloud platform.
 
         origin_qprog_func needs to return data of type pyqpanda3.core.QProg. If pauli_str_dict is not set, it is necessary to ensure that the measure has been inserted into the QProg.
 
@@ -318,7 +317,7 @@ QuantumLayerAdjoint
 
 .. py:class:: pyvqnet.qnn.pq3.quantumlayer.QuantumLayerAdjoint(pq3_vqc_circuit, param_num, pauli_dicts, dtype = None, name="")
 
-    This class uses the pyqpanda3 VQCircuit interface (https://qcloud.originqc.com.cn/document/qpanda-3/d8/d94/tutorial_variational_quantum_circuit.html) to compute the gradients of parameters in a quantum circuit with respect to the Hamiltonian using the adjoint method.
+    This class uses the pyqpanda3 VQCircuit interface to compute the gradients of parameters in a quantum circuit with respect to the Hamiltonian using the adjoint method.
 
     This class supports batch input and multiple Hamiltonian outputs.
 
@@ -679,8 +678,8 @@ The way to process quantum bits is quantum logic gate. Using quantum logic gate,
 Basic quantum logic gate
 =============================
 
-In this section, we use the various logic gates of `pyqpanda3 <https://qcloud.originqc.com.cn/document/qpanda-3/index.html>`_ developed by Origin Quantum to build quantum circuits and perform quantum simulation.
-The logic gates currently supported by pyQPanda3 can refer to the definition of pyQPanda3 `Quantum logic gate <https://qcloud.originqc.com.cn/document/qpanda-3/da/dd5/tutorial_quantum_gate.html>`_.
+In this section, we use the various logic gates of pyqpanda3 developed by Origin Quantum to build quantum circuits and perform quantum simulation.
+The logic gates currently supported by pyQPanda3 can refer to the definition of pyQPanda3 Quantum logic gate.
 In addition, VQNet also encapsulates some commonly used quantum logic gate combinations in quantum machine learning:
 
 
@@ -1339,7 +1338,7 @@ QuantumMeasure
 
     Computes quantum circuit measurements. Returns measurements obtained by Monte Carlo methods.
 
-    For more details, please visit https://pyqpanda-toturial.readthedocs.io/zh/latest/Measure.html?highlight=measure_all .
+    For more details on measurement, please refer to the pyQPanda3 documentation.
 
     The QuantumMeasure api currently only supports pyQPanda3 ``CPUQVM`` or ``QCloud`` .
 
@@ -1383,7 +1382,7 @@ ProbsMeasure
 
     Compute circuit probability measurements.
 
-    For more details, please visit https://pyqpanda-toturial.readthedocs.io/zh/latest/PMeasure.html.
+    For more details, please refer to the pyQPanda3 documentation on probability measurement.
 
     The ProbsMeasure api currently only supports pyQPanda ``CPUQVM`` or ``QCloud``.
 
