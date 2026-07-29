@@ -10,14 +10,13 @@ set_random_seed
 
 .. py:function:: pyvqnet.utils.set_random_seed(seed)
     
-    Set the global random seed.
+    设置全局随机种子。
 
-    :param seed: random seed.
+    :param seed: 随机种子。
 
     .. note::
 
-            When a fixed random number seed is specified, the random distribution will generate a fixed pseudo-random distribution based on the random seed.
-            Affects functions include: `tensor.randu` , `tensor.randn` , parameter initialization for parametric classical neural networks and quantum computing layers.
+            当指定固定的随机数种子时，随机分布将基于该种子生成固定的伪随机分布。影响的函数包括：`tensor.randu`\ 、`tensor.randn`\ 、参数化经典神经网络和量子计算层的参数初始化。
 
     Example::
 
@@ -96,7 +95,7 @@ get_random_seed
 
 .. py:function:: pyvqnet.utils.get_random_seed()
     
-    Get current random seed.
+    获取当前随机种子。
 
     Example::
 

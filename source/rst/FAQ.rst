@@ -1,41 +1,41 @@
 Frequently Asked Questions
 =============================
 
-**Q: What are the features of VQNet**
+**问：VQNet 有哪些特点？**
 
-Answer: VQNet is a quantum machine learning toolset developed based on pyQPanda by Origin Quantum. VQNet provides a rich set of easy-to-use interfaces for classical neural network computing modules, enabling convenient machine learning optimization.
-The model definition method is consistent with mainstream machine learning frameworks, which reduces the learning curve for users.
-At the same time, based on pyQPanda, a high-performance quantum simulator developed by Origin Quantum, VQNet can also support the operation of a large number of quantum bits on personal laptops. Finally, VQNet also provides rich :doc:`./qml_demo` examples for your reference and learning.
+答：VQNet 是由本源量子基于 pyQPanda 开发的量子机器学习工具集。VQNet 为经典神经网络计算模块提供了丰富的易用接口，便于进行机器学习优化。
+模型定义方式与主流机器学习框架一致，降低了用户的学习曲线。
+同时，基于本源量子开发的高性能量子模拟器 pyQPanda，VQNet 还支持在个人笔记本电脑上运行大量量子比特。最后，VQNet 还提供了丰富的 :doc:`./qml_demo` 示例供您参考和学习。
 
-**Q: How to use VQNet to train quantum machine learning models**
+**问：如何使用 VQNet 训练量子机器学习模型？**
 
-Answer: There is a type of quantum machine learning algorithm that builds differentiable quantum machine learning models based on quantum variational circuits.
-VQNet can use the gradient descent method to train this type of quantum machine learning model. The general steps are as follows: First, on the local computer, users can build a virtual machine through pyQPanda, and combine the interfaces provided in VQNet to build a quantum-classical hybrid model ``Module``; second, calling ``forward()`` of ``Module`` can perform quantum circuit simulation and classical neural network forward computation according to the user-defined operation mode;
-When calling ``backward()`` of ``Module``, the user-built model can be automatically differentiated like classical machine learning frameworks such as PyTorch, and calculate the parameter gradients in quantum variational circuits and classical computing layers; finally, combine the optimizer's ``step()`` function to optimize the parameters.
+答：有一类量子机器学习算法基于量子变分电路构建可微分的量子机器学习模型。
+VQNet 可以使用梯度下降法来训练这类量子机器学习模型。一般步骤如下：首先，在本地计算机上，用户可以通过 pyQPanda 构建虚拟机，并结合 VQNet 提供的接口构建量子-经典混合模型 ``Module``；其次，调用 ``Module`` 的 ``forward()`` 可以根据用户定义的操作方式进行量子电路模拟和经典神经网络前向计算；
+调用 ``Module`` 的 ``backward()`` 时，用户构建的模型可以像 PyTorch 等经典机器学习框架一样进行自动微分，计算量子变分电路和经典计算层中的参数梯度；最后，结合优化器的 ``step()`` 函数来优化参数。
 
-In VQNet, we use `parameter-shift <https://arxiv.org/abs/1803.00745>`_ to calculate the gradient of quantum variational circuits. Users can use the interface under :ref:`QuantumLayer_pq3` provided by VQNet to encapsulate the automatic differentiation of quantum variational circuits. Users only need to define quantum variational circuits as parameters in a certain format to build the above classes.
+在 VQNet 中，我们使用 `parameter-shift <https://arxiv.org/abs/1803.00745>`_ 来计算量子变分电路的梯度。用户可以使用 VQNet 提供的 :ref:`QuantumLayer_pq3` 接口来封装量子变分电路的自动微分，只需将量子变分电路定义为特定格式的参数即可构建上述类。
 
-In VQNet, we can also use the method based on automatic differentiation to calculate the gradient of quantum variational circuits. Users can use the interface in :ref:`vqc_api` to build a trainable circuit. This circuit does not rely on pyQPanda, but splits the encoding, gate operations, and measurement in the circuit into differentiable operators, so as to achieve the function of calculating the gradient of the parameters.
+在 VQNet 中，我们还可以使用基于自动微分的方法来计算量子变分电路的梯度。用户可以使用 :ref:`vqc_api` 中的接口构建可训练电路。该电路不依赖 pyQPanda，而是将电路中的编码、门操作和测量拆分为可微分算子，从而实现参数梯度的计算功能。
 
-For details, please refer to the relevant interfaces and sample codes in this document.
+详情请参阅本文档中的相关接口和示例代码。
 
-**Q: In Windows, I encountered an error when installing VQNet: "importError: DLL load failed while importing _core: The specified module could not be found."**
+**问：在 Windows 上安装 VQNet 时遇到错误："importError: DLL load failed while importing _core: The specified module could not be found."**
 
-Answer: Users may need to install the VC++ runtime library on Windows.
-Refer to https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170 to install the appropriate runtime library.
-In addition, VQNet currently only supports python3.10 version, so please confirm your python version.
+答：用户可能需要安装 Windows 上的 VC++ 运行时库。
+请参考 https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170 安装相应的运行时库。
+此外，VQNet 目前仅支持 python3.10 版本，请确认您的 python 版本。
 
-**Q: How to call the original quantum cloud and quantum chip for calculation**
+**问：如何调用本源量子云和量子芯片进行计算？**
 
-Answer: You can use Origin Quantum's high-performance computing cluster or real quantum computers for quantum circuit simulation, replacing local quantum circuit simulation with cloud computing.
-In VQNet, users can use ``QuantumBatchAsyncQcloudLayer`` to build a variational quantum circuit module, enter the API KEYS applied for on the Origin official website, and submit the task to the real machine for execution.
+答：您可以使用本源量子高性能计算集群或真实量子计算机进行量子电路模拟，替代本地的量子电路模拟。
+在 VQNet 中，用户可以使用 ``QuantumBatchAsyncQcloudLayer`` 构建变分量子电路模块，输入在本源官网申请的 API KEYS，将任务提交到真机执行。
 
-**Q: Why are the model parameters I defined not updated during training**
+**问：为什么我定义的模型参数在训练过程中不更新？**
 
-Answer: To build a VQNet model, it is necessary to ensure that all modules used in it are differentiable. When a module in the model cannot calculate the gradient, the module and the preceding modules will not be able to calculate the gradient using the chain rule.
-If the user customizes a quantum variational circuit, please use the interface under :ref:`QuantumLayer_pq3` provided by VQNet. For classical machine learning modules, you need to use the interfaces defined by :doc:`./QTensor` and :doc:`./nn`. These interfaces encapsulate the functions of gradient calculation, and VQNet can perform automatic differentiation.
+答：构建 VQNet 模型时，需要确保其中使用的所有模块都是可微的。当模型中的某个模块无法计算梯度时，该模块及其之前的模块将无法通过链式法则计算梯度。
+如果用户自定义量子变分电路，请使用 VQNet 提供的 :ref:`QuantumLayer_pq3` 接口。对于经典机器学习模块，需要使用 :doc:`./QTensor` 和 :doc:`./nn` 定义的接口。这些接口封装了梯度计算功能，VQNet 可以执行自动微分。
 
-If the user wants to use a list containing multiple modules as a submodule in `Module`, please do not use the built-in Python list. Instead, use pyvqnet.nn.module.ModuleList. This way, the training parameters of the sub-modules can be registered to the whole model, enabling automatic differentiation training. Here is an example:
+如果用户想在 `Module` 中使用包含多个模块的列表作为子模块，请不要使用 Python 内置列表，而应使用 pyvqnet.nn.module.ModuleList。这样子模块的训练参数才能注册到整个模型，实现自动微分训练。示例如下：
 
      Example::
 
@@ -77,10 +77,10 @@ If the user wants to use a list containing multiple modules as a submodule in `M
          class M(Module):
              def __init__(self):
                  super(M, self).__init__()
-                 #Should be built using ModuleList
+                 #应使用 ModuleList 构建
                  self.pqc2 = ModuleList([QuantumLayer(pqctest,3,"cpu",4,1), Linear(4,1)
                  ])
-                 #Direct use of list cannot save the parameters in pqc3.
+                 #直接使用列表无法保存 pqc3 中的参数
                  #self.pqc3 = [QuantumLayer(pqctest,3,"cpu",4,1), Linear(4,1)
                  #]
              def forward(self, x, *args, **kwargs):
@@ -90,16 +90,16 @@ If the user wants to use a list containing multiple modules as a submodule in `M
          mm = M()
          print(mm. state_dict(). keys())
 
-**Q: Why did the original code not run in version 2.0.7**
+**问：为什么原有代码在 2.0.7 版本中无法运行？**
 
-Answer: In version v2.0.7, we added different data types and dtype attributes to QTensor, and restricted input formats based on PyTorch conventions. For example, the Embedding layer input needs to be kint64, and the labels for CategoricalCrossEntropy, CrossEntropyLoss, SoftmaxCrossEntropy, and NLL_Loss layers need to be kint64.
+答：在 v2.0.7 版本中，我们为 QTensor 添加了不同的数据类型和 dtype 属性，并根据 PyTorch 规范限制了输入格式。例如，Embedding 层输入需要为 kint64 类型，CategoricalCrossEntropy、CrossEntropyLoss、SoftmaxCrossEntropy 和 NLL_Loss 层的标签需要为 kint64 类型。
 
-You can use the 'astype()' interface to convert the type to the specified data type, or initialize the QTensor using the corresponding data type numpy array.
+您可以使用 'astype()' 接口将类型转换为指定的数据类型，或使用相应数据类型的 numpy 数组初始化 QTensor。
 
-**Q: Does VQNet depend on torch?**
+**问：VQNet 是否依赖 torch？**
 
-Answer: VQNet does not depend on torch, nor does it automatically install torch.
+答：VQNet 不依赖 torch，也不会自动安装 torch。
 
-To use the following features, you need to install torch>=2.11.0 yourself. Since v2.15.0, we support using `torch >=2.11.0 <https://docs.pytorch.org/docs/stable/index.html>`_ as the computing backend for classical neural networks, quantum variational circuits, distributed computing, etc.
-After calling ``pyvqnet.backends.set_backend("torch")``, the interface remains unchanged, but the ``data`` member variables of VQNet's ``QTensor`` all use ``torch.Tensor`` to store data,
-and use torch for computing. The classes under ``pyvqnet.nn.torch`` and ``pyvqnet.qnn.vqc.torch`` inherit from ``torch.nn.Module`` and can form ``torch`` models.
+要使用以下功能，您需要自行安装 torch>=2.11.0。自 v2.15.0 起，我们支持使用 `torch >=2.11.0 <https://docs.pytorch.org/docs/stable/index.html>`_ 作为经典神经网络、量子变分电路、分布式计算等的计算后端。
+调用 ``pyvqnet.backends.set_backend("torch")`` 后，接口保持不变，但 VQNet 的 ``QTensor`` 的 ``data`` 成员变量均使用 ``torch.Tensor`` 存储数据，
+并使用 torch 进行计算。``pyvqnet.nn.torch`` 和 ``pyvqnet.qnn.vqc.torch`` 下的类继承自 ``torch.nn.Module``，可以组成 ``torch`` 模型。

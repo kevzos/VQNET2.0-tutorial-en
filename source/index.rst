@@ -1,8 +1,3 @@
-.. VQNet documentation master file, created by
-   sphinx-quickstart on Tue Jul 27 15:25:07 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 VQNet
 =================================
 
@@ -12,40 +7,40 @@ Core Features of VQNet
 Multi-platform compatibility and cross-environment support
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-VQNet supports users to conduct research and development of quantum machine learning in a variety of hardware and operating system environments. Whether using CPU or GPU for quantum computing simulation or calling real quantum chips through Benyuan Quantum Cloud Service, VQNet can provide seamless support. Currently, VQNet is compatible with Python 3.10 on Windows, Linux, and macOS systems.
+VQNet 支持用户在多种硬件和操作系统环境下进行量子机器学习的研发。无论是在 CPU 还是 GPU 上进行量子计算模拟，还是通过本源量子云服务调用真实量子芯片，VQNet 都能提供无缝支持。目前，VQNet 兼容 Windows、Linux 和 macOS 系统上的 Python 3.10。
 
 Perfect interface design and ease of use
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-VQNet uses Python as the front-end language, provides a function interface similar to PyTorch, and can freely choose a variety of computing backends to implement the automatic differentiation function of classical quantum machine learning models. The framework has built-in: 100+ commonly used Tensor computing interfaces, 100+ quantum variational circuit computing interfaces, and 50+ classical neural network interfaces. These interfaces cover the complete development process from classical machine learning to quantum machine learning, and will be continuously updated.
+VQNet 使用 Python 作为前端语言，提供类似 PyTorch 的函数接口，并可自由选择多种计算后端来实现经典量子机器学习模型的自动微分功能。框架内置了：100 多个常用的 Tensor 计算接口、100 多个量子变分电路计算接口和 50 多个经典神经网络接口。这些接口涵盖了从经典机器学习到量子机器学习的完整开发流程，并将持续更新。
 
 Efficient computing performance and expansion capabilities
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- **Real quantum chip experiment support**: For users who need real quantum chip experiments, VQNet integrates the original pyQPanda interface, and combines the efficient scheduling capabilities of the original Sinan to achieve fast quantum circuit simulation calculations and real chip operation.
-- **Local computing optimization**: For local computing needs, VQNet provides a quantum machine learning programming interface based on CPU or GPU, and uses automatic differentiation technology to perform quantum variational circuit gradient calculations, which is significantly faster than parameter shift methods. Details can be found in :ref:`benchmarks`.
-- **Distributed computing support**: VQNet supports MPI-based distributed computing, which can realize the function of training large-scale hybrid quantum-classical neural network models on multiple nodes.
+- **真实量子芯片实验支持**：对于需要进行真实量子芯片实验的用户，VQNet 集成了原始 pyQPanda 接口，并结合原始 Sinan 的高效调度能力，实现快速的量子电路模拟计算和真实芯片运行。
+- **本地计算优化**：对于本地计算需求，VQNet 提供基于 CPU 或 GPU 的量子机器学习编程接口，并使用自动微分技术进行量子变分电路梯度计算，比参数漂移方法显著更快。详情请参见 :ref:`benchmarks`。
+- **分布式计算支持**：VQNet 支持基于 MPI 的分布式计算，可在多个节点上实现大规模混合量子-经典神经网络模型的训练功能。
 
 Rich application scenarios and example support
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-VQNet is not only a powerful development tool, but also widely used in multiple projects within the company, including power optimization, medical data analysis, image processing and other fields. In order to help users get started quickly, VQNet provides a variety of scenarios ranging from basic tutorials to advanced applications in the official website and API online documentation. These resources enable users to easily understand how to use VQNet to solve practical problems and quickly build their own quantum machine learning applications.
+VQNet 不仅是一个强大的开发工具，还在公司内部的多个项目中得到广泛应用，包括电力优化、医疗数据分析、图像处理等领域。为了帮助用户快速上手，VQNet 在官方网站和 API 在线文档中提供了从基础教程到高级应用的多种场景。这些资源使用户能够轻松了解如何使用 VQNet 解决实际问题，并快速构建自己的量子机器学习应用。
 
 .. toctree::
-    :caption: Installation Guide
+    :caption: 安装指南
     :maxdepth: 2
 
     rst/install.rst
 
 .. toctree::
-    :caption: Hands-on Examples
+    :caption: 动手示例
     :maxdepth: 2
 
     rst/vqc_demo.rst
     rst/qml_demo.rst
 
 .. toctree::
-    :caption: Classic neural network API
+    :caption: 经典神经网络 API
     :maxdepth: 2
 
     rst/QTensor.rst
@@ -53,27 +48,23 @@ VQNet is not only a powerful development tool, but also widely used in multiple 
     rst/utils.rst
 
 .. toctree::
-    :caption: QNN API integrated with pyqpanda
+    :caption: 集成 pyqpanda 的 QNN API
     :maxdepth: 2
 
     rst/qnn.rst
     rst/qnn_pq3.rst
 
 .. toctree::
-    :caption: Autograd QNN API
+    :caption: 自动微分 QNN API
     :maxdepth: 2
 
     rst/vqc.rst
 
 .. toctree:: 
-    :caption: Others 
+    :caption: 其他
     :maxdepth: 2 
     
     rst/torch_api.rst
     rst/vqnet_dist.rst
     rst/FAQ.rst 
     rst/CHANGELOG.rst
-
-
-
-

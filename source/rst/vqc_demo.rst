@@ -1,22 +1,22 @@
-Quantum Machine Learning Demos Using Autograd
+使用自动微分的量子机器学习演示
 ########################################################################
 
-The following example uses the variational quantum circuit interface under ``pyvqnet.qnn.vqc`` to implement a quantum machine learning algorithm and example. The variational quantum circuit interface under ``pyvqnet.qnn.vqc`` uses state vectors to represent the evolution of quantum states under quantum logic gates, and calculates the gradient in the variational quantum circuit through automatic differentiation.
+以下示例使用 ``pyvqnet.qnn.vqc`` 下的变分量子电路接口来实现量子机器学习算法和示例。``pyvqnet.qnn.vqc`` 下的变分量子电路接口使用状态向量来表示量子态在量子逻辑门下的演化，并通过自动微分计算变分量子电路中的梯度。
 
-Please note the use of ``pyvqnet.qnn.vqc.QMachine`` in the following example. This class stores the data of quantum state vectors. When calculating batch data or after each measurement, ``pyvqnet.qnn.vqc.QMachine.reset_states`` must be performed to reinitialize the state vector data to the batch_size size of the input data.
-``pyvqnet.qnn.vqc`` also provides measurement interfaces such as MeasureAll, Probability, and Samples.
+请注意以下示例中对 ``pyvqnet.qnn.vqc.QMachine`` 的使用。该类存储量子态向量的数据。在计算批量数据或每次测量后，必须执行 ``pyvqnet.qnn.vqc.QMachine.reset_states`` 以将状态向量数据重新初始化为输入数据的 batch_size 大小。
+``pyvqnet.qnn.vqc`` 还提供了诸如 MeasureAll、Probability 和 Samples 等测量接口。
 
-In addition, ``pyvqnet.qnn.vqc.QModule`` is a class that the user-defined automatic differential sub-circuit model needs to inherit. Like the classic neural network model, it needs to define `__init__` and `forward` functions.
-When the last ``QTensor`` of the model runs `backward`, the parameter gradients of the variational sub-circuit in ``QModule`` can be calculated using automatic differentiation, and can be updated by the optimizer related to the gradient descent method.
+此外，``pyvqnet.qnn.vqc.QModule`` 是一个用户自定义自动微分子电路模型需要继承的类。与经典神经网络模型类似，它需要定义 `__init__` 和 `forward` 函数。
+当模型的最后一个 ``QTensor`` 执行 `backward` 时，``QModule`` 中变分子电路的参数梯度可以通过自动微分计算，并可通过与梯度下降法相关的优化器进行更新。
 
-Example of fitting a Fourier series on a GPU using quantum variational circuits
+在GPU上使用量子变分电路拟合傅里叶级数的示例
 ====================================================================================
-Quantum computers can be used for supervised learning by mapping data inputs to predicted models through parameterized quantum circuits. While much work has been done to study the practical implications of this approach,
-many important theoretical properties of these models remain unknown. Here, we study how the strategy of encoding data into the model affects the expressive power of parameterized quantum circuits as function approximators.
+量子计算机可以通过参数化量子电路将数据输入映射到预测模型，从而用于监督学习。虽然已有大量工作研究了这种方法的实际应用，
+但这些模型的许多重要理论性质仍然未知。在这里，我们研究数据编码策略如何影响参数化量子电路作为函数逼近器的表达能力。
 
-This example relates common quantum machine learning models designed for quantum computers to Fourier series, following the paper `The effect of data encoding on the expressive power of variational quantum machine learning models <https://arxiv.org/pdf/2008.08605.pdf>`_.
+本示例将常见的面向量子计算机的量子机器学习模型与傅里叶级数联系起来，参考论文 `The effect of data encoding on the expressive power of variational quantum machine learning models <https://arxiv.org/pdf/2008.08605.pdf>`_。
 
-The quantum model is:
+量子模型为：
 
 .. image:: ./images/single_qubit_model_circuit.png
     :width: 600 px
@@ -24,7 +24,7 @@ The quantum model is:
 
 |
 
-Import the necessary libraries and define the variational quantum circuit model using ``pyvqnet.qnn.vqc``:
+导入必要的库，并使用 ``pyvqnet.qnn.vqc`` 定义变分量子电路模型：
 
 
 .. code-block::
@@ -89,8 +89,8 @@ Import the necessary libraries and define the variational quantum circuit model 
         def forward(self, x):
             return self.q_fourier_series(x)
 
-Training code, we use GPU for training here, we need to put the model `Model` and input `data`, `label` on GPU using ``toGPU`` or specify `device`.
-Other interfaces are no different from the code for training using CPU.
+训练代码，这里我们使用GPU进行训练，需要将模型 `Model` 和输入 `data`、`label` 使用 ``toGPU`` 或指定 `device` 放置到GPU上。
+其他接口与使用CPU训练的代码没有区别。
 
 
 .. code-block::
@@ -136,10 +136,10 @@ Other interfaces are no different from the code for training using CPU.
 
 
 
-HQCNN example of hybrid quantum classical neural network
+HQCNN混合量子经典神经网络示例
 ===================================================================
 
-The HQCNN example is implemented using ``pyvqnet.qnn.vqc``, and image classification on the Mnist dataset is performed using a hybrid quantum classical network. In the quantum part, a simple quantum circuit with 1 qubit is defined here, which takes the output of the classical neural network layer as input, encodes quantum data through ``H``, ``RY`` logic gates, and calculates the Hamiltonian expectation value in the z direction as output.
+HQCNN示例使用 ``pyvqnet.qnn.vqc`` 实现，并通过混合量子经典网络对Mnist数据集进行图像分类。在量子部分，这里定义了一个具有1个量子比特的简单量子电路，它以经典神经网络层的输出作为输入，通过 ``H``、``RY`` 逻辑门编码量子数据，并计算z方向上的哈密顿量期望值作为输出。
 
 .. image:: ./images/hqcnn_quantum_cir.png
     :width: 600 px
@@ -147,12 +147,12 @@ The HQCNN example is implemented using ``pyvqnet.qnn.vqc``, and image classifica
 
 |
 
-Since quantum circuits can be used together with classical neural networks for automatic differentiation, we can use VQNet's 2D convolution layer ``Conv2D``, pooling layer ``MaxPool2D``, fully connected layer ``Linear`` and the quantum circuit just built to build a model.
+由于量子电路可以与经典神经网络一起用于自动微分，我们可以使用VQNet的二维卷积层 ``Conv2D``、池化层 ``MaxPool2D``、全连接层 ``Linear`` 以及刚刚构建的量子电路来构建模型。
 
-Through the definition of the Net and Hybrid classes inherited from the VQNet automatic differentiation module ``Module`` in the following code, and the definition of data forward calculation in the model forward function ``forward()``, we have built a model that can be automatically differentiated
-In this example, the MNIST data is convoluted, dimensionally reduced, quantum encoded, and measured to obtain the final features required for the classification task.
+通过以下代码中继承自VQNet自动微分模块 ``Module`` 的Net和Hybrid类的定义，以及在模型forward函数 ``forward()`` 中定义的数据前向计算，我们构建了一个可以自动微分的模型。
+在本示例中，MNIST数据经过卷积、降维、量子编码和测量，最终获得分类任务所需的特征。
 
-The following is the neural network related code:
+以下是神经网络相关代码：
 
 .. code-block::
 
@@ -233,7 +233,7 @@ The following is the neural network related code:
             return x
 
 
-The following is data loading, training code:
+以下是数据加载和训练代码：
 
 .. code-block::
 
@@ -403,15 +403,15 @@ The following is data loading, training code:
     """
 
 
-Quantum reloading algorithm example
+量子数据重上传算法示例
 ===========================================
 
-The following uses the interface under ``pyvqnet.qnn.vqc`` to build a quantum data re-uploading algorithm example.
-In a neural network, each neuron receives information from all neurons in the upper layer (Figure a). In contrast, a single-bit quantum classifier receives the previous information processing unit and input (Figure b).
-In layman's terms, for traditional quantum circuits, when data upload is completed, the result can be directly obtained through several unitary transformations :math:`U(\theta_1,\theta_2,\theta_3)`.
-However, in the quantum data re-uploading (Quantum Data Re-upLoading, QDRL) task, the data needs to be re-uploaded before the unitary transformation.
+以下使用 ``pyvqnet.qnn.vqc`` 下的接口构建一个量子数据重上传算法示例。
+在神经网络中，每个神经元接收上一层所有神经元的信息（图a）。相比之下，单比特量子分类器接收前一个信息处理单元和输入（图b）。
+通俗地说，对于传统量子电路，当数据上传完成后，可以通过若干幺正变换 :math:`U(\theta_1,\theta_2,\theta_3)` 直接获得结果。
+然而，在量子数据重上传（Quantum Data Re-uploading，QDRL）任务中，需要在幺正变换之前重新上传数据。
 
-.. centered:: QDRL vs. Classical Neural Network Schematic Diagram
+.. centered:: QDRL与经典神经网络示意图
 
 .. image:: ./images/qdrl.png
     :width: 600 px
@@ -419,7 +419,7 @@ However, in the quantum data re-uploading (Quantum Data Re-upLoading, QDRL) task
 
 |
 
-Import the library and define the quantum neural network model:
+导入库并定义量子神经网络模型：
 
 .. code-block::
 
@@ -483,7 +483,7 @@ Import the library and define the quantum neural network model:
             return x
 
 
-The following is data loading, training code:
+以下是数据加载和训练代码：
 
 .. code-block::
 
@@ -583,15 +583,15 @@ The following is data loading, training code:
     test_accuracy:0.934
     """
 
-Circuit-centric quantum classifiers algorithm example
+以电路为中心的量子分类器算法示例
 =============================================================
 
-This example uses ``pyvqnet.qnn.vqc`` to implement the variable quantum circuit in the paper `Circuit-centric quantum classifiers <https://arxiv.org/pdf/1804.00633.pdf>`_ for binary classification tasks.
-This example is used to determine whether a binary number is odd or even. By encoding the binary number into the quantum bit, by optimizing the variable parameters in the circuit, the z-direction measurement value of the circuit can indicate whether the input is odd or even.
-A variational quantum circuit usually defines a subcircuit, which is a basic circuit architecture that can build complex variational circuits through repeated layers.
-Our circuit layer consists of multiple rotational logic gates and ``CNOT`` logic gates that entangle each qubit with its neighboring qubits.
-We also need a circuit to encode classical data into quantum states, so that the output measured by the circuit is related to the input.
-In this case, we encode the binary input into the corresponding order of qubits. For example, the input data 1101 is encoded into 4 qubits.
+本示例使用 ``pyvqnet.qnn.vqc`` 实现论文 `Circuit-centric quantum classifiers <https://arxiv.org/pdf/1804.00633.pdf>`_ 中的变分量子电路，用于二分类任务。
+该示例用于判断一个二进制数是奇数还是偶数。通过将二进制数编码到量子比特中，优化电路中的可变参数，电路的z方向测量值可以指示输入是奇数还是偶数。
+变分量子电路通常定义一个子电路，这是一种基础的电路架构，可以通过重复层构建复杂的变分电路。
+我们的电路层由多个旋转逻辑门和将每个量子比特与其相邻量子比特纠缠的 ``CNOT`` 逻辑门组成。
+我们还需要一个电路将经典数据编码为量子态，使得电路测量的输出与输入相关。
+在本例中，我们将二进制输入编码到对应顺序的量子比特中。例如，输入数据1101被编码为4个量子比特。
 
 
 .. code-block::
@@ -640,7 +640,7 @@ In this case, we encode the binary input into the corresponding order of qubits.
             build_circuit(self.w, x,range(4),self.qm)
             return qmeasure.MeasureAll(obs={'Z0': 1})(self.qm)
         
-Data loading, model training process code:
+数据加载和模型训练过程代码：
 
 .. code-block::
 
@@ -742,13 +742,13 @@ Data loading, model training process code:
     epoch:24, #### loss:0.040470016002655027 #####accuracy:1.0
     """
 
-Variational Shadow Quantum Learning for Classification model example
+用于分类模型的变分阴影量子学习示例
 ===============================================================================
 
-Use the variable quantum circuit interface of ``pyvqnet.qnn.vqc`` to build a 2-classification model. When comparing the classification accuracy with a neural network with similar parameter accuracy, the two have similar accuracy. However, the number of parameters in the quantum circuit is much smaller than that of the classical neural network.
-The algorithm is based on the paper: `Variational Shadow Quantum Learning for Classification Model <https://arxiv.org/abs/2012.08288>`_ Reproduction.
+使用 ``pyvqnet.qnn.vqc`` 的变分量子电路接口构建一个二分类模型。在与具有相近参数精度的神经网络比较分类准确率时，两者具有相似的准确率。然而，量子电路中的参数数量远少于经典神经网络。
+该算法基于论文：`Variational Shadow Quantum Learning for Classification Model <https://arxiv.org/abs/2012.08288>`_ 的实现。
 
-The overall model of VSQL quantum is as follows:
+VSQL量子的整体模型如下：
 
 .. image:: ./images/vsql_model.PNG
     :width: 600 px
@@ -756,7 +756,7 @@ The overall model of VSQL quantum is as follows:
 
 |
 
-Define the variational quantum circuit model:
+定义变分量子电路模型：
 
 .. code-block::
 
@@ -843,7 +843,7 @@ Define the variational quantum circuit model:
             return x
 
 
-Define the data loading and training process code:
+定义数据加载和训练过程代码：
 
 .. code-block::
 
@@ -1235,12 +1235,12 @@ Define the data loading and training process code:
     """
 
 
-QMLP Model Example
+QMLP模型示例
 ====================
 
-The following code implements a quantum multilayer perceptron (QMLP) architecture featuring error-tolerant input embedding, rich nonlinearities, and enhanced variational circuit simulation with parameterized two-qubit entangled gates. `QMLP: An Error-Tolerant Nonlinear Quantum MLP Architecture using Parameterized Two-Qubit Gates <https://arxiv.org/pdf/2206.01345.pdf>`_ .
+以下代码实现了一种量子多层感知器（QMLP）架构，具有容错输入嵌入、丰富的非线性特性以及使用参数化双量子比特纠缠门增强的变分电路仿真。`QMLP: An Error-Tolerant Nonlinear Quantum MLP Architecture using Parameterized Two-Qubit Gates <https://arxiv.org/pdf/2206.01345.pdf>`_ 。
 
-First ,we use `pyvqnet.qnn.vqc` api to define a qnn.
+首先，我们使用 `pyvqnet.qnn.vqc` API定义一个量子神经网络。
 
 .. code-block::
 
@@ -1310,7 +1310,7 @@ First ,we use `pyvqnet.qnn.vqc` api to define a qnn.
             result = self.linear(quanutum_result)
             return result
 
-The following code is the training data loading and training process code:
+以下代码是训练数据加载和训练过程代码：
 
 .. code-block::
 
@@ -1500,10 +1500,10 @@ The following code is the training data loading and training process code:
     10 loss is : 0.3220652020
     """
 
-Example of implementing a reinforcement learning algorithm using a quantum classical hybrid neural network model
+使用量子经典混合神经网络模型实现强化学习算法的示例
 ==================================================================================================================
 
-Load necessary libraries and define global variables
+加载必要的库并定义全局变量
 
 .. code-block::
 
@@ -1555,7 +1555,7 @@ Load necessary libraries and define global variables
     bias = QTensor([[0.0, 0.0, 0.0, 0.0]])
 
 
-The following code are quantum neural network definition:
+以下是量子神经网络定义代码：
 
 .. code-block::
 
@@ -1606,7 +1606,7 @@ The following code are quantum neural network definition:
             quanutum_result = self.quantum_circuit(x)
             return quanutum_result
 
-Training code:
+训练代码：
 
 .. code-block::
 
@@ -1926,12 +1926,12 @@ Training code:
     # reward 1.0
     """
 
-Example of quantum classical transfer learning
+量子经典迁移学习示例
 =====================================================
 
-A machine learning method called transfer learning can be applied to image classifiers based on hybrid classical quantum networks. Based on VQNet's ``pyvqnet.qnn.vqc`` interface, we implement the following code example.
-Transfer learning is a well-established artificial neural network training technique based on the general intuition that if a pre-trained network is good at solving a given problem, then, with just some additional training, it can also be used to solve a different but related problem.
-Below, we first use a classical neural network CNN to train a classification model, then freeze some layer parameters, and add a variational quantum circuit to form a quantum classical hybrid neural network for transfer learning model training.
+一种称为迁移学习的机器学习方法可以应用于基于混合经典量子网络的图像分类器。基于VQNet的 ``pyvqnet.qnn.vqc`` 接口，我们实现以下代码示例。
+迁移学习是一种成熟的神经网络训练技术，基于一个通用的直觉：如果预训练网络擅长解决某个问题，那么只需一些额外的训练，它也可以用于解决另一个不同但相关的问题。
+下面，我们首先使用经典神经网络CNN训练一个分类模型，然后冻结部分层参数，并添加变分量子电路形成量子经典混合神经网络进行迁移学习模型训练。
 
 
 .. code-block::
@@ -2015,7 +2015,7 @@ Below, we first use a classical neural network CNN to train a classification mod
             vqc_quantum_net(self.qm, x, self.w, range(self.nq))
             return self.ma(self.qm)
 
-The following is the code for loading data:
+以下是加载数据代码：
 
 .. code-block::
 
@@ -2091,7 +2091,7 @@ The following is the code for loading data:
             labels[i] = lbl[ind[i]]
         return images, labels
 
-Classic neural network training, using ``SGD`` to train all neural network parameters for 30 batches:
+经典神经网络训练，使用 ``SGD`` 训练所有神经网络参数30个批次：
 
 .. code-block::
 
@@ -2203,7 +2203,7 @@ Classic neural network training, using ``SGD`` to train all neural network param
             n_eval += 1
         print(f"Eval Accuracy: {correct / n_eval}")
 
-Quantum transfer learning model training, replace the model's `fc3` with the quantum neural network module, and use ``Adam`` to fine-tune with a learning rate of 0.005:
+量子迁移学习模型训练，将模型的 `fc3` 替换为量子神经网络模块，并使用 ``Adam`` 以学习率0.005进行微调：
 
 .. code-block::
 
@@ -2339,13 +2339,13 @@ Quantum transfer learning model training, replace the model's `fc3` with the qua
     QCNN 9 eval loss is : 2.2818415833
     """
 
-Quantum convolutional neural network model based on small samples
+基于小样本的量子卷积神经网络模型
 =========================================================================
 
-The following example implements the quantum convolutional neural for small samples in the paper `Generalization in quantum machine learning from few training data <https://www.nature.com/articles/s41467-022-32550-3>`_ network model. For exploring generalization capabilities in quantum machine learning models.
+以下示例实现了论文 `Generalization in quantum machine learning from few training data <https://www.nature.com/articles/s41467-022-32550-3>`_ 中针对小样本的量子卷积神经网络模型，用于探索量子机器学习模型中的泛化能力。
 
-To build the convolutional and pooling layers in a quantum circuit, we will follow the QCNN structure proposed in the paper. The former layer will extract local correlations, while the latter allows reducing the dimensionality of the feature vectors. In quantum circuits, a convolutional layer consists of a kernel scanned along the entire image, a unit of two qubits related to adjacent qubits.
-As for the pooling layer, we will use conditional single-qubit units that depend on neighboring qubit measurements. Finally, we use a dense layer to entangle all qubits of the final state using an all-to-all single gate, as shown below:
+为了构建量子电路中的卷积层和池化层，我们将遵循论文中提出的QCNN结构。前者提取局部相关性，而后者允许降低特征向量的维度。在量子电路中，卷积层由一个沿整个图像扫描的核组成，该核是一个与相邻量子比特相关的双量子比特单元。
+至于池化层，我们将使用依赖于相邻量子比特测量的条件单量子比特单元。最后，我们使用密集层通过全连接单门纠缠最终态的所有量子比特，如下所示：
 
 .. image:: ./images/qcnn_structrue.png
    :width: 500 px
@@ -2353,7 +2353,7 @@ As for the pooling layer, we will use conditional single-qubit units that depend
 
 |
 
-Referring to the design method of this quantum convolution layer, we constructed the quantum circuit based on three quantum logic gates IsingXX, IsingYY, and IsingZZ, as shown in the following figure:
+参考这种量子卷积层的设计方法，我们基于三个量子逻辑门IsingXX、IsingYY和IsingZZ构建了量子电路，如下图所示：
 
 .. image:: ./images/Qcnn_circuit.png
    :width: 600 px
@@ -2361,8 +2361,7 @@ Referring to the design method of this quantum convolution layer, we constructed
 
 |
 
-The input data is a handwritten digit data set with dimensions of 8*8. It passes through the data encoding layer and the first layer of convolution, which is composed of IsingXX, IsingYY, IsingZZ, and U3, and then passes through a pooling layer, at 0, 2, The 5-bit qubit goes through a layer of convolution and a layer of pooling, and finally a layer of Random Unitary, which is composed of 15 random unitary matrices, corresponding to the classic Dense Layer. The measurement result is that the handwritten data is 0 and 1. The prediction probability of , the specific code implementation is as follows: Unitary, 
-which consists of 15 random You matrices corresponding to the classical Dense Layer, and the measurements are the predicted probabilities of handwritten data as 0 and 1. The specific code implementation is as follows:
+输入数据是一个维度为8*8的手写数字数据集。它经过数据编码层和第一层卷积（由IsingXX、IsingYY、IsingZZ和U3组成），然后经过一个池化层，在0、2、5比特量子位上经过一层卷积和一层池化，最后经过一层Random Unitary（由15个随机酉矩阵组成，对应经典的Dense Layer），测量结果是手写数据为0和1的预测概率。具体代码实现如下：
 
 .. code-block::
 
@@ -2660,7 +2659,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
         plt.show()
 
 
-The experimental results after running are shown in the figure below:
+运行后的实验结果如下图所示：
 
 .. image:: ./images/result_qcnn_small.png
    :width: 1000 px
@@ -2669,17 +2668,17 @@ The experimental results after running are shown in the figure below:
 |
 
 
-Quantum kernel function model for handwritten digit recognition
+量子核函数模型用于手写数字识别
 =======================================================================
 
-The following example implements quantum kernel function in the paper `Quantum Advantage Seeker with Kernels (QuASK): a software framework to speed up the research in quantum machine learning <https://link.springer.com/article/10.1007/s42484-023-00107-2>`_  to evaluate the performance of quantum kernels based on a handwritten digit data set.
+以下示例实现了论文 `Quantum Advantage Seeker with Kernels (QuASK): a software framework to speed up the research in quantum machine learning <https://link.springer.com/article/10.1007/s42484-023-00107-2>`_ 中的量子核函数，用于评估基于手写数字数据集的量子核性能。
 
-This experiment implemented the design of two circuits in the quantum core matrix and quantum core mapping based on crz and ZZFeatureMap logic gates.
-The input data of the algorithm is a handwritten digital data set with dimensions of 8*8. Through PCA dimensionality reduction, the input data is reduced to the corresponding bit dimensions such as 2, 4, and 8. After that, the data is standardized and the training data is obtained. The set and test data are used for training. This implementation can be divided into two, namely quantum kernel matrix and kernel mapping.
-The quantum kernel matrix uses quantum circuits to calculate the similarity of each pair of data, and then forms a matrix and outputs it;
-Quantum kernel mapping calculates the mapping of two sets of data separately and then calculates the similarity matrix of the two sets of data.
+本实验实现了基于crz和ZZFeatureMap逻辑门的量子核矩阵和量子核映射中两个电路的设计。
+算法的输入数据是维度为8*8的手写数字数据集。通过PCA降维，将输入数据降维到2、4、8等对应比特维度。之后对数据进行标准化，获得训练数据集和测试数据集用于训练。该实现可分为量子核矩阵和核映射两部分。
+量子核矩阵使用量子电路计算每对数据的相似度，然后形成矩阵并输出；
+量子核映射分别计算两组数据的映射，然后计算两组数据的相似度矩阵。
 
-The specific code implementation is as follows:
+具体代码实现如下：
 
 .. code-block::
 
@@ -2944,33 +2943,33 @@ The specific code implementation is as follows:
     # qubits 8, projected_accuracy 0.99
 
 
-Quantum Natural Gradient Interface Example
+量子自然梯度接口示例
 ===================================================================
-Quantum machine learning models generally use gradient descent to optimize parameters in variable quantum logic circuits. The formula for the classical gradient descent method is as follows:
+量子机器学习模型通常使用梯度下降来优化变分量子逻辑电路中的参数。经典梯度下降法的公式如下：
 
 .. math:: \theta_{t+1} = \theta_t -\eta \nabla \mathcal{L}(\theta),
 
-Essentially, at each iteration, we calculate the direction of the steepest gradient descent in the parameter space as the direction of parameter change.
-In any direction in the space, the speed of descent in the local range is not as fast as the negative gradient direction.
-The derivation of the direction of the steepest descent in different spaces depends on the norm of the differential of the parameter - the distance metric. The distance metric plays a core role here.
-Different metrics will result in different directions of the steepest descent. For the Euclidean space where the parameters are located in the classical optimization problem, the direction of the steepest descent is the negative gradient direction.
-Even so, at each step of parameter optimization, the parameter space changes as the loss function changes with the parameters. This makes it possible to find another, better distance norm.
+本质上，在每次迭代中，我们计算参数空间中梯度最陡下降的方向作为参数变化的方向。
+在空间中的任何方向上，局部范围内的下降速度都不如负梯度方向快。
+不同空间中最陡下降方向的推导取决于参数微分的范数——距离度量。距离度量在此起着核心作用。
+不同的度量将导致不同的最陡下降方向。对于经典优化问题中参数所在的欧几里得空间，最陡下降方向就是负梯度方向。
+即便如此，在参数优化的每一步，参数空间都会随着损失函数随参数的变化而变化。这使得找到另一个更好的距离范数成为可能。
 
-`Quantum Natural Gradient Method <https://arxiv.org/abs/1909.02108>`_ Borrowing the concept of the classical Natural Gradient Method `Amari (1998) <https://www.mitpressjournals.org/doi/abs/10.1162/089976698300017746>`__ ,
-we instead view the optimization problem as the probability distribution of possible output values ​​given an input (i.e., maximum likelihood estimation), and a better approach is to perform gradient descent in the distribution space, which is dimensionless and invariant with respect to parameterization. Therefore, regardless of the parameterization, each optimization step always chooses the best step size for each parameter.
-In quantum machine learning tasks, the quantum state space has a unique invariant metric tensor called the Fubini-Study metric tensor :math:`g_{ij}`.
-This tensor transforms the steepest descent in the parameter space of the quantum circuit into the steepest descent in the distribution space.
-The formula of quantum natural gradient is as follows:
+`Quantum Natural Gradient Method <https://arxiv.org/abs/1909.02108>`_ 借鉴了经典自然梯度法 `Amari (1998) <https://www.mitpressjournals.org/doi/abs/10.1162/089976698300017746>`__ 的概念，
+我们将优化问题视为给定输入下可能输出值的概率分布（即最大似然估计），更好的方法是在分布空间中进行梯度下降，该空间是无量纲的且对参数化不变。因此，无论参数化如何，每次优化步骤总是为每个参数选择最佳步长。
+在量子机器学习任务中，量子态空间有一个独特的不变度量张量，称为Fubini-Study度量张量 :math:`g_{ij}`。
+该张量将量子电路参数空间中的最陡下降转换为分布空间中的最陡下降。
+量子自然梯度的公式如下：
 
 .. math:: \theta_{t+1} = \theta_t - \eta g^{+}(\theta_t)\nabla \mathcal{L}(\theta),
 
 where :math:`g^{+}` is the pseudo-inverse.
 
-Below we implement an example of quantum natural gradient optimization of a quantum variational circuit parameter based on VQNet, where ``wrapper_calculate_qng`` is a decorator that needs to be added to the forward function of the model to be calculated for quantum natural gradient.
+下面我们实现一个基于VQNet的量子变分电路参数量子自然梯度优化示例，其中 ``wrapper_calculate_qng`` 是一个装饰器，需要添加到需要进行量子自然梯度计算的模型的forward函数上。
 
-Through the quantum natural gradient optimizer of ``pyvqnet.qnn.vqc.QNG``, the parameters of the `Parameter` type registered by the model can be optimized.
+通过 ``pyvqnet.qnn.vqc.QNG`` 的量子自然梯度优化器，可以优化模型注册的 `Parameter` 类型参数。
 
-Our goal is to minimize the expectation of the following quantum variational circuit. It can be seen that it contains two layers of 3 quantum parameter-containing logic gates. The first layer is composed of RZ, RY logic gates on 0 and 1 bits, and the second layer is composed of RX logic gates on 2 bits.
+我们的目标是最小化以下量子变分电路的期望值。可以看出，它包含两层共3个含参量子逻辑门。第一层由0和1比特上的RZ、RY逻辑门组成，第二层由2比特上的RX逻辑门组成。
 
 
 .. image:: ./images/qng_all_cir.png
@@ -3066,7 +3065,7 @@ Our goal is to minimize the expectation of the following quantum variational cir
 
             return self.ma(q_machine=self.qm)
 
-Using the SGD classical gradient descent method as a baseline to compare the changes in loss values ​​of the two under the same number of iterations, it can be seen that using quantum natural gradient, the loss function decreases faster.
+使用SGD经典梯度下降法作为基线，比较两者在相同迭代次数下损失值的变化，可以看出使用量子自然梯度时，损失函数下降更快。
 
 .. code-block::
 
@@ -3119,22 +3118,21 @@ Using the SGD classical gradient descent method as a baseline to compare the cha
 
 
 
-Quantum Singular Value Decomposition
+量子奇异值分解
 ===============================================================================
 
-The following example implements the algorithm in the paper  `Variational Quantum Singular Value Decomposition <https://arxiv.org/abs/2006.02336>`_. 
+The following example implements the algorithm in the paper  `Variational 量子奇异值分解 <https://arxiv.org/abs/2006.02336>`_. 
 
-Singular Value Decomposition(abbreviation ``SVD``) is an important matrix decomposition in linear algebra. As a generalization of eigendecomposition on matrices of any dimension, 
-it is widely used in the field of machine learning and is often used in matrix compression, recommendation systems, and natural language processing.
+奇异值分解（简称 ``SVD``）是线性代数中一种重要的矩阵分解。作为任意维度矩阵上特征分解的推广，它在机器学习领域被广泛应用，常用于矩阵压缩、推荐系统和自然语言处理。
 
-Variational Quantum Singular Value Decomposition(abbreviation ``QSVD``) convert SVD into an optimization problem and solve it through variational quantum circuits.
+Variational 量子奇异值分解(abbreviation ``QSVD``) convert SVD into an optimization problem and solve it through variational quantum circuits.
 
-In the paper, the matrix singular value decomposition is decomposed into four steps to solve:
+在论文中，矩阵奇异值分解被分解为四个步骤来求解：
 
-    1. Input matrix with decomposition :math:`\mathbf{M}`, the order you want to compress to :math:`\mathbf{T}`, weights :math:`\mathbf{W}`, the unitary matrix of parameters :math:`\mathbf{U}(\theta)` and :math:`\mathbf{V}(\phi)`
-    2. Build a quantum neural network to estimate singular values :math:`m_j = Re\langle\psi_j\mid U(\theta)^\dagger M V(\phi) \mid\psi_j\rangle`, and maximize the sum of weighted singular values :math:`L(\theta, \phi) = \sum_{j=1}^{T} q_j \cdot \operatorname{Re}\langle\psi_j \mid U(\theta)^\dagger MV(\phi) \mid \psi_j\rangle`, weighting is to arrange the calculated singular values from large to small.
-    3. Read out the parameter value when maximizing and calculate :math:`\mathbf{U}(\alpha^{*})` and :math:`\mathbf{V}(\beta^{*})`
-    4. Output result: Singular Value :math:`m_1, \dots, m_r`, and singular matrix :math:`\mathbf{U}(\alpha^{*})` and :math:`\mathbf{V}(\beta^{*})`
+    1. 输入待分解矩阵 :math:`\mathbf{M}`、想要压缩的阶数 :math:`\mathbf{T}`、权重 :math:`\mathbf{W}`、参数化酉矩阵 :math:`\mathbf{U}(\theta)` 和 :math:`\mathbf{V}(\phi)`
+    2. 构建量子神经网络估计奇异值 :math:`m_j = Re\langle\psi_j\mid U(\theta)^\dagger M V(\phi) \mid\psi_j\rangle`，并最大化加权奇异值之和 :math:`L(\theta, \phi) = \sum_{j=1}^{T} q_j \cdot \operatorname{Re}\langle\psi_j \mid U(\theta)^\dagger MV(\phi) \mid \psi_j\rangle`，加权是为了将计算出的奇异值从大到小排列。
+    3. 读取最大化时的参数值并计算 :math:`\mathbf{U}(\alpha^{*})` 和 :math:`\mathbf{V}(\beta^{*})`
+    4. 输出结果：奇异值 :math:`m_1, \dots, m_r`，以及奇异矩阵 :math:`\mathbf{U}(\alpha^{*})` 和 :math:`\mathbf{V}(\beta^{*})`
 
 .. image:: ./images/qsvd.png
    :width: 700 px
@@ -3142,7 +3140,7 @@ In the paper, the matrix singular value decomposition is decomposed into four st
 
 |
 
-The pseudo code is as follows:
+伪代码如下：
 
 .. image:: ./images/qsvd_algorithm.png
    :width: 700 px
@@ -3150,7 +3148,7 @@ The pseudo code is as follows:
 
 |
 
-The quantum circuit design is as follows:
+量子电路设计如下：
 
 .. code-block::
 
@@ -3161,7 +3159,7 @@ The quantum circuit design is as follows:
     q2: ──RY(v_theta2)────RZ(v_theta5)─────────X────●────RY(v_theta8)────RZ(v_theta11)─────────X────●────RY(v_theta14)────RZ(v_theta17)─────────X────●────RY(v_theta20)────RZ(v_theta23)─────────X────●────RY(v_theta26)────RZ(v_theta29)─────────X────●────RY(v_theta32)────RZ(v_theta35)─────────X────●────RY(v_theta38)────RZ(v_theta41)─────────X────●────RY(v_theta44)────RZ(v_theta47)─────────X────●────RY(v_theta50)────RZ(v_theta53)─────────X────●────RY(v_theta56)────RZ(v_theta59)─────────X────●────RY(v_theta62)────RZ(v_theta65)─────────X────●────RY(v_theta68)────RZ(v_theta71)─────────X────●────RY(v_theta74)────RZ(v_theta77)─────────X────●────RY(v_theta80)────RZ(v_theta83)─────────X────●────RY(v_theta86)────RZ(v_theta89)─────────X────●────RY(v_theta92)────RZ(v_theta95)─────────X────●────RY(v_theta98)────RZ(v_theta101)─────────X────●────RY(v_theta104)────RZ(v_theta107)─────────X────●────RY(v_theta110)────RZ(v_theta113)─────────X────●────RY(v_theta116)────RZ(v_theta119)─────────X────●──
 
 
-The following is the specific QSVD implementation code:
+以下是具体的QSVD实现代码：
 
 .. code-block::
 
@@ -3337,7 +3335,7 @@ The following is the specific QSVD implementation code:
     if __name__=="__main__":
         run()
     
-loss and singular value results:
+损失和奇异值结果：
 
 .. code-block::
 
@@ -3363,13 +3361,13 @@ loss and singular value results:
     [[[54.829308]], [[19.001402]], [[14.423045]], [[12.262444]], [[10.100731]], [[7.5507345]], [[5.6469355]], [[-0.4976197]]]
 
 
-Optimization of variational quantum circuits
+变分量子电路的优化
 ====================================================
 
-VQNet currently provides 4 ways to optimize quantum logic gates in user-defined variational quantum circuits: fusion of revolving gates (commute_controlled_right, commute_controlled_left), controlled gate exchange (commute_controlled), and single-bit logic gate fusion (single_qubit_ops_fuse).
+VQNet目前提供了4种优化用户自定义变分量子电路中量子逻辑门的方法：旋转门融合（commute_controlled_right, commute_controlled_left）、受控门交换（commute_controlled）和单比特逻辑门融合（single_qubit_ops_fuse）。
 
-Here, the `wrapper_compile` decorator is used to decorate the model forward function defined by `QModule`, and the three rules of `commute_controlled_right`, `merge_rotations`, and `single_qubit_ops_fuse` will be called continuously by default for line optimization.
-Finally, through the `op_history_summary` interface, the `op_history` information generated after running the `QModule` forward function is compared.
+这里，使用 `wrapper_compile` 装饰器装饰由 `QModule` 定义的模型forward函数，默认将连续调用 `commute_controlled_right`、`merge_rotations` 和 `single_qubit_ops_fuse` 三条规则进行线路优化。
+最后，通过 `op_history_summary` 接口，对比运行 `QModule` forward函数后生成的 `op_history` 信息。
 
 
 .. code-block::
@@ -3564,20 +3562,20 @@ Finally, through the `op_history_summary` interface, the `op_history` informatio
     # total parameters: 27
     # #################################################
 
-Quantum dropout implementation
+量子Dropout实现
 ===================================
 
-Neural networks (NNs) typically require highly flexible models with a large number of trainable parameters in order to learn a specific basis function (or data distribution). However, it is not enough to be able to learn with low in-sample error; the ability to generalise is also very important.
+神经网络通常需要具有大量可训练参数的高度灵活模型来学习特定的基函数（或数据分布）。然而，仅能够以较低的样本内误差进行学习是不够的，泛化能力也非常重要。
 
-Highly expressive models can suffer from overfitting problems, meaning that they are trained too well on the training data and as a result perform poorly on new unseen data. This occurs because the model learns the noise in the training data rather than the underlying patterns that can be generalised to new data.
+高表达力的模型可能会出现过拟合问题，这意味着它们在训练数据上训练得过于充分，从而导致在新的未见数据上表现不佳。这是因为模型学习了训练数据中的噪声，而非可以泛化到新数据的底层模式。
 
-Dropout is a common technique in classical deep neural networks (DNNs) to prevent overspecialisation of computational units and reduce the risk of overfitting.
+Dropout是经典深度神经网络中常用的技术，用于防止计算单元过度特化并降低过拟合风险。
 
-The paper `A General Approach to Dropout in Quantum Neural Networks` shows that the use of over-parameterised QNN models can change the optimisation landscape by eliminating a large number of local minima. On the one hand, an increase in the number of parameters makes training faster and easier, but on the other hand, it may cause the model to overfit the data. This is also closely related to recoding classical data to achieve computational nonlinearity. Because of this, inspired by classical DNNs, we could consider applying some kind of "dropout" technique to QNNs. This is equivalent to randomly dropping some (groups of) parameterised gates during training to achieve better generalisation.
+论文 `A General Approach to Dropout in Quantum Neural Networks` 表明，使用过参数化的QNN模型可以通过消除大量局部最小值来改变优化景观。一方面，参数数量的增加使训练更快更容易，但另一方面，可能导致模型过拟合数据。这也与重新编码经典数据以实现计算非线性密切相关。因此，受经典DNN的启发，我们可以考虑将某种"dropout"技术应用于QNN。这相当于在训练过程中随机丢弃一些（组）参数化门，以实现更好的泛化。
 
-Next I will show how to use quantum dropout to avoid overfitting problems in the training of quantum machine learning algorithms by the following sample, where we set the parameter of the logic gate of the dropout to 0 to perform the dropout.
+接下来我将通过以下示例展示如何使用量子dropout避免量子机器学习算法训练中的过拟合问题，其中我们将dropout的逻辑门参数设置为0来执行dropout。
 
-import the appropriate package
+导入相应的包
 
 .. code-block::
 
@@ -3591,7 +3589,7 @@ import the appropriate package
     from sklearn.preprocessing import MinMaxScaler
     from pyvqnet.nn import Parameter
 
-Set related global variables
+设置相关全局变量
 
 .. code-block::
 
@@ -3610,7 +3608,7 @@ Set related global variables
     test_history = {}
     opt_params = {}
 
-Building quantum circuits
+构建量子电路
 
 .. code-block::
 
@@ -3665,7 +3663,7 @@ Building quantum circuits
         
         return qm
 
-Generate a dropout list to randomly dropout the logic gates in the quantum line based on the dropout list
+生成dropout列表，根据dropout列表随机丢弃量子线路中的逻辑门
 
 .. code-block::
 
@@ -3707,7 +3705,7 @@ Generate a dropout list to randomly dropout the logic gates in the quantum line 
 
         return np.array(keep_rot)
 
-Adding quantum lines to a quantum neural network module
+将量子线路添加到量子神经网络模块
 
 .. code-block::
 
@@ -3725,7 +3723,7 @@ Adding quantum lines to a quantum neural network module
             x = self.ma(qm)
             return x
 
-Making the sin dataset
+创建正弦数据集
 
 .. code-block::
 
@@ -3790,7 +3788,7 @@ Making the sin dataset
 
 |
 
-Model training code
+模型训练代码
 
 .. code-block::
 
@@ -3870,36 +3868,36 @@ Model training code
     ## 0.3-0.2  run 2 - epoch 695/700 --- Train cost:0.392473 --- Test cost:0.20580922
     ## 0.7-0.7  run 0 - epoch 695/700 --- Train cost:0.3922218 --- Test cost:0.2057379
 
-Overfitting can be prevented by randomly dropping out the parameters of the model during training, but the probability of dropping out needs to be designed appropriately, otherwise it can also lead to poor model training results.
+通过在训练过程中随机丢弃模型的参数可以防止过拟合，但丢弃概率需要适当设计，否则也可能导致模型训练效果不佳。
 
 
-Quantum Circuit Boltzmann Machine
+量子电路玻尔兹曼机
 ===================================
 
 
-Quantum Circuit Boltzmann Machine Boltzmann machines have shown promise in unsupervised generative modeling, aiming to learn and represent probability distributions over classical datasets using purely quantum states. They have gained popularity due to their high expressive power. Boltzmann machines exploit the probabilistic interpretation of quantum wave functions, representing probability distributions using purely quantum states rather than thermal distributions (as in Boltzmann machines). This enables Boltzmann machines to directly generate samples by projecting measurements on qubits, offering a faster alternative to Gibbs sampling.
-Given a dataset :math:`\mathcal{D} = \{x\}` containing independent and identically distributed samples from an unknown target distribution :math:`\pi(x)`, QCBM is used to generate samples that are highly similar to the target distribution. QCBM transforms the input product state :math:`|\textbf{0} \rangle` into a parameterized quantum state :math:`|\psi_{\boldsymbol{\theta}}\rangle`. Measuring this output state in a computational basis produces a bit sample :math:`x \sim p_\theta(x)`.
+量子电路玻尔兹曼机 Boltzmann machines have shown promise in unsupervised generative modeling, aiming to learn and represent probability distributions over classical datasets using purely quantum states. They have gained popularity due to their high expressive power. Boltzmann machines exploit the probabilistic interpretation of quantum wave functions, representing probability distributions using purely quantum states rather than thermal distributions (as in Boltzmann machines). This enables Boltzmann machines to directly generate samples by projecting measurements on qubits, offering a faster alternative to Gibbs sampling.
+给定一个包含来自未知目标分布 :math:`\pi(x)` 的独立同分布样本的数据集 :math:`\mathcal{D} = \{x\}`，QCBM用于生成与目标分布高度相似的样本。QCBM将输入乘积态 :math:`|\textbf{0} \rangle` 转换为参数化量子态 :math:`|\psi_{\boldsymbol{\theta}}\rangle`。在计算基下测量该输出态产生比特样本 :math:`x \sim p_\theta(x)`。
 
 .. math::
    p_{\boldsymbol{\theta}}(x) = |\langle x | \psi_{\boldsymbol{\theta}} \rangle|^2.
 
-The goal is to align the model probability distribution :math:`p_{\boldsymbol{\theta}}` with the target distribution :math:`\pi`.
+目标是使模型概率分布 :math:`p_{\boldsymbol{\theta}}` 与目标分布 :math:`\pi` 对齐。
 
-In this example, we will implement a gradient-based QCBM algorithm using VQNet. We will describe the model and learning algorithm, then apply it to a dataset of 3x3 stripes and lattices, as well as a double Gaussian peak.
+在本示例中，我们将使用VQNet实现基于梯度的QCBM算法。我们将描述模型和学习算法，然后将其应用于3x3条纹和格点数据集以及双高斯峰。
 
-To train the QCBM, we use the squared maximum mean discrepancy (MMD) as the loss function:
+为了训练QCBM，我们使用平方最大均值差异（MMD）作为损失函数：
 
 .. math::
     \mathcal{L}(\boldsymbol{\theta}) = \left|\sum_{x} p_{\boldsymbol{\theta}}(x) \phi(x)- \sum_{x} \pi(x) \phi(x)  \right|^2,
 
-where :math:`\phi(x)` maps :math:`x` to a larger feature space. Using the kernel function :math:`K(x,y) = \phi(x)^T\phi(y)` allows us to work in a lower-dimensional space.
-We use the radial basis function (RBF) kernel for this purpose, which is defined as:
+其中 :math:`\phi(x)` 将 :math:`x` 映射到更大的特征空间。使用核函数 :math:`K(x,y) = \phi(x)^T\phi(y)` 允许我们在较低维空间中工作。
+我们为此使用径向基函数（RBF）核，其定义为：
 
 .. math::
     K(x,y) = \frac{1}{c}\sum_{i=1}^c \exp \left( \frac{|x-y|^2}{2\sigma_i^2} \right).
 
-Here, :math:`\sigma_i` is the bandwidth parameter that controls the width of the Gaussian kernel. :math:`\mathcal{L}` approaches zero if and only if :math:`p_{\boldsymbol{\theta}}` approaches :math:`\pi`.
-The loss function of the :math:`K(x,y)` is as follows:
+这里，:math:`\sigma_i` 是控制高斯核宽度的带宽参数。当且仅当 :math:`p_{\boldsymbol{\theta}}` 趋近于 :math:`\pi` 时，:math:`\mathcal{L}` 趋近于零。
+:math:`K(x,y)` 的损失函数如下：
 
 .. math::
     \mathcal{L} = \underset{x, y \sim p_{\boldsymbol{\theta}}}{\mathbb{E}}[{K(x,y)}]-2\underset{x\sim p_{\boldsymbol{\theta}},y\sim \pi}{\mathbb{E}}[K(x,y)]+\underset{x, y \sim \pi}{\mathbb{E}}[K(x, y)]
@@ -4085,7 +4083,7 @@ The loss function of the :math:`K(x,y)` is as follows:
     <QTensor [1, 1] DEV_CPU kfloat32> KL-div: 0.21417859196662903
     """
 
-Compare the target probability distribution with the QCBM prediction results, as shown below:
+比较目标概率分布与QCBM预测结果，如下图所示：
 
 .. image:: ./images/qcbm.png
    :width: 600 px
@@ -4093,11 +4091,11 @@ Compare the target probability distribution with the QCBM prediction results, as
 
 |
 
-Time Series Data Prediction Based on QGRU
+基于QGRU的时间序列数据预测
 ====================================================
-The paper <https://ieeexplore.ieee.org/abstract/document/10806779> implements a novel QRNN model, which serves as a typical QRNN model.
-The quantum recurrent blocks (QRBs) are constructed in a hardware-efficient manner, and the QRNN is constructed by interleaving and stacking QRBs. This significantly reduces the algorithm's requirement for quantum device coherence time.
-The following example builds a QGRU model for time series data prediction using the Torch backend (Torch installation required). You will also need to download the sample data :download:`ba.csv <images/ba.csv>` to your local computer.
+论文 <https://ieeexplore.ieee.org/abstract/document/10806779> 实现了一种新型QRNN模型，作为一种典型的QRNN模型。
+量子循环块以硬件高效的方式构建，通过交错堆叠QRB构建QRNN。这显著降低了算法对量子器件相干时间的要求。
+以下示例使用Torch后端构建QGRU模型用于时间序列数据预测（需要安装Torch）。您还需要将示例数据 :download:`ba.csv <images/ba.csv>` 下载到本地计算机。
 
 
 .. code-block::
@@ -4244,7 +4242,7 @@ The following example builds a QGRU model for time series data prediction using 
             'g': Parameter([12])  # 4-qubit PQC
         })
     """
-    Next, we assemble and train the model, including the circuit, simulator, Hamiltonian, network layers, optimizer, and loss function. This article uses the expected value of $q_3$ as the prediction basis, so the Hamiltonian is set to $Z_3$.
+    接下来，我们组装并训练模型，包括电路、模拟器、哈密顿量、网络层、优化器和损失函数。本文使用$q_3$的期望值作为预测基础，因此哈密顿量设置为$Z_3$。
     """
     class QM(vqc.QModule):
         def __init__(self, nq = 4, name=""):

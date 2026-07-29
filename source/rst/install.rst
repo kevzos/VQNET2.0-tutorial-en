@@ -4,26 +4,25 @@ Steps of VQNet Installation
 VQNet python package Installation
 ----------------------------------
 
-We provide precompiled Python packages for installation on Linux, Windows, macOS 13+ (arm64), supporting **Python 3.10**.
+我们在 Linux、Windows、macOS 13+ (arm64) 上提供预编译的 Python 包安装方式，支持 **Python 3.10**\ 。
 
-Download the corresponding archive from the official website, extract it, navigate to the extracted directory, and run the following steps:
+从官网下载相应的压缩包，解压后进入解压目录，运行以下步骤：
 
 .. code-block::
 
-    # For Windows
+    # 对于 Windows
     ./install.bat
-    # For macOS and Linux
+    # 对于 macOS 和 Linux
     ./install.sh
  
 
-
-For Windows and Linux systems, the pyvqnet package includes built-in acceleration features for classic neural network computations based on Nvidia CUDA, which depends on the specific version of NVIDIA CUDA 12.6 runtime libraries (automatically installed with the package).
-The package is optimized for the following CUDA architectures:
-**sm_80** (NVIDIA A100, A30 series data center GPUs) and **sm_86** (NVIDIA GeForce RTX 30 series consumer GPUs). Please ensure you are using a GPU that supports these architectures; otherwise, the program may not function correctly.
+对于 Windows 和 Linux 系统，pyvqnet 包包含基于 Nvidia CUDA 的经典神经网络计算内置加速功能，这依赖于特定版本的 NVIDIA CUDA 12.6 运行时库（随包自动安装）。
+该包针对以下 CUDA 架构进行了优化：
+**sm_80**\ （NVIDIA A100、A30 系列数据中心 GPU）和 **sm_86**\ （NVIDIA GeForce RTX 30 系列消费级 GPU）。请确保您使用的 GPU 支持这些架构，否则程序可能无法正常运行。
 
     .. important::
 
-        Please note that since this package does not distinguish between CPU/GPU versions, it depends on NVIDIA CUDA runtime libraries under Windows and Linux, which are automatically installed with the package. This may cause conflicts with other software that depends on different versions.
+        请注意，由于此包不区分 CPU/GPU 版本，在 Windows 和 Linux 下会依赖 NVIDIA CUDA 运行时库（随包自动安装）。这可能会与依赖不同版本 CUDA 的其他软件产生冲突。
 
 
 Validate VQNet's installation
@@ -48,25 +47,25 @@ Testing GPU Functionality in VQNet
 
 A simple case of VQNet
 --------------------------
-Here we introduce a case that consists of classical neural network modules and quantum modules of VQNet to describe the workflow of quantum machine learning. 
-It refers to `Data re-uploading for a universal quantum classifier <https://arxiv.org/abs/1907.02085>`_ .
-Generally, there are the following parts of quantum computing module in quantum machine learning:
+这里我们介绍一个包含 VQNet 经典神经网络模块和量子模块的案例，以描述量子机器学习的工作流程。
+它参考了 `Data re-uploading for a universal quantum classifier <https://arxiv.org/abs/1907.02085>`_ 。
+通常，量子机器学习中的量子计算模块包含以下部分：
 
-(1)Encoder:encoding classical data into quantum state;
+(1)编码器（Encoder）：将经典数据编码为量子态；
 
-(2)Ansats: training the parameters in Parameterized Quantum Gates;
+(2)拟设（Ansatz）：训练参数化量子门中的参数；
 
-(3)Measurement: measuring the value of a qubit(projection of qubit's quantum state in a specified axis).
+(3)测量（Measurement）：测量量子比特的值（量子比特量子态在指定轴上的投影）。
 
-Quantum computing module is the theoretical basis of the hybrid model of quantum classical neural network, which is also differentiable like classical neural network modules. VQNet supports quantum computing modules and classical computing modules to form a hybrid machine learning model, and provides various optimization algorithms for parameter optimization. (e.g. Convolution layer, pooling layer, fully connected layer, activation function, etc.)
+量子计算模块是量子经典神经网络混合模型的理论基础，与经典神经网络模块一样是可微分的。VQNet 支持量子计算模块和经典计算模块组成混合机器学习模型，并提供各种优化算法进行参数优化。（例如卷积层、池化层、全连接层、激活函数等）
 
 .. figure:: ./images/classic-quantum.PNG
 
-In the quantum computing module, VQNet supports the use of the efficient quantum software computing package pyqpanda3 to build quantum modules.
-Using the various commonly used interfaces provided by pyqpanda3, users can quickly build quantum computing modules.
+在量子计算模块中，VQNet 支持使用高效的量子软件计算包 pyqpanda3 来构建量子模块。
+使用 pyqpanda3 提供的各种常用接口，用户可以快速构建量子计算模块。
 
-The following example uses pyqpanda3 to build a quantum computing module. Through VQNet, this quantum module can be directly embedded into a hybrid machine learning model for quantum circuit parameter training.
-In this example, 1 qubit is used, multiple parameterized rotation gates `RZ`, `RY`, `RZ` are used to encode the input x, and the `probs_measure` function is used to observe the probability measurement result of the qubit as output.
+下面的示例使用 pyqpanda3 构建了一个量子计算模块。通过 VQNet，该量子模块可以直接嵌入到混合机器学习模型中进行量子电路参数训练。
+在此示例中，使用 1 个量子比特，多个参数化旋转门 `RZ`\ 、`RY`\ 、`RZ` 用于编码输入 x，并使用 `probs_measure` 函数观测量子比特的概率测量结果作为输出。
 
 .. code-block::
 
@@ -77,62 +76,62 @@ In this example, 1 qubit is used, multiple parameterized rotation gates `RZ`, `R
         machine = pq.CPUQVM()
         x1 = input.squeeze()
         param1 = weights.squeeze()
-        # Build quantum circuit instance using pyqpanda3 interface
+        # 使用 pyqpanda3 接口构建量子电路实例
         circuit = pq.QCircuit()
-        # Insert RZ gate on the first qubit with parameter x1[0]
+        # 在第一个量子比特上插入带参数 x1[0] 的 RZ 门
         circuit << pq.RZ(qlist[0], x1[0])
-        # Insert RY gate on the first qubit with parameter x1[1]
+        # 在第一个量子比特上插入带参数 x1[1] 的 RY 门
         circuit << pq.RY(qlist[0], x1[1])
-        # Insert RZ gate on the first qubit with parameter x1[2]
+        # 在第一个量子比特上插入带参数 x1[2] 的 RZ 门
         circuit << pq.RZ(qlist[0], x1[2])
-        # Insert RZ gate on the first qubit with parameter param1[0]
+        # 在第一个量子比特上插入带参数 param1[0] 的 RZ 门
         circuit << pq.RZ(qlist[0], param1[0])
-        # Insert RY gate on the first qubit with parameter param1[1]
+        # 在第一个量子比特上插入带参数 param1[1] 的 RY 门
         circuit << pq.RY(qlist[0], param1[1])
-        # Insert RZ gate on the first qubit with parameter param1[2]
+        # 在第一个量子比特上插入带参数 param1[2] 的 RZ 门
         circuit << pq.RZ(qlist[0], param1[2])
-        # Insert RZ gate on the first qubit with parameter x1[0]
+        # 在第一个量子比特上插入带参数 x1[0] 的 RZ 门
         circuit << pq.RZ(qlist[0], x1[0])
-        # Insert RY gate on the first qubit with parameter x1[1]
+        # 在第一个量子比特上插入带参数 x1[1] 的 RY 门
         circuit << pq.RY(qlist[0], x1[1])
-        # Insert RZ gate on the first qubit with parameter x1[2]
+        # 在第一个量子比特上插入带参数 x1[2] 的 RZ 门
         circuit << pq.RZ(qlist[0], x1[2])
-        # Insert RZ gate on the first qubit with parameter param1[3]
+        # 在第一个量子比特上插入带参数 param1[3] 的 RZ 门
         circuit << pq.RZ(qlist[0], param1[3])
-        # Insert RY gate on the first qubit with parameter param1[4]
+        # 在第一个量子比特上插入带参数 param1[4] 的 RY 门
         circuit << pq.RY(qlist[0], param1[4])
-        # Insert RZ gate on the first qubit with parameter param1[5]
+        # 在第一个量子比特上插入带参数 param1[5] 的 RZ 门
         circuit << pq.RZ(qlist[0], param1[5])
-        # Insert RZ gate on the first qubit with parameter x1[0]
+        # 在第一个量子比特上插入带参数 x1[0] 的 RZ 门
         circuit << pq.RZ(qlist[0], x1[0])
-        # Insert RY gate on the first qubit with parameter x1[1]
+        # 在第一个量子比特上插入带参数 x1[1] 的 RY 门
         circuit << pq.RY(qlist[0], x1[1])
-        # Insert RZ gate on the first qubit with parameter x1[2]
+        # 在第一个量子比特上插入带参数 x1[2] 的 RZ 门
         circuit << pq.RZ(qlist[0], x1[2])
-        # Insert RZ gate on the first qubit with parameter param1[6]
+        # 在第一个量子比特上插入带参数 param1[6] 的 RZ 门
         circuit << pq.RZ(qlist[0], param1[6])
-        # Insert RY gate on the first qubit with parameter param1[7]
+        # 在第一个量子比特上插入带参数 param1[7] 的 RY 门
         circuit << pq.RY(qlist[0], param1[7])
-        # Insert RZ gate on the first qubit with parameter param1[8]
+        # 在第一个量子比特上插入带参数 param1[8] 的 RZ 门
         circuit << pq.RZ(qlist[0], param1[8])
-        # Build quantum program
+        # 构建量子程序
         prog = pq.QProg()
         prog << circuit
-        # Get probability measurement
+        # 获取概率测量结果
         prob = probs_measure(machine ,prog,  qlist)
 
         return prob
 
-Our task is to classify this randomly generated data using a binary classification approach. In this task,
-the center of a circle is at the origin, points within radius 1 colored in red belong to one category, and the samples colored in blue belong to another category.
+我们的任务是使用二分类方法对随机生成的数据进行分类。在此任务中，
+圆心在原点，半径 1 以内的点（红色）属于一个类别，蓝色样本属于另一个类别。
 
 .. figure:: ./images/origin_circle.png
 
-The pipeline of the training process
+训练流程
 
 .. code-block::
 
-    # import required libraries and functions
+    # 导入所需库和函数
     from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
     from pyvqnet.optim import adam
     from pyvqnet.nn.loss import CategoricalCrossEntropy
@@ -141,33 +140,33 @@ The pipeline of the training process
     from pyvqnet.nn.module import Module
 
 
-Defining a model: the ``__init__`` function defines the internal neural network modules and quantum modules, and the ``forward`` function defines the forward computation. ``QuantumLayer`` is an abstract class
-that encapsulates quantum computing.
-VQNet will automatically calculate the parameter gradients for `qdrl_circuit` with `param_num`.
+定义模型：``__init__`` 函数定义内部神经网络模块和量子模块，``forward`` 函数定义前向计算。``QuantumLayer`` 是一个抽象类，
+封装了量子计算。
+VQNet 将自动为 `qdrl_circuit` 计算参数梯度，参数数量为 `param_num`\ 。
 
 
 .. code-block::
 
-    # number of parameters to be trained.
+    # 待训练的参数数量
     param_num = 9
-    # qubit number.
+    # 量子比特数量
     qbit_num  = 1
-    #define a model class inherits from Module.
+    # 定义一个继承自 Module 的模型类
     class Model(Module):
         def __init__(self):
             super(Model, self).__init__()
-            #use QuantumLayer to embed quantum circuit into autodiff pipeline.
+            # 使用 QuantumLayer 将量子电路嵌入自动微分流程
             self.pqc = QuantumLayer(qdrl_circuit,param_num)
-        #define the forward function
+        # 定义前向函数
         def forward(self, x):
             x = self.pqc(x)
             return x
 
-Defining some functions for training the model 
+定义训练模型所需的函数
 
 .. code-block::
 
-    # a function to generate the raw data randomly
+    # 用于随机生成原始数据的函数
     def circle(samples:int,  rads =  np.sqrt(2/np.pi)) :
         data_x, data_y = [], []
         for i in range(samples):
@@ -179,13 +178,13 @@ Defining some functions for training the model
             data_y.append(y)
         return np.array(data_x,dtype=np.float32), np.array(data_y,np.int64)
 
-    # a function to load data
+    # 用于加载数据的函数
     def get_minibatch_data(x_data, label, batch_size):
         for i in range(0,x_data.shape[0]-batch_size+1,batch_size):
             idxs = slice(i, i + batch_size)
             yield x_data[idxs], label[idxs]
 
-    # a function to compute the accuracy
+    # 用于计算准确率的函数
     def get_score(pred, label):
         pred, label = np.array(pred.data), np.array(label.data)
         pred = np.argmax(pred,axis=1)
@@ -193,29 +192,29 @@ Defining some functions for training the model
         score = np.sum(pred == score)
         return score
 
-VQNet follows the general workflow of machine learning: loading the data iteratively, forward propagation, calculating the loss function, back propagation, and updating the parameters.
+VQNet 遵循通用的机器学习工作流程：迭代加载数据、前向传播、计算损失函数、反向传播和更新参数。
 
 .. code-block::
 
-    # instantiating a model
+    # 实例化模型
     model = Model()
-    # using Adam to define a optimizer
+    # 使用 Adam 定义优化器
     optimizer = adam.Adam(model.parameters(),lr =0.6)
-    # using cross-entropy to define a loss function
+    # 使用交叉熵定义损失函数
     Closs = CategoricalCrossEntropy()
 
-A function to train the model
+训练模型的函数
 
 .. code-block::
 
     def train():
             
-        #  generate data to be trained randomly   
+        # 随机生成待训练的数据
         x_train, y_train = circle(500)
         x_train = np.hstack((x_train, np.zeros((x_train.shape[0], 1),dtype=np.float32)))  
-        # define the number of data about each batch
+        # 定义每批数据的大小
         batch_size = 32
-        # Maximum of training iteration times
+        # 最大训练迭代次数
         epoch = 10
         print("start training...........")
         for i in range(epoch):
@@ -224,17 +223,17 @@ A function to train the model
             count = 0
             loss = 0
             for data, label in get_minibatch_data(x_train, y_train,batch_size):
-                # clear the gradients of optimizer
+                # 清除优化器的梯度
                 optimizer.zero_grad()
-                # forward computing
+                # 前向计算
                 output = model(data)
-                # calculating loss function
+                # 计算损失函数
                 losss = Closs(label, output)
-                # anti-propagation
+                # 反向传播
                 losss.backward()
-                # update the optimizer parameters
+                # 更新优化器参数
                 optimizer._step()
-                # calculate the accuracy
+                # 计算准确率
                 accuracy += get_score(output,label)
 
                 loss += losss.item()
@@ -243,7 +242,7 @@ A function to train the model
             print(f"epoch:{i}, train_accuracy:{accuracy/count}")
             print(f"epoch:{i}, train_loss:{loss/count}\n")
             
-A function to validate the model
+验证模型的函数
 
 .. code-block::
 
@@ -304,10 +303,3 @@ Training and testing results
     test_accuracy:0.826
 
 .. figure:: ./images/qdrl_for_simple.png
-
-
-
-
-
-
-
