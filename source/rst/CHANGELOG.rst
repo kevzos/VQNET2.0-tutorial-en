@@ -5,482 +5,482 @@ VQNet Changelog
 [v2.18.0] - 2026-04-22
 ***************************
 
-Added
+Adicionado
 ===================
-- ``vqnetrun`` now supports ``--backend nccl`` mode, with distributed startup controllable via ``--nproc_per_node``, ``--nccl_socket_ifname`` parameters.
-- Added ``VQCQCloudLayer`` interface for submitting VQC Module to QCloud real chips or pyqpanda3 local simulators, supporting parameter_shift backpropagation.
-- ``CommController`` adds a ``destroy()`` method for NCCL communication resource cleanup.
+- ``vqnetrun`` agora suporta o modo ``--backend nccl``, com inicialização distribuída controlável pelos parâmetros ``--nproc_per_node``, ``--nccl_socket_ifname``.
+- Adicionada a interface ``VQCQCloudLayer`` para submeter módulos VQC a chips reais QCloud ou simuladores locais pyqpanda3, com suporte a retropropagação parameter_shift.
+- ``CommController`` adiciona um método ``destroy()`` para limpeza de recursos de comunicação NCCL.
 
-Changed
+Alterado
 ===================
-- Default backend changed to ``pyvqnet-ad``.
-- Removed deprecated ``QuantumLayerMultiProcess``, ``DataParallelHybirdVQCQpandaQVMLayer``, and ``HybirdVQCQpanda3QVMLayer`` interfaces.
-- ``split_group`` renamed to ``split_groups``.
-- Depends on NVIDIA runtime for CUDA 12.6.
-- "chip_id" default changed to "WK_C180".
-- ``ComplexEntangelingTemplate`` has been renamed to ``ComplexEntanglingTemplate``.
-- ``vqc.rst``: added "Test 2: 10-Qubit VQC Gradient Comparison" benchmark section comparing VQNet / TorchQuantum / DeepQuantum / Pennylane / MindQuantum.
-- Updated benchmark spec table with CUDA 12.6, torchquantum 0.2.0, and mindquantum 0.12.0.
+- O backend padrão foi alterado para ``pyvqnet-ad``.
+- Removidas as interfaces obsoletas ``QuantumLayerMultiProcess``, ``DataParallelHybirdVQCQpandaQVMLayer`` e ``HybirdVQCQpanda3QVMLayer``.
+- ``split_group`` renomeado para ``split_groups``.
+- Depende do runtime NVIDIA para CUDA 12.6.
+- O padrão de "chip_id" foi alterado para "WK_C180".
+- ``ComplexEntangelingTemplate`` foi renomeado para ``ComplexEntanglingTemplate``.
+- ``vqc.rst``: adicionada a seção de benchmark "Test 2: 10-Qubit VQC Gradient Comparison" comparando VQNet / TorchQuantum / DeepQuantum / Pennylane / MindQuantum.
+- Tabela de especificações de benchmark atualizada com CUDA 12.6, torchquantum 0.2.0 e mindquantum 0.12.0.
 
-Fixed
+Corrigido
 ===================
-- Fixed integer overflow issue in ``roll`` CUDA kernel.
-- Fixed ``cuda_masked_fill`` support for complex64/complex128 types.
-- Fixed ``log_softmax`` forward computation producing incorrect +inf values under ``bfloat16``.
-- Fixed device errors caused by missing ``CUDAGuard`` during cross-GPU memory access.
-- Fixed many typos.
+- Corrigido problema de estouro de inteiro no kernel CUDA ``roll``.
+- Corrigido suporte de ``cuda_masked_fill`` para tipos complex64/complex128.
+- Corrigida a computação forward de ``log_softmax`` que produzia valores +inf incorretos sob ``bfloat16``.
+- Corrigidos erros de dispositivo causados pela falta de ``CUDAGuard`` durante acesso à memória entre GPUs.
+- Corrigidos muitos erros de digitação.
 
 
 [v2.17.3] - 2026-03-31
 ***************************
 
-Added
+Adicionado
 ===================
-- Added bfloat16 data type.
-- Added asynchronous NCCL communication interfaces: ``nccl_async_all_gather``, ``nccl_async_all_reduce``, ``nccl_async_reduce``, ``nccl_async_broadcast``, ``nccl_async_send``, and ``nccl_async_recv``.
-- Added support for the latest Origin Quantum chip with chip ID ``WK_C180``.
-- Added ``data_ptr`` and other interfaces, experimentally added support for `triton <https://triton-lang.org/main/index.html>`_.
+- Adicionado o tipo de dado bfloat16.
+- Adicionadas interfaces de comunicação NCCL assíncronas: ``nccl_async_all_gather``, ``nccl_async_all_reduce``, ``nccl_async_reduce``, ``nccl_async_broadcast``, ``nccl_async_send`` e ``nccl_async_recv``.
+- Adicionado suporte ao mais recente chip Origin Quantum com ID de chip ``WK_C180``.
+- Adicionados ``data_ptr`` e outras interfaces; suporte a `triton <https://triton-lang.org/main/index.html>`_ adicionado experimentalmente.
 
-Changed
+Alterado
 ===================
 
-- Default backend changed to "pyvqnet-ad".
-- Computation on MacOS is implemented based on arm neon instructions.
-- The ``matmul`` interface supports data with more than 4 dimensions.
-- Reduced dependency on some cuda runtime libraries when installing the whl package.
-- QTensor data type in pyvqnet is no longer an integer, but a specific data type.
-- Modified QTensor pickle logic, no longer pickles grad.
-- Removed is_dense.
-- Removed pq2 ``QuantumBatchAsyncQcloudLayer``.
-- Updated documentation for pq3 ``QuantumBatchAsyncQcloudLayer``.
+- O backend padrão foi alterado para "pyvqnet-ad".
+- A computação no MacOS é implementada com base nas instruções arm neon.
+- A interface ``matmul`` suporta dados com mais de 4 dimensões.
+- Reduzida a dependência de algumas bibliotecas de runtime CUDA ao instalar o pacote whl.
+- O tipo de dado QTensor no pyvqnet não é mais um inteiro, mas um tipo de dado específico.
+- Modificada a lógica de pickle do QTensor; grad não é mais preservado durante pickle.
+- Removido is_dense.
+- Removido ``QuantumBatchAsyncQcloudLayer`` do pq2.
+- Documentação atualizada para ``QuantumBatchAsyncQcloudLayer`` do pq3.
 
-Fixed
+Corrigido
 ===================
-- Fixed the error of ``Linear`` when ``use_bias=False``.
-- Fixed the ``MAX_GPUS`` issue; the current maximum number of GPUs is now 16.
-- Fixed import error on windows jupyter.
+- Corrigido o erro de ``Linear`` quando ``use_bias=False``.
+- Corrigido o problema de ``MAX_GPUS``; o número máximo atual de GPUs agora é 16.
+- Corrigido erro de importação no Windows Jupyter.
 
 
 [v2.17.2] -2025-11-18
 ***********************************
 
 
-Added
+Adicionado
 ===================
 
-- Added support for the `torch` backend through the quantum natural gradient QNG interface.
-- Added the `pyvqnet-ad` backend, which uses a C++ automatic differential backend similar to torch. The data structure still uses the original ``_core.Tensor`` and supports the vast majority of existing interfaces.
-- Added the "Benchmarking of Variational Quantum Circuit's Gradients for Batch Data" documentation.
+- Adicionado suporte ao backend ``torch`` através da interface de gradiente natural quântico QNG.
+- Adicionado o backend ``pyvqnet-ad``, que usa um backend de diferenciação automática em C++ similar ao torch. A estrutura de dados ainda usa o ``_core.Tensor`` original e suporta a grande maioria das interfaces existentes.
+- Adicionada a documentação "Benchmarking of Variational Quantum Circuit's Gradients for Batch Data".
 
-Changed
+Alterado
 ===================
 
-- delete `HybirdVQCQpanda3QVMLayer`, `QuantumLayerMultiProcess`, `TorchHybirdVQCQpanda3QVMLayer`;
-- delete `is_csr`, `csr_members` , `SparseHamiltonian` , `csr_to_dense` , `dense_to_csr` ;
-- Added the `QiskitLayer` and `CirqLayer` interfaces.
-- Added `if_print_qcloud_log` support to the `QuantumBatchAsyncQcloudLayer` layer for printing qcloud logs.
-- Changed the installation command to `pip install pyvqnet --upgrade`.
-- The supported python version is `Python 3.10`.
-- Modified the specified mpicxx installation command.
+- Removidos `HybirdVQCQpanda3QVMLayer`, `QuantumLayerMultiProcess`, `TorchHybirdVQCQpanda3QVMLayer`;
+- Removidos `is_csr`, `csr_members`, `SparseHamiltonian`, `csr_to_dense`, `dense_to_csr`;
+- Adicionadas as interfaces `QiskitLayer` e `CirqLayer`.
+- Adicionado suporte a `if_print_qcloud_log` na camada `QuantumBatchAsyncQcloudLayer` para exibir logs do qcloud.
+- O comando de instalação foi alterado para `pip install pyvqnet --upgrade`.
+- A versão suportada do Python é `Python 3.10`.
+- Modificado o comando de instalação do mpicxx especificado.
 
 
 
-Fixed
+Corrigido
 ===================
 
-- Support the return values of the latest version of pyqpanda2QCloud;
-- Add input data device checks for the dot product interface;
-- Fixed a bug in `TorchModule` ;
+- Suporte aos valores de retorno da versão mais recente do pyqpanda2QCloud;
+- Adicionada verificação do dispositivo dos dados de entrada para a interface de produto interno;
+- Corrigido um bug em `TorchModule`;
 
 
 
 [v2.17.1] - 2025-8-22
 ***************************
 
-Added
+Adicionado
 ===================
 
-- Added the quantum natural gradient SPSA algorithm (qnspsa) interface, quantum circuit born machine (QBM), the quantum natural gradient interface with momentum, and a pure quantum QGRU example.
-- Added the ``torch_native`` backend.
-- Added a bit-parallel interface to support bit-parallel quantum circuits, and added a bit reordering function to reduce the number of bit swaps.
-- Added the ``split_groups`` method.
+- Adicionadas a interface do algoritmo SPSA de gradiente natural quântico (qnspsa), a máquina de Born de circuito quântico (QBM), a interface de gradiente natural quântico com momentum e um exemplo de QGRU puramente quântico.
+- Adicionado o backend ``torch_native``.
+- Adicionada uma interface de paralelismo de bits para suportar circuitos quânticos com paralelismo de bits, e adicionada uma função de reordenação de bits para reduzir o número de trocas de bits.
+- Adicionado o método ``split_groups``.
 
-Changed
+Alterado
 ==================
-- Changed the Linear layer implementation from `:math:`y = Ax + b` to `:math:`y = x@A.T + b`
-- Modified the ``obs`` parameter in the `MeasureAll` interface.
-- Removed the ``QuantumLayerES`` interface. Changed parameter names from ControllComm to ControlComm in `allgather_group`, `allreduce_group`, `reduce_group`, `broadcast_group`, and other interfaces.
-- Removed the `ncclsplitGroup` interface.
+- A implementação da camada Linear foi alterada de `:math:`y = Ax + b`` para `:math:`y = x@A.T + b``
+- Modificado o parâmetro ``obs`` na interface `MeasureAll`.
+- Removida a interface ``QuantumLayerES``. Nomes de parâmetros alterados de ControllComm para ControlComm em `allgather_group`, `allreduce_group`, `reduce_group`, `broadcast_group` e outras interfaces.
+- Removida a interface `ncclsplitGroup`.
 
-Fixed
+Corrigido
 ===================
-- Resolved synchronization delay issues with distributed communication interfaces.
-- Modified distributed communication interface definitions.
-- Resolved an issue where adjoint gradient calculations did not support ``PauliX``, ``PauliY``, and ``PauliZ``.
+- Resolvidos problemas de atraso de sincronização com interfaces de comunicação distribuída.
+- Modificadas as definições de interfaces de comunicação distribuída.
+- Resolvido um problema em que os cálculos de gradiente adjunto não suportavam ``PauliX``, ``PauliY`` e ``PauliZ``.
 
 
 [v2.17.0] - 2025-4-22
 ***************************
 
-Added
+Adicionado
 ===================
 
-- Added tensor network backend implementation for quantum circuit modules, including support for basic logic gates, measurement, and complex quantum circuits.
-- Added tensor network backend implementation for constructing large-qubit quantum circuits.
-- Added QTensor.swapaxes interface, another name is swapaxis.
+- Adicionada implementação de backend de rede de tensores para módulos de circuito quântico, incluindo suporte a portas lógicas básicas, medição e circuitos quânticos complexos.
+- Adicionada implementação de backend de rede de tensores para construção de circuitos quânticos de muitos qubits.
+- Adicionada interface QTensor.swapaxes, também conhecida como swapaxis.
 
-Changed
+Alterado
 ===================
-- Matrix operations using openblas.
-- Use sleef for CPU SIMD operations.
-- Remove qnn.MeasurePauliSum.
-- Throw warning when using torch backend calculations when torch is below version 2.4.
+- Operações matriciais usando openblas.
+- Uso de sleef para operações SIMD em CPU.
+- Removido qnn.MeasurePauliSum.
+- Exibição de aviso ao usar cálculos com backend torch quando o torch está abaixo da versão 2.4.
 
-Fixed
-====================
-- Resolved the problem of QMachine states when saving models.
-- Resolved the problem with layernorm and groupnorm when ``affine=False``.
-- Resolved the problem with ``QuantumLayerAdjoint`` in eval mode.
+Corrigido
+===================
+- Resolvido o problema dos estados do QMachine ao salvar modelos.
+- Resolvido o problema com layernorm e groupnorm quando ``affine=False``.
+- Resolvido o problema com ``QuantumLayerAdjoint`` no modo eval.
 
 [v2.16.0] - 2025-1-15
 ***************************
 
-Added
+Adicionado
 ===================
 
-- Added an interface for quantum circuit calculation using pyqpanda3.
-- The MeasureAll interface supports compound Pauli operators.
-- Added DataParallelVQCAdjointLayer and DataParallelVQCLayer interfaces.
+- Adicionada uma interface para cálculo de circuito quântico usando pyqpanda3.
+- A interface MeasureAll suporta operadores de Pauli compostos.
+- Adicionadas as interfaces DataParallelVQCAdjointLayer e DataParallelVQCLayer.
 
-Changed
+Alterado
 ===================
 
-- Removed outdated ONNX functions and most interfaces that integrated pyqpanda, while retaining some interfaces used in the sample code.
-- Modified the ``VQC_QuantumEmbedding`` interface.
-- When installing this package, pyqpanda is no longer installed; instead, pyqpanda3 is installed.
-- The VQC interface supports the use of `x[:,:2]` as input parameters, which originally only supported the `x[:,[2]]` format.
-- This software supports Python 3.10.
+- Removidas funções ONNX desatualizadas e a maioria das interfaces que integravam pyqpanda, mantendo algumas interfaces usadas no código de exemplo.
+- Modificada a interface ``VQC_QuantumEmbedding``.
+- Ao instalar este pacote, o pyqpanda não é mais instalado; em vez disso, o pyqpanda3 é instalado.
+- A interface VQC suporta o uso de `x[:,:2]` como parâmetros de entrada, que originalmente só suportava o formato `x[:,[2]]`.
+- Este software suporta Python 3.10.
 
-Fixed
-====================
-- Resolved the memory leak issue.
-- Resolved the GPU random number issue.
-- For reduce-related operations, the maximum supported array dimension has been increased from 8 to 30.
-- Optimized the code and improved Python code running speed in some cases.
+Corrigido
+===================
+- Resolvido o problema de vazamento de memória.
+- Resolvido o problema de números aleatórios em GPU.
+- Para operações relacionadas a reduce, a dimensão máxima suportada de array foi aumentada de 8 para 30.
+- Código otimizado e velocidade de execução do Python melhorada em alguns casos.
   
   
 [v2.15.0] - 2024-11-19
 ***************************
 
-Added
+Adicionado
 ===================
 
-- Added `pyvqnet.backends.set_backend()` interface. When users install `torch`, `torch` can be used to perform matrix calculations and variational quantum circuit calculations of QTensor. For details, see the document :ref:`torch_api`.
-- Added `pyvqnet.nn.torch` to inherit the neural network interface and variational quantum circuit neural interface of `torch.nn.Module`. For details, see the document :ref:`torch_api`.
+- Adicionada a interface `pyvqnet.backends.set_backend()`. Quando os usuários instalam `torch`, o `torch` pode ser usado para realizar cálculos matriciais e cálculos de circuito quântico variacional do QTensor. Para detalhes, consulte o documento :ref:`torch_api`.
+- Adicionado `pyvqnet.nn.torch` para herdar a interface de rede neural e a interface neural de circuito quântico variacional de `torch.nn.Module`. Para detalhes, consulte o documento :ref:`torch_api`.
 
-Changed
+Alterado
 ===================
-- Modified diag interface.
-- Modified all_gather implementation to be consistent with torch.distributed.all_gather.
-- Modify `QTensor` to support up to 30-dimensional data.
-- Modify `mpi4py` required for distributed functions to require version 4.0.1 or above
+- Interface diag modificada.
+- Implementação de all_gather modificada para ser consistente com torch.distributed.all_gather.
+- Modificado `QTensor` para suportar dados de até 30 dimensões.
+- Modificado `mpi4py` exigido para funções distribuídas para requerer versão 4.0.1 ou superior.
 
-Fixed
+Corrigido
 ===================
-- Some random number implementations could not fix the seed due to OpenMP.
-- Fixed some bugs in distributed startup.
+- Algumas implementações de números aleatórios não conseguiam fixar a semente devido ao OpenMP.
+- Corrigidos alguns bugs na inicialização distribuída.
 
 
 [v2.14.0] - 2024-09-30
 ***************************
 
-Added
+Adicionado
 ===================
 
-- Added block-encoding algorithms: ``VQC_LCU``, ``VQC_FABLE``, ``VQC_QSVT``, and qpanda algorithm implementations ``QPANDA_QSVT``, ``QPANDA_LCU``, ``QPANDA_FABLE``.
-- Added integer addition on quantum bits ``vqc_qft_add_to_register``, addition of numbers on two quantum bits ``vqc_qft_add_two_register``, and multiplication of numbers on two quantum bits ``vqc_qft_mul``.
-- Added hybrid qpanda and vqc training module ``HybirdVQCQpandaQVMLayer``.
-- Added ``einsum``, ``moveaxis``, ``eigh``, ``diagonal``, and other interface implementations.
-- Added tensor parallel computing functions in distributed computing: ``ColumnParallelLinear``, ``RowParallelLinear``.
-- Added Zero stage-1 function in distributed computing: ``ZeroModelInitial``.
-- ``QuantumBatchAsyncQcloudLayer``: when ``diff_method == "random_coordinate_descent"``, uses random parameter selection for gradient calculation instead of PSR.
+- Adicionados algoritmos de block-encoding: ``VQC_LCU``, ``VQC_FABLE``, ``VQC_QSVT``, e implementações de algoritmo qpanda ``QPANDA_QSVT``, ``QPANDA_LCU``, ``QPANDA_FABLE``.
+- Adicionada adição de inteiros em bits quânticos ``vqc_qft_add_to_register``, adição de números em dois bits quânticos ``vqc_qft_add_two_register`` e multiplicação de números em dois bits quânticos ``vqc_qft_mul``.
+- Adicionado módulo de treinamento híbrido qpanda e vqc ``HybirdVQCQpandaQVMLayer``.
+- Adicionadas implementações das interfaces ``einsum``, ``moveaxis``, ``eigh``, ``diagonal`` entre outras.
+- Adicionadas funções de computação paralela de tensores em computação distribuída: ``ColumnParallelLinear``, ``RowParallelLinear``.
+- Adicionada função Zero stage-1 em computação distribuída: ``ZeroModelInitial``.
+- ``QuantumBatchAsyncQcloudLayer``: quando ``diff_method == "random_coordinate_descent"``, usa seleção aleatória de parâmetros para cálculo de gradiente em vez de PSR.
 
-Changed
-====================
-- Deleted the xtensor part.
-- The API documentation has been partially restructured. Distinguished between quantum machine learning examples based on automatic differentiation and those based on qpanda, and distinguished between quantum machine learning interfaces based on automatic differentiation and example interfaces based on qpanda.
-- `matmul` supports 1d@1d, 2d@1d, 1d@2d.
-- Added some quantum computing layer aliases: ``QpandaQCircuitVQCLayer`` = ``QuantumLayer``, ``QpandaQCircuitVQCLayerLite`` = ``QuantumLayerV2``, ``QpandaQProgVQCLayer`` = ``QuantumLayerV3``.
+Alterado
+===================
+- Deletada a parte xtensor.
+- A documentação da API foi parcialmente reestruturada. Distinguidos entre exemplos de aprendizado de máquina quântico baseados em diferenciação automática e aqueles baseados em qpanda, e distinguidos entre interfaces de aprendizado de máquina quântico baseadas em diferenciação automática e interfaces de exemplo baseadas em qpanda.
+- `matmul` suporta 1d@1d, 2d@1d, 1d@2d.
+- Adicionados alguns aliases de camada de computação quântica: ``QpandaQCircuitVQCLayer`` = ``QuantumLayer``, ``QpandaQCircuitVQCLayerLite`` = ``QuantumLayerV2``, ``QpandaQProgVQCLayer`` = ``QuantumLayerV3``.
 
-Fixed
-====================
-- Modified the underlying communication interfaces ``allreduce``, ``allgather``, ``reduce``, ``broadcast`` in the distributed computing function, and added support for ``core.Tensor`` data communication.
-- Resolved the bug in random number generation.
-- Resolved the error in converting VQC's ``RXX``, ``RYY``, ``RZZ``, ``RZX`` to originIR.
+Corrigido
+===================
+- Modificadas as interfaces de comunicação subjacentes ``allreduce``, ``allgather``, ``reduce``, ``broadcast`` na função de computação distribuída, e adicionado suporte para comunicação de dados ``core.Tensor``.
+- Resolvido o bug na geração de números aleatórios.
+- Resolvido o erro na conversão de ``RXX``, ``RYY``, ``RZZ``, ``RZX`` do VQC para originIR.
 
 
 [v2.13.0] - 2024-07-30
 ***************************
 
-Added
+Adicionado
 ==================
 
-- Added `no_grad`, `GroupNorm`, `Interpolate`, `contiguous`, `QuantumLayerV3`, `fuse_model`, `SDPA` interfaces.
-- Added Quantum Dropout method to avoid overfitting.
+- Adicionadas interfaces `no_grad`, `GroupNorm`, `Interpolate`, `contiguous`, `QuantumLayerV3`, `fuse_model`, `SDPA`.
+- Adicionado método Quantum Dropout para evitar overfitting.
 
-Changed
+Alterado
 ===================
 
-- Added affine interface to `BatchNorm`, `LayerNorm`, `GroupNorm`.
-- `diag` interface now returns 1d output on the diagonal for 2d input, consistent with torch.
-- Operations such as slice and permute will try to use the view method to return a QTensor in shared memory.
-- All interfaces support non-contiguous input.
-- `Adam` supports the weight_decay parameter.
+- Adicionada interface affine a `BatchNorm`, `LayerNorm`, `GroupNorm`.
+- A interface `diag` agora retorna saída 1d na diagonal para entrada 2d, consistente com torch.
+- Operações como slice e permute tentarão usar o método view para retornar um QTensor em memória compartilhada.
+- Todas as interfaces suportam entrada não contígua.
+- `Adam` suporta o parâmetro weight_decay.
 
-Fixed
-====================
-- Modify the error of some logic gate decomposition functions of VQC.
-- Fix the memory leak problem of some functions.
-- Fix the problem that `QuantumLayerMultiProcess` does not support GPU input.
-- Modify the default parameter initialization method of `Linear`
+Corrigido
+===================
+- Modificado o erro de algumas funções de decomposição de portas lógicas do VQC.
+- Corrigido o problema de vazamento de memória de algumas funções.
+- Corrigido o problema de `QuantumLayerMultiProcess` não suportar entrada em GPU.
+- Modificado o método de inicialização de parâmetros padrão de `Linear`.
 
 
 [v2.12.0] - 2024-05-01
 ***************************
 
-Added
+Adicionado
 ===================
 
-- Added PipelineParallelTrainingWrapper interface.
-- Added `Gelu`, `DropPath`, `binomial`, `adamW` interfaces.
-- Added `QuantumBatchAsyncQcloudLayer` to support pyqpanda's local virtual machine simulation calculation.
-- Add xtensor's `QuantumBatchAsyncQcloudLayer` to support pyqpanda's local virtual machine simulation calculation and real machine calculation.
-- Enables QTensor to be deepcopy and pickle.
-- Add distributed computing startup command `vqnetrun`, used when using the distributed computing interface.
-- Add ES gradient calculation method real machine interface `QuantumBatchAsyncQcloudLayerES` to support local VM simulation calculations as well as real machine calculations for pyqpanda.
-- Add data communication interfaces `allreduce`, `reduce`, `broadcast`, `allgather`, `send`, `recv`, etc. that support QTensor in distributed computing.
+- Adicionada interface PipelineParallelTrainingWrapper.
+- Adicionadas interfaces `Gelu`, `DropPath`, `binomial`, `adamW`.
+- Adicionado `QuantumBatchAsyncQcloudLayer` para suportar cálculo de simulação em máquina virtual local do pyqpanda.
+- Adicionado `QuantumBatchAsyncQcloudLayer` do xtensor para suportar cálculo de simulação em máquina virtual local do pyqpanda e cálculo em máquina real.
+- Habilita QTensor a ser deepcopy e pickle.
+- Adicionado comando de inicialização de computação distribuída `vqnetrun`, usado ao utilizar a interface de computação distribuída.
+- Adicionada interface de máquina real para método de cálculo de gradiente ES `QuantumBatchAsyncQcloudLayerES` para suportar simulação em VM local, bem como cálculos em máquina real para pyqpanda.
+- Adicionadas interfaces de comunicação de dados `allreduce`, `reduce`, `broadcast`, `allgather`, `send`, `recv`, etc., que suportam QTensor em computação distribuída.
 
-Changed
+Alterado
 ===================
 
-- Added new dependencies "Pillow" and "hjson" to the installation package, add new dependencies "psutil" and "cloudpickle" on linux systems .
-- Optimize softmax and transpose running speed under GPU.
-- Compiled using cuda11.8.
-- Integration of distributed computing interfaces under cpu and gpu based.
+- Adicionadas novas dependências "Pillow" e "hjson" ao pacote de instalação; adicionadas novas dependências "psutil" e "cloudpickle" em sistemas Linux.
+- Otimizadas as velocidades de execução de softmax e transpose em GPU.
+- Compilado usando cuda11.8.
+- Integração de interfaces de computação distribuída baseadas em CPU e GPU.
 
-Fixed
+Corrigido
 ===================
-- Reduce the memory consumption when starting the Linux-GPU version.
-- Fixed the memory leak problem of select and power functions.
-- Removed model parameters and gradient update methods `nccl_average_parameters_reduce`, `nccl_average_grad_reduce` based on the reduce method for cpu, gpu.
+- Reduzido o consumo de memória ao iniciar a versão Linux-GPU.
+- Corrigido o problema de vazamento de memória das funções select e power.
+- Removidos os métodos de atualização de parâmetros e gradientes do modelo `nccl_average_parameters_reduce`, `nccl_average_grad_reduce` baseados no método reduce para CPU e GPU.
 
 [v2.11.0] - 2024-03-01
 ***************************
 
-Added
+Adicionado
 ===================
 
-- Added new `QNG` (Quantum Natural Gradient) API and demo.
-- Added quantum circuit optimization, such as `wrapper_single_qubit_op_fuse`, `wrapper_commute_controlled`, `wrapper_merge_rotations` api and demo.
-- Added `CY`, `SparseHamiltonian`, `HermitianExpval`.
-- Added `is_csr`, `is_dense`, `dense_to_csr`, `csr_to_dense`.
-- Added `QuantumBatchAsyncQcloudLayer` to support pyqpanda's QCloud real chip calculation, `expval_qcloud`.
-- Add NCCL-based interface implementations for parallel model training of multi-GPU distributed computing data on a single node `nccl_average_parameters_allreduce`, `nccl_average_parameters_reduce`, `nccl_average_grad_allreduce`, `nccl_average_grad_reduce`, and classes to control NCCL initialization and related operations `NCCL_api`. 
-- Add quantum line evolution strategy gradient calculation interface `QuantumLayerES`.
+- Adicionada nova API `QNG` (Quantum Natural Gradient) e demonstração.
+- Adicionada otimização de circuito quântico, como as APIs e demonstrações `wrapper_single_qubit_op_fuse`, `wrapper_commute_controlled`, `wrapper_merge_rotations`.
+- Adicionados `CY`, `SparseHamiltonian`, `HermitianExpval`.
+- Adicionados `is_csr`, `is_dense`, `dense_to_csr`, `csr_to_dense`.
+- Adicionado `QuantumBatchAsyncQcloudLayer` para suportar cálculo em chip real QCloud do pyqpanda, `expval_qcloud`.
+- Adicionadas implementações de interface baseadas em NCCL para treinamento paralelo de modelo de dados de computação distribuída multi-GPU em um único nó: `nccl_average_parameters_allreduce`, `nccl_average_parameters_reduce`, `nccl_average_grad_allreduce`, `nccl_average_grad_reduce`, e classes para controlar a inicialização do NCCL e operações relacionadas `NCCL_api`.
+- Adicionada interface de cálculo de gradiente de estratégia de evolução de linha quântica `QuantumLayerES`.
 
-Changed
+Alterado
 ===================
 
-- Refactored `VQC_CSWAP` circuit into `CSWAP`.
-- Delete old QNG documents.
-- Removed useless `num_wires` parameter from `pyvqnet.qnn.vqc` for functions and classes.
-- Refactor `MeasureAll`, `Probability` api.
-- Add qtype parameter to `QuantumMeasure`.
+- Circuito `VQC_CSWAP` refatorado para `CSWAP`.
+- Documentos QNG antigos deletados.
+- Parâmetro `num_wires` inútil removido de funções e classes em `pyvqnet.qnn.vqc`.
+- APIs `MeasureAll`, `Probability` refatoradas.
+- Parâmetro qtype adicionado a `QuantumMeasure`.
 
-Fixed
+Corrigido
 ===================
-- Changed `QuantumMeasure`'s slots to shots.
+- `QuantumMeasure` alterado de slots para shots.
 
 [v2.10.0] - 2023-12-30
 ***************************
 
-Added
+Adicionado
 ===========
-- Added new interfaces under pyvqnet.qnn.vqc: IsingXX, IsingXY, IsingYY, IsingZZ, SDG, TDG, PhaseShift, MultiRZ, MultiCnot, MultixCnot, ControlledPhaseShift, SingleExcitation, DoubleExcitation, VQC_AllSinglesDoubles, ExpressiveEntanglingAnsatz, etc.;
-- Added pyvqnet.qnn.vqc.QuantumLayerAdjoint interface that supports adjoint gradient calculation;
-- Supported the mutual conversion function between originIR and VQC;
-- Supported classical and quantum module information in statistical VQC models;
-- Added two cases under the quantum classical neural network hybrid model: quantum convolutional neural network model based on small samples, and quantum kernel function model for handwritten digit recognition.
+- Adicionadas novas interfaces em pyvqnet.qnn.vqc: IsingXX, IsingXY, IsingYY, IsingZZ, SDG, TDG, PhaseShift, MultiRZ, MultiCnot, MultixCnot, ControlledPhaseShift, SingleExcitation, DoubleExcitation, VQC_AllSinglesDoubles, ExpressiveEntanglingAnsatz, etc.;
+- Adicionada interface pyvqnet.qnn.vqc.QuantumLayerAdjoint que suporta cálculo de gradiente adjunto;
+- Suportada a função de conversão mútua entre originIR e VQC;
+- Suportadas informações de módulos clássicos e quânticos em modelos VQC estatísticos;
+- Adicionados dois casos sob o modelo híbrido de rede neural clássico-quântica: modelo de rede neural convolucional quântica baseado em pequenas amostras e modelo de função kernel quântica para reconhecimento de dígitos manuscritos.
 
 
 [v2.9.0] - 2023-09-08
 ***************************
 
-Added
+Adicionado
 ===================
-- The xtensor interface definition has been added to support automatic operator parallelism and multiple CPU/GPU backends. It includes more than 150 interfaces for commonly used mathematics, logic, and matrix calculations for multi-dimensional arrays, as well as common classic neural network layers and optimizers.
+- A definição da interface xtensor foi adicionada para suportar paralelismo automático de operadores e múltiplos backends CPU/GPU. Inclui mais de 150 interfaces para matemática comum, lógica e cálculos matriciais para arrays multidimensionais, bem como camadas de rede neural clássicas comuns e otimizadores.
 
-Changed
+Alterado
 ===================
-- version from v2.0.8 bumps to v2.9.0.
-- packages are uploaded in the company's PyPI repository, use ``pip install pyvqnet --index-url <pypi_url>`` .
+- Versão de v2.0.8 para v2.9.0.
+- Pacotes são enviados no repositório PyPI da empresa, use ``pip install pyvqnet --index-url <pypi_url>``.
 
 
 [v2.0.8] - 2023-07-26
 ***************************
 
-Added
+Adicionado
 ===================
-- Added existing interfaces to support complex128, complex64, double, float, uint8, int8, bool, int16, int32, int64 and other types of computing (gpu).
-- Basic logic gates based on vqc: Hadamard, CNOT, I, RX, RY, PauliZ, PauliX, PauliY, S, RZ, RXX, RYY, RZZ, RZX, X1, Y1, Z1, U1, U2, U3, T, SWAP , P, TOFFOLI, CZ, CR, ISWAP.
-- Combined quantum circuit based on vqc: VQC_HardwareEfficientAnsatz,VQC_BasicEntanglerTemplate,VQC_StronglyEntanglingTemplate,VQC_QuantumEmbedding,VQC_RotCircuit,VQC_CRotCircuit,VQC_CSWAPcircuit,VQC_Controlled_Hadamard,VQC_CCZ,VQC_FermionicSingleExcitation,VQC_FermionicDoubleExcitation,VQC_UCCSD,VQC_QuantumPoolingCircuit,VQC_BasisEmbedding,VQC_AngleEmbedding,VQC_AmplitudeEmbedding,VQC_IQPEmbedding.
-- Measurement methods based on vqc: VQC_Purity, VQC_VarMeasure, VQC_DensityMatrixFromQstate, Probability, MeasureAll.
+- Adicionadas interfaces existentes para suportar computação (gpu) dos tipos complex128, complex64, double, float, uint8, int8, bool, int16, int32, int64 e outros.
+- Portas lógicas básicas baseadas em vqc: Hadamard, CNOT, I, RX, RY, PauliZ, PauliX, PauliY, S, RZ, RXX, RYY, RZZ, RZX, X1, Y1, Z1, U1, U2, U3, T, SWAP, P, TOFFOLI, CZ, CR, ISWAP.
+- Circuito quântico combinado baseado em vqc: VQC_HardwareEfficientAnsatz, VQC_BasicEntanglerTemplate, VQC_StronglyEntanglingTemplate, VQC_QuantumEmbedding, VQC_RotCircuit, VQC_CRotCircuit, VQC_CSWAPcircuit, VQC_Controlled_Hadamard, VQC_CCZ, VQC_FermionicSingleExcitation, VQC_FermionicDoubleExcitation, VQC_UCCSD, VQC_QuantumPoolingCircuit, VQC_BasisEmbedding, VQC_AngleEmbedding, VQC_AmplitudeEmbedding, VQC_IQPEmbedding.
+- Métodos de medição baseados em vqc: VQC_Purity, VQC_VarMeasure, VQC_DensityMatrixFromQstate, Probability, MeasureAll.
 
 
 [v2.0.7] - 2023-07-03
 ***************************
 
-Added
+Adicionado
 ===================
-- For classic neural network, add kron, gather, scatter, broadcast_to interfaces.
-- Added support for different data precision: data type dtype supports kbool, kuint8, kint8, kint16, kint32, kint64, kfloat32, kfloat64, kcomplex64, kcomplex128, which respectively represent bool, uint8_t, int8_t, int16_t, int32_t, int64_t, float, double, complex<float>, complex<double>.
-- Support python 3.8, 3.9, 3.10.
+- Para rede neural clássica, adicionadas interfaces kron, gather, scatter, broadcast_to.
+- Adicionado suporte a diferentes precisões de dados: o tipo de dado dtype suporta kbool, kuint8, kint8, kint16, kint32, kint64, kfloat32, kfloat64, kcomplex64, kcomplex128, que representam respectivamente bool, uint8_t, int8_t, int16_t, int32_t, int64_t, float, double, complex<float>, complex<double>.
+- Suporte a Python 3.8, 3.9, 3.10.
 
-Changed
+Alterado
 ===================
-- The init function of QTenor and Module class adds `dtype` parameter. The types of QTenor index and input of some neural network layers are restricted.
-- Quantum neural network, due to MacOS compatibility issues, the Mnist_Dataset and CIFAR10_Dataset interfaces have been removed.
+- A função init das classes QTenor e Module adiciona o parâmetro `dtype`. Os tipos do índice QTenor e da entrada de algumas camadas de rede neural são restritos.
+- Rede neural quântica: devido a problemas de compatibilidade com MacOS, as interfaces Mnist_Dataset e CIFAR10_Dataset foram removidas.
 
 [v2.0.6] - 2023-02-22
 ***************************
 
 
-Added
+Adicionado
 ===================
 
-- Classic neural network, add interface: multinomial, pixel_shuffle, pixel_unshuffle, add numel for QTensor, add CPU dynamic memory pool function, add init_from_tensor interface for Parameter.
-- Classic neural network, add interface: Dynamic_LSTM, Dynamic_RNN, Dynamic_GRU.
-- Classic neural network, add interfaces: pad_sequence, pad_packed_sequence, pack_pad_sequence.
-- Quantum neural network, add interfaces: CCZ, Controlled_Hadamard, FermionicSingleExcitation, UCCSD, QuantumPoolingCircuit,
-- Quantum neural network, add interfaces: Quantum_Embedding, Mnist_Dataset, CIFAR10_Dataset, grad, Purity.
-- Quantum neural network, adding examples: based on gradient clipping, quanvolution, quantum circuit expressiveness, barren plateau, and quantum reinforcement learning QDRL.
+- Rede neural clássica: adicionadas interfaces multinomial, pixel_shuffle, pixel_unshuffle; adicionado numel para QTensor; adicionada função de pool de memória dinâmica em CPU; adicionada interface init_from_tensor para Parameter.
+- Rede neural clássica: adicionadas interfaces Dynamic_LSTM, Dynamic_RNN, Dynamic_GRU.
+- Rede neural clássica: adicionadas interfaces pad_sequence, pad_packed_sequence, pack_pad_sequence.
+- Rede neural quântica: adicionadas interfaces CCZ, Controlled_Hadamard, FermionicSingleExcitation, UCCSD, QuantumPoolingCircuit.
+- Rede neural quântica: adicionadas interfaces Quantum_Embedding, Mnist_Dataset, CIFAR10_Dataset, grad, Purity.
+- Rede neural quântica: adicionados exemplos baseados em recorte de gradiente, quanvolution, expressividade de circuito quântico, planalto estéril (barren plateau) e aprendizado por reforço quântico QDRL.
 
-Changed
+Alterado
 ===================
 
-- API documentation, restructure the content structure, add "quantum machine learning research" module, change "VQNet2ONNX module" to "Other Utility Functions".
+- Documentação da API: reestruturado o conteúdo; adicionado o módulo "quantum machine learning research"; "VQNet2ONNX module" alterado para "Other Utility Functions".
 
 
 
-fixed
+Corrigido
 ===================
 
-- Classical neural network, solving the problem that the same random seed produces different normal distributions across platforms.
-- Quantum neural network, implement expval, ProbMeasure, QuantumMeasure support for QPanda GPU virtual machine.
+- Rede neural clássica: resolvido o problema de que a mesma semente aleatória produzia diferentes distribuições normais entre plataformas.
+- Rede neural quântica: implementados expval, ProbMeasure, QuantumMeasure com suporte para máquina virtual GPU do QPanda.
 
 
 [v2.0.5] - 2022-12-25
 ***************************
 
 
-Added
+Adicionado
 ===================
 
-- Classical neural network, add log_softmax implementation, add the interface export_model function of the model to ONNX.
-- Classic neural network, which supports the conversion of most of the existing classic neural network modules to ONNX. For details, refer to the API document "VQNet2ONNX module".
-- Quantum neural network, add VarMeasure, MeasurePauliSum, Quantum_Embedding, SPSA and other interfaces
-- Quantum neural network, adding LinearGNN, ConvGNN, ConvGNN, QMLP, quantum natural gradient, quantum random parameter-shift algorithm, DoublySGD algorithm, etc.
+- Rede neural clássica: adicionada implementação de log_softmax; adicionada função export_model do modelo para ONNX.
+- Rede neural clássica: suporta a conversão da maioria dos módulos de rede neural clássica existentes para ONNX. Para detalhes, consulte o documento da API "VQNet2ONNX module".
+- Rede neural quântica: adicionadas interfaces VarMeasure, MeasurePauliSum, Quantum_Embedding, SPSA e outras.
+- Rede neural quântica: adicionados LinearGNN, ConvGNN, QMLP, gradiente natural quântico, algoritmo de deslocamento de parâmetro quântico aleatório, algoritmo DoublySGD, etc.
 
 
-Changed
+Alterado
 ===================
 
-- Classic Neural Networks, added dimensionality checks for BN1d, BN2d interfaces.
+- Redes neurais clássicas: adicionadas verificações de dimensionalidade para interfaces BN1d, BN2d.
 
-fixed
+Corrigido
 ==================
 
-- Solve the bug of maxpooling parameter checking.
-- Solve [::-1] slice bug.
+- Resolvido o bug de verificação de parâmetros de maxpooling.
+- Resolvido o bug de slice [::-1].
 
 
 [v2.0.4] - 2022-09-20
 ***************************
 
 
-Added
+Adicionado
 ==================
 
-- Classical neural network, adding LayernormNd implementation, supporting multi-dimensional data layernorm calculation.
-- Classical neural network, add CrossEntropyLoss and NLL_Loss loss function calculation interface, support 1-dimensional to N-dimensional input.
-- Quantum neural network, adding common circuit templates: HardwareEfficientAnsatz, StronglyEntanglingTemplate, BasicEntanglerTemplate.
-- Quantum neural network, adding the Mutal_info interface for calculating the mutual information of qubit subsystems, Von Neumann entropy VB_Entropy, and density matrix DensityMatrixFromQstate.
-- Quantum neural network, add quantum perceptron algorithm example QuantumNeuron, add quantum Fourier series algorithm example.
-- Quantum neural network, adding the interface QuantumLayerMultiProcess that supports multi-process accelerated operation of quantum circuits.
+- Rede neural clássica: adicionada implementação de LayernormNd, suportando cálculo de layernorm para dados multidimensionais.
+- Rede neural clássica: adicionadas interfaces de função de perda CrossEntropyLoss e NLL_Loss, suportando entrada de 1 a N dimensões.
+- Rede neural quântica: adicionados templates de circuito comuns: HardwareEfficientAnsatz, StronglyEntanglingTemplate, BasicEntanglerTemplate.
+- Rede neural quântica: adicionada interface Mutal_info para calcular informação mútua de subsistemas de qubits, entropia de Von Neumann VB_Entropy e matriz densidade DensityMatrixFromQstate.
+- Rede neural quântica: adicionado exemplo de algoritmo perceptron quântico QuantumNeuron e exemplo de algoritmo de série de Fourier quântica.
+- Rede neural quântica: adicionada interface QuantumLayerMultiProcess que suporta operação acelerada por múltiplos processos de circuitos quânticos.
 
-Changed
+Alterado
 ==================
 
-- Classical neural network, supports group convolution parameter group, dilation_rate of dilated convolution, and arbitrary value padding as parameters for one-dimensional convolution Conv1d, two-dimensional convolution Conv2d, and deconvolution ConvT2d.
-- Skip the broadcast operation for data in the same dimension, reducing unnecessary running logic.
+- Rede neural clássica: suporta grupo de convolução (group), taxa de dilatação (dilation_rate) de convolução dilatada e preenchimento de valor arbitrário como parâmetros para convolução unidimensional Conv1d, convolução bidimensional Conv2d e deconvolução ConvT2d.
+- Operação de broadcast ignorada para dados na mesma dimensão, reduzindo lógica de execução desnecessária.
 
-fixed
+Corrigido
 ==================
 
-- Resolved the problem where the stack function calculated incorrectly under certain parameters.
+- Resolvido o problema em que a função stack calculava incorretamente sob certos parâmetros.
 
 
 [v2.0.3] - 2022-07-15
 ***************************
 
 
-Added
+Adicionado
 ==================
 
-- Add support for stack, bidirectional recurrent neural network interface: RNN, LSTM, GRU
-- Add interfaces for common calculation performance indicators: MSE, RMSE, MAE, R_Square, precision_recall_f1_2_score, precision_recall_f1_Multi_score,precision_recall_f1_N_score, auc_calculate
-- Increase the algorithm example of quantum kernel SVM
+- Adicionado suporte a stack e interfaces de rede neural recorrente bidirecional: RNN, LSTM, GRU.
+- Adicionadas interfaces para indicadores comuns de desempenho de cálculo: MSE, RMSE, MAE, R_Square, precision_recall_f1_2_score, precision_recall_f1_Multi_score, precision_recall_f1_N_score, auc_calculate.
+- Adicionado exemplo de algoritmo de SVM kernel quântico.
 
-Changed
+Alterado
 ==================
 
-- Speed up the print speed when there is too much QTensor data
-- Use openmp to accelerate calculations under Windows and Linux.
+- Velocidade de impressão acelerada quando há muitos dados QTensor.
+- Uso de openmp para acelerar cálculos no Windows e Linux.
 
-fixed
+Corrigido
 ==================
 
-- Resolved the issue where some Python import methods failed to import.
-- Resolved the issue of repeated batch normalization (BN) layer calculations.
-- Resolved the bug where ``QTensor.reshape`` and ``transpose`` interfaces could not compute gradients.
-- Added input parameter shape validation for the ``tensor.power`` interface.
+- Resolvido o problema em que alguns métodos de importação do Python falhavam ao importar.
+- Resolvido o problema de cálculos repetidos da camada de normalização em lote (BN).
+- Resolvido o bug em que as interfaces ``QTensor.reshape`` e ``transpose`` não conseguiam calcular gradientes.
+- Adicionada validação de forma dos parâmetros de entrada para a interface ``tensor.power``.
 
 [v2.0.2] - 2022-05-15
 ***************************
 
 
-Added
+Adicionado
 ==================
 
-- Added topK, argtoK
-- increase cumsum
-- Added masked_fill
-- Increase triu, tril
-- Added examples of random distribution generated by QGAN
+- Adicionados topK, argtoK.
+- Adicionado cumsum.
+- Adicionado masked_fill.
+- Adicionados triu, tril.
+- Adicionados exemplos de distribuição aleatória gerada por QGAN.
 
-Changed
+Alterado
 ==================
 
-- Support advanced slice index and common slice index
-- matmul supports 3D, 4D tensor operations
-- Modify HardSigmoid function implementation
+- Suporte a índice de slice avançado e índice de slice comum.
+- matmul suporta operações de tensor 3D e 4D.
+- Modificada a implementação da função HardSigmoid.
 
-fixed
+Corrigido
 ==================
 
-- Resolved the issue where convolution, batch normalization, deconvolution, pooling layers, and other layers did not cache internal variables, causing gradient calculation issues during multiple back-passes after one forward pass.
-- Fixed implementation and example of QLinear layer
-- Resolved the issue where Image failed to load when importing VQNet in a conda environment on macOS.
+- Resolvido o problema em que camadas de convolução, normalização em lote, deconvolução, pooling e outras não armazenavam em cache variáveis internas, causando problemas de cálculo de gradiente durante múltiplas retropropagações após uma única propagação forward.
+- Corrigida implementação e exemplo da camada QLinear.
+- Resolvido o problema em que Image falhava ao carregar ao importar VQNet em um ambiente conda no macOS.
 
 
 
@@ -489,13 +489,13 @@ fixed
 **************************
 
 
-Added
+Adicionado
 ==================
 
-- More than 100 basic QTensor data structure interfaces have been added, including creation functions, logic functions, mathematical functions, and matrix operations.
-- Added 14 basic neural network functions, including convolution, deconvolution, pooling, etc.
-- Add 4 loss functions, including MSE, BCE, CCE, SCE, etc.
-- Add 10 activation functions, including ReLu, Sigmoid, ELU, etc.
-- Add 6 optimizers, including SGD, RMSPROP, ADAM, etc.
-- Added machine learning examples: QVC, QDRL, Q-KMEANS, QUnet, HQCNN, VSQL, Quantum Autoencoder.
-- Add quantum machine learning layers: QuantumLayer, NoiseQuantumLayer.
+- Mais de 100 interfaces básicas de estrutura de dados QTensor foram adicionadas, incluindo funções de criação, funções lógicas, funções matemáticas e operações matriciais.
+- Adicionadas 14 funções básicas de rede neural, incluindo convolução, deconvolução, pooling, etc.
+- Adicionadas 4 funções de perda, incluindo MSE, BCE, CCE, SCE, etc.
+- Adicionadas 10 funções de ativação, incluindo ReLu, Sigmoid, ELU, etc.
+- Adicionados 6 otimizadores, incluindo SGD, RMSPROP, ADAM, etc.
+- Adicionados exemplos de aprendizado de máquina: QVC, QDRL, Q-KMEANS, QUnet, HQCNN, VSQL, Quantum Autoencoder.
+- Adicionadas camadas de aprendizado de máquina quântico: QuantumLayer, NoiseQuantumLayer.
