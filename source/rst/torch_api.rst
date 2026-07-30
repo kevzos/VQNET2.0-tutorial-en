@@ -3,24 +3,24 @@
 .. _torch_api:
 
 =============================================================
-VQNet uses torch for low-level computation
+VQNet utilizza torch per il calcolo a basso livello
 =============================================================
 
-Starting from version 2.15.0, this software supports using `torch` as the computing backend for low-level operations and can be integrated with models, codes, and third-party libraries based on `torch` for secondary development.
+A partire dalla versione 2.15.0, questo software supporta l'uso di `torch` come backend di calcolo per le operazioni a basso livello e puo essere integrato con modelli, codici e librerie di terze parti basate su `torch` per lo sviluppo secondario.
 
     .. important::
 
-        To use the following features, please install torch>=2.11.0 yourself. If installing a GPU version of torch, you need to use a version compatible with CUDA 12.6, otherwise your torch may not work due to NVIDIA CUDA runtime library issues. This software does not automatically install torch during installation.
+        Per utilizzare le seguenti funzionalita, installa torch>=2.11.0 autonomamente. Se installi una versione GPU di torch, devi usare una versione compatibile con CUDA 12.6, altrimenti il tuo torch potrebbe non funzionare a causa di problemi con la libreria runtime NVIDIA CUDA. Questo software non installa automaticamente torch durante l'installazione.
 
     .. note::
 
-        The variational quantum computation functions (with lowercase naming, such as `rx` , `ry` , `rz` , etc.) in :ref:`vqc_api`, as well as the basic computation functions of QTensor in :ref:`qtensor_api` ,
-        can take a `QTensor` as input after calling ``pyvqnet.backends.set_backend("torch")`` , with the `data` member of `QTensor` changing from pyvqnet's Tensor to ``torch.Tensor`` for computation.
+        Le funzioni di calcolo quantistico variazionale (con nome in minuscolo, come `rx`, `ry`, `rz`, ecc.) in :ref:`vqc_api`, cosi come le funzioni di calcolo base di QTensor in :ref:`qtensor_api`,
+        possono accettare un `QTensor` come input dopo aver chiamato ``pyvqnet.backends.set_backend("torch")``, con il membro `data` di `QTensor` che passa dal Tensor di pyvqnet a ``torch.Tensor`` per il calcolo.
 
-        ``pyvqnet.backends.set_backend("torch")`` and ``pyvqnet.backends.set_backend("pyvqnet")`` modify the global computation backend.
-        ``QTensor`` objects created under different backend configurations cannot be mixed in computations.
+        ``pyvqnet.backends.set_backend("torch")`` e ``pyvqnet.backends.set_backend("pyvqnet")`` modificano il backend di calcolo globale.
+        Gli oggetti ``QTensor`` creati con configurazioni di backend diverse non possono essere mescolati nei calcoli.
 
-Basic Backend Configuration
+Configurazione Base del Backend
 ============================================
 
 set_backend
@@ -28,24 +28,24 @@ set_backend
 
 .. py:function:: pyvqnet.backends.set_backend(backend_name)
 
-    Sets the backend for current computations and data storage. The default is "pyvqnet-ad", but it can be set to "torch","torch-native", "pyvqnet-ad".
+    Imposta il backend per i calcoli e l'archiviazione dei dati correnti. Il valore predefinito e "pyvqnet-ad", ma puo essere impostato su "torch", "torch-native", "pyvqnet-ad".
     
-    After calling ``pyvqnet.backends.set_backend("torch")``, the interface remains unchanged. VQNet's ``QTensor`` ``data`` member variable all uses ``torch.Tensor`` to store data.
-    :ref:`qtensor_api` , :ref:`vqc_api` , and ``pyvqnet.nn.torch`` interfaces accept ``QTensor`` as input and ``QTensor`` as output.
+    Dopo aver chiamato ``pyvqnet.backends.set_backend("torch")``, l'interfaccia rimane invariata. La variabile membro ``data`` di ``QTensor`` di VQNet utilizza ``torch.Tensor`` per archiviare i dati.
+    :ref:`qtensor_api`, :ref:`vqc_api` e le interfacce ``pyvqnet.nn.torch`` accettano ``QTensor`` come input e ``QTensor`` come output.
 
-    After calling ``pyvqnet.backends.set_backend("torch-native")``, the interfaces remain unchanged: :ref:`qtensor_api`, :ref:`vqc_api`, and the `pyvqnet.nn.torch` interface.
-    Inputs can directly accept ``torch.Tensor`` or ``QTensor`` types, and outputs are ``torch.Tensor``, eliminating the need for conversion to ``QTensor``, thus reducing data conversion.
+    Dopo aver chiamato ``pyvqnet.backends.set_backend("torch-native")``, le interfacce rimangono invariate: :ref:`qtensor_api`, :ref:`vqc_api` e l'interfaccia `pyvqnet.nn.torch`.
+    Gli input possono accettare direttamente tipi ``torch.Tensor`` o ``QTensor`` e gli output sono ``torch.Tensor``, eliminando la necessita di conversione in ``QTensor``, riducendo cosi la conversione dei dati.
     
-    After calling ``pyvqnet.backends.set_backend("pyvqnet")``, the ``data`` member of VQNet's ``QTensor`` will store data using ``pyvqnet._core.Tensor`` , and computations will use the pyvqnet C++ library.
+    Dopo aver chiamato ``pyvqnet.backends.set_backend("pyvqnet")``, il membro ``data`` di ``QTensor`` di VQNet archiviera i dati usando ``pyvqnet._core.Tensor`` e i calcoli utilizzeranno la libreria C++ di pyvqnet.
 
-    After calling ``pyvqnet.backends.set_backend("pyvqnet-ad")``, the ``data`` member of VQNet's ``QTensor`` will store data using ``pyvqnet._core.Tensor`` , and computations will use the pyvqnet C++ library with performance boosted.
+    Dopo aver chiamato ``pyvqnet.backends.set_backend("pyvqnet-ad")``, il membro ``data`` di ``QTensor`` di VQNet archiviera i dati usando ``pyvqnet._core.Tensor`` e i calcoli utilizzeranno la libreria C++ di pyvqnet con prestazioni migliorate.
 
 
     .. note::
 
-        This function modifies the current computation backend. ``QTensor`` objects created under different backends cannot be used together in computations.
+        Questa funzione modifica il backend di calcolo corrente. Gli oggetti ``QTensor`` creati con backend diversi non possono essere utilizzati insieme nei calcoli.
 
-    :param backend_name: Name of the backend,can be "pyvqnet" or "torch".
+    :param backend_name: Nome del backend, puo essere "pyvqnet" o "torch".
 
     Example::
 
@@ -57,13 +57,13 @@ get_backend
 
 .. py:function:: pyvqnet.backends.get_backend(t=None)
 
-    If `t` is None, it retrieves the current computation backend.
-    If `t` is a QTensor, it returns the backend used to create the QTensor based on its ``data`` property.
-    If "torch" is the backend, it returns the pyvqnet torchAPI backend.
-    If "pyvqnet" is the backend, it simply returns "pyvqnet".
+    Se `t` e None, recupera il backend di calcolo corrente.
+    Se `t` e un QTensor, restituisce il backend utilizzato per creare il QTensor in base alla sua proprieta ``data``.
+    Se "torch" e il backend, restituisce il backend torchAPI di pyvqnet.
+    Se "pyvqnet" e il backend, restituisce semplicemente "pyvqnet".
     
-    :param t: The current tensor (default: None).
-    :return: The backend. By default, it returns "pyvqnet".
+    :param t: Il tensore corrente (default: None).
+    :return: Il backend. Per impostazione predefinita, restituisce "pyvqnet".
 
     Example::
 
@@ -71,22 +71,22 @@ get_backend
         pyvqnet.backends.set_backend("torch")
         pyvqnet.backends.get_backend()
 
-QTensor Functions
+Funzioni QTensor
 ===================
 
-After setting the backend to ``torch``:
+Dopo aver impostato il backend su ``torch``:
 
 .. code-block::
 
     import pyvqnet
     pyvqnet.backends.set_backend("torch")
 
-All member functions, creation functions, mathematical functions, logical functions, matrix transformations, etc., under :ref:`qtensor_api` will use torchfor computation. The `QTensor.data` can be accessed to retrieve the torchdata.
+Tutte le funzioni membro, funzioni di creazione, funzioni matematiche, funzioni logiche, trasformazioni di matrici, ecc., in :ref:`qtensor_api` utilizzeranno torch per il calcolo. Si puo accedere a `QTensor.data` per recuperare i dati di torch.
 
-Classical Neural Network and Variational Quantum Neural Network Modules
+Moduli di Rete Neurale Classica e Rete Neurale Quantistica Variazionale
 ==========================================================================================
 
-Base Class
+Classe Base
 ------------------------------------------------
 
 TorchModule
@@ -94,26 +94,26 @@ TorchModule
 
 .. py:class:: pyvqnet.nn.torch.TorchModule(*args, **kwargs)
 
-    The base class that defines models when using the `torch` backend. This class inherits from both ``pyvqnet.nn.Module`` and ``torch.nn.Module``.
-    It can be added as a submodule to a torchmodel.
+    La classe base che definisce i modelli quando si utilizza il backend `torch`. Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module``.
+    Puo essere aggiunta come sottomodulo a un torchmodel.
 
     .. note::
 
-        This class and its derived classes are only suitable for use with ``pyvqnet.backends.set_backend("torch")``.
-        Do not mix with the default ``pyvqnet.nn`` `Module`.
+        Questa classe e le sue classi derivate sono adatte solo per l'uso con ``pyvqnet.backends.set_backend("torch")``.
+        Non mescolare con il `Module` predefinito di ``pyvqnet.nn``.
     
-        The data in the ``_buffers`` of this class is of type ``torch.Tensor``.
-        The data in the ``_parameters`` of this class is of type ``torch.nn.Parameter``.
+        I dati in ``_buffers`` di questa classe sono di tipo ``torch.Tensor``.
+        I dati in ``_parameters`` di questa classe sono di tipo ``torch.nn.Parameter``.
 
     .. py:method:: pyvqnet.nn.torch.TorchModule.forward(x, *args, **kwargs)
 
-        Abstract forward computation function for the TorchModule class.
+        Funzione astratta di calcolo forward per la classe TorchModule.
 
-        :param x: Input QTensor.
-        :param args: Non-keyword variable arguments.
-        :param kwargs: Keyword variable arguments.
+        :param x: QTensor di input.
+        :param args: Argomenti variabili non nominati.
+        :param kwargs: Argomenti variabili nominati.
 
-        :return: Output QTensor, with the internal `data` being a ``torch.Tensor``.
+        :return: QTensor di output, con `data` interno che e un ``torch.Tensor``.
 
         Example::
 
@@ -134,13 +134,13 @@ TorchModule
 
     .. py:method:: pyvqnet.nn.torch.TorchModule.state_dict(destination=None, prefix='')
 
-        Returns a dictionary containing the entire state of the module, including parameters and buffer values.
-        The keys are the names of the corresponding parameters and buffers.
+        Restituisce un dizionario contenente l'intero stato del modulo, inclusi parametri e valori dei buffer.
+        Le chiavi sono i nomi dei parametri e dei buffer corrispondenti.
 
-        :param destination: The dictionary to store the internal module parameters.
-        :param prefix: A prefix used for the names of parameters and buffers.
+        :param destination: Il dizionario in cui archiviare i parametri interni del modulo.
+        :param prefix: Un prefisso utilizzato per i nomi dei parametri e dei buffer.
 
-        :return: A dictionary containing the entire state of the module.
+        :return: Un dizionario contenente l'intero stato del modulo.
 
         Example::
 
@@ -152,12 +152,12 @@ TorchModule
 
     .. py:method:: pyvqnet.nn.torch.TorchModule.load_state_dict(state_dict, strict=True)
 
-        Copies parameters and buffers from the :attr:`state_dict` into this module and its submodules.
+        Copia i parametri e i buffer da :attr:`state_dict` in questo modulo e nei suoi sottomoduli.
 
-        :param state_dict: A dictionary containing parameters and persistent buffers.
-        :param strict: Whether to enforce that the keys in the state_dict match the model's `state_dict()`. Default: True.
+        :param state_dict: Un dizionario contenente parametri e buffer persistenti.
+        :param strict: Se imporre che le chiavi in state_dict corrispondano a `state_dict()` del modello. Default: True.
 
-        :return: An error message if there is an issue.
+        :return: Un messaggio di errore in caso di problemi.
 
         Examples::
 
@@ -182,18 +182,18 @@ TorchModule
 
     .. py:method:: pyvqnet.nn.torch.TorchModule.toGPU(device: int = DEV_GPU_0)
 
-        Moves the module and its submodule parameters and buffer data to the specified GPU device.
+        Sposta il modulo e i parametri dei sottomoduli e i dati dei buffer sul dispositivo GPU specificato.
 
-        The device specifies where the internal data is stored. When device >= DEV_GPU_0, data is stored on the GPU.
-        If your computer has multiple GPUs, you can specify different devices to store data. For example, device = DEV_GPU_1, DEV_GPU_2, DEV_GPU_3, ... refers to storage on GPUs with different serial numbers.
+        Il dispositivo specifica dove vengono archiviati i dati interni. Quando device >= DEV_GPU_0, i dati vengono archiviati sulla GPU.
+        Se il tuo computer ha piu GPU, puoi specificare dispositivi diversi per archiviare i dati. Ad esempio, device = DEV_GPU_1, DEV_GPU_2, DEV_GPU_3, ... si riferisce all'archiviazione su GPU con numeri di serie diversi.
         
         .. note::
 
-            Modules cannot perform computations across different GPUs.
-            If you attempt to create a QTensor on a GPU ID exceeding the maximum allowed for validation, a Cuda error will be raised.
+            I moduli non possono eseguire calcoli su GPU diverse.
+            Se tenti di creare un QTensor su un ID GPU che supera il massimo consentito per la convalida, verra sollevato un errore Cuda.
 
-        :param device: The device to store the QTensor on. Default: DEV_GPU_0. device = pyvqnet.DEV_GPU_0 stores on the first GPU, device = DEV_GPU_1 stores on the second GPU, and so on.
-        :return: The Module moved to the GPU device.
+        :param device: Il dispositivo su cui archiviare il QTensor. Default: DEV_GPU_0. device = pyvqnet.DEV_GPU_0 archivia sulla prima GPU, device = DEV_GPU_1 archivia sulla seconda GPU, e cosi via.
+        :return: Il modulo spostato sul dispositivo GPU.
 
         Examples::
 
@@ -207,9 +207,9 @@ TorchModule
 
     .. py:method:: pyvqnet.torch.TorchModule.toCPU()
 
-        Moves the module and its submodule parameters and buffer data to a specific CPU device.
+        Sposta il modulo e i parametri dei sottomoduli e i dati dei buffer su un dispositivo CPU specifico.
 
-        :return: The Module moved to the CPU device.
+        :return: Il modulo spostato sul dispositivo CPU.
 
         Examples::
 
@@ -227,13 +227,13 @@ TorchModuleList
 
 .. py:class:: pyvqnet.nn.torch.TorchModuleList(modules = None)
 
-    This module is used to store child ``TorchModule`` instances in a list. The TorchModuleList can be indexed like a regular Python list, and the internal parameters it contains can be saved.
+    Questo modulo viene utilizzato per archiviare istanze figlie di ``TorchModule`` in una lista. TorchModuleList puo essere indicizzata come una lista Python normale e i parametri interni che contiene possono essere salvati.
     
-    This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.nn.ModuleList``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.torch.TorchModule`` e ``pyvqnet.nn.ModuleList`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    :param modules: A list of ``pyvqnet.nn.torch.TorchModule``
+    :param modules: Una lista di ``pyvqnet.nn.torch.TorchModule``
 
-    :return: A TorchModuleList class
+    :return: Una classe TorchModuleList
 
     Example::
 
@@ -259,13 +259,13 @@ TorchParameterList
 
 .. py:class:: pyvqnet.nn.torch.TorchParameterList(value=None)
 
-    This module is used to store child ``pyvqnet.nn.Parameter`` instances in a list. The TorchParameterList can be indexed like a regular Python list, and the internal parameters it contains can be saved.
+    Questo modulo viene utilizzato per archiviare istanze figlie di ``pyvqnet.nn.Parameter`` in una lista. TorchParameterList puo essere indicizzata come una lista Python normale e i parametri interni che contiene possono essere salvati.
     
-    This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.nn.ParameterList``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.torch.TorchModule`` e ``pyvqnet.nn.ParameterList`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    :param value: A list of ``nn.Parameter``
+    :param value: Una lista di ``nn.Parameter``
 
-    :return: A TorchParameterList class
+    :return: Una classe TorchParameterList
 
     Example::
 
@@ -294,14 +294,14 @@ TorchSequential
 
 .. py:class:: pyvqnet.nn.torch.TorchSequential(*args)
 
-    The module adds modules in the order they are passed. Alternatively, you can pass an ``OrderedDict`` of modules. The ``forward()`` method of the ``Sequential`` class accepts any input and forwards it to its first module.
-    The output is then sequentially linked to the input of each subsequent module, with the final output being the result of the last module.
+    Il modulo aggiunge i moduli nell'ordine in cui vengono passati. In alternativa, puoi passare un ``OrderedDict`` di moduli. Il metodo ``forward()`` della classe ``Sequential`` accetta qualsiasi input e lo inoltra al suo primo modulo.
+    L'output viene quindi collegato sequenzialmente all'input di ciascun modulo successivo, con l'output finale che e il risultato dell'ultimo modulo.
 
-    This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.nn.Sequential``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.torch.TorchModule`` e ``pyvqnet.nn.Sequential`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    :param args: Modules to be added
+    :param args: Moduli da aggiungere
 
-    :return: A TorchSequential class
+    :return: Una classe TorchSequential
 
     Example::
 
@@ -327,37 +327,37 @@ TorchSequential
                 ]))
         print(model.state_dict().keys())
 
-Saving and Loading Model Parameters
+Salvataggio e Caricamento dei Parametri del Modello
+---------------------------------------------------
+
+Puoi usare ``save_parameters`` e ``load_parameters`` di :ref:`save_parameters` per salvare i parametri di un modello ``TorchModule`` come dizionario in un file, con i valori salvati come `numpy.ndarray`. In alternativa, puoi caricare il file dei parametri dal disco. Nota che la struttura del modello non viene salvata nel file e dovrai ricostruire manualmente la struttura del modello. Puoi anche usare direttamente ``torch.save`` e ``torch.load`` per leggere i parametri del modello ``torch`` poiche i parametri di ``TorchModule`` sono archiviati come oggetti ``torch.Tensor``.
+
+
+Moduli di Rete Neurale Classica
 --------------------------------------------
 
-You can use :ref:`save_parameters`'s ``save_parameters`` and ``load_parameters`` to save the parameters of a ``TorchModule`` model as a dictionary to a file, with the values saved as `numpy.ndarray`. Alternatively, you can load the parameter file from disk. Note that the model structure is not saved in the file, and you will need to manually reconstruct the model structure. You can also directly use ``torch.save`` and ``torch.load`` to read the ``torch`` model parameters since the parameters of ``TorchModule`` are stored as ``torch.Tensor`` objects.
-
-
-Classic Neural Network Modules
---------------------------------------------
-
-The following classic neural network modules all inherit from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as submodules to a torchmodel.
+I seguenti moduli di rete neurale classica ereditano tutti da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e possono essere aggiunti come sottomoduli a un torchmodel.
 
 Linear
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. py:class:: pyvqnet.nn.torch.Linear(input_channels, output_channels, weight_initializer=None, bias_initializer=None, use_bias=True, dtype=None, name: str = "")
 
-    A linear module (fully connected layer), :math:`y = x@A.T + b`.
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module`` and can be used as a submodule of a torchmodel.
+    Un modulo lineare (strato completamente connesso), :math:`y = x@A.T + b`.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere utilizzata come sottomodulo di un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param input_channels: `int` - The number of input channels.
-    :param output_channels: `int` - The number of output channels.
-    :param weight_initializer: `callable` - Weight initialization function, default is empty, using he_uniform.
-    :param bias_initializer: `callable` - Bias initialization function, default is empty, using he_uniform.
-    :param use_bias: `bool` - Whether to use the bias term, default is True.
-    :param dtype: Data type for the parameters, defaults to None, uses the default data type `kfloat32`, which represents 32-bit floating point numbers.
-    :param name: The name of the linear layer, default is "".
+    :param input_channels: `int` - Il numero di canali di input.
+    :param output_channels: `int` - Il numero di canali di output.
+    :param weight_initializer: `callable` - Funzione di inizializzazione dei pesi, default vuoto, utilizza he_uniform.
+    :param bias_initializer: `callable` - Funzione di inizializzazione del bias, default vuoto, utilizza he_uniform.
+    :param use_bias: `bool` - Se utilizzare il termine di bias, default True.
+    :param dtype: Tipo di dato per i parametri, default None, utilizza il tipo di dato predefinito `kfloat32`, che rappresenta numeri a virgola mobile a 32 bit.
+    :param name: Il nome dello strato lineare, default "".
 
-    :return: An instance of the Linear layer.
+    :return: Un'istanza dello strato Linear.
 
     Example::
 
@@ -380,32 +380,32 @@ Conv1D
 
 .. py:class:: pyvqnet.nn.torch.Conv1D(input_channels: int, output_channels: int, kernel_size: int, stride: int = 1, padding = "valid", use_bias: bool = True, kernel_initializer = None, bias_initializer = None, dilation_rate: int = 1, group: int = 1, dtype = None, name = "")
 
-    Perform 1D convolution on the input. The input to the Conv1D module has the shape (batch_size, input_channels, in_height).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be used as a submodule of a torchmodel.
+    Esegue una convoluzione 1D sull'input. L'input del modulo Conv1D ha la forma (batch_size, input_channels, in_height).
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere utilizzata come sottomodulo di un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param input_channels: `int` - The number of input channels.
-    :param output_channels: `int` - The number of output channels.
-    :param kernel_size: `int` - The size of the convolution kernel. The kernel shape is [output_channels, input_channels/group, kernel_size, 1].
-    :param stride: `int` - The stride, default is 1.
-    :param padding: `str|int` - Padding options, it can either be a string {'valid', 'same'} or an integer specifying the padding amount to be applied to the input. Default is "valid".
-    :param use_bias: `bool` - Whether to use the bias term, default is True.
-    :param kernel_initializer: `callable` - The convolution kernel initialization method. Default is empty, using kaiming_uniform.
-    :param bias_initializer: `callable` - The bias initialization method. Default is empty, using kaiming_uniform.
-    :param dilation_rate: `int` - The dilation size, default is 1.
-    :param group: `int` - The number of groups in the grouped convolution. Default is 1.
-    :param dtype: Data type for the parameters, defaults to None, uses the default data type `kfloat32`, which represents 32-bit floating point numbers.
-    :param name: The name of the module, default is "".
+    :param input_channels: `int` - Il numero di canali di input.
+    :param output_channels: `int` - Il numero di canali di output.
+    :param kernel_size: `int` - La dimensione del kernel di convoluzione. La forma del kernel e [output_channels, input_channels/group, kernel_size, 1].
+    :param stride: `int` - Il passo, default 1.
+    :param padding: `str|int` - Opzioni di padding, puo essere una stringa {'valid', 'same'} o un intero che specifica la quantita di padding da applicare all'input. Default "valid".
+    :param use_bias: `bool` - Se utilizzare il termine di bias, default True.
+    :param kernel_initializer: `callable` - Il metodo di inizializzazione del kernel di convoluzione. Default vuoto, utilizza kaiming_uniform.
+    :param bias_initializer: `callable` - Il metodo di inizializzazione del bias. Default vuoto, utilizza kaiming_uniform.
+    :param dilation_rate: `int` - La dimensione della dilatazione, default 1.
+    :param group: `int` - Il numero di gruppi nella convoluzione raggruppata. Default 1.
+    :param dtype: Tipo di dato per i parametri, default None, utilizza il tipo di dato predefinito `kfloat32`, che rappresenta numeri a virgola mobile a 32 bit.
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the 1D convolution.
+    :return: Un'istanza della convoluzione 1D.
 
     .. note::
 
-        ``padding='valid'`` does not apply padding.
+        ``padding='valid'`` non applica padding.
 
-        ``padding='same'`` applies zero-padding to the input, with the output's `out_height` equal to `ceil(in_height / stride)`, and does not support `stride > 1`.
+        ``padding='same'`` applica zero-padding all'input, con `out_height` dell'output uguale a `ceil(in_height / stride)` e non supporta `stride > 1`.
 
     Example::
 
@@ -427,32 +427,32 @@ Conv2D
 
 .. py:class:: pyvqnet.nn.torch.Conv2D(input_channels: int, output_channels: int, kernel_size: tuple, stride: tuple = (1, 1), padding = "valid", use_bias = True, kernel_initializer = None, bias_initializer = None, dilation_rate: int = 1, group: int = 1, dtype = None, name = "")
 
-    Perform 2D convolution on the input. The input to the Conv2D module has the shape (batch_size, input_channels, height, width).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be used as a submodule of a torchmodel.
+    Esegue una convoluzione 2D sull'input. L'input del modulo Conv2D ha la forma (batch_size, input_channels, height, width).
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere utilizzata come sottomodulo di un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param input_channels: `int` - The number of input channels.
-    :param output_channels: `int` - The number of output channels.
-    :param kernel_size: `tuple|list` - The size of the convolution kernel. The kernel shape is [output_channels, input_channels/group, kernel_size, kernel_size].
-    :param stride: `tuple|list` - The stride, default is (1, 1).
-    :param padding: `str|tuple` - Padding options, it can either be a string {'valid', 'same'} or a tuple specifying the padding to apply to both sides. Default is "valid".
-    :param use_bias: `bool` - Whether to use the bias term, default is True.
-    :param kernel_initializer: `callable` - The convolution kernel initialization method. Default is empty, using kaiming_uniform.
-    :param bias_initializer: `callable` - The bias initialization method. Default is empty, using kaiming_uniform.
-    :param dilation_rate: `int` - The dilation size, default is 1.
-    :param group: `int` - The number of groups in the grouped convolution. Default is 1.
-    :param dtype: Data type for the parameters, defaults to None, uses the default data type `kfloat32`, which represents 32-bit floating point numbers.
-    :param name: The name of the module, default is "".
+    :param input_channels: `int` - Il numero di canali di input.
+    :param output_channels: `int` - Il numero di canali di output.
+    :param kernel_size: `tuple|list` - La dimensione del kernel di convoluzione. La forma del kernel e [output_channels, input_channels/group, kernel_size, kernel_size].
+    :param stride: `tuple|list` - Il passo, default (1, 1).
+    :param padding: `str|tuple` - Opzioni di padding, puo essere una stringa {'valid', 'same'} o una tupla che specifica il padding da applicare su entrambi i lati. Default "valid".
+    :param use_bias: `bool` - Se utilizzare il termine di bias, default True.
+    :param kernel_initializer: `callable` - Il metodo di inizializzazione del kernel di convoluzione. Default vuoto, utilizza kaiming_uniform.
+    :param bias_initializer: `callable` - Il metodo di inizializzazione del bias. Default vuoto, utilizza kaiming_uniform.
+    :param dilation_rate: `int` - La dimensione della dilatazione, default 1.
+    :param group: `int` - Il numero di gruppi nella convoluzione raggruppata. Default 1.
+    :param dtype: Tipo di dato per i parametri, default None, utilizza il tipo di dato predefinito `kfloat32`, che rappresenta numeri a virgola mobile a 32 bit.
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the 2D convolution.
+    :return: Un'istanza della convoluzione 2D.
 
     .. note::
 
-        ``padding='valid'`` does not apply padding.
+        ``padding='valid'`` non applica padding.
 
-        ``padding='same'`` applies zero-padding to the input, with the output's height equal to `ceil(in_height / stride)`.
+        ``padding='same'`` applica zero-padding all'input, con l'altezza dell'output uguale a `ceil(in_height / stride)`.
 
     Example::
 
@@ -474,33 +474,33 @@ ConvT2D
 
 .. py:class:: pyvqnet.nn.torch.ConvT2D(input_channels, output_channels, kernel_size, stride=[1, 1], padding=(0, 0), use_bias="True", kernel_initializer=None, bias_initializer=None, dilation_rate: int = 1, out_padding=(0, 0), group=1, dtype=None, name="")
 
-    Perform 2D transpose convolution on the input. The input to the ConvT2D module has the shape (batch_size, input_channels, height, width).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be used as a submodule of a torchmodel.
+    Esegue una convoluzione trasposta 2D sull'input. L'input del modulo ConvT2D ha la forma (batch_size, input_channels, height, width).
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere utilizzata come sottomodulo di un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param input_channels: `int` - The number of input channels.
-    :param output_channels: `int` - The number of output channels.
-    :param kernel_size: `tuple|list` - The size of the convolution kernel, with kernel shape = [input_channels, output_channels/group, kernel_size, kernel_size].
-    :param stride: `tuple|list` - The stride, default is (1, 1).
-    :param padding: `tuple` - Padding options, a tuple specifying the padding to apply to both sides. Default is (0, 0).
-    :param use_bias: `bool` - Whether to use the bias term, default is True.
-    :param kernel_initializer: `callable` - The convolution kernel initialization method. Default is empty, using kaiming_uniform.
-    :param bias_initializer: `callable` - The bias initialization method. Default is empty, using kaiming_uniform.
-    :param dilation_rate: `int` - The dilation size, default is 1.
-    :param out_padding: Extra size added to the output's shape for each dimension. Default is (0, 0).
-    :param group: `int` - The number of groups in the grouped convolution. Default is 1.
-    :param dtype: Data type for the parameters, defaults to None, uses the default data type `kfloat32`, which represents 32-bit floating point numbers.
-    :param name: The name of the module, default is "".
+    :param input_channels: `int` - Il numero di canali di input.
+    :param output_channels: `int` - Il numero di canali di output.
+    :param kernel_size: `tuple|list` - La dimensione del kernel di convoluzione, con forma del kernel = [input_channels, output_channels/group, kernel_size, kernel_size].
+    :param stride: `tuple|list` - Il passo, default (1, 1).
+    :param padding: `tuple` - Opzioni di padding, una tupla che specifica il padding da applicare su entrambi i lati. Default (0, 0).
+    :param use_bias: `bool` - Se utilizzare il termine di bias, default True.
+    :param kernel_initializer: `callable` - Il metodo di inizializzazione del kernel di convoluzione. Default vuoto, utilizza kaiming_uniform.
+    :param bias_initializer: `callable` - Il metodo di inizializzazione del bias. Default vuoto, utilizza kaiming_uniform.
+    :param dilation_rate: `int` - La dimensione della dilatazione, default 1.
+    :param out_padding: Dimensione extra aggiunta alla forma dell'output per ogni dimensione. Default (0, 0).
+    :param group: `int` - Il numero di gruppi nella convoluzione raggruppata. Default 1.
+    :param dtype: Tipo di dato per i parametri, default None, utilizza il tipo di dato predefinito `kfloat32`, che rappresenta numeri a virgola mobile a 32 bit.
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the 2D transpose convolution.
+    :return: Un'istanza della convoluzione trasposta 2D.
 
     .. note::
 
-        ``padding='valid'`` does not apply padding.
+        ``padding='valid'`` non applica padding.
 
-        ``padding='same'`` applies zero-padding to the input, with the output's height equal to `ceil(height / stride)`.
+        ``padding='same'`` applica zero-padding all'input, con l'altezza dell'output uguale a `ceil(height / stride)`.
 
     Example::
 
@@ -519,18 +519,18 @@ AvgPool1D
 
 .. py:class:: pyvqnet.nn.torch.AvgPool1D(kernel, stride, padding=0, name = "")
 
-    Perform average pooling on 1D input. The input has the shape (batch_size, input_channels, in_height).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Esegue il pooling medio su input 1D. L'input ha la forma (batch_size, input_channels, in_height).
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param kernel: The size of the pooling window.
-    :param stride: The step size for moving the window.
-    :param padding: Padding option, an integer specifying the padding length. Default is 0.
-    :param name: The name of the module, default is "".
+    :param kernel: La dimensione della finestra di pooling.
+    :param stride: La dimensione del passo per lo spostamento della finestra.
+    :param padding: Opzione di padding, un intero che specifica la lunghezza del padding. Default 0.
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the 1D average pooling layer.
+    :return: Un'istanza dello strato di pooling medio 1D.
 
     Example::
 
@@ -553,18 +553,18 @@ MaxPool1D
 
 .. py:class:: pyvqnet.nn.torch.MaxPool1D(kernel, stride, padding=0, name="")
 
-    Perform max pooling on 1D input. The input has the shape (batch_size, input_channels, in_height).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Esegue il max pooling su input 1D. L'input ha la forma (batch_size, input_channels, in_height).
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param kernel: The size of the pooling window.
-    :param stride: The step size for moving the window.
-    :param padding: Padding option, an integer specifying the padding length. Default is 0.
-    :param name: The name of the module, default is "".
+    :param kernel: La dimensione della finestra di pooling.
+    :param stride: La dimensione del passo per lo spostamento della finestra.
+    :param padding: Opzione di padding, un intero che specifica la lunghezza del padding. Default 0.
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the 1D max pooling layer.
+    :return: Un'istanza dello strato di max pooling 1D.
 
     Example::
 
@@ -587,18 +587,18 @@ AvgPool2D
 
 .. py:class:: pyvqnet.nn.torch.AvgPool2D(kernel, stride, padding=(0,0), name="")
 
-    Perform average pooling on 2D input. The input has the shape (batch_size, input_channels, height, width).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Esegue il pooling medio su input 2D. L'input ha la forma (batch_size, input_channels, height, width).
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param kernel: The size of the pooling window.
-    :param stride: The step size for moving the window.
-    :param padding: Padding option, a tuple containing two integers specifying padding for both dimensions. Default is (0,0).
-    :param name: The name of the module, default is "".
+    :param kernel: La dimensione della finestra di pooling.
+    :param stride: La dimensione del passo per lo spostamento della finestra.
+    :param padding: Opzione di padding, una tupla contenente due interi che specificano il padding per entrambe le dimensioni. Default (0,0).
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the 2D average pooling layer.
+    :return: Un'istanza dello strato di pooling medio 2D.
 
     Example::
 
@@ -621,18 +621,18 @@ MaxPool2D
 
 .. py:class:: pyvqnet.nn.torch.MaxPool2D(kernel, stride, padding=(0,0), name="")
 
-    Perform max pooling on 2D input. The input has the shape (batch_size, input_channels, height, width).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Esegue il max pooling su input 2D. L'input ha la forma (batch_size, input_channels, height, width).
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param kernel: The size of the pooling window.
-    :param stride: The step size for moving the window.
-    :param padding: Padding option, a tuple containing two integers specifying padding for both dimensions. Default is (0,0).
-    :param name: The name of the module, default is "".
+    :param kernel: La dimensione della finestra di pooling.
+    :param stride: La dimensione del passo per lo spostamento della finestra.
+    :param padding: Opzione di padding, una tupla contenente due interi che specificano il padding per entrambe le dimensioni. Default (0,0).
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the 2D max pooling layer.
+    :return: Un'istanza dello strato di max pooling 2D.
 
     Example::
 
@@ -655,20 +655,20 @@ Embedding
 
 .. py:class:: pyvqnet.nn.torch.Embedding(num_embeddings, embedding_dim, weight_initializer=xavier_normal, dtype=None, name: str = "")
 
-    This module is typically used to store word embeddings and retrieve them using indices. The input to the module is a list of indices, and the output is the corresponding word embeddings.
-    The input to this layer should be of type `kint64`. 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questo modulo viene tipicamente utilizzato per archiviare embedding di parole e recuperarli usando indici. L'input del modulo e una lista di indici e l'output sono i corrispondenti embedding di parole.
+    L'input di questo strato deve essere di tipo `kint64`. 
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param num_embeddings: `int` - The size of the embedding dictionary.
-    :param embedding_dim: `int` - The size of each embedding vector.
-    :param weight_initializer: `callable` - The weight initialization method, default is Xavier Normal.
-    :param dtype: The data type for the parameters, defaults to None, which uses the default data type: `kfloat32` (32-bit floating point).
-    :param name: The name of the embedding layer, default is "".
+    :param num_embeddings: `int` - La dimensione del dizionario di embedding.
+    :param embedding_dim: `int` - La dimensione di ogni vettore di embedding.
+    :param weight_initializer: `callable` - Il metodo di inizializzazione dei pesi, default Xavier Normal.
+    :param dtype: Il tipo di dato per i parametri, default None, utilizza il tipo di dato predefinito: `kfloat32` (virgola mobile a 32 bit).
+    :param name: Il nome dello strato di embedding, default "".
 
-    :return: An instance of the Embedding layer.
+    :return: Un'istanza dello strato Embedding.
 
     Example::
 
@@ -687,30 +687,30 @@ BatchNorm2d
 
 .. py:class:: pyvqnet.nn.torch.BatchNorm2d(channel_num:int, momentum:float=0.1, epsilon:float = 1e-5, affine=True, beta_initializer=zeros, gamma_initializer=ones, dtype=None, name="")
 
-    Applies batch normalization on 4D input (B, C, H, W). Refer to the paper
+    Applica la normalizzazione batch su input 4D (B, C, H, W). Fare riferimento all'articolo
     `Batch Normalization: Accelerating Deep Network Training by Reducing
     Internal Covariate Shift <https://arxiv.org/abs/1502.03167>`__.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
     .. math::
         y = \frac{x - \mathrm{E}[x]}{\sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    where :math:`\gamma` and :math:`\beta` are trainable parameters. Additionally, by default, during training, the layer continues to estimate the mean and variance, which are then used for normalization during evaluation. The momentum for the moving averages is set to the default value of 0.1.
+    dove :math:`\gamma` e :math:`\beta` sono parametri addestrabili. Inoltre, per impostazione predefinita, durante l'addestramento, lo strato continua a stimare la media e la varianza, che vengono poi utilizzate per la normalizzazione durante la valutazione. Il momentum per le medie mobili e impostato al valore predefinito di 0.1.
 
-    :param channel_num: `int` - The number of input channels.
-    :param momentum: `float` - Momentum for the moving average calculation, default is 0.1.
-    :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
-    :param affine: `bool` - Whether to include learnable affine parameters for each channel. Default is `True`, which initializes the parameters as 1 for weights and 0 for biases.
-    :param beta_initializer: `callable` - The initialization method for beta, default is zero initialization.
-    :param gamma_initializer: `callable` - The initialization method for gamma, default is one initialization.
-    :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the batch normalization layer, default is "".
+    :param channel_num: `int` - Il numero di canali di input.
+    :param momentum: `float` - Momentum per il calcolo della media mobile, default 0.1.
+    :param epsilon: `float` - Una piccola costante per la stabilita numerica, default 1e-5.
+    :param affine: `bool` - Se includere parametri affini apprendibili per ogni canale. Default `True`, che inizializza i parametri come 1 per i pesi e 0 per i bias.
+    :param beta_initializer: `callable` - Il metodo di inizializzazione per beta, default inizializzazione a zero.
+    :param gamma_initializer: `callable` - Il metodo di inizializzazione per gamma, default inizializzazione a uno.
+    :param dtype: Il tipo di dato per i parametri, default None, utilizza `kfloat32` (virgola mobile a 32 bit).
+    :param name: Il nome dello strato di normalizzazione batch, default "".
 
-    :return: An instance of the 2D batch normalization layer.
+    :return: Un'istanza dello strato di normalizzazione batch 2D.
 
     Example::
 
@@ -731,30 +731,30 @@ BatchNorm1d
 
 .. py:class:: pyvqnet.nn.torch.BatchNorm1d(channel_num:int, momentum:float=0.1, epsilon:float = 1e-5, affine=True, beta_initializer=zeros, gamma_initializer=ones, dtype=None, name="")
 
-    Applies batch normalization on 2D input (B, C). Refer to the paper
+    Applica la normalizzazione batch su input 2D (B, C). Fare riferimento all'articolo
     `Batch Normalization: Accelerating Deep Network Training by Reducing
     Internal Covariate Shift <https://arxiv.org/abs/1502.03167>`__.
 
     .. math::
         y = \frac{x - \mathrm{E}[x]}{\sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    where :math:`\gamma` and :math:`\beta` are trainable parameters. Additionally, by default, during training, the layer continues to estimate the mean and variance, which are then used for normalization during evaluation. The momentum for the moving averages is set to the default value of 0.1.
+    dove :math:`\gamma` e :math:`\beta` sono parametri addestrabili. Inoltre, per impostazione predefinita, durante l'addestramento, lo strato continua a stimare la media e la varianza, che vengono poi utilizzate per la normalizzazione durante la valutazione. Il momentum per le medie mobili e impostato al valore predefinito di 0.1.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param channel_num: `int` - The number of input channels.
-    :param momentum: `float` - Momentum for the moving average calculation, default is 0.1.
-    :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
-    :param affine: `bool` - Whether to include learnable affine parameters for each channel. Default is `True`, which initializes the parameters as 1 for weights and 0 for biases.
-    :param beta_initializer: `callable` - The initialization method for beta, default is zero initialization.
-    :param gamma_initializer: `callable` - The initialization method for gamma, default is one initialization.
-    :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the batch normalization layer, default is "".
+    :param channel_num: `int` - Il numero di canali di input.
+    :param momentum: `float` - Momentum per il calcolo della media mobile, default 0.1.
+    :param epsilon: `float` - Una piccola costante per la stabilita numerica, default 1e-5.
+    :param affine: `bool` - Se includere parametri affini apprendibili per ogni canale. Default `True`, che inizializza i parametri come 1 per i pesi e 0 per i bias.
+    :param beta_initializer: `callable` - Il metodo di inizializzazione per beta, default inizializzazione a zero.
+    :param gamma_initializer: `callable` - Il metodo di inizializzazione per gamma, default inizializzazione a uno.
+    :param dtype: Il tipo di dato per i parametri, default None, utilizza `kfloat32` (virgola mobile a 32 bit).
+    :param name: Il nome dello strato di normalizzazione batch, default "".
 
-    :return: An instance of the 1D batch normalization layer.
+    :return: Un'istanza dello strato di normalizzazione batch 1D.
 
     Example::
 
@@ -773,26 +773,26 @@ LayerNormNd
 
 .. py:class:: pyvqnet.nn.torch.LayerNormNd(normalized_shape: list, epsilon: float = 1e-5, affine=True, dtype=None, name="")
 
-    Applies layer normalization on the last D dimensions of any input. The specific method is described in the paper:
+    Applica la normalizzazione layer sulle ultime D dimensioni di qualsiasi input. Il metodo specifico e descritto nell'articolo:
     `Layer Normalization <https://arxiv.org/abs/1607.06450>`__.
 
     .. math::
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    For inputs such as (B, C, H, W, D), the ``norm_shape`` can be [C, H, W, D], [H, W, D], [W, D], or [D].
+    Per input come (B, C, H, W, D), ``norm_shape`` puo essere [C, H, W, D], [H, W, D], [W, D] o [D].
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param norm_shape: `list` - The shape to normalize.
-    :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
-    :param affine: `bool` - If `True`, this module has learnable affine parameters for each channel, initialized to 1 (for weights) and 0 (for biases). Default is `True`.
-    :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the module, default is "".
+    :param norm_shape: `list` - La forma da normalizzare.
+    :param epsilon: `float` - Una piccola costante per la stabilita numerica, default 1e-5.
+    :param affine: `bool` - Se `True`, questo modulo ha parametri affini apprendibili per ogni canale, inizializzati a 1 (per i pesi) e 0 (per i bias). Default `True`.
+    :param dtype: Il tipo di dato per i parametri, default None, utilizza `kfloat32` (virgola mobile a 32 bit).
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the LayerNormNd class.
+    :return: Un'istanza della classe LayerNormNd.
 
     Example::
 
@@ -813,26 +813,26 @@ LayerNorm2d
 
 .. py:class:: pyvqnet.nn.torch.LayerNorm2d(norm_size:int, epsilon:float = 1e-5, affine=True, dtype=None, name="")
 
-    Applies layer normalization on 4D inputs. The specific method is described in the paper:
+    Applica la normalizzazione layer su input 4D. Il metodo specifico e descritto nell'articolo:
     `Layer Normalization <https://arxiv.org/abs/1607.06450>`__.
 
     .. math::
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    The mean and standard deviation are computed across the remaining dimensions, excluding the first one. For inputs like (B, C, H, W), ``norm_size`` should be equal to C * H * W.
+    La media e la deviazione standard vengono calcolate sulle dimensioni rimanenti, escludendo la prima. Per input come (B, C, H, W), ``norm_size`` dovrebbe essere uguale a C * H * W.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param norm_size: `int` - The size of the normalization, should be equal to C * H * W.
-    :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
-    :param affine: `bool` - If `True`, this module has learnable affine parameters for each channel, initialized to 1 (for weights) and 0 (for biases). Default is `True`.
-    :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the module, default is "".
+    :param norm_size: `int` - La dimensione della normalizzazione, dovrebbe essere uguale a C * H * W.
+    :param epsilon: `float` - Una piccola costante per la stabilita numerica, default 1e-5.
+    :param affine: `bool` - Se `True`, questo modulo ha parametri affini apprendibili per ogni canale, inizializzati a 1 (per i pesi) e 0 (per i bias). Default `True`.
+    :param dtype: Il tipo di dato per i parametri, default None, utilizza `kfloat32` (virgola mobile a 32 bit).
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the 2D layer normalization.
+    :return: Un'istanza della normalizzazione layer 2D.
 
     Example::
 
@@ -853,26 +853,26 @@ LayerNorm1d
 
 .. py:class:: pyvqnet.nn.torch.LayerNorm1d(norm_size:int, epsilon:float = 1e-5, affine=True, dtype=None, name="")
 
-    Applies layer normalization on 2D inputs. The specific method is described in the paper:
+    Applica la normalizzazione layer su input 2D. Il metodo specifico e descritto nell'articolo:
     `Layer Normalization <https://arxiv.org/abs/1607.06450>`__.
 
     .. math::
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    The mean and standard deviation are computed across the last dimension size, where ``norm_size`` is the value of the last dimension.
+    La media e la deviazione standard vengono calcolate sull'ultima dimensione, dove ``norm_size`` e il valore dell'ultima dimensione.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param norm_size: `int` - The size of the normalization, should be equal to the size of the last dimension.
-    :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
-    :param affine: `bool` - If `True`, this module has learnable affine parameters for each channel, initialized to 1 (for weights) and 0 (for biases). Default is `True`.
-    :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the module, default is "".
+    :param norm_size: `int` - La dimensione della normalizzazione, dovrebbe essere uguale alla dimensione dell'ultima dimensione.
+    :param epsilon: `float` - Una piccola costante per la stabilita numerica, default 1e-5.
+    :param affine: `bool` - Se `True`, questo modulo ha parametri affini apprendibili per ogni canale, inizializzati a 1 (per i pesi) e 0 (per i bias). Default `True`.
+    :param dtype: Il tipo di dato per i parametri, default None, utilizza `kfloat32` (virgola mobile a 32 bit).
+    :param name: Il nome del modulo, default "".
 
-    :return: An instance of the 1D layer normalization.
+    :return: Un'istanza della normalizzazione layer 1D.
 
     Example::
 
@@ -891,29 +891,29 @@ GroupNorm
 
 .. py:class:: pyvqnet.nn.torch.GroupNorm(num_groups: int, num_channels: int, epsilon = 1e-5, affine = True, dtype = None, name = "")
 
-    Applies group normalization on mini-batch inputs. Input: :math:`(N, C, *)` where :math:`C=\mathrm{num\_channels}`, Output: :math:`(N, C, *)`.
+    Applica la normalizzazione di gruppo su input di mini-batch. Input: :math:`(N, C, *)` dove :math:`C=\mathrm{num\_channels}`, Output: :math:`(N, C, *)`.
 
-    This layer implements the operation described in the paper `Group Normalization <https://arxiv.org/abs/1803.08494>`__.
+    Questo strato implementa l'operazione descritta nell'articolo `Group Normalization <https://arxiv.org/abs/1803.08494>`__.
 
     .. math::
         
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    The input channels are divided into :attr:`num_groups` groups, each containing ``num_channels / num_groups`` channels. The :attr:`num_channels` must be divisible by :attr:`num_groups`. The mean and standard deviation are computed separately within each group. If :attr:`affine` is ``True``, then :math:`\gamma` and :math:`\beta` are learnable. The affine transformation parameters for each channel are vectors of size :attr:`num_channels`.
+    I canali di input sono divisi in :attr:`num_groups` gruppi, ciascuno contenente ``num_channels / num_groups`` canali. :attr:`num_channels` deve essere divisibile per :attr:`num_groups`. La media e la deviazione standard vengono calcolate separatamente all'interno di ciascun gruppo. Se :attr:`affine` e ``True``, allora :math:`\gamma` e :math:`\beta` sono apprendibili. I parametri di trasformazione affine per ogni canale sono vettori di dimensione :attr:`num_channels`.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The data in the class's ``_buffers`` is of type ``torch.Tensor``.
-    The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
+    I dati in ``_buffers`` della classe sono di tipo ``torch.Tensor``.
+    I dati in ``_parameters`` della classe sono di tipo ``torch.nn.Parameter``.
 
-    :param num_groups (int): The number of groups to divide the channels into.
-    :param num_channels (int): The number of expected input channels.
-    :param epsilon: A small value added to the denominator for numerical stability. Default is 1e-5.
-    :param affine: A boolean value. If set to ``True``, this module has learnable affine parameters for each channel, initialized to 1 (for weights) and 0 (for biases). Default is ``True``.
-    :param dtype: The data type for the parameters. Defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the module. Default is "".
+    :param num_groups (int): Il numero di gruppi in cui dividere i canali.
+    :param num_channels (int): Il numero di canali di input previsti.
+    :param epsilon: Un piccolo valore aggiunto al denominatore per la stabilita numerica. Default 1e-5.
+    :param affine: Un valore booleano. Se impostato a ``True``, questo modulo ha parametri affini apprendibili per ogni canale, inizializzati a 1 (per i pesi) e 0 (per i bias). Default ``True``.
+    :param dtype: Il tipo di dato per i parametri. Default None, utilizza `kfloat32` (virgola mobile a 32 bit).
+    :param name: Il nome del modulo. Default "".
 
-    :return: An instance of the GroupNorm class.
+    :return: Un'istanza della classe GroupNorm.
 
     Example::
 
@@ -932,14 +932,14 @@ Dropout
 
 .. py:class:: pyvqnet.nn.torch.Dropout(dropout_rate = 0.5)
 
-    Dropout module. The dropout module randomly sets some units' output to zero, while scaling the remaining units by the given dropout_rate probability.
+    Modulo Dropout. Il modulo dropout imposta casualmente a zero l'output di alcune unita, ridimensionando le unita rimanenti in base alla probabilita dropout_rate.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    :param dropout_rate: `float` - The probability of setting neurons to zero.
-    :param name: The name of the module. Default is "".
+    :param dropout_rate: `float` - La probabilita di impostare i neuroni a zero.
+    :param name: Il nome del modulo. Default "".
 
-    :return: An instance of the Dropout class.
+    :return: Un'istanza della classe Dropout.
 
     Example::
 
@@ -961,14 +961,14 @@ DropPath
 
 .. py:class:: pyvqnet.nn.torch.DropPath(dropout_rate = 0.5, name="")
 
-    DropPath module applies random sample path dropout (random depth).
+    Il modulo DropPath applica un dropout casuale del percorso (profondita casuale).
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    :param dropout_rate: `float` - The probability of setting neurons to zero.
-    :param name: The name of the module. Default is "".
+    :param dropout_rate: `float` - La probabilita di impostare i neuroni a zero.
+    :param name: Il nome del modulo. Default "".
 
-    :return: An instance of the DropPath class.
+    :return: Un'istanza della classe DropPath.
 
     Example::
 
@@ -985,14 +985,14 @@ Pixel_Shuffle
 
 .. py:class:: pyvqnet.nn.torch.Pixel_Shuffle(upscale_factors, name="")
 
-    Re-arranges a tensor of shape: (*, C * r^2, H, W) to a tensor of shape (*, C, H * r, W * r), where r is the scaling factor.
+    Riorganizza un tensore di forma: (*, C * r^2, H, W) in un tensore di forma (*, C, H * r, W * r), dove r e il fattore di scala.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    :param upscale_factors: The scaling factor for the transformation.
-    :param name: The name of the module. Default is "".
+    :param upscale_factors: Il fattore di scala per la trasformazione.
+    :param name: Il nome del modulo. Default "".
 
-    :return: An instance of the Pixel_Shuffle module.
+    :return: Un'istanza del modulo Pixel_Shuffle.
 
     Example::
 
@@ -1010,14 +1010,14 @@ Pixel_Unshuffle
 
 .. py:class:: pyvqnet.nn.torch.Pixel_Unshuffle(downscale_factors, name="")
 
-    Reverses the Pixel_Shuffle operation by re-arranging elements. Transforms a tensor of shape (*, C, H * r, W * r) to (*, C * r^2, H, W), where r is the downscaling factor.
+    Inverte l'operazione Pixel_Shuffle riorganizzando gli elementi. Trasforma un tensore di forma (*, C, H * r, W * r) in (*, C * r^2, H, W), dove r e il fattore di ridimensionamento.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    :param downscale_factors: The downscaling factor for the transformation.
-    :param name: The name of the module. Default is "".
+    :param downscale_factors: Il fattore di ridimensionamento per la trasformazione.
+    :param name: Il nome del modulo. Default "".
 
-    :return: An instance of the Pixel_Unshuffle module.
+    :return: Un'istanza del modulo Pixel_Unshuffle.
 
     Example::
 
@@ -1035,7 +1035,7 @@ GRU
 
 .. py:class:: pyvqnet.nn.torch.GRU(input_size, hidden_size, num_layers=1, nonlinearity='tanh', batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = "")
 
-    Gated Recurrent Unit (GRU) module. Supports multi-layer stacking and bidirectional configuration. The formula for a single-layer unidirectional GRU is:
+    Modulo Gated Recurrent Unit (GRU). Supporta l'impilamento multi-strato e la configurazione bidirezionale. La formula per un GRU unidirezionale a singolo strato e:
 
     .. math::
         \begin{array}{ll}
@@ -1045,20 +1045,20 @@ GRU
             h_t = (1 - z_t) * n_t + z_t * h_{(t-1)}
         \end{array}
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The class's ``_buffers`` contain ``torch.Tensor`` data, and the class's ``_parameters`` contain ``torch.nn.Parameter`` data.
+    I ``_buffers`` della classe contengono dati ``torch.Tensor`` e i ``_parameters`` della classe contengono dati ``torch.nn.Parameter``.
 
-    :param input_size: The input feature dimension.
-    :param hidden_size: The hidden feature dimension.
-    :param num_layers: The number of stacked GRU layers, default: 1.
-    :param batch_first: If True, the input shape is [batch_size, seq_len, feature_dim], if False, the shape is [seq_len, batch_size, feature_dim], default: True.
-    :param use_bias: If False, the module does not use bias terms, default: True.
-    :param bidirectional: If True, makes the GRU bidirectional, default: False.
-    :param dtype: The data type of the parameters, defaults to None, using the default data type: kfloat32 (32-bit float).
-    :param name: The name of the module, default: "".
+    :param input_size: La dimensione delle caratteristiche di input.
+    :param hidden_size: La dimensione delle caratteristiche nascoste.
+    :param num_layers: Il numero di strati GRU impilati, default: 1.
+    :param batch_first: Se True, la forma dell'input e [batch_size, seq_len, feature_dim], se False, la forma e [seq_len, batch_size, feature_dim], default: True.
+    :param use_bias: Se False, il modulo non utilizza termini di bias, default: True.
+    :param bidirectional: Se True, rende il GRU bidirezionale, default: False.
+    :param dtype: Il tipo di dato dei parametri, default None, utilizza il tipo di dato predefinito: kfloat32 (float a 32 bit).
+    :param name: Il nome del modulo, default: "".
 
-    :return: An instance of the GRU module.
+    :return: Un'istanza del modulo GRU.
 
     Example::
 
@@ -1081,26 +1081,26 @@ RNN
 
 .. py:class:: pyvqnet.nn.torch.RNN(input_size, hidden_size, num_layers=1, nonlinearity='tanh', batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = "")
 
-    Recurrent Neural Network (RNN) module, using :math:`\tanh` or :math:`\text{ReLU}` as the activation function. Supports bidirectional and multi-layer configurations. The formula for a single-layer unidirectional RNN is:
+    Modulo Recurrent Neural Network (RNN), che utilizza :math:`\tanh` o :math:`\text{ReLU}` come funzione di attivazione. Supporta configurazioni bidirezionali e multi-strato. La formula per un RNN unidirezionale a singolo strato e:
 
     .. math::
         h_t = \tanh(W_{ih} x_t + b_{ih} + W_{hh} h_{(t-1)} + b_{hh})
 
-    If :attr:`nonlinearity` is ``'relu'``, then :math:`\text{ReLU}` will replace :math:`\tanh`.
+    Se :attr:`nonlinearity` e ``'relu'``, allora :math:`\text{ReLU}` sostituira :math:`\tanh`.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The class's ``_buffers`` contain ``torch.Tensor`` data, and the class's ``_parameters`` contain ``torch.nn.Parameter`` data.
+    I ``_buffers`` della classe contengono dati ``torch.Tensor`` e i ``_parameters`` della classe contengono dati ``torch.nn.Parameter``.
 
-    :param input_size: The input feature dimension.
-    :param hidden_size: The hidden feature dimension.
-    :param num_layers: The number of stacked RNN layers, default: 1.
-    :param nonlinearity: The non-linearity activation function, default: ``'tanh'``.
-    :param batch_first: If True, the input shape is [batch_size, seq_len, feature_dim], if False, the shape is [seq_len, batch_size, feature_dim], default: True.
-    :param use_bias: If False, the module does not use bias terms, default: True.
-    :param bidirectional: If True, makes the RNN bidirectional, default: False.
+    :param input_size: La dimensione delle caratteristiche di input.
+    :param hidden_size: La dimensione delle caratteristiche nascoste.
+    :param num_layers: Il numero di strati RNN impilati, default: 1.
+    :param nonlinearity: La funzione di attivazione non lineare, default: ``'tanh'``.
+    :param batch_first: Se True, la forma dell'input e [batch_size, seq_len, feature_dim], se False, la forma e [seq_len, batch_size, feature_dim], default: True.
+    :param use_bias: Se False, il modulo non utilizza termini di bias, default: True.
+    :param bidirectional: Se True, rende il RNN bidirezionale, default: False.
     :param dtype: The data type of the parameters, defaults to None, using the default data type: kfloat32 (32-bit float).
-    :param name: The name of the module, default: "".
+    :param name: Il nome del modulo, default: "".
 
     :return: An instance of the RNN module.
 
@@ -1122,7 +1122,7 @@ LSTM
 
 .. py:class:: pyvqnet.nn.torch.LSTM(input_size, hidden_size, num_layers=1, batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = "")
 
-    Long Short-Term Memory (LSTM) module. Supports bidirectional LSTM and stacked multi-layer LSTM configurations. The formula for a single-layer unidirectional LSTM is as follows:
+    Modulo Long Short-Term Memory (LSTM). Supporta LSTM bidirezionale e configurazioni LSTM multi-strato impilate. La formula per un LSTM unidirezionale a singolo strato e la seguente:
 
     .. math::
         \begin{array}{ll} \\
@@ -1134,20 +1134,20 @@ LSTM
             h_t = o_t \odot \tanh(c_t) \\
         \end{array}
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta come sottomodulo a un torchmodel.
 
-    The class's ``_buffers`` contain ``torch.Tensor`` data, and the class's ``_parameters`` contain ``torch.nn.Parameter`` data.
+    I ``_buffers`` della classe contengono dati ``torch.Tensor`` e i ``_parameters`` della classe contengono dati ``torch.nn.Parameter``.
 
-    :param input_size: The input feature dimension.
-    :param hidden_size: The hidden feature dimension.
-    :param num_layers: The number of stacked LSTM layers, default: 1.
-    :param batch_first: If True, the input shape is [batch_size, seq_len, feature_dim], if False, the shape is [seq_len, batch_size, feature_dim], default: True.
-    :param use_bias: If False, the module does not use bias terms, default: True.
-    :param bidirectional: If True, makes the LSTM bidirectional, default: False.
-    :param dtype: The data type of the parameters, defaults to None, using the default data type: kfloat32 (32-bit float).
-    :param name: The name of the module, default: "".
+    :param input_size: La dimensione delle caratteristiche di input.
+    :param hidden_size: La dimensione delle caratteristiche nascoste.
+    :param num_layers: Il numero di strati LSTM impilati, default: 1.
+    :param batch_first: Se True, la forma dell'input e [batch_size, seq_len, feature_dim], se False, la forma e [seq_len, batch_size, feature_dim], default: True.
+    :param use_bias: Se False, il modulo non utilizza termini di bias, default: True.
+    :param bidirectional: Se True, rende il LSTM bidirezionale, default: False.
+    :param dtype: Il tipo di dato dei parametri, default None, utilizza il tipo di dato predefinito: kfloat32 (float a 32 bit).
+    :param name: Il nome del modulo, default: "".
 
-    :return: An instance of the LSTM module.
+    :return: Un'istanza del modulo LSTM.
 
     Example::
 
@@ -1169,18 +1169,18 @@ Dynamic_GRU
 
 .. py:class:: pyvqnet.nn.torch.Dynamic_GRU(input_size,hidden_size, num_layers=1, batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = "")
 
-    Applies a multi-layer Gated Recurrent Unit (GRU) RNN to dynamic length input sequences.
+    Applica un GRU (Gated Recurrent Unit) RNN multi-strato a sequenze di input di lunghezza dinamica.
 
-    The first input should be a batch sequence input with variable length defined
-    via a ``tensor.PackedSequence`` class.
+    Il primo input dovrebbe essere un input di sequenza batch con lunghezza variabile definita
+    tramite una classe ``tensor.PackedSequence``.
 
-    The ``tensor.PackedSequence`` class can be constructed by
-    calling the next functions consecutively: ``pad_sequence``, ``pack_pad_sequence``.
+    La classe ``tensor.PackedSequence`` puo essere costruita
+    chiamando consecutivamente le funzioni: ``pad_sequence``, ``pack_pad_sequence``.
 
-    The first output of Dynamic_GRU is also a ``tensor.PackedSequence`` class,
-    which can be unpacked to a normal QTensor using ``tensor.pad_pack_sequence``.
+    Il primo output di Dynamic_GRU e anche una classe ``tensor.PackedSequence``,
+    che puo essere decompressa in un QTensor normale usando ``tensor.pad_pack_sequence``.
 
-    For each element in the input sequence, each layer calculates the following formula:
+    Per ogni elemento nella sequenza di input, ogni strato calcola la seguente formula:
 
     .. math::
         \begin{array}{ll}
@@ -1190,22 +1190,22 @@ Dynamic_GRU
         h_t = (1 - z_t) * n_t + z_t * h_{(t-1)}
         \end{array}
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module`` can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    The data in ``_buffers`` of this class is of ``torch.Tensor`` type.
+    I dati in ``_buffers`` di questa classe sono di tipo ``torch.Tensor``.
 
-    The data in ``_parameters`` of this class is of ``torch.nn.Parameter`` type.
+    I dati in ``_parameters`` di questa classe sono di tipo ``torch.nn.Parameter``.
 
-    :param input_size: Input feature dimension.
-    :param hidden_size: Hidden feature dimension.
-    :param num_layers: Number of loop layers. Default value: 1
-    :param batch_first: If True, the input shape is provided as [batch size, sequence length, feature dimension]. If False, the input shape is provided as [sequence length, batch size, feature dimension]. Default value: True.
-    :param use_bias: If False, the bias weights b_ih and b_hh are not used for this layer. Default value: True.
-    :param bidirectional: If true, it becomes a bidirectional GRU. Default value: False.
-    :param dtype: The data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
-    :param name: The name of this module, defaults to "".
+    :param input_size: Dimensione delle caratteristiche di input.
+    :param hidden_size: Dimensione delle caratteristiche nascoste.
+    :param num_layers: Numero di strati del ciclo. Valore predefinito: 1
+    :param batch_first: Se True, la forma dell'input e [batch size, sequence length, feature dimension]. Se False, la forma dell'input e [sequence length, batch size, feature dimension]. Valore predefinito: True.
+    :param use_bias: Se False, i pesi di bias b_ih e b_hh non vengono utilizzati per questo strato. Valore predefinito: True.
+    :param bidirectional: Se true, diventa un GRU bidirezionale. Valore predefinito: False.
+    :param dtype: Il tipo di dato del parametro, default: None, utilizza il tipo di dato predefinito: kfloat32, che rappresenta numeri a virgola mobile a 32 bit.
+    :param name: Il nome di questo modulo, default "".
 
-    :return: A Dynamic_GRU class
+    :return: Una classe Dynamic_GRU
 
     Example::
 
@@ -1251,42 +1251,42 @@ Dynamic_RNN
 .. py:class:: pyvqnet.nn.torch.Dynamic_RNN(input_size, hidden_size, num_layers=1, nonlinearity='tanh', batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = "")
 
 
-    Apply a recurrent neural network (RNN) to a dynamic length input sequence.
+    Applica una rete neurale ricorrente (RNN) a una sequenza di input di lunghezza dinamica.
 
-    The first input should be a batch sequence input with variable length defined
-    via the ``tensor.PackedSequence`` class.
+    Il primo input dovrebbe essere un input di sequenza batch con lunghezza variabile definita
+    tramite la classe ``tensor.PackedSequence``.
 
-    The ``tensor.PackedSequence`` class can be constructed by
-    calling the next function in succession: ``pad_sequence``, ``pack_pad_sequence``.
+    La classe ``tensor.PackedSequence`` puo essere costruita
+    chiamando consecutivamente le funzioni: ``pad_sequence``, ``pack_pad_sequence``.
 
-    The first output of Dynamic_RNN is also a ``tensor.PackedSequence`` class,
-    which can be unpacked to a normal QTensor using ``tensor.pad_pack_sequence``.
+    Il primo output di Dynamic_RNN e anche una classe ``tensor.PackedSequence``,
+    che puo essere decompressa in un QTensor normale usando ``tensor.pad_pack_sequence``.
 
-    Recurrent neural network (RNN) module, using :math:`\tanh` or :math:`\text{ReLU}` as activation function. Supports bidirectional, multi-layer configurations.
-    The calculation formula of single-layer unidirectional RNN is as follows:
+    Modulo RNN, che utilizza :math:`\tanh` o :math:`\text{ReLU}` come funzione di attivazione. Supporta configurazioni bidirezionali e multi-strato.
+    La formula di calcolo per RNN unidirezionale a singolo strato e la seguente:
 
     .. math::
         h_t = \tanh(W_{ih} x_t + b_{ih} + W_{hh} h_{(t-1)} + b_{hh})
 
-    If :attr:`nonlinearity` is ``'relu'``, then :math:`\text{ReLU}` will replace :math:`\tanh`.
+    Se :attr:`nonlinearity` e ``'relu'``, allora :math:`\text{ReLU}` sostituira :math:`\tanh`.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    The data in ``_buffers`` of this class is of ``torch.Tensor`` type.
+    I dati in ``_buffers`` di questa classe sono di tipo ``torch.Tensor``.
 
-    The data in ``_parmeters`` of this class is of ``torch.nn.Parameter`` type.
+    I dati in ``_parmeters`` di questa classe sono di tipo ``torch.nn.Parameter``.
 
-    :param input_size: Input feature dimension.
-    :param hidden_size: Hidden feature dimension.
-    :param num_layers: Number of stacked RNN layers, default: 1.
-    :param nonlinearity: Nonlinear activation function, default is ``'tanh'``.
-    :param batch_first: If True, the input shape is [batch size, sequence length, feature dimension],If False, the input shape is [sequence length, batch size, feature dimension], default is True.
-    :param use_bias: If False, this module does not apply bias, default: True.
-    :param bidirectional: If True, it becomes a bidirectional RNN, default: False.
-    :param dtype: The data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
-    :param name: The name of this module, default is "".
+    :param input_size: Dimensione delle caratteristiche di input.
+    :param hidden_size: Dimensione delle caratteristiche nascoste.
+    :param num_layers: Numero di strati RNN impilati, default: 1.
+    :param nonlinearity: Funzione di attivazione non lineare, default ``'tanh'``.
+    :param batch_first: Se True, la forma dell'input e [batch size, sequence length, feature dimension]. Se False, la forma dell'input e [sequence length, batch size, feature dimension], default True.
+    :param use_bias: Se False, questo modulo non applica bias, default: True.
+    :param bidirectional: Se True, diventa un RNN bidirezionale, default: False.
+    :param dtype: Il tipo di dato del parametro, default: None, utilizza il tipo di dato predefinito: kfloat32, che rappresenta numeri a virgola mobile a 32 bit.
+    :param name: Il nome di questo modulo, default "".
 
-    :return: Dynamic_RNN instance
+    :return: Istanza Dynamic_RNN
 
     Example::
 
@@ -1336,19 +1336,19 @@ Dynamic_LSTM
 .. py:class:: pyvqnet.nn.torch.Dynamic_LSTM(input_size, hidden_size, num_layers=1, batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = "")
 
 
-    Apply a Long Short-Term Memory (LSTM) RNN to dynamic length input sequences.
+    Applica un LSTM (Long Short-Term Memory) RNN a sequenze di input di lunghezza dinamica.
 
-    The first input should be a batch sequence input with variable length defined
-    via a ``tensor.PackedSequence`` class.
+    Il primo input dovrebbe essere un input di sequenza batch con lunghezza variabile definita
+    tramite una classe ``tensor.PackedSequence``.
 
-    The ``tensor.PackedSequence`` class can be constructed by
-    calling the next functions in succession: ``pad_sequence``, ``pack_pad_sequence``.
+    La classe ``tensor.PackedSequence`` puo essere costruita
+    chiamando consecutivamente le funzioni: ``pad_sequence``, ``pack_pad_sequence``.
 
-    The first output of Dynamic_LSTM is also a ``tensor.PackedSequence`` class,
-    which can be unpacked to a normal QTensor using ``tensor.pad_pack_sequence``.
+    Il primo output di Dynamic_LSTM e anche una classe ``tensor.PackedSequence``,
+    che puo essere decompressa in un QTensor normale usando ``tensor.pad_pack_sequence``.
 
-    Recurrent Neural Network (RNN) module, using :math:`\tanh` or :math:`\text{ReLU}` as activation function. Supports bidirectional, multi-layer configurations.
-    The calculation formula of single-layer one-way RNN is as follows: 
+    Modulo RNN, che utilizza :math:`\tanh` o :math:`\text{ReLU}` come funzione di attivazione. Supporta configurazioni bidirezionali e multi-strato.
+    La formula di calcolo per LSTM unidirezionale a singolo strato e la seguente: 
     
     
     .. math::
@@ -1361,22 +1361,22 @@ Dynamic_LSTM
             h_t = o_t \odot \tanh(c_t) \\
         \end{array}
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    The data in ``_buffers`` of this class is of ``torch.Tensor`` type.
+    I dati in ``_buffers`` di questa classe sono di tipo ``torch.Tensor``.
 
-    The data in ``_parmeters`` of this class is of ``torch.nn.Parameter`` type.
+    I dati in ``_parmeters`` di questa classe sono di tipo ``torch.nn.Parameter``.
 
-    :param input_size: Input feature dimension.
-    :param hidden_size: Hidden feature dimension.
-    :param num_layers: Number of stacked LSTM layers, default: 1.
-    :param batch_first: If True, the input shape is [batch size, sequence length, feature dimension],If False, the input shape is [sequence length, batch size, feature dimension], default is True.
-    :param use_bias: If False, this module does not apply bias, default: True.
-    :param bidirectional: If True, it becomes a bidirectional LSTM, default: False.
-    :param dtype: The data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
-    :param name: The name of this module, default is "".
+    :param input_size: Dimensione delle caratteristiche di input.
+    :param hidden_size: Dimensione delle caratteristiche nascoste.
+    :param num_layers: Numero di strati LSTM impilati, default: 1.
+    :param batch_first: Se True, la forma dell'input e [batch size, sequence length, feature dimension]. Se False, la forma dell'input e [sequence length, batch size, feature dimension], default True.
+    :param use_bias: Se False, questo modulo non applica bias, default: True.
+    :param bidirectional: Se True, diventa un LSTM bidirezionale, default: False.
+    :param dtype: Il tipo di dato del parametro, default: None, utilizza il tipo di dato predefinito: kfloat32, che rappresenta numeri a virgola mobile a 32 bit.
+    :param name: Il nome di questo modulo, default "".
 
-    :return: Dynamic_LSTM instance
+    :return: Istanza Dynamic_LSTM
 
     Example::
 
@@ -1428,22 +1428,22 @@ Interpolate
 
 .. py:class:: pyvqnet.nn.torch.Interpolate(size = None, scale_factor = None, mode = "nearest", align_corners = None,  recompute_scale_factor = None, name = "")
 
-    Down/upsample the input.
+    Ridimensiona l'input in scala inferiore/superiore.
 
-    Currently only supports 4D input data.
+    Attualmente supporta solo dati di input 4D.
 
-    The input size is interpreted as `B x C x H x W`.
+    La dimensione dell'input e interpretata come `B x C x H x W`.
 
-    The available `mode` options are ``nearest``, ``bilinear``, ``bicubic``.
+    Le opzioni `mode` disponibili sono ``nearest``, ``bilinear``, ``bicubic``.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module`` and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param size: Output size, default is None.
-    :param scale_factor: Scaling factor, default is None.
-    :param mode: Algorithm used for upsampling ``nearest`` | ``bilinear`` | ``bicubic``.
-    :param align_corners: From a geometric point of view, we treat the pixels of the input and output as squares instead of points. The pixels of the input and output are treated as squares instead of points.If set to `true`, the input and output tensors will be aligned by the center points of their corner pixels. Corner pixel center points are aligned, and the values ​​of the corner pixels are preserved.If set to `false`, the input and output tensors will be aligned by the corner points of their corner pixels, and the values ​​of the corner pixels are preserved. Corner pixel corner points are aligned, and interpolation will use edge values ​​for padding.Values ​​outside the boundaries are padded, making this operation independent of the input size.When ``scale_factor`` remains unchanged. This only works when ``mode`` is ``bilinear``.
-    :param recompute_scale_factor: Recompute the scale factor for use in the interpolation calculation. When ``scale_factor`` is passed as an argument, it will be used to calculate the output size.
-    :param name: Module name.
+    :param size: Dimensione di output, default None.
+    :param scale_factor: Fattore di scala, default None.
+    :param mode: Algoritmo utilizzato per l'upsampling ``nearest`` | ``bilinear`` | ``bicubic``.
+    :param align_corners: Da un punto di vista geometrico, trattiamo i pixel dell'input e dell'output come quadrati invece che come punti. Se impostato a `true`, i tensori di input e output saranno allineati dai punti centrali dei loro pixel d'angolo. I punti centrali dei pixel d'angolo sono allineati e i valori dei pixel d'angolo vengono preservati. Se impostato a `false`, i tensori di input e output saranno allineati dai punti d'angolo dei loro pixel d'angolo e i valori dei pixel d'angolo vengono preservati. I punti d'angolo dei pixel d'angolo sono allineati e l'interpolazione utilizzera i valori di bordo per il padding. I valori fuori dai confini vengono riempiti, rendendo questa operazione indipendente dalla dimensione dell'input. Quando ``scale_factor`` rimane invariato. Funziona solo quando ``mode`` e ``bilinear``.
+    :param recompute_scale_factor: Ricalcola il fattore di scala per l'uso nel calcolo dell'interpolazione. Quando ``scale_factor`` viene passato come argomento, verra utilizzato per calcolare la dimensione dell'output.
+    :param name: Nome del modulo.
 
     Example::
 
@@ -1467,15 +1467,15 @@ SDPA
 
 .. py:class:: pyvqnet.nn.torch.SDPA(attn_mask=None,dropout_p=0.,scale=None,is_causal=False)
 
-    Constructs a class that computes scaled dot product attention for query, key, and value tensors.
+    Costruisce una classe che calcola l'attenzione scalata del prodotto scalare per i tensori query, key e value.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param attn_mask: Attention mask; default value: None. shape must be broadcastable to the shape of attention weights.
-    :param dropout_p: Dropout probability; default value: 0, if greater than 0.0, dropout is applied.
-    :param scale: Scaling factor applied before softmax, default value: None.
-    :param is_causal: default value: False, if set to true, the attention mask is a lower triangular matrix when the mask is a square matrix. If both attn_mask and is_causal are set, an error is raised.
-    :return: An SDPA class
+    :param attn_mask: Maschera di attenzione; valore predefinito: None. La forma deve essere trasmissibile alla forma dei pesi di attenzione.
+    :param dropout_p: Probabilita di dropout; valore predefinito: 0, se maggiore di 0.0, viene applicato dropout.
+    :param scale: Fattore di scala applicato prima di softmax, valore predefinito: None.
+    :param is_causal: valore predefinito: False, se impostato a true, la maschera di attenzione e una matrice triangolare inferiore quando la maschera e una matrice quadrata. Se sia attn_mask che is_causal sono impostati, viene sollevato un errore.
+    :return: Una classe SDPA
 
     Examples::
     
@@ -1487,12 +1487,12 @@ SDPA
 
    .. py:method:: forward(query,key,value)
 
-        Performs forward computation.
+        Esegue il calcolo forward.
 
-        :param query: The query input QTensor.
-        :param key: The key input QTensor.
-        :param value: The key input QTensor.
-        :return: The QTensor returned by the SDPA calculation.
+        :param query: Il QTensor di input query.
+        :param key: Il QTensor di input key.
+        :param value: Il QTensor di input key.
+        :return: Il QTensor restituito dal calcolo SDPA.
         
         Examples::
         
@@ -1517,42 +1517,42 @@ SDPA
 
             out_sdpa.backward()
 
-Loss Functions API
-------------------------
+API delle Funzioni di Perdita
+-----------------------------
 
 MeanSquaredError
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. py:class:: pyvqnet.nn.torch.MeanSquaredError(name="")
 
-    Calculate the root mean square error between the input :math:`x` and the target value :math:`y`.
+    Calcola l'errore quadratico medio tra l'input :math:`x` e il valore target :math:`y`.
 
-    If the square root error can be described by the following function:
+    Se l'errore quadratico puo essere descritto dalla seguente funzione:
 
     .. math::
         \ell(x, y) = L = \{l_1,\dots,l_N\}^\top, \quad
         l_n = \left( x_n - y_n \right)^2,
 
-    :math:`x` and :math:`y` are QTensor s of arbitrary shapes, and the root mean square error of the total :math:`n` elements is calculated as follows.
+    :math:`x` e :math:`y` sono QTensor di forme arbitrarie e l'errore quadratico medio del totale :math:`n` elementi viene calcolato come segue.
 
     .. math::
         \ell(x, y) =
         \operatorname{mean}(L)
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param name: The name of this module, defaults to "".
-    :return: An RMS error instance.
+    :param name: Il nome di questo modulo, default "".
+    :return: Un'istanza di errore RMS.
 
-    Required parameters for the RMS error forward calculation function:
+    Parametri richiesti per la funzione di calcolo forward dell'errore RMS:
 
-        x: :math:`(N, *)` predicted value, where :math:`*` represents any dimension.
+        x: :math:`(N, *)` valore previsto, dove :math:`*` rappresenta qualsiasi dimensione.
 
-        y: :math:`(N, *)`, target value, a QTensor of the same dimension as the input.
+        y: :math:`(N, *)`, valore target, un QTensor della stessa dimensione dell'input.
 
     .. note::
 
-        Please note that unlike frameworks such as pytorch, in the forward function of the following MeanSquaredError function, the first parameter is the target value and the second parameter is the predicted value.
+        Si prega di notare che, a differenza di framework come pytorch, nella funzione forward della seguente funzione MeanSquaredError, il primo parametro e il valore target e il secondo parametro e il valore previsto.
 
 
     Example::
@@ -1580,33 +1580,33 @@ BinaryCrossEntropy
 
 .. py:class:: pyvqnet.nn.torch.BinaryCrossEntropy(name="")
 
-    Measures the average binary cross entropy loss between the target and the input.
+    Calcola la perdita media di entropia incrociata binaria tra il target e l'input.
 
-    The binary cross entropy without averaging is as follows:
+    L'entropia incrociata binaria senza media e la seguente:
 
     .. math::
         \ell(x, y) = L = \{l_1,\dots,l_N\}^\top, \quad
         l_n = - w_n \left[ y_n \cdot \log x_n + (1 - y_n) \cdot \log (1 - x_n) \right],
 
-    where :math:`N` is the batch size.
+    dove :math:`N` e la dimensione del batch.
 
     .. math::
         \ell(x, y) = \operatorname{mean}(L)
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module`` and can be added to torch models as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta ai modelli torch come sottomodulo di ``torch.nn.Module``.
 
-    :param name: The name of this module, defaults to "".
-    :return: An average binary cross entropy instance.
+    :param name: Il nome di questo modulo, default "".
+    :return: Un'istanza di entropia incrociata binaria media.
 
-    Required parameters for the average binary cross entropy error forward calculation function:
+    Parametri richiesti per la funzione di calcolo forward dell'errore di entropia incrociata binaria media:
 
-        x: :math:`(N, *)` predicted value, where :math:`*` represents any dimension.
+        x: :math:`(N, *)` valore previsto, dove :math:`*` rappresenta qualsiasi dimensione.
 
-        y: :math:`(N, *)`, target value, a QTensor of the same dimension as the input.
+        y: :math:`(N, *)`, valore target, un QTensor della stessa dimensione dell'input.
 
     .. note::
 
-        Please note that unlike frameworks such as pytorch, in the forward function of the BinaryCrossEntropy function, the first parameter is the target value and the second parameter is the predicted value.
+        Si prega di notare che, a differenza di framework come pytorch, nella funzione forward della funzione BinaryCrossEntropy, il primo parametro e il valore target e il secondo parametro e il valore previsto.
         
     Example::
 
@@ -1628,28 +1628,28 @@ CategoricalCrossEntropy
 
 .. py:class:: pyvqnet.nn.torch.CategoricalCrossEntropy(name="")
 
-    This loss function combines LogSoftmax and NLLLoss to calculate the average categorical cross entropy.
+    Questa funzione di perdita combina LogSoftmax e NLLLoss per calcolare l'entropia incrociata categoriale media.
 
-    The loss function is calculated as follows, where class is the corresponding category label of the target value:
+    La funzione di perdita viene calcolata come segue, dove class e l'etichetta di categoria corrispondente del valore target:
 
     .. math::
         \text{loss}(x, y) = -\log\left(\frac{\exp(x[class])}{\sum_j \exp(x[j])}\right)
         = -x[class] + \log\left(\sum_j \exp(x[j])\right)
 
-    :param name: The name of this module, defaults to "".
-    :return: The average categorical cross entropy instance.
+    :param name: Il nome di questo modulo, default "".
+    :return: L'istanza di entropia incrociata categoriale media.
 
-    Required parameters for the error forward calculation function:
+    Parametri richiesti per la funzione di calcolo forward dell'errore:
 
-        x: :math:`(N, *)` Predicted value, where :math:`*` indicates any dimension.
+        x: :math:`(N, *)` Valore previsto, dove :math:`*` indica qualsiasi dimensione.
 
-        y: :math:`(N, *)`, target value, a QTensor of the same dimension as the input. Must be a 64-bit integer, kint64.
+        y: :math:`(N, *)`, valore target, un QTensor della stessa dimensione dell'input. Deve essere un intero a 64 bit, kint64.
 
     .. note::
 
-        Please note that unlike pytorch and other frameworks, in the forward function of CategoricalCrossEntropy function, the first parameter is the target value and the second parameter is the predicted value.
+        Si prega di notare che, a differenza di pytorch e altri framework, nella funzione forward di CategoricalCrossEntropy, il primo parametro e il valore target e il secondo parametro e il valore previsto.
 
-        This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+        Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     Example::
 
@@ -1673,28 +1673,28 @@ SoftmaxCrossEntropy
 
 .. py:class:: pyvqnet.nn.torch.SoftmaxCrossEntropy(name="")
 
-    This loss function combines LogSoftmax and NLLLoss to calculate the average classification cross entropy, and has higher numerical stability.
+    Questa funzione di perdita combina LogSoftmax e NLLLoss per calcolare l'entropia incrociata di classificazione media e ha una maggiore stabilita numerica.
 
-    The loss function is calculated as follows, where class is the corresponding classification label of the target value:
+    La funzione di perdita viene calcolata come segue, dove class e l'etichetta di classificazione corrispondente del valore target:
 
     .. math::
         \text{loss}(x, y) = -\log\left(\frac{\exp(x[class])}{\sum_j \exp(x[j])}\right)
         = -x[class] + \log\left(\sum_j \exp(x[j])\right)
 
-    :param name: The name of this module, defaults to "".
-    :return: A Softmax cross entropy loss function instance
+    :param name: Il nome di questo modulo, default "".
+    :return: Un'istanza della funzione di perdita Softmax cross entropy
 
-    Required parameters for the error forward calculation function:
+    Parametri richiesti per la funzione di calcolo forward dell'errore:
 
-        x: :math:`(N, *)` predicted value, where :math:`*` indicates any dimension.
+        x: :math:`(N, *)` valore previsto, dove :math:`*` indica qualsiasi dimensione.
 
-        y: :math:`(N, *)`, target value, a QTensor of the same dimension as the input. Must be a 64-bit integer, kint64.
+        y: :math:`(N, *)`, valore target, un QTensor della stessa dimensione dell'input. Deve essere un intero a 64 bit, kint64.
 
     .. note::
 
-        Please note that unlike pytorch and other frameworks, in the forward function of the SoftmaxCrossEntropy function, the first parameter is the target value and the second parameter is the predicted value.
+        Si prega di notare che, a differenza di pytorch e altri framework, nella funzione forward di SoftmaxCrossEntropy, il primo parametro e il valore target e il secondo parametro e il valore previsto.
 
-        This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+        Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
         
     Example::
 
@@ -1722,29 +1722,29 @@ NLL_Loss
 .. py:class:: pyvqnet.nn.torch.NLL_Loss(name="")
 
     
-    Average negative log-likelihood loss. Useful for classification problems with C classes.
+    Perdita media di log-verosimiglianza negativa. Utile per problemi di classificazione con C classi.
 
-    `x` is the probability likelihood given by the model. Its shape can be :math:`(N, C)` or :math:`(N, C, d_1, d_2, ..., d_K)`. `y` is the expected true value of the loss function, containing class indices in :math:`[0, C-1]`.
+    `x` e la probabilita di verosimiglianza fornita dal modello. La sua forma puo essere :math:`(N, C)` o :math:`(N, C, d_1, d_2, ..., d_K)`. `y` e il valore vero atteso della funzione di perdita, contenente indici di classe in :math:`[0, C-1]`.
 
     .. math::
         \ell(x, y) = L = \{l_1,\dots,l_N\}^\top, \quad
         l_n = -
         \sum_{n=1}^N \frac{1}{N}x_{n,y_n} \quad
 
-    :param name: The name of this module, defaults to "".
-    :return: An NLL_Loss loss function instance
+    :param name: Il nome di questo modulo, default "".
+    :return: Un'istanza della funzione di perdita NLL_Loss
 
-    Required parameters for the error forward calculation function:
+    Parametri richiesti per la funzione di calcolo forward dell'errore:
 
-        x: :math:`(N, *)`, the output prediction value of the loss function, which can be a multi-dimensional variable.
+        x: :math:`(N, *)`, il valore di previsione di output della funzione di perdita, che puo essere una variabile multidimensionale.
 
-        y: :math:`(N, *)`, the target value of the loss function. Must be a 64-bit integer, kint64.
+        y: :math:`(N, *)`, il valore target della funzione di perdita. Deve essere un intero a 64 bit, kint64.
 
     .. note::
 
-        Please note that unlike frameworks such as pytorch, in the forward function of the NLL_Loss function, the first parameter is the target value and the second parameter is the prediction value.
+        Si prega di notare che, a differenza di framework come pytorch, nella funzione forward di NLL_Loss, il primo parametro e il valore target e il secondo parametro e il valore previsto.
 
-        This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+        Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
             
     Example::
 
@@ -1774,30 +1774,30 @@ CrossEntropyLoss
 
 .. py:class:: pyvqnet.nn.torch.CrossEntropyLoss(name="")
 
-    This function calculates the loss of LogSoftmax and NLL_Loss together.
+    Questa funzione calcola la perdita di LogSoftmax e NLL_Loss insieme.
 
-    `x` contains the unnormalized output. Its shape can be :math:`(C)`, :math:`(N, C)` two-dimensional or :math:`(N, C, d_1, d_2, ..., d_K)` multidimensional.
+    `x` contiene l'output non normalizzato. La sua forma puo essere :math:`(C)`, :math:`(N, C)` bidimensionale o :math:`(N, C, d_1, d_2, ..., d_K)` multidimensionale.
 
-    The formula of the loss function is as follows, where class is the corresponding class label of the target value:
+    La formula della funzione di perdita e la seguente, dove class e l'etichetta di classe corrispondente del valore target:
 
     .. math::
         \text{loss}(x, y) = -\log\left(\frac{\exp(x[class])}{\sum_j \exp(x[j])}\right)
         = -x[class] + \log\left(\sum_j \exp(x[j])\right)
 
-    :param name: The name of this module, default is "".
-    :return: A CrossEntropyLoss loss function instance
+    :param name: Il nome di questo modulo, default "".
+    :return: Un'istanza della funzione di perdita CrossEntropyLoss
 
-    Required parameters for the error forward calculation function:
+    Parametri richiesti per la funzione di calcolo forward dell'errore:
 
-        x: :math:`(N, *)`, the output of the loss function, which can be a multi-dimensional variable.
+        x: :math:`(N, *)`, l'output della funzione di perdita, che puo essere una variabile multidimensionale.
 
-        y: :math:`(N, *)`, the expected true value of the loss function. Must be a 64-bit integer, kint64.
+        y: :math:`(N, *)`, il valore vero atteso della funzione di perdita. Deve essere un intero a 64 bit, kint64.
 
     .. note::
 
-        Please note that unlike frameworks such as pytorch, in the forward function of the CrossEntropyLoss function, the first parameter is the target value and the second parameter is the predicted value.
+        Si prega di notare che, a differenza di framework come pytorch, nella funzione forward di CrossEntropyLoss, il primo parametro e il valore target e il secondo parametro e il valore previsto.
 
-        This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+        Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     Example::
 
@@ -1822,24 +1822,24 @@ CrossEntropyLoss
         print(result)
 
 
-Activation Fucntions
----------------------
+Funzioni di Attivazione
+-----------------------
 
 Sigmoid
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. py:class:: pyvqnet.nn.torch.Sigmoid(name:str="")
 
-    Sigmoid activation function layer.
+    Strato della funzione di attivazione Sigmoid.
 
     .. math::
         \text{Sigmoid}(x) = \frac{1}{1 + \exp(-x)}
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: A Sigmoid activation function layer instance.
+    :return: Un'istanza dello strato della funzione di attivazione Sigmoid.
 
     Examples::
 
@@ -1857,16 +1857,16 @@ Softplus
 
 .. py:class:: pyvqnet.nn.torch.Softplus(name:str="")
 
-    Softplus 
+    Softplus.
 
     .. math::
         \text{Softplus}(x) = \log(1 + \exp(x))
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: a Softplus instance.
+    :return: Un'istanza Softplus.
 
     Examples::
 
@@ -1882,18 +1882,18 @@ Softsign
 
 .. py:class:: pyvqnet.nn.torch.Softsign(name:str="")
 
-    Softsign .
+    Softsign.
 
     .. math::
         \text{SoftSign}(x) = \frac{x}{ 1 + |x|}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: a SoftSign instance.
+    :return: Un'istanza SoftSign.
 
     Examples::
 
@@ -1911,19 +1911,19 @@ Softmax
 
 .. py:class:: pyvqnet.nn.torch.Softmax(axis:int = -1,name:str="")
 
-    Softmax 
+    Softmax.
 
     .. math::
         \text{Softmax}(x_{i}) = \frac{\exp(x_i)}{\sum_j \exp(x_j)}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param axis: the dimension to calculate (the last axis is -1), default value = -1.
-    :param name: The name of the activation function layer, default is "".
+    :param axis: La dimensione su cui calcolare (l'ultimo asse e -1), valore predefinito = -1.
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: a Softmax instance.
+    :return: Un'istanza Softmax.
 
     Examples::
 
@@ -1940,7 +1940,7 @@ HardSigmoid
 
 .. py:class:: pyvqnet.nn.torch.HardSigmoid(name:str="")
 
-    HardSigmoid 
+    HardSigmoid.
 
     .. math::
         \text{Hardsigmoid}(x) = \begin{cases}
@@ -1950,12 +1950,12 @@ HardSigmoid
         \end{cases}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: HardSigmoid instance.
+    :return: Un'istanza HardSigmoid.
 
     Examples::
 
@@ -1981,12 +1981,12 @@ ReLu
         \end{cases}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: a ReLu instance.
+    :return: Un'istanza ReLu.
 
     Examples::
 
@@ -2005,7 +2005,7 @@ LeakyReLu
 
 .. py:class:: pyvqnet.nn.torch.LeakyReLu(alpha:float=0.01,name:str="")
 
-    LeakyReLu  
+    LeakyReLu.
 
     .. math::
         \text{LeakyRelu}(x) =
@@ -2015,13 +2015,13 @@ LeakyReLu
         \end{cases}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param alpha: LeakyRelu coefficient, default: 0.01.
-    :param name: The name of the activation function layer, default is "".
+    :param alpha: Coefficiente LeakyRelu, default: 0.01.
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: a LeakyReLu activation instance.
+    :return: Un'istanza di attivazione LeakyReLu.
 
     Examples::
 
@@ -2043,18 +2043,18 @@ Gelu
 
     .. math:: \text{GELU}(x) = x * \Phi(x)
 
-    When the approximation parameter is 'tanh', GELU is estimated as follows:
+    Quando il parametro di approssimazione e 'tanh', GELU viene stimato come segue:
 
     .. math:: \text{GELU}(x) = 0.5 * x * (1 + \text{Tanh}(\sqrt{2 / \pi} * (x + 0.044715 * x^3)))
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param approximate: Approximate calculation method, the default is "tanh".
-    :param name: The name of the activation function layer, default is "".
+    :param approximate: Metodo di calcolo approssimato, default "tanh".
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: Gelu activation instance.
+    :return: Istanza di attivazione Gelu.
 
     Examples::
 
@@ -2072,7 +2072,7 @@ ELU
 
 .. py:class:: pyvqnet.nn.torch.ELU(alpha:float=1,name:str="")
 
-    ELU Exponential Linear Unit activation function layer.
+    Strato della funzione di attivazione ELU (Exponential Linear Unit).
 
     .. math::
         \text{ELU}(x) = \begin{cases}
@@ -2081,14 +2081,14 @@ ELU
         \end{cases}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
 
-    :param alpha: ELU Coefficient, default:1.
-    :param name: The name of the activation function layer, default is "".
+    :param alpha: Coefficiente ELU, default: 1.
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: ELU activation instance.
+    :return: Istanza di attivazione ELU.
 
     Examples::
 
@@ -2105,19 +2105,19 @@ Tanh
 
 .. py:class:: pyvqnet.nn.torch.Tanh(name:str="")
 
-    Tanh hyperbolic tangent activation function.
+    Funzione di attivazione tangente iperbolica Tanh.
 
     .. math::
         \text{Tanh}(x) = \frac{\exp(x) - \exp(-x)} {\exp(x) + \exp(-x)}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Il nome dello strato della funzione di attivazione, default "".
 
-    :return: Tanh activation instance.
+    :return: Istanza di attivazione Tanh.
 
     Examples::
 
@@ -2130,57 +2130,57 @@ Tanh
 
 
 
-Optimizer module
+Modulo Optimizer
 ---------------------------------------------
 
-For classical and quantum circuit modules inherited from `TorchModule`, the parameters `model.paramters()` can continue to be optimized using optimizers other than `Rotosolve` under :ref:`Optimizer`.
+Per i modelli classici e di circuito quantistico che ereditano da `TorchModule`, i parametri `model.paramters()` possono continuare a essere ottimizzati utilizzando ottimizzatori diversi da `Rotosolve` presenti in :ref:`Optimizer`.
 
 
 
-Using pyqpanda to run quantum variational circuit
+Utilizzo di pyqpanda per eseguire circuiti quantistici variazionali
 -------------------------------------------------------------------------
 
-The following is the training variational quantum circuit interface for circuit calculation using pyqpanda and pyqpanda3.
+La seguente e l'interfaccia per l'addestramento di circuiti quantistici variazionali che utilizza pyqpanda e pyqpanda3 per il calcolo.
 
 .. warning::
 
-    The quantum computing part of the following TorchQpandaQuantumLayer uses pyqpanda2.
+    La parte di calcolo quantistico del seguente TorchQpandaQuantumLayer utilizza pyqpanda2.
 
-    Due to the compatibility issues between pyqpanda2 and pyqpanda3, you need to install pyqpnda2 yourself, `pip install pyqpanda`
+    A causa dei problemi di compatibilita tra pyqpanda2 e pyqpanda3, devi installare pyqpanda2 autonomamente, `pip install pyqpanda`
 
 TorchQpandaQuantumLayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you are more familiar with pyQPanda2 syntax, you can use the interface TorchQpandaQuantumLayer, add custom quantum bits ``qubits``, classical bits ``cbits``, and backend simulator ``machine`` to the parameter ``qprog_with_measure`` function of TorchQpandaQuantumLayer.
+Se hai piu familiarita con la sintassi pyQPanda2, puoi utilizzare l'interfaccia TorchQpandaQuantumLayer, aggiungendo bit quantistici personalizzati ``qubits``, bit classici ``cbits`` e simulatore backend ``machine`` al parametro della funzione ``qprog_with_measure`` di TorchQpandaQuantumLayer.
 
 .. py:class:: pyvqnet.qnn.vqc.torch.TorchQpandaQuantumLayer(qprog_with_measure,para_num,diff_method:str = "parameter_shift",delta:float = 0.01,dtype=None,name="")
 
-    Abstract computing module of variational quantum layer. Use pyQPanda2 to simulate a parameterized quantum circuit and get the measurement results. This variational quantum layer inherits the gradient calculation module of the VQNet framework. It can use parameter drift method to calculate the gradient of circuit parameters, train variational quantum circuit models or embed variational quantum circuits into hybrid quantum and classical models.
+    Modulo di calcolo astratto dello strato quantistico variazionale. Utilizza pyQPanda2 per simulare un circuito quantistico parametrizzato e ottenere i risultati di misurazione. Questo strato quantistico variazionale eredita il modulo di calcolo del gradiente del framework VQNet. Puo utilizzare il metodo di spostamento dei parametri per calcolare il gradiente dei parametri del circuito, addestrare modelli di circuito quantistico variazionale o incorporare circuiti quantistici variazionali in modelli ibridi quantistici e classici.
 
-    :param qprog_with_measure: Quantum circuit operation and measurement functions built with pyQPand.
-    :param para_num: `int` - number of parameters.
-    :param diff_method: Method for solving quantum circuit parameter gradients, "parameter shift" or "finite difference", default parameter shift.
-    :param delta: \delta when calculating gradients by finite difference.
-    :param dtype: Data type of parameter, default: None, use default data type: kfloat32, representing 32-bit floating point numbers.
-    :param name: The name of this module, default is "".
+    :param qprog_with_measure: Funzioni di operazione e misurazione del circuito quantistico costruite con pyQPanda.
+    :param para_num: `int` - numero di parametri.
+    :param diff_method: Metodo per risolvere i gradienti dei parametri del circuito quantistico, "parameter shift" o "finite difference", default parameter shift.
+    :param delta: \delta nel calcolo dei gradienti per differenza finita.
+    :param dtype: Tipo di dato del parametro, default: None, utilizza il tipo di dato predefinito: kfloat32, che rappresenta numeri a virgola mobile a 32 bit.
+    :param name: Il nome di questo modulo, default "".
 
-    :return: A module that can calculate quantum circuits.
+    :return: Un modulo in grado di calcolare circuiti quantistici.
 
     .. note::
 
-        qprog_with_measure is a quantum circuit function defined in pyQPanda2.
+        qprog_with_measure e una funzione di circuito quantistico definita in pyQPanda2.
 
-        This function must contain the following parameters as function input (even if a parameter is not actually used), otherwise it will not work properly in this function.
+        Questa funzione deve contenere i seguenti parametri come input della funzione (anche se un parametro non viene effettivamente utilizzato), altrimenti non funzionera correttamente in questa funzione.
 
-        Compared with QuantumLayer, in the variational circuit running function passed in by this interface, the user should manually create quantum bits and simulators.
+        Rispetto a QuantumLayer, nella funzione di esecuzione del circuito variazionale passata da questa interfaccia, l'utente deve creare manualmente bit quantistici e simulatori.
 
-        If qprog_with_measure requires quantum measure, the user also needs to manually create and allocate cbits.
+        Se qprog_with_measure richiede una misura quantistica, l'utente deve anche creare e allocare manualmente i cbits.
 
-        The use of the quantum circuit function qprog_with_measure (input, param, nqubits, ncbits) can refer to the following example.
+        L'uso della funzione di circuito quantistico qprog_with_measure (input, param, nqubits, ncbits) puo fare riferimento al seguente esempio.
 
-        `input`: Input one-dimensional classical data. If none, input None.
+        `input`: Input di dati classici unidimensionali. Se assente, inserire None.
 
-        `param`: Input one-dimensional variational quantum circuit parameters to be trained.
+        `param`: Input dei parametri del circuito quantistico variazionale unidimensionali da addestrare.
 
     Example::
 
@@ -2247,54 +2247,54 @@ If you are more familiar with pyQPanda2 syntax, you can use the interface TorchQ
 
 .. warning::
 
-    The quantum computing part of the following TorchQcloud3QuantumLayer and TorchQpanda3QuantumLayer interfaces uses pyqpanda3.
+    La parte di calcolo quantistico delle seguenti interfacce TorchQcloud3QuantumLayer e TorchQpanda3QuantumLayer utilizza pyqpanda3.
 
-    If you use the QCloud function under this module, there will be errors when importing pyqpanda2 in the code or using pyvqnet's pyqpanda2 related package interfaces.
+    Se utilizzi la funzione QCloud in questo modulo, ci saranno errori durante l'importazione di pyqpanda2 nel codice o l'utilizzo delle interfacce dei pacchetti correlati a pyqpanda2 di pyvqnet.
 
 TorchQcloud3QuantumLayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When you install the latest version of pyqpanda3, you can use this interface to define a variational circuit and submit it to the real chip of originqc for operation.
+Quando installi l'ultima versione di pyqpanda3, puoi utilizzare questa interfaccia per definire un circuito variazionale e inviarlo al chip reale di originqc per l'esecuzione.
 
 .. py:class:: pyvqnet.qnn.vqc.torch.TorchQcloud3QuantumLayer(origin_qprog_func, qcloud_token, para_num, pauli_str_dict=None, shots = 1000, initializer=None, dtype=None, name="", diff_method="parameter_shift", submit_kwargs={}, query_kwargs={})
     
-    An abstract computation module for real chips using originqc of pyqpanda3. It submits parameterized quantum circuits to real chips and obtains measurement results.
-    If diff_method == "random_coordinate_descent" , the layer will randomly select a single parameter to calculate the gradient, and other parameters will remain zero. Reference: https://arxiv.org/abs/2311.00088
+    Un modulo di calcolo astratto per chip reali che utilizza originqc di pyqpanda3. Invia circuiti quantistici parametrizzati a chip reali e ottiene i risultati di misurazione.
+    Se diff_method == "random_coordinate_descent", lo strato selezionera casualmente un singolo parametro per calcolare il gradiente e gli altri parametri rimarranno a zero. Riferimento: https://arxiv.org/abs/2311.00088
 
     .. note::
 
-        qcloud_token is the api token you applied for from the cloud platform.
+        qcloud_token e il token API che hai richiesto dalla piattaforma cloud.
 
-        origin_qprog_func needs to return data of type pypqanda3.core.QProg. If pauli_str_dict is not set, it is necessary to ensure that the measure has been inserted into the QProg.
+        origin_qprog_func deve restituire dati di tipo pypqanda3.core.QProg. Se pauli_str_dict non e impostato, e necessario assicurarsi che la misura sia stata inserita nel QProg.
 
-        origin_qprog_func must be in the following format:
+        origin_qprog_func deve essere nel seguente formato:
 
-        origin_qprog_func(input,param )
+        origin_qprog_func(input,param)
 
-        `input`: Input 1~2D classical data. In the case of 2D, the first dimension is the batch size.
+        `input`: Input di dati classici 1D~2D. Nel caso 2D, la prima dimensione e la dimensione del batch.
 
-        `param`: Input the parameters to be trained of the 1D variational quantum circuit.
+        `param`: Input dei parametri da addestrare del circuito quantistico variazionale 1D.
 
     .. warning::
 
-        This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+        Questa classe eredita da ``pyvqnet.nn.Module`` e ``torch.nn.Module`` e puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-        The data in ``_buffers`` of this class is of ``torch.Tensor`` type.
+        I dati in ``_buffers`` di questa classe sono di tipo ``torch.Tensor``.
 
-        The data in ``_parmeters`` of this class is of ``torch.nn.Parameter`` type.
+        I dati in ``_parmeters`` di questa classe sono di tipo ``torch.nn.Parameter``.
 
-    :param origin_qprog_func: The variational quantum circuit function built by QPanda, which must return QProg.
-    :param qcloud_token: `str` - The type of quantum machine or cloud token for execution.
-    :param para_num: `int` - The number of parameters, the parameter is a QTensor of size [para_num].
-    :param pauli_str_dict: `dict|list` - Dictionary or list of dictionaries representing Pauli operators in quantum circuits. Defaults to "None", which means measurement operations are performed. If a dictionary of Pauli operators is entered, a single expectation or multiple expectations are calculated.
-    :param shot: `int` - Number of measurements. The default value is 1000.
-    :param initializer: Initializer for parameter values. The default value is "None", using a 0~2*pi normal distribution.
-    :param dtype: Data type of the parameter. The default value is None, which means using the default data type pyvqnet.kfloat32.
-    :param name: The name of the module. The default value is an empty string.
-    :param diff_method: Differentiation method for gradient calculation. The default value is "parameter_shift", "random_coordinate_descent".
-    :param submit_kwargs: Additional keyword parameters for submitting quantum circuits, default: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, when test_qcloud_fake is set to True, local CPUQVM simulation.
-    :param query_kwargs: Additional keyword parameters for querying quantum results, default: {"timeout":2,"print_query_info":True,"sub_circuits_split_size":1}.
-    :return: A module that can calculate quantum circuits.
+    :param origin_qprog_func: La funzione di circuito quantistico variazionale costruita da QPanda, che deve restituire QProg.
+    :param qcloud_token: `str` - Il tipo di macchina quantistica o token cloud per l'esecuzione.
+    :param para_num: `int` - Il numero di parametri, il parametro e un QTensor di dimensione [para_num].
+    :param pauli_str_dict: `dict|list` - Dizionario o lista di dizionari che rappresentano operatori di Pauli nei circuiti quantistici. Default "None", il che significa che vengono eseguite operazioni di misurazione. Se viene inserito un dizionario di operatori di Pauli, viene calcolata una singola aspettativa o aspettative multiple.
+    :param shot: `int` - Numero di misurazioni. Il valore predefinito e 1000.
+    :param initializer: Inizializzatore per i valori dei parametri. Il valore predefinito e "None", utilizzando una distribuzione normale 0~2*pi.
+    :param dtype: Tipo di dato del parametro. Il valore predefinito e None, che significa utilizzare il tipo di dato predefinito pyvqnet.kfloat32.
+    :param name: Il nome del modulo. Il valore predefinito e una stringa vuota.
+    :param diff_method: Metodo di differenziazione per il calcolo del gradiente. Il valore predefinito e "parameter_shift", "random_coordinate_descent".
+    :param submit_kwargs: Parametri chiave aggiuntivi per l'invio di circuiti quantistici, default: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, quando test_qcloud_fake e impostato a True, simulazione CPUQVM locale.
+    :param query_kwargs: Parametri chiave aggiuntivi per interrogare i risultati quantistici, default: {"timeout":2,"print_query_info":True,"sub_circuits_split_size":1}.
+    :return: Un modulo in grado di calcolare circuiti quantistici.
 
 
     Example::
@@ -2381,32 +2381,32 @@ When you install the latest version of pyqpanda3, you can use this interface to 
 TorchQpanda3QuantumLayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you are more familiar with pyQPanda3 syntax, you can use the interface TorchQpanda3QuantumLayer.
+Se hai piu familiarita con la sintassi pyQPanda3, puoi utilizzare l'interfaccia TorchQpanda3QuantumLayer.
 
 .. py:class:: pyvqnet.qnn.vqc.torch.TorchQpanda3QuantumLayer(qprog_with_measure,para_num,diff_method:str = "parameter_shift",delta:float = 0.01,dtype=None,name="")
 
-    Abstract computation module of variational quantum layer. Use pyQPanda3 to simulate a parameterized quantum circuit and get the measurement results. This variational quantum layer inherits the gradient computation module of the VQNet framework. You can use the parameter drift method to calculate the gradient of the circuit parameters, train the variational quantum circuit model, or embed the variational quantum circuit into a hybrid quantum and classical model.
+    Modulo di calcolo astratto dello strato quantistico variazionale. Utilizza pyQPanda3 per simulare un circuito quantistico parametrizzato e ottenere i risultati di misurazione. Questo strato quantistico variazionale eredita il modulo di calcolo del gradiente del framework VQNet. Puoi utilizzare il metodo di spostamento dei parametri per calcolare il gradiente dei parametri del circuito, addestrare il modello di circuito quantistico variazionale o incorporare il circuito quantistico variazionale in un modello ibrido quantistico e classico.
 
-    :param qprog_with_measure: Quantum circuit operation and measurement functions built with pyQPand.
-    :param para_num: `int` - number of parameters.
-    :param diff_method: method for solving quantum circuit parameter gradients, "parameter shift" or "finite difference", default parameter shift.
-    :param delta: \delta when calculating gradients by finite difference.
-    :param dtype: data type of parameter, default: None, use default data type: kfloat32, representing 32-bit floating point numbers.
-    :param name: the name of this module, default is "".
+    :param qprog_with_measure: Funzioni di operazione e misurazione del circuito quantistico costruite con pyQPanda.
+    :param para_num: `int` - numero di parametri.
+    :param diff_method: Metodo per risolvere i gradienti dei parametri del circuito quantistico, "parameter shift" o "finite difference", default parameter shift.
+    :param delta: \delta nel calcolo dei gradienti per differenza finita.
+    :param dtype: Tipo di dato del parametro, default: None, utilizza il tipo di dato predefinito: kfloat32, che rappresenta numeri a virgola mobile a 32 bit.
+    :param name: Il nome di questo modulo, default "".
 
-    :return: a module that can calculate quantum circuits.
+    :return: Un modulo in grado di calcolare circuiti quantistici.
 
     .. note::
 
-        qprog_with_measure is a quantum circuit function defined in pyQPanda.
+        qprog_with_measure e una funzione di circuito quantistico definita in pyQPanda.
 
-        This function must include the following parameters as function inputs (even if a parameter is not actually used), otherwise it will not work properly in this function.
+        Questa funzione deve includere i seguenti parametri come input della funzione (anche se un parametro non viene effettivamente utilizzato), altrimenti non funzionera correttamente in questa funzione.
 
-        The use of the quantum circuit function qprog_with_measure (input,param,nqubits,ncbits) can refer to the following example.
+        L'uso della funzione di circuito quantistico qprog_with_measure (input,param,nqubits,ncbits) puo fare riferimento al seguente esempio.
 
-        `input`: Input one-dimensional classical data. If not, input None.
+        `input`: Input di dati classici unidimensionali. Se assente, inserire None.
 
-        `param`: Input the parameters to be trained for the one-dimensional variational quantum circuit.
+        `param`: Input dei parametri da addestrare per il circuito quantistico variazionale unidimensionale.
 
     Example::
 
@@ -2470,30 +2470,30 @@ If you are more familiar with pyQPanda3 syntax, you can use the interface TorchQ
         print(pqc.m_para.grad)
         print(input.grad)
 
-Variational quantum circuit module and interface based on automatic differentiation
----------------------------------------------------------------------------------------------
-Base Class
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Modulo di circuito quantistico variazionale e interfaccia basati su differenziazione automatica
+-----------------------------------------------------------------------------------------------
+Classe Base
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Writing a variational quantum circuit model requires inheriting from ``QModule``.
+Scrivere un modello di circuito quantistico variazionale richiede l'ereditarieta da ``QModule``.
 
 QModule
 """"""""""""""""""
 
 .. py:class:: pyvqnet.qnn.vqc.torch.QModule(name="")
 
-    When the user uses the `torch` backend, define the base class that the quantum variational circuit model `Module` should inherit.
-    This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``torch.nn.Module``.
+    Quando l'utente utilizza il backend `torch`, definisce la classe base che il `Module` del modello di circuito quantistico variazionale deve ereditare.
+    Questa classe eredita da ``pyvqnet.nn.torch.TorchModule`` e ``torch.nn.Module``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     .. note::
 
-        This class and its derived classes are only applicable to ``pyvqnet.backends.set_backend("torch")``, do not mix with the ``Module`` under the default ``pyvqnet.nn``.
+        Questa classe e le sue classi derivate sono applicabili solo a ``pyvqnet.backends.set_backend("torch")``, non mescolare con il ``Module`` sotto il ``pyvqnet.nn`` predefinito.
 
-        The data in ``_buffers`` of this class is of ``torch.Tensor`` type.
+        I dati in ``_buffers`` di questa classe sono di tipo ``torch.Tensor``.
 
-        The data in ``_parmeters`` of this class is of ``torch.nn.Parameter`` type.
+        I dati in ``_parmeters`` di questa classe sono di tipo ``torch.nn.Parameter``.
 
 
 QMachine
@@ -2501,23 +2501,23 @@ QMachine
 
 .. py:class:: pyvqnet.qnn.vqc.torch.QMachine(num_wires, dtype=pyvqnet.kcomplex64,grad_mode="",save_ir=False)
 
-    Simulator class for variational quantum computing, including statevectors whose states attribute is quantum circuits.
+    Classe simulatore per il calcolo quantistico variazionale, inclusi statevector il cui attributo states sono circuiti quantistici.
 
-    This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.qnn.QMachine``.
+    Questa classe eredita da ``pyvqnet.nn.torch.TorchModule`` e ``pyvqnet.qnn.QMachine``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     .. note::
 
-        Before each run of the complete quantum circuit, you must use `pyvqnet.qnn.vqc.QMachine.reset_states(batchsize)` to reinitialize the initial state in the simulator and broadcast it to
-        (batchsize,*) dimensions to adapt to batch data training.
+        Prima di ogni esecuzione del circuito quantistico completo, devi usare `pyvqnet.qnn.vqc.QMachine.reset_states(batchsize)` per reinizializzare lo stato iniziale nel simulatore e trasmetterlo alle dimensioni
+        (batchsize,*) per adattarsi all'addestramento batch dei dati.
 
-    :param num_wires: The number of quantum bits.
-    :param dtype: The data type of the calculated data. The default value is pyvqnet. kcomplex64, and the corresponding parameter precision is pyvqnet.kfloat32.
-    :param grad_mode: The gradient calculation mode, which can be "adjoint", the default value: "", uses automatic differentiation.
-    :param save_ir: When set to True, save the operation to originIR, the default value: False.
+    :param num_wires: Il numero di bit quantistici.
+    :param dtype: Il tipo di dato dei dati calcolati. Il valore predefinito e pyvqnet.kcomplex64 e la precisione del parametro corrispondente e pyvqnet.kfloat32.
+    :param grad_mode: La modalita di calcolo del gradiente, puo essere "adjoint", il valore predefinito: "", utilizza la differenziazione automatica.
+    :param save_ir: Quando impostato a True, salva l'operazione in originIR, il valore predefinito: False.
 
-    :return: Output a QMachine object.
+    :return: Restituisce un oggetto QMachine.
 
     Example::
         
@@ -2530,45 +2530,45 @@ QMachine
 
    .. py:method:: reset_states(batchsize)
 
-        Reinitialize the initial state in the simulator and broadcast it to
-        (batchsize,*) dimensions to adapt to batch data training.
+        Reinizializza lo stato iniziale nel simulatore e lo trasmette alle dimensioni
+        (batchsize,*) per adattarsi all'addestramento batch dei dati.
 
-        :param batchsize: Batch processing dimension.
+        :param batchsize: Dimensione del batch di elaborazione.
 
-Variational quantum logic gate module
+Modulo di porte logiche quantistiche variazionali
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following function interfaces in ``pyvqnet.qnn.vqc`` directly support ``QTensor`` of ``torch`` backend for calculation.
+Le seguenti interfacce di funzione in ``pyvqnet.qnn.vqc`` supportano direttamente il ``QTensor`` del backend ``torch`` per il calcolo.
 
-.. csv-table:: List of supported pyvqnet.qnn.vqc interfaces
+.. csv-table:: Elenco delle interfacce pyvqnet.qnn.vqc supportate
     :file: ./images/same_apis_from_vqc.csv
 
-The following quantum circuit modules inherit from ``pyvqnet.qnn.vqc.torch.QModule``, where calculations are performed using ``torch.Tensor``.
+I seguenti moduli di circuito quantistico ereditano da ``pyvqnet.qnn.vqc.torch.QModule``, dove i calcoli vengono eseguiti utilizzando ``torch.Tensor``.
 
 .. note::
 
-    This class and its derived classes are only applicable to ``pyvqnet.backends.set_backend("torch")``, do not mix with ``Module`` under the default ``pyvqnet.nn``.
+    Questa classe e le sue classi derivate sono applicabili solo a ``pyvqnet.backends.set_backend("torch")``, non mescolare con ``Module`` sotto il ``pyvqnet.nn`` predefinito.
 
-    If these classes have non-parameter member variables ``_buffers``, the data in them is of type ``torch.Tensor``.
-    If these classes have parameter member variables ``_parmeters``, the data in them is of type ``torch.nn.Parameter``.
+    Se queste classi hanno variabili membro non parametriche ``_buffers``, i dati in esse sono di tipo ``torch.Tensor``.
+    Se queste classi hanno variabili membro parametriche ``_parmeters``, i dati in esse sono di tipo ``torch.nn.Parameter``.
 
 I
 """"""""""""""""""
 
 .. py:class:: pyvqnet.qnn.vqc.torch.I(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a I quantum gate .
+    definisce una porta quantistica I.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -2588,18 +2588,18 @@ Hadamard
 
 .. py:class:: pyvqnet.qnn.vqc.torch.Hadamard(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a Hadamard quantum gate .
+    definisce una porta quantistica Hadamard.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -2619,18 +2619,18 @@ T
 
 .. py:class:: pyvqnet.qnn.vqc.torch.T(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a T quantum gate .
+    definisce una porta quantistica T.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -2651,18 +2651,18 @@ S
 
 .. py:class:: pyvqnet.qnn.vqc.torch.S(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a S quantum gate .
+    definisce una porta quantistica S.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -2682,10 +2682,10 @@ PauliX
 
 .. py:class:: pyvqnet.qnn.vqc.torch.PauliX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a PauliX quantum gate .
+    definisce una porta quantistica PauliX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -2694,7 +2694,7 @@ PauliX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -2714,10 +2714,10 @@ PauliY
 
 .. py:class:: pyvqnet.qnn.vqc.torch.PauliY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a PauliY quantum gate .
+    definisce una porta quantistica PauliY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -2726,7 +2726,7 @@ PauliY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -2747,10 +2747,10 @@ PauliZ
 
 .. py:class:: pyvqnet.qnn.vqc.torch.PauliZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a PauliZ quantum gate .
+    definisce una porta quantistica PauliZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -2759,7 +2759,7 @@ PauliZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -2780,18 +2780,18 @@ X1
 
 .. py:class:: pyvqnet.qnn.vqc.torch.X1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a X1 quantum gate .
+    definisce una porta quantistica X1.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -2811,18 +2811,18 @@ RX
 
 .. py:class:: pyvqnet.qnn.vqc.torch.RX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RX quantum gate .
+    definisce una porta quantistica RX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -2843,18 +2843,18 @@ RY
 
 .. py:class:: pyvqnet.qnn.vqc.torch.RY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RY quantum gate .
+    definisce una porta quantistica RY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -2874,18 +2874,18 @@ RZ
 
 .. py:class:: pyvqnet.qnn.vqc.torch.RZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RZ quantum gate .
+    definisce una porta quantistica RZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -2905,18 +2905,18 @@ CRX
 
 .. py:class:: pyvqnet.qnn.vqc.torch.CRX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CRX quantum gate .
+    definisce una porta quantistica CRX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -2937,18 +2937,18 @@ CRY
 
 .. py:class:: pyvqnet.qnn.vqc.torch.CRY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CRY quantum gate .
+    definisce una porta quantistica CRY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -2969,18 +2969,18 @@ CRZ
 
 .. py:class:: pyvqnet.qnn.vqc.torch.CRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CRZ quantum gate .
+    definisce una porta quantistica CRZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3001,18 +3001,18 @@ U1
 
 .. py:class:: pyvqnet.qnn.vqc.torch.U1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a U1 quantum gate .
+    definisce una porta quantistica U1.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3032,18 +3032,18 @@ U2
 
 .. py:class:: pyvqnet.qnn.vqc.torch.U2(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a U2 quantum gate .
+    definisce una porta quantistica U2.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3064,18 +3064,18 @@ U3
 
 .. py:class:: pyvqnet.qnn.vqc.torch.U3(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a U3 quantum gate .
+    definisce una porta quantistica U3.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3096,18 +3096,18 @@ CNOT
 
 .. py:class:: pyvqnet.qnn.vqc.torch.CNOT(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CNOT quantum gate , alias `CX` .
+    definisce una porta quantistica CNOT, alias `CX`.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3126,18 +3126,18 @@ CY
 
 .. py:class:: pyvqnet.qnn.vqc.torch.CY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CY quantum gate .
+    definisce una porta quantistica CY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3157,18 +3157,18 @@ CZ
 
 .. py:class:: pyvqnet.qnn.vqc.torch.CZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CZ quantum gate .
+    definisce una porta quantistica CZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3190,18 +3190,18 @@ CR
 
 .. py:class:: pyvqnet.qnn.vqc.torch.CR(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CR quantum gate .
+    definisce una porta quantistica CR.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3224,18 +3224,18 @@ SWAP
 
 .. py:class:: pyvqnet.qnn.vqc.torch.SWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a SWAP quantum gate .
+    definisce una porta quantistica SWAP.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3255,7 +3255,7 @@ CSWAP
 
 .. py:class:: pyvqnet.qnn.vqc.torch.CSWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a SWAP quantum gate .
+    definisce una porta quantistica SWAP.
 
     .. math:: CSWAP = \begin{bmatrix}
             1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
@@ -3268,16 +3268,16 @@ CSWAP
             0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
         \end{bmatrix}.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3297,18 +3297,18 @@ RXX
 
 .. py:class:: pyvqnet.qnn.vqc.torch.RXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RXX quantum gate .
+    definisce una porta quantistica RXX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3327,18 +3327,18 @@ RYY
 
 .. py:class:: pyvqnet.qnn.vqc.torch.RYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RYY quantum gate .
+    definisce una porta quantistica RYY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3358,18 +3358,18 @@ RZZ
 
 .. py:class:: pyvqnet.qnn.vqc.torch.RZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RZZ quantum gate .
+    definisce una porta quantistica RZZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3390,18 +3390,18 @@ RZX
 
 .. py:class:: pyvqnet.qnn.vqc.torch.RZX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RZX quantum gate .
+    definisce una porta quantistica RZX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3420,18 +3420,18 @@ Toffoli
 
 .. py:class:: pyvqnet.qnn.vqc.torch.Toffoli(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a Toffoli quantum gate .
+    definisce una porta quantistica Toffoli.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3451,18 +3451,18 @@ IsingXX
 
 .. py:class:: pyvqnet.qnn.vqc.torch.IsingXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a IsingXX quantum gate .
+    definisce una porta quantistica IsingXX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3483,18 +3483,18 @@ IsingYY
 
 .. py:class:: pyvqnet.qnn.vqc.torch.IsingYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a IsingYY quantum gate .
+    definisce una porta quantistica IsingYY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3514,18 +3514,18 @@ IsingZZ
 
 .. py:class:: pyvqnet.qnn.vqc.torch.IsingZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a IsingZZ quantum gate .
+    definisce una porta quantistica IsingZZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3546,18 +3546,18 @@ IsingXY
 
 .. py:class:: pyvqnet.qnn.vqc.torch.IsingXY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a IsingXY quantum gate .
+    definisce una porta quantistica IsingXY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3578,18 +3578,18 @@ PhaseShift
 
 .. py:class:: pyvqnet.qnn.vqc.torch.PhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a PhaseShift quantum gate .
+    definisce una porta quantistica PhaseShift.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3609,18 +3609,18 @@ MultiRZ
 
 .. py:class:: pyvqnet.qnn.vqc.torch.MultiRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a MultiRZ quantum gate .
+    definisce una porta quantistica MultiRZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3642,18 +3642,18 @@ SDG
 
 .. py:class:: pyvqnet.qnn.vqc.torch.SDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a SDG quantum gate .
+    definisce una porta quantistica SDG.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -3675,18 +3675,18 @@ TDG
 
 .. py:class:: pyvqnet.qnn.vqc.torch.TDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a SDG quantum gate .
+    definisce una porta quantistica SDG.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
         
@@ -3708,18 +3708,18 @@ ControlledPhaseShift
 
 .. py:class:: pyvqnet.qnn.vqc.torch.ControlledPhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a ControlledPhaseShift quantum gate .
+    definisce una porta quantistica ControlledPhaseShift.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the line effect, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :param has_params: se ha parametri, come RX, RY e altre porte devono essere impostate a True, e quelle senza parametri devono essere impostate a False, il default e False.
+    :param trainable: se ha parametri da addestrare. Se lo strato utilizza dati di input esterni per costruire la matrice della porta logica, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo strato, e True, il default e False.
+    :param init_params: Parametri di inizializzazione utilizzati per codificare i dati classici QTensor, il default e None.
+    :param wires: Indice del bit su cui agisce la porta, il default e None.
+    :param dtype: La precisione dei dati della matrice interna della porta logica puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a input float o double.
+    :param use_dagger: se utilizzare la versione trasposta coniugata della porta, il default e False.
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3740,10 +3740,10 @@ MultiControlledX
 
 .. py:class:: pyvqnet.qnn.vqc.torch.MultiControlledX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False,control_values=None)
     
-    define a MultiControlledX quantum gate .
+    definisce una porta quantistica MultiControlledX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
     
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -3753,7 +3753,7 @@ MultiControlledX
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
     :param control_values: Control value, the default is None, when the bit is 1, it is controlled.
 
-    :return: a ``pyvqnet.qnn.vqc.torch.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.torch.QModule``
 
     Example::
 
@@ -3772,7 +3772,7 @@ MultiControlledX
         print(qm.states)
 
 
-Measurements API
+API di Misurazione
 ^^^^^^^^^^^^^^^^^^^^^^
 
 Probability
@@ -3781,13 +3781,13 @@ Probability
 
 .. py:class:: pyvqnet.qnn.vqc.torch.Probability(wires=None, name="")
 
-    Calculate the probability measurement result of the quantum circuit on a specific bit.
+    Calcola il risultato della misurazione di probabilita del circuito quantistico su un bit specifico.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param wires: The index of the measurement bit, list, tuple or integer.
-    :param name: The name of the module, default: "".
+    :param wires: L'indice del bit di misurazione, lista, tupla o intero.
+    :param name: Il nome del modulo, default: "".
     :return: The measurement result, QTensor.
 
     Example::
@@ -3815,7 +3815,7 @@ MeasureAll
 
 .. py:class:: pyvqnet.qnn.vqc.torch.MeasureAll(obs=None, name="")
 
-    Calculate the measurement results of quantum circuits, support input obs as multiple or single Pauli operators or Hamiltonians.
+    Calcola i risultati di misurazione dei circuiti quantistici, supporta l'input obs come operatori di Pauli multipli o singoli o Hamiltoniane.
     For example:
 
     {\'X0\': 0.23} indicates a PauliX effect on qubit 0, with a coefficient of 0.23.
@@ -3825,13 +3825,13 @@ MeasureAll
     [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] corresponds to the two observed values 4 * X1 @ Z2 + 3 * Z1 @ Z0 and 3.5 * X1 @ Y2 @ Z0.
         
         
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param obs: observable.
-    :param name: module name, default: "".
-    :return: measurement result, QTensor.
+    :param obs: osservabile.
+    :param name: nome del modulo, default: "".
+    :return: risultato della misurazione, QTensor.
 
     Example::
 
@@ -3865,17 +3865,17 @@ Samples
 
 .. py:class:: pyvqnet.qnn.vqc.torch.Samples(wires=None, obs=None, shots = 1,name="")
 
-    Get sample results with shot on  specific wires.
+    Ottiene risultati campione con shot su wires specifici.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param wires: Sample qubit index. Default value: None, use all bits of the simulator at runtime.
+    :param wires: Indice del qubit campionato. Valore predefinito: None, utilizza tutti i bit del simulatore in fase di esecuzione.
     :param obs: This value can only be None.
     :param shots: Sample repetition count, default value: 1.
-    :param name: The name of this module, default value: "".
-    :return: a measurement method class
+    :param name: Il nome di questo modulo, valore predefinito: "".
+    :return: una classe di metodo di misurazione
 
     Example::
 
@@ -3906,15 +3906,15 @@ HermitianExpval
 
 .. py:class:: pyvqnet.qnn.vqc.torch.HermitianExpval(obs=None, name="")
 
-    Compute the expectation of a Hermitian quantity in a quantum circuit.
+    Calcola l'aspettativa di una quantita Hermitiana in un circuito quantistico.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param obs: Hermitian quantity.
-    :param name: module name, default: "".
-    :return: expected result, QTensor.
+    :param obs: quantita Hermitiana.
+    :param name: nome del modulo, default: "".
+    :return: risultato atteso, QTensor.
 
     Example::
 
@@ -3969,7 +3969,7 @@ HermitianExpval
 
         print(batch_y)
 
-Common templates for quantum circuits
+Modelli comuni per circuiti quantistici
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 VQC_HardwareEfficientAnsatz
@@ -3978,21 +3978,21 @@ VQC_HardwareEfficientAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.torch.VQC_HardwareEfficientAnsatz(n_qubits,single_rot_gate_list,entangle_gate="CNOT",entangle_rules='linear',depth=1,initial=None,dtype=None)
 
-    Implementation of Hardware Efficient Ansatz introduced in the paper: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
+    Implementazione di Hardware Efficient Ansatz introdotto nell'articolo: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param n_qubits: Number of qubits.
-    :param single_rot_gate_list: A single qubit rotation gate list is constructed by one or several rotation gate that act on every qubit.Currently support Rx, Ry, Rz.
-    :param entangle_gate: The non parameterized entanglement gate.CNOT,CZ is supported.default:CNOT.
-    :param entangle_rules: How entanglement gate is used in the circuit. 'linear' means the entanglement gate will be act on every neighboring qubits. 'all' means the entanglment gate will be act on any two qbuits. Default:linear.
-    :param depth: The depth of ansatz, default:1.
-    :param initial: initial one same value for paramaters,default:None,this module will initialize parameters randomly.
-    :param dtype: data dtype of parameters.
-    :return: a VQC_HardwareEfficientAnsatz instance.
+    :param n_qubits: Numero di qubit.
+    :param single_rot_gate_list: Una lista di porte di rotazione a singolo qubit costruita da una o piu porte di rotazione che agiscono su ogni qubit. Attualmente supporta Rx, Ry, Rz.
+    :param entangle_gate: La porta di entanglement non parametrizzata. Sono supportati CNOT, CZ. Default: CNOT.
+    :param entangle_rules: Come la porta di entanglement viene utilizzata nel circuito. 'linear' significa che la porta di entanglement agira su ogni qubit vicino. 'all' significa che la porta di entanglement agira su qualsiasi coppia di qubit. Default: linear.
+    :param depth: La profondita dell'ansatz, default: 1.
+    :param initial: valore iniziale uguale per tutti i parametri, default: None, questo modulo inizializzera i parametri casualmente.
+    :param dtype: tipo di dato dei parametri.
+    :return: un'istanza di VQC_HardwareEfficientAnsatz.
 
     Example::
 
@@ -4039,18 +4039,18 @@ VQC_BasicEntanglerTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.torch.VQC_BasicEntanglerTemplate(num_layer=1, num_qubits=1, rotation="RX", initial=None, dtype=None)
 
-    A layer consisting of a single-parameter single-qubit rotation on each qubit, followed by multiple CNOT gates in a closed chain or ring combination.
+    Uno strato costituito da una rotazione a singolo qubit con singolo parametro su ogni qubit, seguito da molteplici porte CNOT in una combinazione a catena chiusa o ad anello.
 
-    A ring of CNOT gates connects each qubit to its neighbors, and finally the a qubit is considered to be the neighbor of the a th qubit.
+    Un anello di porte CNOT collega ogni qubit ai suoi vicini e, infine, il qubit a e considerato vicino del qubit a.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param num_layers: number of repeat layers, default: 1.
+    :param num_layers: numero di strati ripetuti, default: 1.
     :param num_qubits: number of qubits, default: 1.
     :param rotation: one-parameter single-qubit gate to use, default: `RX`
-    :param initial: initialized same value for all paramters. default:None,parameters will be initialized randomly.
+    :param initial: valore inizializzato uguale per tutti i parametri, default: None, i parametri verranno inizializzati casualmente.
     :param dtype: data type of parameter, default:None,use float32.
     :return: A VQC_BasicEntanglerTemplate instance
 
@@ -4094,17 +4094,17 @@ VQC_StronglyEntanglingTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.torch.VQC_StronglyEntanglingTemplate(num_layers=1, num_qubits=1, ranges=None,initial=None, dtype=None)
 
-    Layers consisting of single qubit rotations and entanglers, as in `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
+    Strati costituiti da rotazioni a singolo qubit e entangler, come in `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param num_layers: number of repeat layers, default: 1.
+    :param num_layers: numero di strati ripetuti, default: 1.
     :param num_qubits: number of qubits, default: 1.
-    :param ranges: sequence determining the range hyperparameter for each subsequent layer; default: None
+    :param ranges: sequenza che determina l'iperparametro di intervallo per ogni strato successivo; default: None
                                 using :math: `r=l \mod M` for the :math:`l` th layer and :math:`M` qubits.
-    :param initial: initial value for all parameters.default: None,initialized randomly.
+    :param initial: valore iniziale per tutti i parametri, default: None, inizializzato casualmente.
     :param dtype: data type of parameter, default:None,use float32.
     :return: A VQC_StronglyEntanglingTemplate instance.
 
@@ -4150,17 +4150,17 @@ VQC_QuantumEmbedding
 
 .. py:class:: pyvqnet.qnn.vqc.torch.VQC_QuantumEmbedding(qubits, machine, num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
     
-    Use RZ,RY,RZ to create variational quantum circuits to encode classical data into quantum states.
+    Usa RZ, RY, RZ per creare circuiti quantistici variazionali per codificare dati classici in stati quantistici.
     Reference `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
  
-    :param num_repetitions_input: number of repeat times to encode input in a submodule.
+    :param num_repetitions_input: numero di volte per codificare l'input in un sottomodulo.
     :param depth_input: number of input dimension .
-    :param num_unitary_layers: number of repeat times of variational quantum gates.
-    :param num_repetitions: number of repeat times of submodule.
+    :param num_unitary_layers: numero di volte delle porte quantistiche variazionali.
+    :param num_repetitions: numero di volte del sottomodulo.
     :param initial: parameter initialization value, default is None
     :param dtype: parameter type, default is None, use float32.
     :param name: class name
@@ -4211,11 +4211,11 @@ ExpressiveEntanglingAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.torch.ExpressiveEntanglingAnsatz(type: int, num_wires: int, depth: int, dtype=None, name: str = "")
 
-    19 different ansatz from the paper `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
+    19 diversi ansatz dall'articolo `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.torch.QModule`` e ``torch.nn.Module``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param type: Circuit type from 1 to 19, a total of 19 lines.
     :param num_wires: Number of qubits.
@@ -4271,7 +4271,7 @@ vqc_basis_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_basis_embedding(basis_state,q_machine)
 
-    Encode n binary features into the n-qubit basis state of ``q_machine``. This function is aliased as `VQC_BasisEmbedding`.
+    Codifica n caratteristiche binarie nello stato di base a n qubit di ``q_machine``. Questa funzione e anche chiamata `VQC_BasisEmbedding`.
 
     For example, for ``basis_state=([0, 1, 1])``, the basis state in the quantum system is :math:`|011 \rangle`.
 
@@ -4297,7 +4297,7 @@ vqc_angle_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_angle_embedding(input_feat, wires, q_machine: pyvqnet.qnn.vqc.torch.QMachine, rotation: str = "X")
 
-    Encodes :math:`N` features into the rotation angle of :math:`n` qubits, where :math:`N \leq n`.
+    Codifica :math:`N` caratteristiche nell'angolo di rotazione di :math:`n` qubit, dove :math:`N \leq n`.
     This function is aliased as `VQC_AngleEmbedding` .
 
     The rotation can be selected as: 'X' , 'Y' , 'Z', as defined by the ``rotation`` parameter:
@@ -4874,7 +4874,7 @@ QuantumLayerAdjoint
 
     :param general_module: a `pyvqnet.nn.Module` instance built using only the quantum circuit interface under ``pyvqnet.qnn.vqc.torch``.
     :param use_qpanda: Whether to use qpanda line for forward transmission, default: False.
-    :param name: The name of the layer, defaults to "".
+    :param name: Il nome dello strato, default "".
 
     .. note::
 
@@ -5054,25 +5054,25 @@ TNQMachine
 
 .. py:class:: pyvqnet.qnn.vqc.tn.TNQMachine(num_wires, dtype=pyvqnet.kcomplex64, use_mps=False)
 
-    Simulator class for variational quantum computing, including statevectors whose states attribute is quantum circuits.
+    Classe simulatore per il calcolo quantistico variazionale, inclusi statevector il cui attributo states sono circuiti quantistici.
 
-    This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.qnn.QMachine``.
+    Questa classe eredita da ``pyvqnet.nn.torch.TorchModule`` e ``pyvqnet.qnn.QMachine``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     .. warning::
         
-        In the quantum circuit of the tensor network, the ``vmap`` function will be enabled by default, and the batch dimension will be discarded in the logic gate parameters on the line.
-        When using the call parameter, if the dimension is [batch_size, \*], the first batch_size dimension is discarded, and the following dimensions are used directly, e.g., for the input data x[:,1] -> x[1], and for the trainable parameter as well, see the following example for the usage of xx, weights.
+        Nel circuito quantistico della rete tensoriale, la funzione ``vmap`` sara abilitata per impostazione predefinita e la dimensione del batch sara scartata nei parametri della porta logica sulla linea.
+        Quando si utilizza il parametro di chiamata, se la dimensione e [batch_size, \*], la prima dimensione batch_size viene scartata e le dimensioni successive vengono utilizzate direttamente, ad esempio per i dati di input x[:,1] -> x[1], e anche per il parametro addestrabile, vedere il seguente esempio per l'uso di xx, weights.
 
     .. note::
 
-        Before each run of the complete quantum circuit, you must use `pyvqnet.qnn.vqc.QMachine.reset_states(batchsize)` to reinitialize the initial state in the simulator and broadcast it to
-        (batchsize,*) dimensions to adapt to batch data training.
+        Prima di ogni esecuzione del circuito quantistico completo, devi usare `pyvqnet.qnn.vqc.QMachine.reset_states(batchsize)` per reinizializzare lo stato iniziale nel simulatore e trasmetterlo alle dimensioni
+        (batchsize,*) per adattarsi all'addestramento batch dei dati.
 
-    :param num_wires: number of qubits to use
-    :param dtype: internal data type used to calculate.
-    :param use_mps: open MPSCircuit for large bit models.
+    :param num_wires: numero di qubit da utilizzare
+    :param dtype: tipo di dato interno utilizzato per il calcolo.
+    :param use_mps: apre MPSCircuit per modelli a bit grandi.
 
     :return: Output a TNQMachine object.
 
@@ -5160,10 +5160,10 @@ I
 
 .. py:class:: pyvqnet.qnn.vqc.tn.I(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a I quantum gate .
+    definisce una porta quantistica I.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5171,7 +5171,7 @@ I
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -5208,10 +5208,10 @@ Hadamard
 
 .. py:class:: pyvqnet.qnn.vqc.tn.Hadamard(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a Hadamard quantum gate .
+    definisce una porta quantistica Hadamard.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5219,7 +5219,7 @@ Hadamard
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -5255,10 +5255,10 @@ T
 
 .. py:class:: pyvqnet.qnn.vqc.tn.T(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a T quantum gate .
+    definisce una porta quantistica T.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5266,7 +5266,7 @@ T
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -5303,10 +5303,10 @@ S
 
 .. py:class:: pyvqnet.qnn.vqc.tn.S(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a S quantum gate .
+    definisce una porta quantistica S.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5314,7 +5314,7 @@ S
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -5350,10 +5350,10 @@ PauliX
 
 .. py:class:: pyvqnet.qnn.vqc.tn.PauliX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a PauliX quantum gate .
+    definisce una porta quantistica PauliX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5362,7 +5362,7 @@ PauliX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -5399,10 +5399,10 @@ PauliY
 
 .. py:class:: pyvqnet.qnn.vqc.tn.PauliY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a PauliY quantum gate .
+    definisce una porta quantistica PauliY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5411,7 +5411,7 @@ PauliY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -5447,10 +5447,10 @@ PauliZ
 
 .. py:class:: pyvqnet.qnn.vqc.tn.PauliZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a PauliZ quantum gate .
+    definisce una porta quantistica PauliZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5459,7 +5459,7 @@ PauliZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -5497,10 +5497,10 @@ X1
 
 .. py:class:: pyvqnet.qnn.vqc.tn.X1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a X1 quantum gate .
+    definisce una porta quantistica X1.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5508,7 +5508,7 @@ X1
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -5545,10 +5545,10 @@ RX
 
 .. py:class:: pyvqnet.qnn.vqc.tn.RX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RX quantum gate .
+    definisce una porta quantistica RX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5556,7 +5556,7 @@ RX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -5595,10 +5595,10 @@ RY
 
 .. py:class:: pyvqnet.qnn.vqc.tn.RY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RY quantum gate .
+    definisce una porta quantistica RY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5606,7 +5606,7 @@ RY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -5642,10 +5642,10 @@ RZ
 
 .. py:class:: pyvqnet.qnn.vqc.tn.RZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RZ quantum gate .
+    definisce una porta quantistica RZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5653,7 +5653,7 @@ RZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -5689,10 +5689,10 @@ CRX
 
 .. py:class:: pyvqnet.qnn.vqc.tn.CRX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CRX quantum gate .
+    definisce una porta quantistica CRX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5700,7 +5700,7 @@ CRX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -5739,10 +5739,10 @@ CRY
 
 .. py:class:: pyvqnet.qnn.vqc.tn.CRY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CRY quantum gate .
+    definisce una porta quantistica CRY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5750,7 +5750,7 @@ CRY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -5787,10 +5787,10 @@ CRZ
 
 .. py:class:: pyvqnet.qnn.vqc.tn.CRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CRZ quantum gate .
+    definisce una porta quantistica CRZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5798,7 +5798,7 @@ CRZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -5835,10 +5835,10 @@ U1
 
 .. py:class:: pyvqnet.qnn.vqc.tn.U1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a U1 quantum gate .
+    definisce una porta quantistica U1.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5846,7 +5846,7 @@ U1
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -5883,10 +5883,10 @@ U2
 
 .. py:class:: pyvqnet.qnn.vqc.tn.U2(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a U2 quantum gate .
+    definisce una porta quantistica U2.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5894,7 +5894,7 @@ U2
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -5931,10 +5931,10 @@ U3
 
 .. py:class:: pyvqnet.qnn.vqc.tn.U3(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a U3 quantum gate .
+    definisce una porta quantistica U3.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5942,7 +5942,7 @@ U3
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -5979,10 +5979,10 @@ CNOT
 
 .. py:class:: pyvqnet.qnn.vqc.tn.CNOT(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CNOT quantum gate , alias `CX` .
+    definisce una porta quantistica CNOT, alias `CX`.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -5990,7 +5990,7 @@ CNOT
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6025,10 +6025,10 @@ CY
 
 .. py:class:: pyvqnet.qnn.vqc.tn.CY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CY quantum gate .
+    definisce una porta quantistica CY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6036,7 +6036,7 @@ CY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6072,10 +6072,10 @@ CZ
 
 .. py:class:: pyvqnet.qnn.vqc.tn.CZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CZ quantum gate .
+    definisce una porta quantistica CZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6083,7 +6083,7 @@ CZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6122,10 +6122,10 @@ CR
 
 .. py:class:: pyvqnet.qnn.vqc.tn.CR(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a CR quantum gate .
+    definisce una porta quantistica CR.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6133,7 +6133,7 @@ CR
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6171,10 +6171,10 @@ SWAP
 
 .. py:class:: pyvqnet.qnn.vqc.tn.SWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a SWAP quantum gate .
+    definisce una porta quantistica SWAP.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6182,7 +6182,7 @@ SWAP
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6218,7 +6218,7 @@ CSWAP
 
 .. py:class:: pyvqnet.qnn.vqc.tn.CSWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a SWAP quantum gate .
+    definisce una porta quantistica SWAP.
 
     .. math:: CSWAP = \begin{bmatrix}
             1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
@@ -6231,8 +6231,8 @@ CSWAP
             0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
         \end{bmatrix}.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6240,7 +6240,7 @@ CSWAP
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6276,10 +6276,10 @@ RXX
 
 .. py:class:: pyvqnet.qnn.vqc.tn.RXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RXX quantum gate .
+    definisce una porta quantistica RXX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6287,7 +6287,7 @@ RXX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6322,10 +6322,10 @@ RYY
 
 .. py:class:: pyvqnet.qnn.vqc.tn.RYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RYY quantum gate .
+    definisce una porta quantistica RYY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6333,7 +6333,7 @@ RYY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6369,10 +6369,10 @@ RZZ
 
 .. py:class:: pyvqnet.qnn.vqc.tn.RZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RZZ quantum gate .
+    definisce una porta quantistica RZZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6380,7 +6380,7 @@ RZZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6417,10 +6417,10 @@ RZX
 
 .. py:class:: pyvqnet.qnn.vqc.tn.RZX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a RZX quantum gate .
+    definisce una porta quantistica RZX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6428,7 +6428,7 @@ RZX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6463,10 +6463,10 @@ Toffoli
 
 .. py:class:: pyvqnet.qnn.vqc.tn.Toffoli(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a Toffoli quantum gate .
+    definisce una porta quantistica Toffoli.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6474,7 +6474,7 @@ Toffoli
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6510,10 +6510,10 @@ IsingXX
 
 .. py:class:: pyvqnet.qnn.vqc.tn.IsingXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a IsingXX quantum gate .
+    definisce una porta quantistica IsingXX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6521,7 +6521,7 @@ IsingXX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6558,10 +6558,10 @@ IsingYY
 
 .. py:class:: pyvqnet.qnn.vqc.tn.IsingYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a IsingYY quantum gate .
+    definisce una porta quantistica IsingYY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6569,7 +6569,7 @@ IsingYY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6605,10 +6605,10 @@ IsingZZ
 
 .. py:class:: pyvqnet.qnn.vqc.tn.IsingZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a IsingZZ quantum gate .
+    definisce una porta quantistica IsingZZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6616,7 +6616,7 @@ IsingZZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6653,10 +6653,10 @@ IsingXY
 
 .. py:class:: pyvqnet.qnn.vqc.tn.IsingXY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a IsingXY quantum gate .
+    definisce una porta quantistica IsingXY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6664,7 +6664,7 @@ IsingXY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6701,10 +6701,10 @@ PhaseShift
 
 .. py:class:: pyvqnet.qnn.vqc.tn.PhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a PhaseShift quantum gate .
+    definisce una porta quantistica PhaseShift.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6712,7 +6712,7 @@ PhaseShift
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6748,10 +6748,10 @@ MultiRZ
 
 .. py:class:: pyvqnet.qnn.vqc.tn.MultiRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a MultiRZ quantum gate .
+    definisce una porta quantistica MultiRZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6759,7 +6759,7 @@ MultiRZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6797,10 +6797,10 @@ SDG
 
 .. py:class:: pyvqnet.qnn.vqc.tn.SDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a SDG quantum gate .
+    definisce una porta quantistica SDG.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6808,7 +6808,7 @@ SDG
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -6846,10 +6846,10 @@ TDG
 
 .. py:class:: pyvqnet.qnn.vqc.tn.TDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a SDG quantum gate .
+    definisce una porta quantistica SDG.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6857,7 +6857,7 @@ TDG
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
         
@@ -6895,10 +6895,10 @@ ControlledPhaseShift
 
 .. py:class:: pyvqnet.qnn.vqc.tn.ControlledPhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    define a ControlledPhaseShift quantum gate .
+    definisce una porta quantistica ControlledPhaseShift.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
@@ -6906,7 +6906,7 @@ ControlledPhaseShift
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: un'istanza di ``pyvqnet.qnn.vqc.tn.QModule``
 
     Example::
 
@@ -6946,25 +6946,25 @@ VQC_Purity
 
 .. py:function:: pyvqnet.qnn.vqc.tn.VQC_Purity(state, qubits_idx, num_wires, use_tn=False)
 
-    Calculate the purity on a particular qubit ``qubits_idx`` from the state vector ``state``.
+    Calcola la purezza su un particolare qubit ``qubits_idx`` a partire dal vettore di stato ``state``.
 
     .. math::
         \gamma = \text{Tr}(\rho^2)
 
     where :math:`\rho` is a density matrix. The purity of a normalized quantum state satisfies :math:`\frac{1}{d} \leq \gamma \leq 1` ,
     where :math:`d` is the dimension of the Hilbert space.
-    The purity of the pure state is 1.
+    La purezza dello stato puro e 1.
 
-    :param state: Quantum state obtained from TNQMachine.get_states()
-    :param qubits_idx: Qubit index for which to calculate purity
-    :param num_wires: Qubit idx
-    :param use_tn: use tensornetwork need to be set True, default False
+    :param state: Stato quantistico ottenuto da TNQMachine.get_states()
+    :param qubits_idx: Indice del qubit per cui calcolare la purezza
+    :param num_wires: Indice del qubit
+    :param use_tn: per utilizzare tensornetwork deve essere impostato a True, default False
 
-    :return: purity
+    :return: purezza
 
     .. note::
         
-        batch_size need TNQModule.
+        batch_size richiede TNQModule.
 
     Example::
 
@@ -7106,13 +7106,13 @@ Probability
 
 .. py:class:: pyvqnet.qnn.vqc.tn.Probability(wires=None, name="")
 
-    Calculate the probability measurement result of the quantum circuit on a specific bit.
+    Calcola il risultato della misurazione di probabilita del circuito quantistico su un bit specifico.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param wires: The index of the measurement bit, list, tuple or integer.
-    :param name: The name of the module, default: "".
+    :param wires: L'indice del bit di misurazione, lista, tupla o intero.
+    :param name: Il nome del modulo, default: "".
     :return: The measurement result, QTensor.
 
     Example::
@@ -7140,7 +7140,7 @@ MeasureAll
 
 .. py:class:: pyvqnet.qnn.vqc.tn.MeasureAll(obs=None, name="")
 
-    Calculate the measurement results of quantum circuits, support input obs as multiple or single Pauli operators or Hamiltonians.
+    Calcola i risultati di misurazione dei circuiti quantistici, supporta l'input obs come operatori di Pauli multipli o singoli o Hamiltoniane.
     
     For example:
 
@@ -7150,13 +7150,13 @@ MeasureAll
 
     [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] corresponds to the two observed values 4 * X1 @ Z2 + 3 * Z1 @ Z0 and 3.5 * X1 @ Y2 @ Z0.
         
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param obs: observable.
-    :param name: module name, default: "".
-    :return: measurement result, QTensor.
+    :param obs: osservabile.
+    :param name: nome del modulo, default: "".
+    :return: risultato della misurazione, QTensor.
 
     Example::
 
@@ -7190,17 +7190,17 @@ Samples
 
 .. py:class:: pyvqnet.qnn.vqc.tn.Samples(wires=None, obs=None, shots = 1,name="")
 
-    Get sample results with shot on  specific wires.
+    Ottiene risultati campione con shot su wires specifici.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param wires: Sample qubit index. Default value: None, use all bits of the simulator at runtime.
+    :param wires: Indice del qubit campionato. Valore predefinito: None, utilizza tutti i bit del simulatore in fase di esecuzione.
     :param obs: This value can only be None.
     :param shots: Sample repetition count, default value: 1.
-    :param name: The name of this module, default value: "".
-    :return: a measurement method class
+    :param name: Il nome di questo modulo, valore predefinito: "".
+    :return: una classe di metodo di misurazione
 
     Example::
 
@@ -7231,15 +7231,15 @@ HermitianExpval
 
 .. py:class:: pyvqnet.qnn.vqc.tn.HermitianExpval(obs=None, name="")
 
-    Compute the expectation of a Hermitian quantity in a quantum circuit.
+    Calcola l'aspettativa di una quantita Hermitiana in un circuito quantistico.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param obs: Hermitian quantity.
-    :param name: module name, default: "".
-    :return: expected result, QTensor.
+    :param obs: quantita Hermitiana.
+    :param name: nome del modulo, default: "".
+    :return: risultato atteso, QTensor.
 
     Example::
 
@@ -7293,7 +7293,7 @@ HermitianExpval
 
         print(batch_y)
 
-Common templates for quantum circuits
+Modelli comuni per circuiti quantistici
 --------------------------------------------
 
 VQC_HardwareEfficientAnsatz
@@ -7302,21 +7302,21 @@ VQC_HardwareEfficientAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_HardwareEfficientAnsatz(n_qubits,single_rot_gate_list,entangle_gate="CNOT",entangle_rules='linear',depth=1,initial=None,dtype=None)
 
-    Implementation of Hardware Efficient Ansatz introduced in the paper: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
+    Implementazione di Hardware Efficient Ansatz introdotto nell'articolo: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param n_qubits: Number of qubits.
-    :param single_rot_gate_list: A single qubit rotation gate list is constructed by one or several rotation gate that act on every qubit.Currently support Rx, Ry, Rz.
-    :param entangle_gate: The non parameterized entanglement gate.CNOT,CZ is supported.default:CNOT.
-    :param entangle_rules: How entanglement gate is used in the circuit. 'linear' means the entanglement gate will be act on every neighboring qubits. 'all' means the entanglment gate will be act on any two qbuits. Default:linear.
-    :param depth: The depth of ansatz, default:1.
-    :param initial: initial one same value for paramaters,default:None,this module will initialize parameters randomly.
-    :param dtype: data dtype of parameters.
-    :return: a VQC_HardwareEfficientAnsatz instance.
+    :param n_qubits: Numero di qubit.
+    :param single_rot_gate_list: Una lista di porte di rotazione a singolo qubit costruita da una o piu porte di rotazione che agiscono su ogni qubit. Attualmente supporta Rx, Ry, Rz.
+    :param entangle_gate: La porta di entanglement non parametrizzata. Sono supportati CNOT, CZ. Default: CNOT.
+    :param entangle_rules: Come la porta di entanglement viene utilizzata nel circuito. 'linear' significa che la porta di entanglement agira su ogni qubit vicino. 'all' significa che la porta di entanglement agira su qualsiasi coppia di qubit. Default: linear.
+    :param depth: La profondita dell'ansatz, default: 1.
+    :param initial: valore iniziale uguale per tutti i parametri, default: None, questo modulo inizializzera i parametri casualmente.
+    :param dtype: tipo di dato dei parametri.
+    :return: un'istanza di VQC_HardwareEfficientAnsatz.
 
     Example::
 
@@ -7363,18 +7363,18 @@ VQC_BasicEntanglerTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_BasicEntanglerTemplate(num_layer=1, num_qubits=1, rotation="RX", initial=None, dtype=None)
 
-    A layer consisting of a single-parameter single-qubit rotation on each qubit, followed by multiple CNOT gates in a closed chain or ring combination.
+    Uno strato costituito da una rotazione a singolo qubit con singolo parametro su ogni qubit, seguito da molteplici porte CNOT in una combinazione a catena chiusa o ad anello.
 
-    A ring of CNOT gates connects each qubit to its neighbors, and finally the a qubit is considered to be the neighbor of the a th qubit.
+    Un anello di porte CNOT collega ogni qubit ai suoi vicini e, infine, il qubit a e considerato vicino del qubit a.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
-    :param num_layers: number of repeat layers, default: 1.
+    :param num_layers: numero di strati ripetuti, default: 1.
     :param num_qubits: number of qubits, default: 1.
     :param rotation: one-parameter single-qubit gate to use, default: `RX`
-    :param initial: initialized same value for all paramters. default:None,parameters will be initialized randomly.
+    :param initial: valore inizializzato uguale per tutti i parametri, default: None, i parametri verranno inizializzati casualmente.
     :param dtype: data type of parameter, default:None,use float32.
     :return: A VQC_BasicEntanglerTemplate instance
 
@@ -7418,17 +7418,17 @@ VQC_StronglyEntanglingTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_StronglyEntanglingTemplate(num_layers=1, num_qubits=1, ranges=None,initial=None, dtype=None)
 
-    Layers consisting of single qubit rotations and entanglers, as in `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
+    Strati costituiti da rotazioni a singolo qubit e entangler, come in `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
 
-    :param num_layers: number of repeat layers, default: 1.
+    :param num_layers: numero di strati ripetuti, default: 1.
     :param num_qubits: number of qubits, default: 1.
-    :param ranges: sequence determining the range hyperparameter for each subsequent layer; default: None
+    :param ranges: sequenza che determina l'iperparametro di intervallo per ogni strato successivo; default: None
                                 using :math: `r=l \mod M` for the :math:`l` th layer and :math:`M` qubits.
-    :param initial: initial value for all parameters.default: None,initialized randomly.
+    :param initial: valore iniziale per tutti i parametri, default: None, inizializzato casualmente.
     :param dtype: data type of parameter, default:None,use float32.
     :return: A VQC_StronglyEntanglingTemplate instance.
 
@@ -7474,17 +7474,17 @@ VQC_QuantumEmbedding
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_QuantumEmbedding(qubits, machine, num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
     
-    Use RZ,RY,RZ to create variational quantum circuits to encode classical data into quantum states.
+    Usa RZ, RY, RZ per creare circuiti quantistici variazionali per codificare dati classici in stati quantistici.
     Reference `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
  
-    :param num_repetitions_input: number of repeat times to encode input in a submodule.
+    :param num_repetitions_input: numero di volte per codificare l'input in un sottomodulo.
     :param depth_input: number of input dimension .
-    :param num_unitary_layers: number of repeat times of variational quantum gates.
-    :param num_repetitions: number of repeat times of submodule.
+    :param num_unitary_layers: numero di volte delle porte quantistiche variazionali.
+    :param num_repetitions: numero di volte del sottomodulo.
     :param initial: parameter initialization value, default is None
     :param dtype: parameter type, default is None, use float32.
     :param name: class name
@@ -7534,11 +7534,11 @@ ExpressiveEntanglingAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.tn.ExpressiveEntanglingAnsatz(type: int, num_wires: int, depth: int, dtype=None, name: str = "")
 
-    19 different ansatz from the paper `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
+    19 diversi ansatz dall'articolo `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    Questa classe eredita da ``pyvqnet.qnn.vqc.tn.QModule`` e ``torch.nn.Module``.
 
-    This class can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Questa classe puo essere aggiunta al modello torch come sottomodulo di ``torch.nn.Module``.
 
     :param type: Circuit type from 1 to 19, a total of 19 lines.
     :param num_wires: Number of qubits.
@@ -7592,7 +7592,7 @@ vqc_basis_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_basis_embedding(basis_state,q_machine)
 
-    Encode n binary features into the n-qubit basis state of ``q_machine``. This function is aliased as `VQC_BasisEmbedding`.
+    Codifica n caratteristiche binarie nello stato di base a n qubit di ``q_machine``. Questa funzione e anche chiamata `VQC_BasisEmbedding`.
 
     For example, for ``basis_state=([0, 1, 1])``, the basis state in the quantum system is :math:`|011 \rangle`.
 
@@ -7618,7 +7618,7 @@ vqc_angle_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_angle_embedding(input_feat, wires, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, rotation: str = "X")
 
-    Encodes :math:`N` features into the rotation angle of :math:`n` qubits, where :math:`N \leq n`.
+    Codifica :math:`N` caratteristiche nell'angolo di rotazione di :math:`n` qubit, dove :math:`N \leq n`.
     This function is aliased as `VQC_AngleEmbedding` .
 
     The rotation can be selected as: 'X' , 'Y' , 'Z', as defined by the ``rotation`` parameter:
