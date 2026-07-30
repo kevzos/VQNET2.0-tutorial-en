@@ -6,30 +6,30 @@
 VQNet
 =================================
 
-Core Features of VQNet
-------------------------
+Hauptfunktionen von VQNet
+--------------------------
 
-Multi-platform compatibility and cross-environment support
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Multiplattform-Kompatibilität und Umgebungsunterstützung
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-VQNet supports users to conduct research and development of quantum machine learning in a variety of hardware and operating system environments. Whether using CPU or GPU for quantum computing simulation or calling real quantum chips through Benyuan Quantum Cloud Service, VQNet can provide seamless support. Currently, VQNet is compatible with Python 3.10 on Windows, Linux, and macOS systems.
+VQNet ermöglicht es Benutzern, Forschung und Entwicklung im Bereich des quantenmaschinellen Lernens in einer Vielzahl von Hardware- und Betriebssystemumgebungen durchzuführen. Ob mit CPU oder GPU für die Quantencomputersimulation oder durch Aufruf echter Quantenchips über den Benyuan Quantum Cloud Service – VQNet bietet nahtlose Unterstützung. Derzeit ist VQNet mit Python 3.10 unter Windows, Linux und macOS kompatibel.
 
-Perfect interface design and ease of use
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Perfektes Schnittstellendesign und Benutzerfreundlichkeit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-VQNet uses Python as the front-end language, provides a function interface similar to PyTorch, and can freely choose a variety of computing backends to implement the automatic differentiation function of classical quantum machine learning models. The framework has built-in: 100+ commonly used Tensor computing interfaces, 100+ quantum variational circuit computing interfaces, and 50+ classical neural network interfaces. These interfaces cover the complete development process from classical machine learning to quantum machine learning, and will be continuously updated.
+VQNet verwendet Python als Frontend-Sprache, bietet eine Funktionenschnittstelle ähnlich wie PyTorch und ermöglicht die freie Auswahl verschiedener Rechen-Backends zur Implementierung der automatischen Differenzierung klassischer und quantenmaschineller Lernmodelle. Das Framework enthält integriert: über 100 häufig verwendete Tensor-Computing-Schnittstellen, über 100 Quanten-Variationsschaltkreis-Schnittstellen und über 50 klassische neuronale Netzwerkschnittstellen. Diese Schnittstellen decken den gesamten Entwicklungsprozess vom klassischen maschinellen Lernen bis zum quantenmaschinellen Lernen ab und werden kontinuierlich aktualisiert.
 
-Efficient computing performance and expansion capabilities
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Effiziente Rechenleistung und Erweiterungsmöglichkeiten
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- **Real quantum chip experiment support**: For users who need real quantum chip experiments, VQNet integrates the original pyQPanda interface, and combines the efficient scheduling capabilities of the original Sinan to achieve fast quantum circuit simulation calculations and real chip operation.
-- **Local computing optimization**: For local computing needs, VQNet provides a quantum machine learning programming interface based on CPU or GPU, and uses automatic differentiation technology to perform quantum variational circuit gradient calculations, which is significantly faster than parameter shift methods. Details can be found in :ref:`benchmarks`.
-- **Distributed computing support**: VQNet supports MPI-based distributed computing, which can realize the function of training large-scale hybrid quantum-classical neural network models on multiple nodes.
+- **Unterstützung für echte Quantenchip-Experimente**: Für Benutzer, die echte Quantenchip-Experimente benötigen, integriert VQNet die ursprüngliche pyQPanda-Schnittstelle und kombiniert die effizienten Planungsfähigkeiten von Sinan, um schnelle Quantenschaltkreis-Simulationsberechnungen und den Betrieb auf echten Chips zu ermöglichen.
+- **Lokale Rechenoptimierung**: Für lokale Rechenanforderungen bietet VQNet eine Programmier-schnittstelle für quantenmaschinelles Lernen basierend auf CPU oder GPU und verwendet automatische Differenzierungstechnologie zur Berechnung von Gradienten in Quanten-Variationsschaltkreisen, was deutlich schneller ist als Parameter-Shift-Methoden. Details finden Sie unter :ref:`benchmarks`.
+- **Unterstützung für verteiltes Rechnen**: VQNet unterstützt MPI-basiertes verteiltes Rechnen, wodurch das Training großer hybrider Quanten-Klassik-Neuronalnetzmodelle auf mehreren Knoten realisiert werden kann.
 
-Rich application scenarios and example support
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Reichhaltige Anwendungsszenarien und Beispielunterstützung
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-VQNet is not only a powerful development tool, but also widely used in multiple projects within the company, including power optimization, medical data analysis, image processing and other fields. In order to help users get started quickly, VQNet provides a variety of scenarios ranging from basic tutorials to advanced applications in the official website and API online documentation. These resources enable users to easily understand how to use VQNet to solve practical problems and quickly build their own quantum machine learning applications.
+VQNet ist nicht nur ein leistungsstarkes Entwicklungstool, sondern wird auch in zahlreichen unternehmensinternen Projekten eingesetzt, darunter Energieoptimierung, medizinische Datenanalyse, Bildverarbeitung und andere Bereiche. Um Benutzern den schnellen Einstieg zu erleichtern, bietet VQNet auf der offiziellen Website und in der API-Online-Dokumentation eine Vielzahl von Szenarien, die von grundlegenden Tutorials bis zu fortgeschrittenen Anwendungen reichen. Diese Ressourcen ermöglichen es Benutzern, leicht zu verstehen, wie VQNet zur Lösung praktischer Probleme eingesetzt werden kann, und schnell eigene Anwendungen für quantenmaschinelles Lernen zu erstellen.
 
 .. toctree::
     :caption: Installation Guide
