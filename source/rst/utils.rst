@@ -1,7 +1,7 @@
-Other Utility Functions
+Altre funzioni di utilità
 ##################################
 
-Seeds for Random Distributions
+Semi per distribuzioni casuali
 *******************************************
 
 
@@ -10,14 +10,14 @@ set_random_seed
 
 .. py:function:: pyvqnet.utils.set_random_seed(seed)
     
-    Set the global random seed.
+    Imposta il seme casuale globale.
 
-    :param seed: random seed.
+    :param seed: seme casuale.
 
     .. note::
 
-            When a fixed random number seed is specified, the random distribution will generate a fixed pseudo-random distribution based on the random seed.
-            Affects functions include: `tensor.randu` , `tensor.randn` , parameter initialization for parametric classical neural networks and quantum computing layers.
+            Quando viene specificato un seme di numero casuale fisso, la distribuzione casuale genererà una distribuzione pseudo-casuale fissa basata su quel seme.
+            Le funzioni interessate includono: `tensor.randu` , `tensor.randn` , inizializzazione dei parametri per reti neurali classiche parametriche e strati di calcolo quantistico.
 
     Example::
 
@@ -96,7 +96,7 @@ get_random_seed
 
 .. py:function:: pyvqnet.utils.get_random_seed()
     
-    Get current random seed.
+    Recupera il seme casuale corrente.
 
     Example::
 
