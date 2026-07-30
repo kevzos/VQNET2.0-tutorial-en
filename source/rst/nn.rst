@@ -1,7 +1,7 @@
-Classical Neural Network Module
+Klassisches Neuronales Netzwerk-Modul
 #########################################
 
-The following classical neural network modules support automatic back propagation computation.After running the forward function, you can calculate the gradient by executing the reverse function.A simple example of the convolution layer is as follows:
+Die folgenden klassischen neuronalen Netzwerkmodelle unterstützen die automatische Rückwärtspropagation. Nach Ausführung der Vorwärtsfunktion kann der Gradient durch Aufruf der Rückwärtsfunktion berechnet werden. Ein einfaches Beispiel für die Faltungsschicht ist wie folgt:
 
 .. code-block::
 
@@ -9,23 +9,23 @@ The following classical neural network modules support automatic back propagatio
     from pyvqnet import kfloat32
     from pyvqnet.nn import Conv2D
 
-    # an image feed into two dimension convolution layer
-    b = 2        # batch size
-    ic = 2       # input channels
-    oc = 2      # output channels
-    hw = 4      # input width and heights
+    # ein Bild wird in eine zweidimensionale Faltungsschicht eingespeist
+    b = 2        # Batch-Größe
+    ic = 2       # Eingangskanäle
+    oc = 2      # Ausgangskanäle
+    hw = 4      # Eingangsbreite und -höhe
 
-    # two dimension convolution layer
+    # zweidimensionale Faltungsschicht
     test_conv = Conv2D(ic,oc,(2,2),(2,2),"same")
 
-    # input of shape [b,ic,hw,hw]
+    # Eingabe der Form [b,ic,hw,hw]
     x0 = arange(1,b*ic*hw*hw+1,requires_grad=True,dtype=kfloat32)
 
     x1 = x0.reshape([b,ic,hw,hw])
-    #forward function
+    # Vorwärtsfunktion
     x = test_conv(x1)
 
-    #backward function with autograd
+    # Rückwärtsfunktion mit Autograd
     x.backward()
     print(x0.grad)
 
@@ -51,10 +51,10 @@ The following classical neural network modules support automatic back propagatio
 .. currentmodule:: pyvqnet.nn
 
 
-Module Class
+Modul-Klasse
 ********************************************************
 
-abstract calculation module
+abstraktes Berechnungsmodul
 
 
 Module
@@ -62,11 +62,11 @@ Module
 
 .. py:class:: pyvqnet.nn.module.Module
 
-    Base class for all neural network modules including quantum modules or classic modules.
-    Your models should also be subclass of this class for autograd calculation.
+    Basisklasse für alle neuronalen Netzwerkmodelle, einschließlich Quantenmodule oder klassische Module.
+    Ihre Modelle sollten ebenfalls eine Unterklasse dieser Klasse für die Autograd-Berechnung sein.
 
-    Modules can also contain other Modules, allowing to nest them in
-    a tree structure. You can assign the submodules as regular attributes::
+    Module können auch andere Module enthalten, was eine Verschachtelung in
+    einer Baumstruktur ermöglicht. Sie können die Untermodule als reguläre Attribute zuweisen::
 
         class Model(Module):
             def __init__(self):
@@ -78,19 +78,19 @@ Module
                 x = pyvqnet.nn.activation.relu(self.conv1(x))
                 return pyvqnet.nn.activation.relu(self.conv2(x))
 
-    Submodules assigned in this way will be registered
+    Auf diese Weise zugewiesene Untermodule werden registriert.
 
 forward
 =================================
 
 .. py:method:: pyvqnet.nn.module.Module.forward(x, *args, **kwargs)
 
-    Abstract method which performs forward pass.
+    Abstrakte Methode, die den Vorwärtsdurchlauf ausführt.
 
-    :param x: input QTensor
-    :param \*args: A non-keyword variable parameter
-    :param \*\*kwargs: A keyword variable parameter
-    :return: module output
+    :param x: Eingabe-QTensor
+    :param \*args: Ein parameterloser Variablenparameter
+    :param \*\*kwargs: Ein Schlüsselwort-Variablenparameter
+    :return: Modulausgabe
 
     Example::
 
@@ -128,16 +128,16 @@ state_dict
 
 .. py:method:: pyvqnet.nn.module.Module.state_dict(destination=None, prefix='')
 
-    Return a dictionary containing a whole state of the module.
+    Gibt ein Wörterbuch zurück, das den gesamten Zustand des Moduls enthält.
 
-    Both parameters and persistent buffers (e.g. running averages) are
-    included. Keys are corresponding parameter and buffer names.
+    Sowohl Parameter als auch persistente Puffer (z.B. laufende Durchschnitte) sind
+    enthalten. Die Schlüssel sind die entsprechenden Parameter- und Puffernamen.
 
-    :param destination: a dict where state will be stored
-    :param prefix: the prefix for parameters and buffers used in this
-        module
+    :param destination: Ein Dictionary, in dem der Zustand gespeichert wird
+    :param prefix: Das Präfix für Parameter und Puffer, die in diesem
+        Modul verwendet werden
 
-    :return: a dictionary containing a whole state of the module
+    :return: Ein Dictionary, das den gesamten Zustand des Moduls enthält
 
     Example::
 
@@ -152,16 +152,16 @@ toGPU
 
 .. py:function:: pyvqnet.nn.module.Module.toGPU(device: int = DEV_GPU_0)
 
-    Move the parameters and buffer data of a module and its submodules to the specified GPU device.
+    Verschiebt die Parameter- und Pufferdaten eines Moduls und seiner Untermodule auf das angegebene GPU-Gerät.
 
-    device specifies the device whose internal data is stored. When device >= DEV_GPU_0, the data is stored on the GPU. If your computer has multiple GPUs,
-    You can specify different devices to store data. For example, device = DEV_GPU_1 , DEV_GPU_2, DEV_GPU_3, ... means it is stored on GPUs with different serial numbers.
+    device gibt das Gerät an, auf dem die internen Daten gespeichert werden. Wenn device >= DEV_GPU_0, werden die Daten auf der GPU gespeichert. Wenn Ihr Computer mehrere GPUs hat,
+    können Sie verschiedene Geräte zur Datenspeicherung angeben. Zum Beispiel bedeutet device = DEV_GPU_1, DEV_GPU_2, DEV_GPU_3, ... die Speicherung auf GPUs mit unterschiedlichen Seriennummern.
     
     .. note::
-        Module cannot be calculated on different GPUs. A Cuda error will be raised if you try to create a QTensor on a GPU whose ID exceeds the maximum number of verified GPUs.
+        Module können nicht auf verschiedenen GPUs berechnet werden. Ein Cuda-Fehler wird ausgelöst, wenn Sie versuchen, einen QTensor auf einer GPU zu erstellen, deren ID die maximale Anzahl verifizierter GPUs überschreitet.
 
-    :param device: The device currently saving QTensor, default=DEV_GPU_0. device = pyvqnet.DEV_GPU_0, stored in the first GPU, device = DEV_GPU_1, stored in the second GPU, and so on.
-    :return: Module moved to GPU device.
+    :param device: Das Gerät, das aktuell den QTensor speichert, Standard=DEV_GPU_0. device = pyvqnet.DEV_GPU_0, gespeichert in der ersten GPU, device = DEV_GPU_1, gespeichert in der zweiten GPU, und so weiter.
+    :return: Modul, das auf das GPU-Gerät verschoben wurde.
 
     Examples::
 
@@ -177,9 +177,9 @@ toCPU
 
 .. py:function:: pyvqnet.nn.module.Module.toCPU()
 
-    Moves the parameters and buffer data of a module and its submodules to a specific CPU device.
+    Verschiebt die Parameter- und Pufferdaten eines Moduls und seiner Untermodule auf ein bestimmtes CPU-Gerät.
 
-    :return: Module moved to CPU device.
+    :return: Modul, das auf das CPU-Gerät verschoben wurde.
 
     Examples::
 
@@ -196,10 +196,10 @@ save_parameters
 
 .. py:function:: pyvqnet.utils.storage.save_parameters(obj, f)
 
-    Saves model parmeters to a disk file.
+    Speichert Modellparameter in einer Datei auf der Festplatte.
 
-    :param obj: saved OrderedDict from ``state_dict()``
-    :param f: a string or os.PathLike object containing a file name
+    :param obj: Gespeichertes OrderedDict von ``state_dict()``
+    :param f: Ein String oder os.PathLike-Objekt, das einen Dateinamen enthält
     :return: None
 
     Example::
@@ -222,12 +222,12 @@ load_parameters
 
 .. py:function:: pyvqnet.utils.storage.load_parameters(f)
 
-    Loads model paramters from a disk file.
+    Lädt Modellparameter aus einer Datei auf der Festplatte.
 
-    The model instance should be created first.
+    Die Modellinstanz sollte zuerst erstellt werden.
 
-    :param f: a string or os.PathLike object containing a file name
-    :return: saved OrderedDict for ``load_state_dict()``
+    :param f: Ein String oder os.PathLike-Objekt, das einen Dateinamen enthält
+    :return: Gespeichertes OrderedDict für ``load_state_dict()``
 
     Example::
 
@@ -256,11 +256,11 @@ ModuleList
 .. py:class:: pyvqnet.nn.module.ModuleList([pyvqnet.nn.module.Module])
 
 
-    Save submodules in a list. ModuleList can be indexed like a normal Python list, and the internal parameters of the Module it contains can be saved.
+    Speichert Untermodule in einer Liste. ModuleList kann wie eine normale Python-Liste indexiert werden, und die internen Parameter des darin enthaltenen Moduls können gespeichert werden.
 
-    :param modules: list of nn.Module
+    :param modules: Liste von nn.Module
 
-    :return: a list of modules
+    :return: Eine Liste von Modulen
 
     Example::
 
@@ -321,11 +321,11 @@ ParameterList
 .. py:class:: pyvqnet.nn.module.ParameterList([pyvqnet.nn.module.Module])
 
 
-    To store parameters in a list, a ParameterList can be indexed like a normal Python list, and the internal parameters of the Parameter it contains can be stored.
+    Speichert Parameter in einer Liste. ParameterList kann wie eine normale Python-Liste indexiert werden, und die internen Parameter des darin enthaltenen Parameters können gespeichert werden.
 
-    :param modules: nn.Parameter list.
+    :param modules: nn.Parameter-Liste.
 
-    :return: a Parameter list.
+    :return: Eine Parameter-Liste.
 
     Example::
 
@@ -336,7 +336,7 @@ ParameterList
                 self.params = nn.ParameterList([nn.Parameter((10, 10)) for i in range(10)])
             def forward(self, x):
 
-                # ParameterList can act as an iterable, or be indexed using ints
+                # ParameterList kann als Iterable verwendet oder mit Integer-Indizes angesprochen werden
                 for i, p in enumerate(self.params):
                     x = self.params[i // 2] * x + p * x
                 return x
@@ -349,10 +349,10 @@ Sequential
 *********************************************************
 .. py:class:: pyvqnet.nn.module.Sequential([pyvqnet.nn.module.Module])
 
-    Modules will be added in the order they are passed in. Alternatively, a ``OrderedDict`` of modules can be passed in. The ``forward()`` method of ``Sequential`` takes any input and forwards it to its first module.
-    It then ``Sequential`` the output to the input of each subsequent module in turn, and finally returns the output of the last module.
+    Module werden in der Reihenfolge hinzugefügt, in der sie übergeben werden. Alternativ kann ein ``OrderedDict`` von Modulen übergeben werden. Die ``forward()``-Methode von ``Sequential`` nimmt eine beliebige Eingabe und leitet sie an ihr erstes Modul weiter.
+    Sie leitet dann die Ausgabe des ersten Moduls als Eingabe an das nächste Modul weiter und gibt schließlich die Ausgabe des letzten Moduls zurück.
 
-    :param modules: module to append.
+    :param modules: Anzuhängendes Modul.
 
     :return: Sequential.
 
@@ -361,7 +361,7 @@ Sequential
         from pyvqnet import nn
         from collections import OrderedDict
 
-        # Using Sequential to create a small model.
+        # Verwenden von Sequential zur Erstellung eines kleinen Modells.
         model = nn.Sequential(
                   nn.Conv2D(1,20,(5, 5)),
                   nn.ReLu(),
@@ -370,7 +370,7 @@ Sequential
                 )
         print(model.state_dict().keys())
 
-        # Using Sequential with OrderedDict. This is functionally the same as the above code
+        # Verwenden von Sequential mit OrderedDict. Dies ist funktional identisch zum obigen Code.
                 
         model = nn.Sequential(OrderedDict([
                   ('conv1', nn.Conv2D(1,20,(5, 5))),
@@ -381,7 +381,7 @@ Sequential
         print(model.state_dict().keys())
 
 
-Classical Neural Network Layer
+Klassische Neuronale Netzwerk-Schicht
 ********************************************************
 
 Conv1D
@@ -389,26 +389,26 @@ Conv1D
 
 .. py:class:: pyvqnet.nn.Conv1D(input_channels:int,output_channels:int,kernel_size:int ,stride:int= 1,padding = "valid",use_bias:str = True,kernel_initializer = None,bias_initializer =None, dilation_rate: int = 1, group: int = 1, dtype=None, name='')
 
-    Apply a 1-dimensional convolution kernel over an input . Inputs to the conv module are of shape (batch_size, input_channels, height)
+    Wendet einen 1-dimensionalen Faltungskernel auf eine Eingabe an. Die Eingaben für das Faltungsmodul haben die Form (batch_size, input_channels, height)
 
-    :param input_channels: `int` - Number of input channels
-    :param output_channels: `int` - Number of kernels
-    :param kernel_size: `int` - Size of a single kernel. kernel shape = [output_channels,input_channels/group,kernel_size,1]
-    :param stride: `int` - Stride, defaults to 1
-    :param padding: `str|int` - padding option, which can be a string {'valid', 'same'} or an integer giving the amount of implicit padding to apply . Default "valid".
-    :param use_bias: `bool` - if use bias, defaults to True
-    :param kernel_initializer: `callable` - Defaults to None
-    :param bias_initializer: `callable` - Defaults to None
-    :param dilation_rate: `int` - dilated size, default: 1
-    :param group: `int` -  number of groups of grouped convolutions. Default: 1
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: The name of the module, default: "".
-    :return: a Conv1D class
+    :param input_channels: `int` - Anzahl der Eingabekanäle
+    :param output_channels: `int` - Anzahl der Kernel
+    :param kernel_size: `int` - Größe eines einzelnen Kernels. Kernel-Form = [output_channels, input_channels/group, kernel_size, 1]
+    :param stride: `int` - Schrittweite, Standardwert ist 1
+    :param padding: `str|int` - Padding-Option, kann ein String {'valid', 'same'} oder eine ganze Zahl sein, die den Betrag des impliziten Paddings angibt. Standard "valid".
+    :param use_bias: `bool` - ob Bias verwendet wird, Standardwert ist True
+    :param kernel_initializer: `callable` - Standardwert ist None
+    :param bias_initializer: `callable` - Standardwert ist None
+    :param dilation_rate: `int` - Dilatationsgröße, Standard: 1
+    :param group: `int` - Anzahl der Gruppen für gruppierte Faltungen. Standard: 1
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Der Name des Moduls, Standard: "".
+    :return: Eine Conv1D-Klasse
 
     .. note::
-        ``padding='valid'`` is the same as no padding.
+        ``padding='valid'`` entspricht keiner Auffüllung.
 
-        ``padding='same'`` pads the input so the output has the shape as the input.
+        ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
     Example::
 
@@ -436,27 +436,27 @@ Conv2D
 
 .. py:class:: pyvqnet.nn.Conv2D(input_channels:int,output_channels:int,kernel_size:tuple,stride:tuple=(1, 1),padding="valid",use_bias = True,kernel_initializer=None,bias_initializer=None, dilation_rate: int = 1, group: int = 1, dtype = None, name = "")
 
-    Apply a two-dimensional convolution kernel over an input . Inputs to the conv module are of shape (batch_size, input_channels, height, width)
+    Wendet einen zweidimensionalen Faltungskernel auf eine Eingabe an. Die Eingaben für das Faltungsmodul haben die Form (batch_size, input_channels, height, width)
 
-    :param input_channels: `int` - Number of input channels
-    :param output_channels: `int` - Number of kernels
-    :param kernel_size: `tuple|list` - Size of a single kernel. kernel shape = [output_channels,input_channels/group,kernel_size,kernel_size]
-    :param stride: `tuple|list` - Stride, defaults to (1, 1)|[1,1]
-    :param padding: `str|tuple` - padding option, which can be a string {'valid', 'same'} or a tuple of integers giving the amount of implicit padding to apply on both sides. Default "valid".
-    :param use_bias: `bool` - if use bias, defaults to True
-    :param kernel_initializer: `callable` - Defaults to None
-    :param bias_initializer: `callable` - Defaults to None
-    :param dilation_rate: `int` - dilated size, default: 1
-    :param group: `int` -  number of groups of grouped convolutions. Default: 1.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: The name of the module, default: "".
+    :param input_channels: `int` - Anzahl der Eingabekanäle
+    :param output_channels: `int` - Anzahl der Kernel
+    :param kernel_size: `tuple|list` - Größe eines einzelnen Kernels. Kernel-Form = [output_channels, input_channels/group, kernel_size, kernel_size]
+    :param stride: `tuple|list` - Schrittweite, Standardwert ist (1, 1)|[1,1]
+    :param padding: `str|tuple` - Padding-Option, kann ein String {'valid', 'same'} oder ein Tupel von ganzen Zahlen sein, die den Betrag des impliziten Paddings auf beiden Seiten angeben. Standard "valid".
+    :param use_bias: `bool` - ob Bias verwendet wird, Standardwert ist True
+    :param kernel_initializer: `callable` - Standardwert ist None
+    :param bias_initializer: `callable` - Standardwert ist None
+    :param dilation_rate: `int` - Dilatationsgröße, Standard: 1
+    :param group: `int` - Anzahl der Gruppen für gruppierte Faltungen. Standard: 1.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Der Name des Moduls, Standard: "".
 
-    :return: a Conv2D class
+    :return: Eine Conv2D-Klasse
 
     .. note::
-        ``padding='valid'`` is the same as no padding.
+        ``padding='valid'`` entspricht keiner Auffüllung.
 
-        ``padding='same'`` pads the input so the output has the shape as the input.
+        ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
     Example::
 
@@ -492,28 +492,28 @@ ConvT2D
 
 .. py:class:: pyvqnet.nn.ConvT2D(input_channels,output_channels,kernel_size,stride=[1, 1],padding="valid",use_bias="True", kernel_initializer=None,bias_initializer=None, dilation_rate: int = 1, out_padding=(0,0), group: int = 1, dtype=None, name='')
 
-    Apply a two-dimensional transposed convolution kernel over an input. Inputs to the convT module are of shape (batch_size, input_channels, height, width)
+    Wendet einen zweidimensionalen transponierten Faltungskernel auf eine Eingabe an. Die Eingaben für das ConvT-Modul haben die Form (batch_size, input_channels, height, width)
 
-    :param input_channels: `int` - Number of input channels
-    :param output_channels: `int` - Number of kernels
-    :param kernel_size: `tuple|list` - Size of a single kernel. kernel shape = [input_channels,output_channels/group,kernel_size,kernel_size]
-    :param stride: `tuple|list` - Stride, defaults to (1, 1)|[1,1]
-    :param padding: `str|tuple` - padding option, which can be a string {'valid', 'same'} or a tuple of integers giving the amount of implicit padding to apply on both sides. Default "valid".
-    :param use_bias: `bool` - Whether to use a offset item. Default to use
-    :param kernel_initializer: `callable` - Defaults to None
-    :param bias_initializer: `callable` - Defaults to None
-    :param dilation_rate: `int` - dilated size, default: 1.
-    :param out_padding: Additional size added to one side of each dimension in the output shape. Default: (0,0) 
-    :param group: `int` -  number of groups of grouped convolutions. Default: 1.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: The name of the module, default: "".
+    :param input_channels: `int` - Anzahl der Eingabekanäle
+    :param output_channels: `int` - Anzahl der Kernel
+    :param kernel_size: `tuple|list` - Größe eines einzelnen Kernels. Kernel-Form = [input_channels, output_channels/group, kernel_size, kernel_size]
+    :param stride: `tuple|list` - Schrittweite, Standardwert ist (1, 1)|[1,1]
+    :param padding: `str|tuple` - Padding-Option, kann ein String {'valid', 'same'} oder ein Tupel von ganzen Zahlen sein, die den Betrag des impliziten Paddings auf beiden Seiten angeben. Standard "valid".
+    :param use_bias: `bool` - Ob ein Offset-Element verwendet werden soll. Standardmäßig verwenden.
+    :param kernel_initializer: `callable` - Standardwert ist None
+    :param bias_initializer: `callable` - Standardwert ist None
+    :param dilation_rate: `int` - Dilatationsgröße, Standard: 1.
+    :param out_padding: Zusätzliche Größe, die auf einer Seite jeder Dimension der Ausgabeform hinzugefügt wird. Standard: (0,0) 
+    :param group: `int` - Anzahl der Gruppen für gruppierte Faltungen. Standard: 1.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Der Name des Moduls, Standard: "".
 
-    :return: a ConvT2D class
+    :return: Eine ConvT2D-Klasse
 
     .. note::
-        ``padding='valid'`` is the same as no padding.
+        ``padding='valid'`` entspricht keiner Auffüllung.
 
-        ``padding='same'`` pads the input so the output has the shape as the input.
+        ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
 
     Example::
@@ -549,19 +549,19 @@ AvgPool1D
 
 .. py:class:: pyvqnet.nn.AvgPool1D(kernel, stride, padding='valid', name='')
 
-    This operation applies a 1D average pooling over an input signal composed of several input planes.
+    Diese Operation wendet einen 1D-Durchschnittspooling auf ein Eingangssignal an, das aus mehreren Eingabeebenen besteht.
 
-    :param kernel: size of the average pooling windows
-    :param strides: factor by which to downscale
-    :param padding: one of "valid", "same" or integer specifies the padding value, defaults to "valid"
-    :param name: name of the output layer.
+    :param kernel: Größe der Durchschnittspooling-Fenster
+    :param strides: Faktor, um den herunterskaliert wird
+    :param padding: Einer von "valid", "same" oder eine ganze Zahl, die den Padding-Wert angibt, Standardwert ist "valid"
+    :param name: Name der Ausgabeschicht.
 
-    :return: AvgPool1D layer
+    :return: AvgPool1D-Schicht
 
     .. note::
-        ``padding='valid'`` is the same as no padding.
+        ``padding='valid'`` entspricht keiner Auffüllung.
 
-        ``padding='same'`` pads the input so the output has the shape as the input.
+        ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
 
 
@@ -592,20 +592,20 @@ MaxPool1D
 
 .. py:class:: pyvqnet.nn.MaxPool1D(kernel, stride, padding='valid', dtype=None, name='')
 
-    This operation applies a 1D max pooling over an input signal composed of several input planes.
+    Diese Operation wendet ein 1D-Max-Pooling auf ein Eingangssignal an, das aus mehreren Eingabeebenen besteht.
 
-    :param kernel: size of the max pooling windows
-    :param strides: factor by which to downscale
-    :param padding: one of "valid", "same" or integer specifies the padding value, defaults to "valid"
-    :param name: The name of the module, default: "".
+    :param kernel: Größe der Max-Pooling-Fenster
+    :param strides: Faktor, um den herunterskaliert wird
+    :param padding: Einer von "valid", "same" oder eine ganze Zahl, die den Padding-Wert angibt, Standardwert ist "valid"
+    :param name: Der Name des Moduls, Standard: "".
 
-    :return: MaxPool1D layer
+    :return: MaxPool1D-Schicht
 
     .. note::
 
-        ``padding='valid'`` is the same as no padding.
+        ``padding='valid'`` entspricht keiner Auffüllung.
 
-        ``padding='same'`` pads the input so the output has the shape as the input.
+        ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
 
     Example::
@@ -633,18 +633,18 @@ AvgPool2D
 
 .. py:class:: pyvqnet.nn.AvgPool2D(kernel, stride, padding='valid', name='')
 
-    This operation applies 2D average pooling over input features .
+    Diese Operation wendet 2D-Durchschnittspooling auf Eingabemerkmale an.
 
-    :param kernel: size of the average pooling windows
-    :param strides: factors by which to downscale
-    :param padding: one of "valid", "same" or tuple with integers specifies the padding value of column and row,defaults to "valid"
-    :param name: name of the output layer
-    :return: AvgPool2D layer
+    :param kernel: Größe der Durchschnittspooling-Fenster
+    :param strides: Faktoren, um die herunterskaliert wird
+    :param padding: Einer von "valid", "same" oder ein Tupel mit ganzen Zahlen, die den Padding-Wert für Spalte und Zeile angeben, Standardwert ist "valid"
+    :param name: Name der Ausgabeschicht
+    :return: AvgPool2D-Schicht
 
     .. note::
-        ``padding='valid'`` is the same as no padding.
+        ``padding='valid'`` entspricht keiner Auffüllung.
 
-        ``padding='same'`` pads the input so the output has the shape as the input.
+        ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
 
     Example::
@@ -669,18 +669,18 @@ MaxPool2D
 
 .. py:class:: pyvqnet.nn.MaxPool2D(kernel, stride, padding='valid', name='')
 
-    This operation applies 2D max pooling over input features.
+    Diese Operation wendet 2D-Max-Pooling auf Eingabemerkmale an.
 
-    :param kernel: size of the max pooling windows
-    :param strides: factor by which to downscale
-    :param padding: one of "valid", "same" or tuple with integers specifies the padding value of column and row, defaults to "valid"
-    :param name: name of the output layer
-    :return: MaxPool2D layer
+    :param kernel: Größe der Max-Pooling-Fenster
+    :param strides: Faktor, um den herunterskaliert wird
+    :param padding: Einer von "valid", "same" oder ein Tupel mit ganzen Zahlen, die den Padding-Wert für Spalte und Zeile angeben, Standardwert ist "valid"
+    :param name: Name der Ausgabeschicht
+    :return: MaxPool2D-Schicht
 
     .. note::
-        ``padding='valid'`` is the same as no padding.
+        ``padding='valid'`` entspricht keiner Auffüllung.
 
-        ``padding='same'`` pads the input so the output has the shape as the input.
+        ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
 
     Example::
@@ -705,17 +705,17 @@ Embedding
 
 .. py:class:: pyvqnet.nn.embedding.Embedding(num_embeddings, embedding_dim, weight_initializer=<function xavier_normal>,dtype=None, name: str = '')
 
-    This module is often used to store word embeddings and retrieve them using indices.
-    The input to the module is a list of indices, and the output is the corresponding
-    word embeddings.
+    Dieses Modul wird häufig verwendet, um Worteinbettungen zu speichern und sie über Indizes abzurufen.
+    Die Eingabe für das Modul ist eine Liste von Indizes, und die Ausgabe sind die entsprechenden
+    Worteinbettungen.
 
-    :param num_embeddings: `int` - size of the dictionary of embeddings.
-    :param embedding_dim: `int` - the size of each embedding vector.
-    :param weight_initializer: `callable` - defaults to normal.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer.
+    :param num_embeddings: `int` - Größe des Einbettungswörterbuchs.
+    :param embedding_dim: `int` - Die Größe jedes Einbettungsvektors.
+    :param weight_initializer: `callable` - Standardwert ist normal.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht.
 
-    :return: a Embedding class
+    :return: Eine Embedding-Klasse
 
     Example::
 
@@ -761,27 +761,27 @@ BatchNorm2d
 
 .. py:class:: pyvqnet.nn.BatchNorm2d(channel_num:int, momentum:float=0.1, epsilon:float = 1e-5, affine= True, beta_initializer=zeros, gamma_initializer=ones, dtype=None, name="")
 
-    Applies Batch Normalization over a 4D input (B,C,H,W) as described in the paper
+    Wendet Batch-Normalisierung auf eine 4D-Eingabe (B,C,H,W) an, wie in dem Paper
     `Batch Normalization: Accelerating Deep Network Training by Reducing
-    Internal Covariate Shift <https://arxiv.org/abs/1502.03167>`__ .
+    Internal Covariate Shift <https://arxiv.org/abs/1502.03167>`__ beschrieben.
 
     .. math::
 
         y = \frac{x - \mathrm{E}[x]}{\sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    where :math:`\gamma` and :math:`\beta` are learnable parameters.Also by default, during training this layer keeps running
-    estimates of its computed mean and variance, which are then used for normalization during evaluation.
-    The running estimates are kept with a default momentum of 0.1.
+    wobei :math:`\gamma` und :math:`\beta` lernbare Parameter sind. Standardmäßig behält diese Schicht während des Trainings laufende
+    Schätzungen ihres berechneten Mittelwerts und ihrer Varianz bei, die dann während der Evaluierung zur Normalisierung verwendet werden.
+    Die laufenden Schätzungen werden mit einem Standard-Momentum von 0,1 beibehalten.
 
-    :param channel_num: `int` - the number of input features channels.
-    :param momentum: `float` - momentum when calculation exponentially weighted average, defaults to 0.1.
-    :param epsilon: `float` - numerical stability constant, defaults to 1e-5.
-    :param affine: A boolean value that, when set to ``True``, causes this module to have learnable per-channel affine parameters, initialized to 1 (for weights) and 0 (for biases). Default: ``True``.
-    :param beta_initializer: `callable` - defaults to zeros.
-    :param gamma_initializer: `callable` - defaults to ones.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
-    :return: a BatchNorm2d class
+    :param channel_num: `int` - Die Anzahl der Eingabemerkmal-Kanäle.
+    :param momentum: `float` - Momentum bei der Berechnung des exponentiell gewichteten Durchschnitts, Standardwert ist 0,1.
+    :param epsilon: `float` - Konstante für numerische Stabilität, Standardwert ist 1e-5.
+    :param affine: Ein boolescher Wert, der, wenn auf ``True`` gesetzt, diesem Modul lernbare kanalweise affine Parameter zuweist, initialisiert mit 1 (für Gewichte) und 0 (für Biases). Standard: ``True``.
+    :param beta_initializer: `callable` - Standardwert ist zeros.
+    :param gamma_initializer: `callable` - Standardwert ist ones.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
+    :return: Eine BatchNorm2d-Klasse
 
     Example::
 
@@ -824,28 +824,28 @@ BatchNorm1d
 
 .. py:class:: pyvqnet.nn.BatchNorm1d(channel_num:int, momentum:float=0.1, epsilon:float = 1e-5, affine = True, beta_initializer=zeros, gamma_initializer=ones, dtype=None, name="")
 
-    Applies Batch Normalization over a 2D input (B,C) as described in the paper
+    Wendet Batch-Normalisierung auf eine 2D-Eingabe (B,C) an, wie in dem Paper
     `Batch Normalization: Accelerating Deep Network Training by Reducing
-    Internal Covariate Shift <https://arxiv.org/abs/1502.03167>`__ .
+    Internal Covariate Shift <https://arxiv.org/abs/1502.03167>`__ beschrieben.
 
     .. math::
 
         y = \frac{x - \mathrm{E}[x]}{\sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    where :math:`\gamma` and :math:`\beta` are learnable parameters.Also by default, during training this layer keeps running
-    estimates of its computed mean and variance, which are then used for normalization during evaluation.
-    The running estimates are kept with a default momentum of 0.1.
+    wobei :math:`\gamma` und :math:`\beta` lernbare Parameter sind. Standardmäßig behält diese Schicht während des Trainings laufende
+    Schätzungen ihres berechneten Mittelwerts und ihrer Varianz bei, die dann während der Evaluierung zur Normalisierung verwendet werden.
+    Die laufenden Schätzungen werden mit einem Standard-Momentum von 0,1 beibehalten.
 
 
-    :param channel_num: `int` - the number of input features channels.
-    :param momentum: `float` - momentum when calculation exponentially weighted average, defaults to 0.1
-    :param epsilon: `float` - numerical stability constant, defaults to 1e-5.
-    :param affine: A boolean value that, when set to ``True``, causes this module to have learnable per-channel affine parameters, initialized to 1 (for weights) and 0 (for biases). Default: ``True``.
-    :param beta_initializer: `callable` - defaults to zeros.
-    :param gamma_initializer: `callable` - defaults to ones.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
-    :return: a BatchNorm1d class
+    :param channel_num: `int` - Die Anzahl der Eingabemerkmal-Kanäle.
+    :param momentum: `float` - Momentum bei der Berechnung des exponentiell gewichteten Durchschnitts, Standardwert ist 0,1
+    :param epsilon: `float` - Konstante für numerische Stabilität, Standardwert ist 1e-5.
+    :param affine: Ein boolescher Wert, der, wenn auf ``True`` gesetzt, diesem Modul lernbare kanalweise affine Parameter zuweist, initialisiert mit 1 (für Gewichte) und 0 (für Biases). Standard: ``True``.
+    :param beta_initializer: `callable` - Standardwert ist zeros.
+    :param gamma_initializer: `callable` - Standardwert ist ones.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
+    :return: Eine BatchNorm1d-Klasse
 
     Example::
 
@@ -876,21 +876,21 @@ LayerNormNd
 
 .. py:class:: pyvqnet.nn.layer_norm.LayerNormNd(normalized_shape: list, epsilon: float = 1e-5, affine = True, dtype=None,name="")
 
-    Layer normalization is performed on the last several dimensions of any input. The specific method is as described in the paper:
+    Die Layer-Normalisierung wird auf die letzten Dimensionen einer beliebigen Eingabe angewendet. Die spezifische Methode ist wie in dem Paper beschrieben:
     `Layer Normalization <https://arxiv.org/abs/1607.06450>`__.
 
     .. math::
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    For inputs like (B,C,H,W,D), ``norm_shape`` can be [C,H,W,D],[H,W,D],[W,D] or [D] .
+    Für Eingaben wie (B,C,H,W,D) kann ``norm_shape`` [C,H,W,D], [H,W,D], [W,D] oder [D] sein.
 
-    :param norm_shape: `float` - standardize the shape.
-    :param epsilon: `float` - numerical stability constant, defaults to 1e-5.
-    :param affine: A boolean value that, when set to ``True``, causes this module to have learnable per-channel affine parameters, initialized to 1 (for weights) and 0 (for biases). Default: ``True``.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer.
+    :param norm_shape: `float` - Die zu standardisierende Form.
+    :param epsilon: `float` - Konstante für numerische Stabilität, Standardwert ist 1e-5.
+    :param affine: Ein boolescher Wert, der, wenn auf ``True`` gesetzt, diesem Modul lernbare kanalweise affine Parameter zuweist, initialisiert mit 1 (für Gewichte) und 0 (für Biases). Standard: ``True``.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht.
 
-    :return: a LayerNormNd class.
+    :return: Eine LayerNormNd-Klasse.
 
     Example::
 
@@ -920,23 +920,23 @@ LayerNorm2d
 
 .. py:class:: pyvqnet.nn.layer_norm.LayerNorm2d(norm_size:int, epsilon:float = 1e-5, affine= True, dtype=None, name="")
 
-    Applies Layer Normalization over a mini-batch of 4D inputs as described in
-    the paper `Layer Normalization <https://arxiv.org/abs/1607.06450>`__
+    Wendet Layer-Normalisierung auf einen Mini-Batch von 4D-Eingaben an, wie in
+    dem Paper `Layer Normalization <https://arxiv.org/abs/1607.06450>`__ beschrieben.
 
     .. math::
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    The mean and standard-deviation are calculated over the last  `D` dimensions size.
+    Der Mittelwert und die Standardabweichung werden über die Größe der letzten `D` Dimensionen berechnet.
 
-    For input like (B,C,H,W), ``norm_size`` should equals to C * H * W.
+    Für Eingaben wie (B,C,H,W) sollte ``norm_size`` gleich C * H * W sein.
 
-    :param norm_size: `float` - normalize size,equals to C * H * W
-    :param epsilon: `float` - numerical stability constant, defaults to 1e-5
-    :param affine: A boolean value that, when set to ``True``, causes this module to have learnable per-channel affine parameters, initialized to 1 (for weights) and 0 (for biases). Default: ``True``.
-    :param name: name of the output layer
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
+    :param norm_size: `float` - Normalisierungsgröße, gleich C * H * W
+    :param epsilon: `float` - Konstante für numerische Stabilität, Standardwert ist 1e-5
+    :param affine: Ein boolescher Wert, der, wenn auf ``True`` gesetzt, diesem Modul lernbare kanalweise affine Parameter zuweist, initialisiert mit 1 (für Gewichte) und 0 (für Biases). Standard: ``True``.
+    :param name: Name der Ausgabeschicht
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
     
-    :return: a LayerNorm2d class
+    :return: Eine LayerNorm2d-Klasse
 
     Example::
 
@@ -974,22 +974,22 @@ LayerNorm1d
 
 .. py:class:: pyvqnet.nn.layer_norm.LayerNorm1d(norm_size:int, epsilon:float = 1e-5, affine= True, dtype=None,name="")
 
-    Applies Layer Normalization over a mini-batch of 2D inputs as described in
-    the paper `Layer Normalization <https://arxiv.org/abs/1607.06450>`__
+    Wendet Layer-Normalisierung auf einen Mini-Batch von 2D-Eingaben an, wie in
+    dem Paper `Layer Normalization <https://arxiv.org/abs/1607.06450>`__ beschrieben.
 
     .. math::
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    The mean and standard-deviation are calculated over the last dimensions size, where ``norm_size`` 
-    is the value of last dim size.
+    Der Mittelwert und die Standardabweichung werden über die Größe der letzten Dimensionen berechnet, wobei ``norm_size``
+    der Wert der letzten Dimensionsgröße ist.
 
-    :param norm_size: `float` - normalize size,equals to last dim
-    :param epsilon: `float` - numerical stability constant, defaults to 1e-5
-    :param affine: A boolean value that, when set to ``True``, causes this module to have learnable per-channel affine parameters, initialized to 1 (for weights) and 0 (for biases). Default: ``True``.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param norm_size: `float` - Normalisierungsgröße, gleich der letzten Dimension
+    :param epsilon: `float` - Konstante für numerische Stabilität, Standardwert ist 1e-5
+    :param affine: Ein boolescher Wert, der, wenn auf ``True`` gesetzt, diesem Modul lernbare kanalweise affine Parameter zuweist, initialisiert mit 1 (für Gewichte) und 0 (für Biases). Standard: ``True``.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
 
-    :return: a LayerNorm1d class
+    :return: Eine LayerNorm1d-Klasse
 
     Example::
 
@@ -1015,24 +1015,24 @@ GroupNorm
 
 .. py:class:: pyvqnet.nn.group_norm.GroupNorm(num_groups: int, num_channels: int, epsilon = 1e-5, affine = True, dtype = None, name = "")
 
-    Apply group normalization to a mini-batch of inputs. Input: :math:`(N, C, *)` where :math:`C=\mathrm{num\_channels}` , Output: :math:`(N, C, *)` .
+    Wendet Gruppen-Normalisierung auf einen Mini-Batch von Eingaben an. Eingabe: :math:`(N, C, *)` wobei :math:`C=\mathrm{num\_channels}` , Ausgabe: :math:`(N, C, *)` .
 
-    This layer implements the operation described in the paper `Group Normalization <https://arxiv.org/abs/1803.08494>`__
+    Diese Schicht implementiert die in dem Paper `Group Normalization <https://arxiv.org/abs/1803.08494>`__ beschriebene Operation.
 
     .. math::
 
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    The input channels are divided into :attr:`num_groups` groups, each containing ``num_channels / num_groups`` channels. :attr:`num_channels` must be divisible by :attr:`num_groups`. The mean and standard deviation are computed separately for each group. If :attr:`affine` is ``True``, then :math:`\gamma` and :math:`\beta` are learnable. Per-channel affine transformation parameter vector of size :attr:`num_channels`.
+    Die Eingabekanäle werden in :attr:`num_groups` Gruppen aufgeteilt, die jeweils ``num_channels / num_groups`` Kanäle enthalten. :attr:`num_channels` muss durch :attr:`num_groups` teilbar sein. Der Mittelwert und die Standardabweichung werden für jede Gruppe separat berechnet. Wenn :attr:`affine` ``True`` ist, dann sind :math:`\gamma` und :math:`\beta` lernbar. Kanalweiser affiner Transformationsparametervektor der Größe :attr:`num_channels`.
 
-    :param num_groups (int): Number of groups to split channels into
-    :param num_channels (int): Number of channels expected in the input
-    :param eps: Value to add to the denominator for numerical stability. Default: 1e-5
-    :param affine: A boolean value that, when set to ``True``, causes this module to have learnable per-channel affine parameters, initialized to 1 (for weights) and 0 (for biases). Default: ``True``.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param num_groups (int): Anzahl der Gruppen, in die die Kanäle aufgeteilt werden
+    :param num_channels (int): Anzahl der in der Eingabe erwarteten Kanäle
+    :param eps: Wert, der zum Nenner für numerische Stabilität addiert wird. Standard: 1e-5
+    :param affine: Ein boolescher Wert, der, wenn auf ``True`` gesetzt, diesem Modul lernbare kanalweise affine Parameter zuweist, initialisiert mit 1 (für Gewichte) und 0 (für Biases). Standard: ``True``.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
 
-    :return: GroupNorm class
+    :return: GroupNorm-Klasse
 
     Example::
 
@@ -1051,18 +1051,18 @@ Linear
 
 .. py:class:: pyvqnet.nn.Linear(input_channels, output_channels, weight_initializer=None, bias_initializer=None,use_bias=True, dtype=None, name: str = "")
 
-    Linear module (fully-connected layer).
+    Lineares Modul (vollständig verbundene Schicht).
     :math:`y = x@A.T + b`
 
-    :param input_channels: `int` - number of inputs features
-    :param output_channels: `int` - number of output features
-    :param weight_initializer: `callable` - defaults to normal
-    :param bias_initializer: `callable` - defaults to zeros
-    :param use_bias: `bool` - defaults to True
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param input_channels: `int` - Anzahl der Eingabemerkmale
+    :param output_channels: `int` - Anzahl der Ausgabemerkmale
+    :param weight_initializer: `callable` - Standardwert ist normal
+    :param bias_initializer: `callable` - Standardwert ist zeros
+    :param use_bias: `bool` - Standardwert ist True
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
 
-    :return: a Linear class
+    :return: Eine Linear-Klasse
 
     Example::
 
@@ -1094,10 +1094,10 @@ Dropout
 
 .. py:class:: pyvqnet.nn.dropout.Dropout(dropout_rate = 0.5)
 
-    Dropout module.The dropout module randomly sets the outputs of some units to zero, while upscale others according to the given dropout probability.
+    Dropout-Modul. Das Dropout-Modul setzt die Ausgaben einiger Einheiten zufällig auf Null, während andere entsprechend der angegebenen Dropout-Wahrscheinlichkeit hochskaliert werden.
 
-    :param dropout_rate: `float` - probability that a neuron will be set to zero
-    :return: a Dropout class
+    :param dropout_rate: `float` - Wahrscheinlichkeit, dass ein Neuron auf Null gesetzt wird
+    :return: Eine Dropout-Klasse
 
     Example::
 
@@ -1129,12 +1129,12 @@ DropPath
 
 .. py:class:: pyvqnet.nn.dropout.DropPath(dropout_rate = 0.5,name="")
 
-    The DropPath module will drop paths (randomly deep) on a sample-by-sample basis.
+    Das DropPath-Modul verwirft Pfade (zufällig tief) auf einer Probe-für-Probe-Basis.
 
-    :param dropout_rate: `float` - The probability that the neuron is set to zero.
-    :param name: The name of this module, the default is "".
+    :param dropout_rate: `float` - Die Wahrscheinlichkeit, dass das Neuron auf Null gesetzt wird.
+    :param name: Der Name dieses Moduls, Standard ist "".
 
-    :return: DropPath instance.
+    :return: DropPath-Instanz.
 
     Example::
 
@@ -1152,12 +1152,12 @@ Pixel_Shuffle
 
 .. py:class:: pyvqnet.nn.pixel_shuffle.Pixel_Shuffle(upscale_factors)
 
-    Rearrange tensors of shape: (*, C * r^2, H, W) to a tensor of shape (*, C, H * r, W * r) where r is the scaling factor.
+    Ordnet Tensoren der Form (*, C * r^2, H, W) in einen Tensor der Form (*, C, H * r, W * r) um, wobei r der Skalierungsfaktor ist.
 
-    :param upscale_factors: factor to increase the scale transformation
+    :param upscale_factors: Faktor zur Erhöhung der Skalierungstransformation
 
     :return:
-            Pixel_Shuffle module
+            Pixel_Shuffle-Modul
 
     Example::
 
@@ -1175,12 +1175,12 @@ Pixel_Unshuffle
 
 .. py:class:: pyvqnet.nn.pixel_shuffle.Pixel_Unshuffle(downscale_factors)
 
-    Reverses the Pixel_Shuffle operation by rearranging the elements. Shuffles a Tensor of shape (*, C, H * r, W * r) to (*, C * r^2, H, W) , where r is the shrink factor.
+    Kehrt die Pixel_Shuffle-Operation um, indem die Elemente neu angeordnet werden. Mischt einen Tensor der Form (*, C, H * r, W * r) in (*, C * r^2, H, W), wobei r der Schrumpfungsfaktor ist.
     
-    :param downscale_factors: factor to increase the scale transformation
+    :param downscale_factors: Faktor zur Erhöhung der Skalierungstransformation
 
     :return:
-            Pixel_Unshuffle module
+            Pixel_Unshuffle-Modul
 
     Example::
 
@@ -1200,8 +1200,8 @@ GRU
 .. py:class:: pyvqnet.nn.gru.GRU(input_size, hidden_size, num_layers=1, nonlinearity='tanh', batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = '')
 
 
-    Gated Recurrent Unit (GRU) module. Support multi-layer stacking, bidirectional configuration.
-    The calculation formula of the single-layer one-way GRU is as follows:
+    Gated Recurrent Unit (GRU) Modul. Unterstützt mehrschichtige Stapelung und bidirektionale Konfiguration.
+    Die Berechnungsformel des einschichtigen, unidirektionalen GRU lautet wie folgt:
 
     .. math::
         \begin{array}{ll}
@@ -1211,17 +1211,17 @@ GRU
             h_t = (1 - z_t) * n_t + z_t * h_{(t-1)}
         \end{array}
 
-    :param input_size: Input feature dimensions.
-    :param hidden_size: Hidden feature dimensions.
-    :param num_layers: Stack layer numbers. default: 1.
-    :param batch_first: If batch_first is True, input shape should be [batch_size,seq_len,feature_dim],
-     if batch_first is False, the input shape should be [seq_len,batch_size,feature_dim],default: True.
-    :param use_bias: If use_bias is False, this module will not contain bias. default: True.
-    :param bidirectional: If bidirectional is True, the module will be bidirectional GRU. default: False.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param input_size: Dimensionen der Eingabemerkmale.
+    :param hidden_size: Dimensionen der versteckten Merkmale.
+    :param num_layers: Anzahl der Stapelschichten. Standard: 1.
+    :param batch_first: Wenn batch_first True ist, sollte die Eingabeform [batch_size, seq_len, feature_dim] sein,
+     wenn batch_first False ist, sollte die Eingabeform [seq_len, batch_size, feature_dim] sein, Standard: True.
+    :param use_bias: Wenn use_bias False ist, enthält dieses Modul kein Bias. Standard: True.
+    :param bidirectional: Wenn bidirectional True ist, wird das Modul ein bidirektionales GRU. Standard: False.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
 
-    :return: A GRU module instance.
+    :return: Eine GRU-Modulinstanz.
 
     Example::
 
@@ -1274,27 +1274,27 @@ RNN
 .. py:class:: pyvqnet.nn.rnn.RNN(input_size, hidden_size, num_layers=1, nonlinearity='tanh', batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = '')
 
 
-    Recurrent Neural Network (RNN) Module, use :math:`\tanh` or :math:`\text{ReLU}` as activation function.
-    bidirectional RNN and multi-layer RNN is supported.
-    The calculation formula of single-layer unidirectional RNN is as follows:
+    Rekurrentes Neuronales Netzwerk (RNN) Modul, verwendet :math:`\tanh` oder :math:`\text{ReLU}` als Aktivierungsfunktion.
+    Bidirektionales RNN und mehrschichtiges RNN werden unterstützt.
+    Die Berechnungsformel des einschichtigen unidirektionalen RNN lautet wie folgt:
 
     .. math::
         h_t = \tanh(W_{ih} x_t + b_{ih} + W_{hh} h_{(t-1)} + b_{hh})
 
-    If :attr:`nonlinearity` is ``'relu'``, then :math:`\text{ReLU}` will replace :math:`\tanh`.
+    Wenn :attr:`nonlinearity` ``'relu'`` ist, dann ersetzt :math:`\text{ReLU}` :math:`\tanh`.
 
-    :param input_size: Input feature dimensions.
-    :param hidden_size: Hidden feature dimensions.
-    :param num_layers: Stack layer numbers. default: 1.
-    :param nonlinearity: non-linear activation function, default: ``'tanh'`` .
-    :param batch_first: If batch_first is True, input shape should be [batch_size,seq_len,feature_dim],
-     if batch_first is False, the input shape should be [seq_len,batch_size,feature_dim],default: True.
-    :param use_bias: If use_bias is False, this module will not contain bias. default: True.
-    :param bidirectional: If bidirectional is True, the module will be bidirectional RNN. default: False.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param input_size: Dimensionen der Eingabemerkmale.
+    :param hidden_size: Dimensionen der versteckten Merkmale.
+    :param num_layers: Anzahl der Stapelschichten. Standard: 1.
+    :param nonlinearity: Nichtlineare Aktivierungsfunktion, Standard: ``'tanh'`` .
+    :param batch_first: Wenn batch_first True ist, sollte die Eingabeform [batch_size, seq_len, feature_dim] sein,
+     wenn batch_first False ist, sollte die Eingabeform [seq_len, batch_size, feature_dim] sein, Standard: True.
+    :param use_bias: Wenn use_bias False ist, enthält dieses Modul kein Bias. Standard: True.
+    :param bidirectional: Wenn bidirectional True ist, wird das Modul ein bidirektionales RNN. Standard: False.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
 
-    :return: A RNN module instance.
+    :return: Eine RNN-Modulinstanz.
 
     Example::
 
@@ -1345,8 +1345,8 @@ LSTM
 
 .. py:class:: pyvqnet.nn.lstm.LSTM(input_size, hidden_size, num_layers=1, batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = '')
 
-    Long Short-Term Memory (LSTM) module. Support bidirectional LSTM, stacked multi-layer LSTM and other configurations.
-    The calculation formula of single-layer unidirectional LSTM is as follows:
+    Long Short-Term Memory (LSTM) Modul. Unterstützt bidirektionales LSTM, gestapeltes mehrschichtiges LSTM und andere Konfigurationen.
+    Die Berechnungsformel des einschichtigen unidirektionalen LSTM lautet wie folgt:
 
     .. math::
         \begin{array}{ll} \\
@@ -1358,17 +1358,17 @@ LSTM
             h_t = o_t \odot \tanh(c_t) \\
         \end{array}
 
-    :param input_size: Input feature dimensions.
-    :param hidden_size: Hidden feature dimensions.
-    :param num_layers: Stack layer numbers. default: 1.
-    :param batch_first: If batch_first is True, input shape should be [batch_size,seq_len,feature_dim],
-     if batch_first is False, the input shape should be [seq_len,batch_size,feature_dim],default: True.
-    :param use_bias: If use_bias is False, this module will not contain bias. default: True.
-    :param bidirectional: If bidirectional is True, the module will be bidirectional LSTM. default: False.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param input_size: Dimensionen der Eingabemerkmale.
+    :param hidden_size: Dimensionen der versteckten Merkmale.
+    :param num_layers: Anzahl der Stapelschichten. Standard: 1.
+    :param batch_first: Wenn batch_first True ist, sollte die Eingabeform [batch_size, seq_len, feature_dim] sein,
+     wenn batch_first False ist, sollte die Eingabeform [seq_len, batch_size, feature_dim] sein, Standard: True.
+    :param use_bias: Wenn use_bias False ist, enthält dieses Modul kein Bias. Standard: True.
+    :param bidirectional: Wenn bidirectional True ist, wird das Modul ein bidirektionales LSTM. Standard: False.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
 
-    :return: A LSTM module instance.
+    :return: Eine LSTM-Modulinstanz.
 
     Example::
 
@@ -1435,17 +1435,18 @@ Dynamic_GRU
 
 .. py:class:: pyvqnet.nn.gru.Dynamic_GRU(input_size,hidden_size, num_layers=1, batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = '')
     
-    Apply a multilayer gated recurrent unit (GRU) RNN to a dynamic-length input sequence.
+    Wendet ein mehrschichtiges Gated Recurrent Unit (GRU) RNN auf eine dynamisch lange Eingabesequenz an.
 
-    The first input should be a variable-length batch sequence input defined
-    Through the ``tensor.PackedSequence`` class.
-    The ``tensor.PackedSequence`` class can be constructed as
-    Call the next function in succession: ``pad_sequence``, ``pack_pad_sequence``.
+    Die erste Eingabe sollte eine als
+    ``tensor.PackedSequence``-Klasse definierte
+    variabel lange Batch-Sequenzeingabe sein.
+    Die ``tensor.PackedSequence``-Klasse kann durch
+    aufeinanderfolgendes Aufrufen von ``pad_sequence``, ``pack_pad_sequence`` konstruiert werden.
 
-    The first output of Dynamic_GRU is also a ``tensor.PackedSequence`` class,
-    It can be unpacked into a normal QTensor using ``tensor.pad_pack_sequence``.
+    Die erste Ausgabe von Dynamic_GRU ist ebenfalls eine ``tensor.PackedSequence``-Klasse,
+    die mit ``tensor.pad_pack_sequence`` in einen normalen QTensor entpackt werden kann.
 
-    For each element in the input sequence, each layer computes the following formula:
+    Für jedes Element in der Eingabesequenz berechnet jede Schicht die folgende Formel:
 
     .. math::
         \begin{array}{ll}
@@ -1455,16 +1456,16 @@ Dynamic_GRU
             h_t = (1 - z_t) * n_t + z_t * h_{(t-1)}
         \end{array}
 
-    :param input_size: Input feature dimension.
-    :param hidden_size: Hidden feature dimension.
-    :param num_layers: Number of loop layers. Default: 1
-    :param batch_first: If True, the input shape is provided as [batch size, sequence length, feature dimension]. If False, input shape is provided as [sequence length, batch size, feature dimension], default True.
-    :param use_bias: If False, the layer does not use bias weights b_ih and b_hh. Default: true.
-    :param bidirectional: If true, becomes a bidirectional GRU. Default: false.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param input_size: Dimension der Eingabemerkmale.
+    :param hidden_size: Dimension der versteckten Merkmale.
+    :param num_layers: Anzahl der Schleifenschichten. Standard: 1
+    :param batch_first: Wenn True, wird die Eingabeform als [batch size, sequence length, feature dimension] angegeben. Wenn False, wird die Eingabeform als [sequence length, batch size, feature dimension] angegeben. Standard True.
+    :param use_bias: Wenn False, verwendet die Schicht keine Bias-Gewichte b_ih und b_hh. Standard: True.
+    :param bidirectional: Wenn True, wird ein bidirektionales GRU erstellt. Standard: False.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
 
-    :return: A Dynamic_GRU class
+    :return: Eine Dynamic_GRU-Klasse
 
     Example::
 
@@ -1524,36 +1525,37 @@ Dynamic_RNN
 
 .. py:class:: pyvqnet.nn.rnn.Dynamic_RNN(input_size, hidden_size, num_layers=1, nonlinearity='tanh', batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = '')
     
-    Applies recurrent neural networks (RNNs) to dynamic-length input sequences.
+    Wendet rekurrente neuronale Netzwerke (RNNs) auf dynamisch lange Eingabesequenzen an.
 
-    The first input should be a variable-length batch sequence input defined
-    Through the ``tensor.PackedSequence`` class.
-    The ``tensor.PackedSequence`` class can be constructed as
-    Call the next function in succession: ``pad_sequence``, ``pack_pad_sequence``.
+    Die erste Eingabe sollte eine als
+    ``tensor.PackedSequence``-Klasse definierte
+    variabel lange Batch-Sequenzeingabe sein.
+    Die ``tensor.PackedSequence``-Klasse kann durch
+    aufeinanderfolgendes Aufrufen von ``pad_sequence``, ``pack_pad_sequence`` konstruiert werden.
 
-    The first output of Dynamic_RNN is also a ``tensor.PackedSequence`` class,
-    It can be unpacked into a normal QTensor using ``tensor.pad_pack_sequence``.
+    Die erste Ausgabe von Dynamic_RNN ist ebenfalls eine ``tensor.PackedSequence``-Klasse,
+    die mit ``tensor.pad_pack_sequence`` in einen normalen QTensor entpackt werden kann.
 
-    Recurrent Neural Network (RNN) module, using :math:`\tanh` or :math:`\text{ReLU}` as activation function. Support two-way, multi-layer configuration.
-    The calculation formula of single-layer one-way RNN is as follows:
+    Rekurrentes Neuronales Netzwerk (RNN) Modul, verwendet :math:`\tanh` oder :math:`\text{ReLU}` als Aktivierungsfunktion. Unterstützt zweiseitige, mehrschichtige Konfiguration.
+    Die Berechnungsformel des einschichtigen einseitigen RNN lautet wie folgt:
 
     .. math::
         h_t = \tanh(W_{ih} x_t + b_{ih} + W_{hh} h_{(t-1)} + b_{hh})
     
-    If :attr:`nonlinearity` is ``'relu'``, then :math:`\text{ReLU}` will replace :math:`\tanh`.
+    Wenn :attr:`nonlinearity` ``'relu'`` ist, dann ersetzt :math:`\text{ReLU}` :math:`\tanh`.
 
-    :param input_size: Input feature dimension.
-    :param hidden_size: Hidden feature dimension.
-    :param num_layers: Number of stacked RNN layers, default: 1.
-    :param nonlinearity: Non-linear activation function, default is ``'tanh'``.
-    :param batch_first: If True, the input shape is [batch size, sequence length, feature dimension],
-      If False, the input shape is [sequence length, batch size, feature dimension], default True.
-    :param use_bias: If False, the module does not apply bias items, default: True.
-    :param bidirectional: If True, it becomes bidirectional RNN, default: False.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param input_size: Dimension der Eingabemerkmale.
+    :param hidden_size: Dimension der versteckten Merkmale.
+    :param num_layers: Anzahl der gestapelten RNN-Schichten, Standard: 1.
+    :param nonlinearity: Nicht-lineare Aktivierungsfunktion, Standard ist ``'tanh'``.
+    :param batch_first: Wenn True, ist die Eingabeform [batch size, sequence length, feature dimension],
+      Wenn False, ist die Eingabeform [sequence length, batch size, feature dimension], Standard True.
+    :param use_bias: Wenn False, wendet das Modul keine Bias-Elemente an, Standard: True.
+    :param bidirectional: Wenn True, wird es ein bidirektionales RNN, Standard: False.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
 
-    :return: Dynamic_RNN instance
+    :return: Dynamic_RNN-Instanz
 
     Example::
 
@@ -1619,16 +1621,17 @@ Dynamic_LSTM
     
     Apply Long Short-Term Memory (LSTM) RNNs to dynamic-length input sequences.
 
-    The first input should be a variable-length batch sequence input defined
-    Through the ``tensor.PackedSequence`` class.
-    The ``tensor.PackedSequence`` class can be constructed as
-    Call the next function in succession: ``pad_sequence``, ``pack_pad_sequence``.
+    Die erste Eingabe sollte eine als
+    ``tensor.PackedSequence``-Klasse definierte
+    variabel lange Batch-Sequenzeingabe sein.
+    Die ``tensor.PackedSequence``-Klasse kann durch
+    aufeinanderfolgendes Aufrufen von ``pad_sequence``, ``pack_pad_sequence`` konstruiert werden.
 
     The first output of Dynamic_LSTM is also a ``tensor.PackedSequence`` class,
     It can be unpacked into a normal QTensor using ``tensor.pad_pack_sequence``.
 
-    Recurrent Neural Network (RNN) module, using :math:`\tanh` or :math:`\text{ReLU}` as activation function. Support two-way, multi-layer configuration.
-    The calculation formula of single-layer one-way RNN is as follows:
+    Rekurrentes Neuronales Netzwerk (RNN) Modul, verwendet :math:`\tanh` oder :math:`\text{ReLU}` als Aktivierungsfunktion. Unterstützt zweiseitige, mehrschichtige Konfiguration.
+    Die Berechnungsformel des einschichtigen einseitigen RNN lautet wie folgt:
 
     .. math::
         \begin{array}{ll} \\
@@ -1640,17 +1643,17 @@ Dynamic_LSTM
             h_t = o_t \odot \tanh(c_t) \\
         \end{array}
 
-    :param input_size: Input feature dimension.
-    :param hidden_size: Hidden feature dimension.
+    :param input_size: Dimension der Eingabemerkmale.
+    :param hidden_size: Dimension der versteckten Merkmale.
     :param num_layers: Number of stacked LSTM layers, default: 1.
-    :param batch_first: If True, the input shape is [batch size, sequence length, feature dimension],
-      If False, the input shape is [sequence length, batch size, feature dimension], default True.
-    :param use_bias: If False, the module does not apply bias items, default: True.
-    :param bidirectional: If True, it becomes a bidirectional LSTM, default: False.
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param batch_first: Wenn True, ist die Eingabeform [batch size, sequence length, feature dimension],
+      Wenn False, ist die Eingabeform [sequence length, batch size, feature dimension], Standard True.
+    :param use_bias: Wenn False, wendet das Modul keine Bias-Elemente an, Standard: True.
+    :param bidirectional: Wenn True, wird es ein bidirektionales LSTM, Standard: False.
+    :param dtype: Der Datentyp des Parameters, Standard: None, verwendet den Standard-Datentyp kfloat32, der eine 32-Bit-Gleitkommazahl darstellt.
+    :param name: Name der Ausgabeschicht
 
-    :return: Dynamic_LSTM instance
+    :return: Dynamic_LSTM-Instanz
 
     Example::
 
@@ -1715,28 +1718,28 @@ Interpolate
 =================================
 .. py:class:: pyvqnet.nn.Interpolate(size, scale_factor, mode = "nearest", align_corners = None,  recompute_scale_factor = None, name = "")
 
-    Down/up samples the input.
+    Nimmt eine Herunter-/Hochskalierung der Eingabe vor.
 
-    Only four-dimensional input data is currently supported.
+    Derzeit werden nur vierdimensionale Eingabedaten unterstützt.
 
-    The input dimensions are interpreted in the form: `B x C x H x W`.
+    Die Eingabedimensionen werden in der Form interpretiert: `B x C x H x W`.
 
-    The modes available for resizing are: ``nearest`` , ``bilinear`` , ``bicubic`` .
+    Die verfügbaren Modi zur Größenänderung sind: ``nearest``, ``bilinear``, ``bicubic``.
 
-    :param size: output spatial size.
-    :param scale_factor: multiplier for spatial size. 
-    :param mode: algorithm used for upsampling  ``nearest`` | ``bilinear`` | ``bicubic``.
-    :param align_corners:  Geometrically, we consider the pixels of the
-            input and output as squares rather than points.
-            If set to ``True``, the input and output tensors are aligned by the
-            center points of their corner pixels, preserving the values at the corner pixels.
-            If set to ``False``, the input and output tensors are aligned by the corner
-            points of their corner pixels, and the interpolation uses edge value padding
-            for out-of-boundary values, making this operation *independent* of input size
-            when :attr:`scale_factor` is kept the same. This only has an effect when :attr:`mode`
-            is ``bilinear``, ``bicubic``.
-    :param recompute_scale_factor: recompute the scale_factor for use in the interpolation calculation.
-    :param name: Module name.
+    :param size: Ausgabe-Raumgröße.
+    :param scale_factor: Multiplikator für die Raumgröße.
+    :param mode: Algorithmus, der für das Upsampling verwendet wird: ``nearest`` | ``bilinear`` | ``bicubic``.
+    :param align_corners: Geometrisch betrachtet betrachten wir die Pixel der
+            Eingabe und Ausgabe als Quadrate und nicht als Punkte.
+            Wenn auf ``True`` gesetzt, werden die Eingabe- und Ausgabetensoren an den
+            Mittelpunkten ihrer Eckpixel ausgerichtet, wodurch die Werte an den Eckpixeln erhalten bleiben.
+            Wenn auf ``False`` gesetzt, werden die Eingabe- und Ausgabetensoren an den Eckpunkten
+            ihrer Eckpixel ausgerichtet, und die Interpolation verwendet Randwert-Padding
+            für außerhalb liegende Werte, was diese Operation *unabhängig* von der Eingabegröße macht,
+            wenn :attr:`scale_factor` gleich bleibt. Dies wirkt sich nur aus, wenn :attr:`mode`
+            ``bilinear`` oder ``bicubic`` ist.
+    :param recompute_scale_factor: Den scale_factor für die Interpolationsberechnung neu berechnen.
+    :param name: Modulname.
 
     Example::
 
@@ -1777,20 +1780,20 @@ fuse_module
 =================================
 .. py:class:: pyvqnet.nn.fuse_module(model)
 
-    It is used to fuse the corresponding neighbouring modules of the model in the reasoning stage into one module, 
-    which reduces the amount of computation in the model reasoning stage and increases the speed of model reasoning.
+    Wird verwendet, um die entsprechenden benachbarten Module des Modells in der Inferenzphase zu einem Modul zu fusionieren,
+    was den Rechenaufwand in der Modell-Inferenzphase reduziert und die Geschwindigkeit der Modell-Inferenz erhöht.
 
-    The currently supported module sequences are as follows:
+    Die derzeit unterstützten Modulsequenzen sind wie folgt:
 
     conv, bn
 
     linear, bn
 
-    The other sequences remain unchanged, for which the first module in the list is replaced with the fused module, and the others are replaced with ``Identity``.
+    Die anderen Sequenzen bleiben unverändert, wobei das erste Modul in der Liste durch das fusionierte Modul ersetzt wird und die anderen durch ``Identity`` ersetzt werden.
 
-    :param input: Includes modelling of fusion modules.
+    :param input: Enthält die Modellierung der Fusionsmodule.
 
-    :return: Module fused model.
+    :return: Modell mit fusionierten Modulen.
 
     Examples::
     
@@ -1901,12 +1904,12 @@ SDPA
 =================================
 .. py:class:: pyvqnet.transformer.e2eqvit.SDPA(attn_mask=None,dropout_p=0.,scale=None,is_causal=False)
 
-    SDPA scaling dot product attention mechanism.
+    SDPA Skalarprodukt-Aufmerksamkeitsmechanismus.
 
-    :param attn_mask: Attention mask; shape must be broadcastable to the shape of attention weights.
-    :param dropout_p: Dropout probability; if greater than 0.0, dropout is applied.
-    :param scale: Scaling factor applied prior to softmax.
-    :param is_causal: If true, assumes upper left causal attention masking and errors if both attn_mask and is_causal are set.
+    :param attn_mask: Aufmerksamkeitsmaske; die Form muss mit der Form der Aufmerksamkeitsgewichte broadcast-bar sein.
+    :param dropout_p: Dropout-Wahrscheinlichkeit; wenn groesser als 0.0, wird Dropout angewendet.
+    :param scale: Skalierungsfaktor, der vor Softmax angewendet wird.
+    :param is_causal: Wenn true, wird eine kausale Aufmerksamkeitsmaskierung in der oberen linken Ecke angenommen, und es wird ein Fehler ausgegeben, wenn sowohl attn_mask als auch is_causal gesetzt sind.
     
     Examples::
     
@@ -1934,48 +1937,48 @@ SDPA
         out_sdpa.backward()
 
 
-Loss Function Layer
+Verlustfunktions-Schicht
 ********************************************************
 
 .. note::
 
-        Please note that unlike pytorch and other frameworks, in the forward function of the following loss function, the first parameter is the label, and the second parameter is the predicted value.
+        Bitte beachten Sie, dass im Gegensatz zu PyTorch und anderen Frameworks in der forward-Funktion der folgenden Verlustfunktionen der erste Parameter das Label und der zweite Parameter der vorhergesagte Wert ist.
 
 MeanSquaredError
 =================================
 
 .. py:class:: pyvqnet.nn.MeanSquaredError
 
-    Creates a criterion that measures the mean squared error (squared L2 norm) between
-    each element in the input :math:`x` and target :math:`y`.
+    Erstellt ein Kriterium, das den mittleren quadratischen Fehler (quadrierte L2-Norm) zwischen
+    jedem Element in der Eingabe :math:`x` und dem Ziel :math:`y` misst.
 
-    The unreduced loss can be described as:
+    Der nicht-reduzierte Verlust kann wie folgt beschrieben werden:
 
     .. math::
         \ell(x, y) = L = \{l_1,\dots,l_N\}^\top, \quad
         l_n = \left( x_n - y_n \right)^2,
 
-    where :math:`N` is the batch size. , then:
+    wobei :math:`N` die Batch-Größe ist. Dann:
 
     .. math::
         \ell(x, y) =
             \operatorname{mean}(L)
 
 
-    :math:`x` and :math:`y` are QTensors of arbitrary shapes with a total
-    of :math:`n` elements each.
+    :math:`x` und :math:`y` sind QTensoren beliebiger Form mit insgesamt
+    :math:`n` Elementen.
 
-    The mean operation still operates over all the elements, and divides by :math:`n`.
+    Die Mittelwert-Operation wirkt weiterhin über alle Elemente und dividiert durch :math:`n`.
 
-    :param name: name of the output layer
+    :param name: Name der Ausgabeschicht
 
-    :return: a MeanSquaredError class
+    :return: Eine MeanSquaredError-Klasse
 
-    Parameters for loss forward function:
+    Parameter für die Verlust-Forward-Funktion:
 
-        x: :math:`(N, *)` where :math:`*` means, any number of additional dimensions
+        x: :math:`(N, *)` wobei :math:`*` eine beliebige Anzahl zusätzlicher Dimensionen bedeutet
 
-        y: :math:`(N, *)`, same shape as the input
+        y: :math:`(N, *)`, gleiche Form wie die Eingabe
 
     Example::
     
@@ -2001,26 +2004,26 @@ BinaryCrossEntropy
 
 .. py:class:: pyvqnet.nn.BinaryCrossEntropy
 
-    Measures the Binary Cross Entropy between the target and the output:
+    Misst die binäre Kreuzentropie zwischen dem Ziel und der Ausgabe:
 
-    The unreduced loss can be described as:
+    Der nicht-reduzierte Verlust kann wie folgt beschrieben werden:
 
     .. math::
         \ell(x, y) = L = \{l_1,\dots,l_N\}^\top, \quad
         l_n = - w_n \left[ y_n \cdot \log x_n + (1 - y_n) \cdot \log (1 - x_n) \right],
 
-    where :math:`N` is the batch size.
+    wobei :math:`N` die Batch-Größe ist.
 
     .. math::
         \ell(x, y) = \operatorname{mean}(L)
 
-    :return: a BinaryCrossEntropy class
+    :return: Eine BinaryCrossEntropy-Klasse
 
-    Parameters for loss forward function:
+    Parameter für die Verlust-Forward-Funktion:
 
-        x: :math:`(N, *)` where :math:`*` means, any number of additional dimensions
+        x: :math:`(N, *)` wobei :math:`*` eine beliebige Anzahl zusätzlicher Dimensionen bedeutet
 
-        y: :math:`(N, *)`, same shape as the input
+        y: :math:`(N, *)`, gleiche Form wie die Eingabe
 
     Example::
 
@@ -2041,21 +2044,21 @@ CategoricalCrossEntropy
 
 .. py:class:: pyvqnet.nn.CategoricalCrossEntropy
 
-    This criterion combines LogSoftmax and NLLLoss in one single class.
+    Dieses Kriterium kombiniert LogSoftmax und NLLLoss in einer einzigen Klasse.
 
-    The loss can be described as below, where `class` is index of target's class:
+    Der Verlust kann wie folgt beschrieben werden, wobei `class` der Index der Zielklasse ist:
 
     .. math::
         \text{loss}(x, class) = -\log\left(\frac{\exp(x[class])}{\sum_j \exp(x[j])}\right)
                        = -x[class] + \log\left(\sum_j \exp(x[j])\right)
 
-    :return: a CategoricalCrossEntropy class
+    :return: Eine CategoricalCrossEntropy-Klasse
 
-    Parameters for loss forward function:
+    Parameter für die Verlust-Forward-Funktion:
 
-        x: :math:`(N, *)` where :math:`*` means, any number of additional dimensions
+        x: :math:`(N, *)` wobei :math:`*` eine beliebige Anzahl zusätzlicher Dimensionen bedeutet
 
-        y: :math:`(N, *)`, same shape as the input, should have data type of the 64-bit integer.
+        y: :math:`(N, *)`, gleiche Form wie die Eingabe, sollte den Datentyp der 64-Bit-Ganzzahl haben.
 
     Example::
 
@@ -2077,21 +2080,21 @@ SoftmaxCrossEntropy
 
 .. py:class:: pyvqnet.nn.SoftmaxCrossEntropy
 
-    This criterion combines LogSoftmax and NLLLoss in one single class with more numeral stablity.
+    Dieses Kriterium kombiniert LogSoftmax und NLLLoss in einer einzigen Klasse mit höherer numerischer Stabilität.
 
-    The loss can be described as below, where `class` is index of target's class:
+    Der Verlust kann wie folgt beschrieben werden, wobei `class` der Index der Zielklasse ist:
 
     .. math::
         \text{loss}(x, class) = -\log\left(\frac{\exp(x[class])}{\sum_j \exp(x[j])}\right)
                        = -x[class] + \log\left(\sum_j \exp(x[j])\right)
 
-    :return: a SoftmaxCrossEntropy class
+    :return: Eine SoftmaxCrossEntropy-Klasse
 
-    Parameters for loss forward function:
+    Parameter für die Verlust-Forward-Funktion:
 
-        x: :math:`(N, *)` where :math:`*` means, any number of additional dimensions
+        x: :math:`(N, *)` wobei :math:`*` eine beliebige Anzahl zusätzlicher Dimensionen bedeutet
 
-        y: :math:`(N, *)`, same shape as the input, should have data type of the 64-bit integer.
+        y: :math:`(N, *)`, gleiche Form wie die Eingabe, sollte den Datentyp der 64-Bit-Ganzzahl haben.
 
     Example::
 
@@ -2117,10 +2120,10 @@ NLL_Loss
 
 .. py:class:: pyvqnet.nn.NLL_Loss()
 
-    The average negative log likelihood loss. It is useful to train a classification problem with `C` classes
+    Der durchschnittliche Negative-Log-Likelihood-Verlust. Er ist nützlich für das Training eines Klassifikationsproblems mit `C` Klassen.
 
-    The `x` given through a forward call is expected to contain log-probabilities of each class. `x` has to be a Tensor of size either :math:`(N, C)` or :math:`(N, C, d_1, d_2, ..., d_K)`
-    with :math:`K \geq 1` for the `K`-dimensional case. The `y` that this loss expects should be a class index in the range :math:`[0, C-1]` where `C = number of classes`.
+    Das `x`, das durch einen forward-Aufruf übergeben wird, sollte Log-Wahrscheinlichkeiten jeder Klasse enthalten. `x` muss ein Tensor der Größe entweder :math:`(N, C)` oder :math:`(N, C, d_1, d_2, ..., d_K)` sein
+    mit :math:`K \geq 1` für den `K`-dimensionalen Fall. Das `y`, das dieser Verlust erwartet, sollte ein Klassenindex im Bereich :math:`[0, C-1]` sein, wobei `C = number of classes`.
 
     .. math::
 
@@ -2128,13 +2131,13 @@ NLL_Loss
         l_n = -
             \sum_{n=1}^N \frac{1}{N}x_{n,y_n}, \quad
 
-    :return: a NLL_Loss class
+    :return: Eine NLL_Loss-Klasse
 
-    Parameters for loss forward function:
+    Parameter für die Verlust-Forward-Funktion:
 
-        x: :math:`(N, *)`, the output of the loss function, which can be a multidimensional variable.
+        x: :math:`(N, *)`, die Ausgabe der Verlustfunktion, kann eine mehrdimensionale Variable sein.
 
-        y: :math:`(N, *)`, the true value expected by the loss function, should have data type of the 64-bit integer.
+        y: :math:`(N, *)`, der von der Verlustfunktion erwartete wahre Wert, sollte den Datentyp der 64-Bit-Ganzzahl haben.
 
 
     Example::
@@ -2164,24 +2167,24 @@ CrossEntropyLoss
 
 .. py:class:: pyvqnet.nn.CrossEntropyLoss()
 
-    This criterion combines LogSoftmax and NLLLoss in one single class.
+    Dieses Kriterium kombiniert LogSoftmax und NLLLoss in einer einzigen Klasse.
 
-    `x` is expected to contain raw, unnormalized scores for each class. `x` has to be a Tensor of size :math:`(C)` for unbatched input, :math:`(N, C)` or :math:`(N, C, d_1, d_2, ..., d_K)` with :math:`K \geq 1` for the `K`-dimensional case.
+    `x` sollte rohe, nicht normalisierte Werte (Scores) für jede Klasse enthalten. `x` muss ein Tensor der Größe :math:`(C)` für ungebatchte Eingabe, :math:`(N, C)` oder :math:`(N, C, d_1, d_2, ..., d_K)` mit :math:`K \geq 1` für den `K`-dimensionalen Fall sein.
 
-    The loss can be described as below, where `class` is index of target's class:
+    Der Verlust kann wie folgt beschrieben werden, wobei `class` der Index der Zielklasse ist:
 
     .. math::
 
         \text{loss}(x, class) = -\log\left(\frac{\exp(x[class])}{\sum_j \exp(x[j])}\right)
                        = -x[class] + \log\left(\sum_j \exp(x[j])\right)
 
-    :return: a CrossEntropyLoss class
+    :return: Eine CrossEntropyLoss-Klasse
 
-    Parameters for loss forward function:
+    Parameter für die Verlust-Forward-Funktion:
 
-        x: :math:`(N, *)`, the output of the loss function, which can be a multidimensional variable.
+        x: :math:`(N, *)`, die Ausgabe der Verlustfunktion, kann eine mehrdimensionale Variable sein.
 
-        y: :math:`(N, *)`, the true value expected by the loss function, should have data type of the 64-bit integer.
+        y: :math:`(N, *)`, der von der Verlustfunktion erwartete wahre Wert, sollte den Datentyp der 64-Bit-Ganzzahl haben.
 
 
     Example::
@@ -2208,7 +2211,7 @@ CrossEntropyLoss
 
 
 
-Activation Function
+Aktivierungsfunktion
 ********************************************************
 
 
@@ -2216,19 +2219,19 @@ Activation
 =================================
 .. py:class:: pyvqnet.nn.activation.Activation
 
-    Base class of activation. Specific activation functions inherit  this functions.
+    Basisklasse der Aktivierung. Spezifische Aktivierungsfunktionen erben von dieser Klasse.
 
 Sigmoid
 =================================
 .. py:class:: pyvqnet.nn.Sigmoid(name: str = '')
 
-        Applies a sigmoid activation function to the given layer.
+        Wendet eine Sigmoid-Aktivierungsfunktion auf die angegebene Schicht an.
 
         .. math::
             \text{Sigmoid}(x) = \frac{1}{1 + \exp(-x)}
 
-        :param name: name of the output layer
-        :return: sigmoid Activation layer
+        :param name: Name der Ausgabeschicht
+        :return: Sigmoid-Aktivierungsschicht
 
         Examples::
 
@@ -2244,13 +2247,13 @@ Softplus
 =================================
 .. py:class:: pyvqnet.nn.Softplus(name: str = '')
 
-        Applies the softplus activation function to the given layer.
+        Wendet die Softplus-Aktivierungsfunktion auf die angegebene Schicht an.
 
         .. math::
             \text{Softplus}(x) = \log(1 + \exp(x))
 
-        :param name: name of the output layer
-        :return: softplus Activation layer
+        :param name: Name der Ausgabeschicht
+        :return: Softplus-Aktivierungsschicht
 
     Examples::
 
@@ -2266,13 +2269,13 @@ Softsign
 =================================
 .. py:class:: pyvqnet.nn.Softsign(name: str = '')
 
-        Applies the softsign activation function to the given layer.
+        Wendet die Softsign-Aktivierungsfunktion auf die angegebene Schicht an.
 
         .. math::
             \text{SoftSign}(x) = \frac{x}{ 1 + |x|}
 
-        :param name: name of the output layer
-        :return: softsign Activation layer
+        :param name: Name der Ausgabeschicht
+        :return: Softsign-Aktivierungsschicht
 
         Examples::
 
@@ -2288,15 +2291,15 @@ Softmax
 =================================
 .. py:class:: pyvqnet.nn.Softmax(axis: int = - 1, name: str = '')
 
-    Applies a softmax activation function to the given layer.
+    Wendet eine Softmax-Aktivierungsfunktion auf die angegebene Schicht an.
 
     .. math::
         \text{Softmax}(x_{i}) = \frac{\exp(x_i)}{\sum_j \exp(x_j)}
 
 
-    :param axis: dimension on which to operate (-1 for last axis),default = -1
-    :param name: name of the output layer
-    :return: softmax Activation layer
+    :param axis: Dimension, auf der operiert wird (-1 für letzte Achse), Standard = -1
+    :param name: Name der Ausgabeschicht
+    :return: Softmax-Aktivierungsschicht
 
     Examples::
 
@@ -2313,7 +2316,7 @@ HardSigmoid
 =================================
 .. py:class:: pyvqnet.nn.HardSigmoid(name: str = '')
 
-    Applies a hard sigmoid activation function to the given layer.
+    Wendet eine Hard-Sigmoid-Aktivierungsfunktion auf die angegebene Schicht an.
 
     .. math::
         \text{Hardsigmoid}(x) = \begin{cases}
@@ -2322,8 +2325,8 @@ HardSigmoid
             x / 6 + 1 / 2 & \text{otherwise}
         \end{cases}
 
-    :param name: name of the output layer
-    :return: hard sigmoid Activation layer
+    :param name: Name der Ausgabeschicht
+    :return: Hard-Sigmoid-Aktivierungsschicht
 
     Examples::
 
@@ -2339,7 +2342,7 @@ ReLu
 =================================
 .. py:class:: pyvqnet.nn.ReLu(name: str = '')
 
-    Applies a rectified linear unit activation function to the given layer.
+    Wendet eine Rectified-Linear-Unit-Aktivierungsfunktion auf die angegebene Schicht an.
 
     .. math::
         \text{ReLu}(x) = \begin{cases}
@@ -2348,8 +2351,8 @@ ReLu
         \end{cases}
 
 
-    :param name: name of the output layer
-    :return: ReLu Activation layer
+    :param name: Name der Ausgabeschicht
+    :return: ReLu-Aktivierungsschicht
 
     Examples::
 
@@ -2365,8 +2368,8 @@ LeakyReLu
 =================================
 .. py:class:: pyvqnet.nn.LeakyReLu(alpha: float = 0.01, name: str = '')
 
-    Applies the leaky version of a rectified linear unit activation
-    function to the given layer.
+    Wendet die Leaky-Version einer Rectified-Linear-Unit-Aktivierungs-
+    funktion auf die angegebene Schicht an.
 
     .. math::
         \text{LeakyRelu}(x) =
@@ -2375,9 +2378,9 @@ LeakyReLu
         \alpha * x, & \text{ otherwise }
         \end{cases}
 
-    :param alpha: LeakyRelu coefficient, default: 0.01
-    :param name: name of the output layer
-    :return: leaky ReLu Activation layer
+    :param alpha: LeakyReLu-Koeffizient, Standard: 0.01
+    :param name: Name der Ausgabeschicht
+    :return: Leaky-ReLu-Aktivierungsschicht
 
     Examples::
 
@@ -2393,18 +2396,18 @@ Gelu
 =================================
 .. py:class:: pyvqnet.nn.Gelu(approximate="tanh", name="")
     
-    Apply Gaussian error linear unit function:
+    Wendet die Gaußsche-Fehler-Lineare-Einheit-Funktion an:
 
     .. math:: \text{GELU}(x) = x * \Phi(x)
 
-    When the approximation parameter is 'tanh', GELU is estimated by:
+    Wenn der Näherungsparameter 'tanh' ist, wird GELU geschätzt durch:
 
     .. math:: \text{GELU}(x) = 0.5 * x * (1 + \text{Tanh}(\sqrt{2 / \pi} * (x + 0.044715 * x^3)))
 
-    :param approximate: Approximate calculation method, default is "tanh".
-    :param name: Name of the activation function layer, default is "".
+    :param approximate: Näherungsberechnungsmethode, Standard ist "tanh".
+    :param name: Name der Aktivierungsfunktionsschicht, Standard ist "".
 
-    :return: Gelu activation function layer instance.
+    :return: Gelu-Aktivierungsfunktionsschicht-Instanz.
 
     Examples::
 
@@ -2423,7 +2426,7 @@ ELU
 =================================
 .. py:class:: pyvqnet.nn.ELU(alpha: float = 1.0, name: str = '')
 
-    Applies the exponential linear unit activation function to the given layer.
+    Wendet die Exponential-Linear-Unit-Aktivierungsfunktion auf die angegebene Schicht an.
 
     .. math::
         \text{ELU}(x) = \begin{cases}
@@ -2431,9 +2434,9 @@ ELU
         \alpha * (\exp(x) - 1), & \text{ if } x \leq 0
         \end{cases}
 
-    :param alpha: Elu coefficient, default: 1.0
-    :param name: name of the output layer
-    :return: Elu Activation layer
+    :param alpha: ELU-Koeffizient, Standard: 1.0
+    :param name: Name der Ausgabeschicht
+    :return: ELU-Aktivierungsschicht
 
     Examples::
 
@@ -2449,13 +2452,13 @@ Tanh
 =================================
 .. py:class:: pyvqnet.nn.Tanh(name: str = '')
 
-    Applies the hyperbolic tangent activation function to the given layer.
+    Wendet die hyperbolische Tangens-Aktivierungsfunktion auf die angegebene Schicht an.
 
     .. math::
         \text{Tanh}(x) = \frac{\exp(x) - \exp(-x)} {\exp(x) + \exp(-x)}
 
-    :param name: name of the output layer
-    :return: hyperbolic tangent Activation layer
+    :param name: Name der Ausgabeschicht
+    :return: Hyperbolische-Tangens-Aktivierungsschicht
 
     Examples::
 
@@ -2470,7 +2473,7 @@ Tanh
 
 .. _Optimizer:
 
-Optimizer Module
+Optimierer-Modul
 ********************************************************
 
 
@@ -2478,16 +2481,16 @@ Optimizer
 =================================
 .. py:class:: pyvqnet.optim.optimizer.Optimizer(params, lr=0.01)
 
-    Base class for all optimizers.
+    Basisklasse für alle Optimierer.
 
-    :param params: params of model which need to be optimized
-    :param lr: learning_rate of model (default: 0.01)
+    :param params: Parameter des Modells, die optimiert werden müssen
+    :param lr: Lernrate des Modells (Standard: 0.01)
 
 adadelta
 =================================
 .. py:class:: pyvqnet.optim.adadelta.Adadelta(params, lr=0.01, beta=0.99, epsilon=1e-8)
 
-    ADADELTA: An Adaptive Learning Rate Method. reference: (https://arxiv.org/abs/1212.5701)
+    ADADELTA: Eine adaptive Lernraten-Methode. Referenz: (https://arxiv.org/abs/1212.5701)
 
     .. math::
 
@@ -2496,11 +2499,11 @@ adadelta
         E(dx_t^2) &= \beta * E(dx_{t-1}^2) + (1-\beta) * (-g*square\_avg)^2 \\
         param\_new &= param - lr * Square\_avg
 
-    :param params: params of model which need to be optimized
-    :param lr: learning_rate of model (default: 0.01)
-    :param beta: for computing a running average of squared gradients (default: 0.99)
-    :param epsilon: term added to the denominator to improve numerical stability (default: 1e-8)
-    :return: a Adadelta optimizer
+    :param params: Parameter des Modells, die optimiert werden müssen
+    :param lr: Lernrate des Modells (Standard: 0.01)
+    :param beta: Zur Berechnung eines laufenden Durchschnitts der quadrierten Gradienten (Standard: 0.99)
+    :param epsilon: Zum Nenner hinzugefügter Term zur Verbesserung der numerischen Stabilität (Standard: 1e-8)
+    :return: Ein Adadelta-Optimierer
 
     Example::
 
@@ -2539,7 +2542,7 @@ adagrad
 =================================
 .. py:class:: pyvqnet.optim.adagrad.Adagrad(params, lr=0.01, epsilon=1e-8 )
 
-    Implements Adagrad algorithm. reference: (https://databricks.com/glossary/adagrad)
+    Implementiert den Adagrad-Algorithmus. Referenz: (https://databricks.com/glossary/adagrad)
 
     .. math::
         \begin{aligned}
@@ -2547,10 +2550,10 @@ adagrad
         &= param - \frac{lr * g}{\sqrt{moment\_new} + \epsilon}
         \end{aligned}
 
-    :param params: params of model which need to be optimized
-    :param lr: learning_rate of model (default: 0.01)
-    :param epsilon: term added to the denominator to improve numerical stability (default: 1e-8)
-    :return: a Adagrad optimizer
+    :param params: Parameter des Modells, die optimiert werden müssen
+    :param lr: Lernrate des Modells (Standard: 0.01)
+    :param epsilon: Zum Nenner hinzugefügter Term zur Verbesserung der numerischen Stabilität (Standard: 1e-8)
+    :return: Ein Adagrad-Optimierer
 
     Example::
 
@@ -2589,7 +2592,7 @@ AdamW
 =================================
 .. py:class:: pyvqnet.optim.adam.AdamW(params, lr=0.01, beta1=0.9, beta2=0.999, epsilon=1e-8, weight_decay=0.01, amsgrad: bool = False)
     
-    Implement the AdamW algorithm.
+    Implementiert den AdamW-Algorithmus.
 
     .. math::
         t=t+1
@@ -2603,26 +2606,26 @@ AdamW
     .. math::
         lr = lr*\frac{\sqrt{1-\beta2^t}}{1-\beta1^t}
     
-    If the parameter amsgrad is True
+    Wenn der Parameter amsgrad True ist
 
     .. math::
         moment\_2\_max = max(moment\_2\_max,moment\_2)
     .. math::
         param\_new=param\_new-lr*\frac{moment\_1}{\sqrt{moment\_2\_max}+\epsilon}
     
-    otherwise:
+    andernfalls:
 
     .. math::
         param\_new=param\_new-lr*\frac{moment\_1}{\sqrt{moment\_2}+\epsilon}
 
-    :param params: Model parameters that need to be optimized.
-    :param lr: learning rate (default: 0.01).
-    :param beta1: Coefficient used to calculate the running average of the gradient and its square (default: 0.9).
-    :param beta2: Coefficient used to calculate the running average of the gradient and its square (default: 0.999).
-    :param epsilon: Constant to add to the denominator to improve numerical stability (default: 1e-8).
-    :param weight_decay: Weight decay coefficient, default 0.01.
-    :param amsgrad: Whether to use the AMSGrad variant of this algorithm (default: False).
-    :return: An AdamW optimizer.
+    :param params: Modellparameter, die optimiert werden müssen.
+    :param lr: Lernrate (Standard: 0.01).
+    :param beta1: Koeffizient zur Berechnung des laufenden Durchschnitts des Gradienten und seines Quadrats (Standard: 0.9).
+    :param beta2: Koeffizient zur Berechnung des laufenden Durchschnitts des Gradienten und seines Quadrats (Standard: 0.999).
+    :param epsilon: Konstante, die zum Nenner addiert wird, um die numerische Stabilität zu verbessern (Standard: 1e-8).
+    :param weight_decay: Gewichtsabnahmekoeffizient, Standard 0.01.
+    :param amsgrad: Ob die AMSGrad-Variante dieses Algorithmus verwendet werden soll (Standard: False).
+    :return: Ein AdamW-Optimierer.
 
     Example::
 
@@ -2650,7 +2653,7 @@ Adam
 =================================
 .. py:class:: pyvqnet.optim.adam.Adam(params, lr=0.01, beta1=0.9, beta2=0.999, epsilon=1e-8,weight_decay = 0, amsgrad: bool = False)
 
-    Adam: A Method for Stochastic Optimization reference: (https://arxiv.org/abs/1412.6980),it can dynamically adjusts the learning rate of each parameter using the 1st moment estimates and the 2nd moment estimates of the gradient.
+    Adam: Eine Methode zur stochastischen Optimierung. Referenz: (https://arxiv.org/abs/1412.6980). Sie kann die Lernrate jedes Parameters dynamisch an die Schätzungen des ersten und zweiten Moments des Gradienten anpassen.
 
     .. math::
         t = t + 1
@@ -2663,27 +2666,27 @@ Adam
     .. math::
         lr = lr*\frac{\sqrt{1-\beta2^t}}{1-\beta1^t}
 
-    if amsgrad = True
+    wenn amsgrad = True
     
     .. math::
         moment\_2\_max = max(moment\_2\_max,moment\_2)
     .. math::
         param\_new=param-lr*\frac{moment\_1}{\sqrt{moment\_2\_max}+\epsilon} 
 
-    else
+    sonst
 
     .. math::
         param\_new=param-lr*\frac{moment\_1}{\sqrt{moment\_2}+\epsilon} 
 
 
-    :param params: params of model which need to be optimized
-    :param lr: learning_rate of model (default: 0.01)
-    :param beta1: coefficients used for computing running averages of gradient and its square (default: 0.9)
-    :param beta2: coefficients used for computing running averages of gradient and its square (default: 0.999)
-    :param epsilon: term added to the denominator to improve numerical stability (default: 1e-8)
-    :param weight_decay: Weight decay coefficient, default 0.
-    :param amsgrad: whether to use the AMSGrad variant of this algorithm (default: False)
-    :return: a Adam optimizer
+    :param params: Parameter des Modells, die optimiert werden müssen
+    :param lr: Lernrate des Modells (Standard: 0.01)
+    :param beta1: Koeffizienten zur Berechnung der laufenden Durchschnitte des Gradienten und seines Quadrats (Standard: 0.9)
+    :param beta2: Koeffizienten zur Berechnung der laufenden Durchschnitte des Gradienten und seines Quadrats (Standard: 0.999)
+    :param epsilon: Zum Nenner hinzugefügter Term zur Verbesserung der numerischen Stabilität (Standard: 1e-8)
+    :param weight_decay: Gewichtsabnahmekoeffizient, Standard 0.
+    :param amsgrad: Ob die AMSGrad-Variante dieses Algorithmus verwendet werden soll (Standard: False)
+    :return: Ein Adam-Optimierer
 
     Example::
 
@@ -2722,7 +2725,7 @@ adamax
 =================================
 .. py:class:: pyvqnet.optim.adamax.Adamax(params, lr=0.01, beta1=0.9, beta2=0.999, epsilon=1e-8)
 
-    Implements Adamax algorithm (a variant of Adam based on infinity norm).reference: (https://arxiv.org/abs/1412.6980)
+    Implementiert den Adamax-Algorithmus (eine Variante von Adam basierend auf der Unendlichkeitsnorm). Referenz: (https://arxiv.org/abs/1412.6980)
 
     .. math::
         \\t = t + 1
@@ -2735,12 +2738,12 @@ adamax
     .. math::
         param\_new = param − lr*\frac{moment\_new}{norm\_new}\\
 
-    :param params: params of model which need to be optimized
-    :param lr: learning_rate of model (default: 0.01)
-    :param beta1: coefficients used for computing running averages of gradient and its square (default: 0.9)
-    :param beta2: coefficients used for computing running averages of gradient and its square (default: 0.999)
-    :param epsilon: term added to the denominator to improve numerical stability (default: 1e-8)
-    :return: a Adamax optimizer
+    :param params: Parameter des Modells, die optimiert werden müssen
+    :param lr: Lernrate des Modells (Standard: 0.01)
+    :param beta1: Koeffizienten zur Berechnung der laufenden Durchschnitte des Gradienten und seines Quadrats (Standard: 0.9)
+    :param beta2: Koeffizienten zur Berechnung der laufenden Durchschnitte des Gradienten und seines Quadrats (Standard: 0.999)
+    :param epsilon: Zum Nenner hinzugefügter Term zur Verbesserung der numerischen Stabilität (Standard: 1e-8)
+    :return: Ein Adamax-Optimierer
 
     Example::
 
@@ -2779,7 +2782,7 @@ rmsprop
 =================================
 .. py:class:: pyvqnet.optim.rmsprop.RMSProp(params, lr=0.01, beta=0.99, epsilon=1e-8)
 
-    Implements RMSprop algorithm. reference: (https://arxiv.org/pdf/1308.0850v5.pdf)
+    Implementiert den RMSprop-Algorithmus. Referenz: (https://arxiv.org/pdf/1308.0850v5.pdf)
 
     .. math::
         s_{t+1} = s_{t} + (1 - \beta)*(g)^2
@@ -2787,11 +2790,11 @@ rmsprop
     .. math::
         param_new = param -  \frac{g}{\sqrt{s_{t+1}} + epsilon}
 
-    :param params: params of model which need to be optimized
-    :param lr: learning_rate of model (default: 0.01)
-    :param beta: coefficients used for computing running averages of gradient and its square (default: 0.99)
-    :param epsilon: term added to the denominator to improve numerical stability (default: 1e-8)
-    :return: a RMSProp optimizer
+    :param params: Parameter des Modells, die optimiert werden müssen
+    :param lr: Lernrate des Modells (Standard: 0.01)
+    :param beta: Koeffizienten zur Berechnung der laufenden Durchschnitte des Gradienten und seines Quadrats (Standard: 0.99)
+    :param epsilon: Zum Nenner hinzugefügter Term zur Verbesserung der numerischen Stabilität (Standard: 1e-8)
+    :return: Ein RMSProp-Optimierer
 
     Example::
 
@@ -2830,17 +2833,17 @@ sgd
 =================================
 .. py:class:: pyvqnet.optim.sgd.SGD(params, lr=0.01, momentum=0, nesterov=False)
 
-    Implements SGD algorithm. reference: (https://en.wikipedia.org/wiki/Stochastic_gradient_descent)
+    Implementiert den SGD-Algorithmus. Referenz: (https://en.wikipedia.org/wiki/Stochastic_gradient_descent)
 
     .. math::
 
         \\param\_new=param-lr*g\\
 
-    :param params: params of model which need to be optimized
-    :param lr: learning_rate of model (default: 0.01)
-    :param momentum: momentum factor (default: 0)
-    :param nesterov: enables Nesterov momentum (default: False)
-    :return: a SGD optimizer
+    :param params: Parameter des Modells, die optimiert werden müssen
+    :param lr: Lernrate des Modells (Standard: 0.01)
+    :param momentum: Momentum-Faktor (Standard: 0)
+    :param nesterov: Aktiviert Nesterov-Momentum (Standard: False)
+    :return: Ein SGD-Optimierer
 
     Example::
 
@@ -2876,7 +2879,7 @@ sgd
         # ]
 
 
-Metrics
+Metriken
 ********************************************************
 
 
@@ -2885,11 +2888,11 @@ MSE
 
 .. py:class:: pyvqnet.utils.metrics.MSE(y_true_Qtensor, y_pred_Qtensor)
 
-    MSE: Mean Squared Error.
+    MSE: Mittlerer quadratischer Fehler (Mean Squared Error).
 
-    :param y_true_Qtensor: A QTensor of shape like (n_samples,) or (n_samples, n_outputs), true target value.
-    :param y_pred_Qtensor: A QTensor of shape like (n_samples,) or (n_samples, n_outputs), estimated target values.
-    :return:  return with float result.
+    :param y_true_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), wahrer Zielwert.
+    :param y_pred_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), geschätzte Zielwerte.
+    :return: Gibt ein float-Ergebnis zurück.
 
     Example::
 
@@ -2917,11 +2920,11 @@ RMSE
 
 .. py:class:: pyvqnet.utils.metrics.RMSE(y_true_Qtensor, y_pred_Qtensor)
 
-    RMSE: Root Mean Squared Error.
+    RMSE: Wurzel der mittleren quadratischen Abweichung (Root Mean Squared Error).
 
-    :param y_true_Qtensor: A QTensor of shape like (n_samples,) or (n_samples, n_outputs), true target value.
-    :param y_pred_Qtensor: A QTensor of shape like (n_samples,) or (n_samples, n_outputs), estimated target values.
-    :return: return with float result.
+    :param y_true_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), wahrer Zielwert.
+    :param y_pred_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), geschätzte Zielwerte.
+    :return: Gibt ein float-Ergebnis zurück.
 
     Example::
 
@@ -2950,11 +2953,11 @@ MAE
 
 .. py:class:: pyvqnet.utils.metrics.MAE(y_true_Qtensor, y_pred_Qtensor)
 
-    MAE: Mean Absolute Error.
+    MAE: Mittlerer absoluter Fehler (Mean Absolute Error).
 
-    :param y_true_Qtensor: A QTensor of shape like (n_samples,) or (n_samples, n_outputs), true target value.
-    :param y_pred_Qtensor: A QTensor of shape like (n_samples,) or (n_samples, n_outputs), estimated target values.
-    :return:  return with float result.
+    :param y_true_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), wahrer Zielwert.
+    :param y_pred_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), geschätzte Zielwerte.
+    :return: Gibt ein float-Ergebnis zurück.
 
     Example::
 
@@ -2982,16 +2985,16 @@ R_Square
 
 .. py:class:: pyvqnet.utils.metrics.R_Square(y_true_Qtensor, y_pred_Qtensor, sample_weight=None)
 
-    R_Square: R^2 (coefficient of determination) regression score function.
-    The best possible score is 1.0, which can be negative
-    (since the model can deteriorate arbitrarily).
-    One that always predicts the expected value of y,
-    ignoring the input features, will get an R^2 score of 0.0.
+    R_Square: R^2 (Bestimmtheitsmaß) Regressions-Bewertungsfunktion.
+    Der bestmögliche Wert ist 1.0, der negativ sein kann
+    (da das Modell beliebig schlecht werden kann).
+    Einer, der immer den erwarteten Wert von y vorhersagt,
+    ignoriert die Eingabemerkmale und erhält einen R^2-Wert von 0.0.
     
-    :param y_true_Qtensor: A QTensor of shape like (n_samples,) or (n_samples, n_outputs), true target value.
-    :param y_pred_Qtensor: A QTensor of shape like (n_samples,) or (n_samples, n_outputs), estimated target values.
-    :param sample_weight: Array of shape like (n_samples,), optional sample weight, default:None.
-    :return: return with float result.
+    :param y_true_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), wahrer Zielwert.
+    :param y_pred_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), geschätzte Zielwerte.
+    :param sample_weight: Array der Form (n_samples,), optionales Stichprobengewicht, Standard: None.
+    :return: Gibt ein float-Ergebnis zurück.
 
     Example::
 
@@ -3019,15 +3022,15 @@ precision_recall_f1_2_score
 
 .. py:class:: pyvqnet.utils.metrics.precision_recall_f1_2_score(y_true_Qtensor, y_pred_Qtensor)
 
-    Calculate the precision, recall and F1 score of the predicted values under the 2-classification task. The predicted and true values need to be QTensors of similar shape (n_samples, ), with a value of 0 or 1, representing the labels of the two classes.
+    Berechnet die Precision, Recall und den F1-Score der vorhergesagten Werte unter der 2-Klassifikationsaufgabe. Die vorhergesagten und wahren Werte müssen QTensoren ähnlicher Form (n_samples, ) sein, mit einem Wert von 0 oder 1, die die Labels der beiden Klassen darstellen.
     
-    :param y_true_Qtensor: A 1D QTensor, true target value.
-    :param y_pred_Qtensor: A 1D QTensor, estimated target value.
+    :param y_true_Qtensor: Ein 1D-QTensor, wahrer Zielwert.
+    :param y_pred_Qtensor: Ein 1D-QTensor, geschätzter Zielwert.
 
     :returns: 
-        - precision - precision result
-        - recall - recall result
-        - f1 - f1 score
+        - precision - Precision-Ergebnis
+        - recall - Recall-Ergebnis
+        - f1 - F1-Score
 
     Example::
 
@@ -3051,24 +3054,24 @@ precision_recall_f1_N_score
 
 .. py:class:: pyvqnet.utils.metrics.precision_recall_f1_N_score(y_true_Qtensor, y_pred_Qtensor, N, average)
 
-    Precision, recall, and F1 score calculations for multi-classification tasks. where the predicted value and the true value are QTensors of similar shape (n_samples, ), and the values are integers from 0 to N-1, representing the labels of N classes.
+    Precision-, Recall- und F1-Score-Berechnungen für Multiklassifikationsaufgaben. Der vorhergesagte Wert und der wahre Wert sind QTensoren ähnlicher Form (n_samples, ), und die Werte sind ganze Zahlen von 0 bis N-1, die die Labels von N Klassen darstellen.
 
-    :param y_true_Qtensor: A 1D QTensor, true target value.
-    :param y_pred_Qtensor: A 1D QTensor, estimated target value.
-    :param N: N classes (number of classes).
-    :param average: string, ['micro', 'macro', 'weighted'].
-             This parameter is required for multi-class/multi-label targets.
+    :param y_true_Qtensor: Ein 1D-QTensor, wahrer Zielwert.
+    :param y_pred_Qtensor: Ein 1D-QTensor, geschätzter Zielwert.
+    :param N: N Klassen (Anzahl der Klassen).
+    :param average: String, ['micro', 'macro', 'weighted'].
+             Dieser Parameter ist für Multi-Klassen/Multi-Label-Ziele erforderlich.
              
-             ``'micro'``: Compute metrics globally by counting total true counts, false negatives and false positives.
+             ``'micro'``: Berechnet Metriken global durch Zählen der gesamten wahren Positiven, falschen Negative und falschen Positive.
              
-             ``'macro'``: Calculate the metric for each label and find its unweighted value. Meaning that the balance of labels is not considered.
+             ``'macro'``: Berechnet die Metrik für jedes Label und ermittelt seinen ungewichteten Wert. Dies bedeutet, dass das Gleichgewicht der Labels nicht berücksichtigt wird.
              
-             ``'weighted'``: Calculate the metrics for each label and find their average (the number of true instances of each label). This changes ``'macro'`` to account for label imbalance; this may result in F-scores not being between precision and recall.
+             ``'weighted'``: Berechnet die Metriken für jedes Label und ermittelt ihren Durchschnitt (die Anzahl der wahren Instanzen jedes Labels). Dies ändert ``'macro'``, um das Label-Ungleichgewicht zu berücksichtigen; dies kann dazu führen, dass F-Scores nicht zwischen Precision und Recall liegen.
     
     :returns: 
-        - precision - precision result
-        - recall - recall result
-        - f1 - f1 score
+        - precision - Precision-Ergebnis
+        - recall - Recall-Ergebnis
+        - f1 - F1-Score
 
     Example::
 
@@ -3105,24 +3108,24 @@ precision_recall_f1_Multi_score
 
 .. py:class:: pyvqnet.utils.metrics.precision_recall_f1_Multi_score(y_true_Qtensor, y_pred_Qtensor, N, average)
 
-    Precision, recall, and F1 score calculations for multi-classification tasks. where the predicted and true values are QTensors of similar shape (n_samples, N), where the values are N-dimensional one-hot encoded label values.
+    Precision-, Recall- und F1-Score-Berechnungen für Multiklassifikationsaufgaben. Die vorhergesagten und wahren Werte sind QTensoren ähnlicher Form (n_samples, N), wobei die Werte N-dimensionale One-Hot-kodierte Labelwerte sind.
 
-    :param y_true_Qtensor: A 1D QTensor, true target value.
-    :param y_pred_Qtensor: A 1D QTensor, estimated target value.
-    :param N: N classes (number of classes).
-    :param average: string, ['micro', 'macro', 'weighted'].
-             This parameter is required for multi-class/multi-label targets.
+    :param y_true_Qtensor: Ein 1D-QTensor, wahrer Zielwert.
+    :param y_pred_Qtensor: Ein 1D-QTensor, geschätzter Zielwert.
+    :param N: N Klassen (Anzahl der Klassen).
+    :param average: String, ['micro', 'macro', 'weighted'].
+             Dieser Parameter ist für Multi-Klassen/Multi-Label-Ziele erforderlich.
              
-             ``'micro'``: Compute metrics globally by counting total true counts, false negatives and false positives.
+             ``'micro'``: Berechnet Metriken global durch Zählen der gesamten wahren Positiven, falschen Negative und falschen Positive.
              
-             ``'macro'``: Calculate the metric for each label and find its unweighted value. Meaning that the balance of labels is not considered.
+             ``'macro'``: Berechnet die Metrik für jedes Label und ermittelt seinen ungewichteten Wert. Dies bedeutet, dass das Gleichgewicht der Labels nicht berücksichtigt wird.
              
-             ``'weighted'``: Calculate the metrics for each label and find their average (the number of true instances of each label). This changes ``'macro'`` to account for label imbalance; this may result in F-scores not being between precision and recall.
+             ``'weighted'``: Berechnet die Metriken für jedes Label und ermittelt ihren Durchschnitt (die Anzahl der wahren Instanzen jedes Labels). Dies ändert ``'macro'``, um das Label-Ungleichgewicht zu berücksichtigen; dies kann dazu führen, dass F-Scores nicht zwischen Precision und Recall liegen.
     
     :returns: 
-        - precision - precision result
-        - recall - recall result
-        - f1 - f1 score
+        - precision - Precision-Ergebnis
+        - recall - Recall-Ergebnis
+        - f1 - F1-Score
 
     Example::
 
@@ -3179,18 +3182,18 @@ auc_calculate
 
 .. py:class:: pyvqnet.utils.metrics.auc_calculate(y_true_Qtensor, y_pred_Qtensor, pos_label=None, sample_weight=None, drop_intermediate=True)
 
-    Compute the precision, recall and f1 score of the classification task.
+    Berechnet die Precision, Recall und den F1-Score der Klassifikationsaufgabe.
 
-    :param y_true_Qtensor: A QTensor like of shape [n_samples].
-                             A true binary label. If the label is not {1,1} or {0,1}, pos_label should be given explicitly.
-    :param y_pred_Qtensor: A QTensor like of shape [n_samples].
-                             Target score, which can be a positive probability estimate class, confidence value, or a non-threshold measure of the decision (returned by "decision_function" on some classifiers)
-    :param pos_label: int or str. The label of the positive class. default=None.
-                      When ``pos_label`` is None, if ``y_true_Qtensor`` is at {-1,1} or {0,1}, ``pos_label`` is set to 1, otherwise an error will be raised.
-    :param sample_weight: array of shape (n_samples,), default=None.
-    :param drop_intermediate: boolean, optional (default=True).
-                     Whether to lower some suboptimal thresholds that don't appear on the drawn ROC curve.
-    :return: output float result.
+    :param y_true_Qtensor: Ein QTensor der Form [n_samples].
+                             Ein wahres binäres Label. Wenn das Label nicht {1,1} oder {0,1} ist, sollte pos_label explizit angegeben werden.
+    :param y_pred_Qtensor: Ein QTensor der Form [n_samples].
+                             Ziel-Score, der eine positive Wahrscheinlichkeitsschätzungsklasse, ein Konfidenzwert oder ein nicht-schwellenbasiertes Maß der Entscheidung sein kann (zurückgegeben von "decision_function" bei einigen Klassifikatoren)
+    :param pos_label: int oder str. Das Label der positiven Klasse. Standard=None.
+                      Wenn ``pos_label`` None ist und ``y_true_Qtensor`` in {-1,1} oder {0,1} liegt, wird ``pos_label`` auf 1 gesetzt, andernfalls wird ein Fehler ausgelöst.
+    :param sample_weight: Array der Form (n_samples,), Standard=None.
+    :param drop_intermediate: boolean, optional (Standard=True).
+                     Ob einige suboptimale Schwellenwerte, die nicht auf der gezeichneten ROC-Kurve erscheinen, weggelassen werden sollen.
+    :return: Gibt ein float-Ergebnis aus.
 
     Example::
 
@@ -3225,21 +3228,21 @@ auc_calculate
                 # 0.1111111111111111
 
 
-Triton Compatibility
+Triton-Kompatibilität
 *********************************************************
 
-`triton <https://triton-lang.org/main/index.html>`_  is a language and compiler for writing efficient GPU kernels for deep learning.
-Users write Python code similar to NumPy, and then Triton compiles it into efficient GPU code (similar to CUDA but higher level).
-Triton depends on some PyTorch interfaces, VQNet implements an interface similar to PyTorch, allowing integration with Triton written code for model forward and backward propagation.
+`triton <https://triton-lang.org/main/index.html>`_ ist eine Sprache und ein Compiler zum Schreiben effizienter GPU-Kernel für Deep Learning.
+Benutzer schreiben Python-Code ähnlich wie NumPy, und Triton kompiliert ihn in effizienten GPU-Code (ähnlich wie CUDA, aber auf höherer Ebene).
+Triton ist auf einige PyTorch-Schnittstellen angewiesen. VQNet implementiert eine Schnittstelle ähnlich wie PyTorch, die die Integration mit Triton-geschriebenem Code für die Vorwärts- und Rückwärtspropagation von Modellen ermöglicht.
 
-Install triton:
+Triton installieren:
 
 .. code-block::
 
     pip install triton
 
-The following example is modified from the official triton example: `layer-norm <https://triton-lang.org/main/getting-started/tutorials/05-layer-norm.html>`_.
-This example needs to be run on Linux with a GPU, and triton and pytorch (used for comparing calculation correctness) need to be installed:
+Das folgende Beispiel ist modifiziert aus dem offiziellen Triton-Beispiel: `layer-norm <https://triton-lang.org/main/getting-started/tutorials/05-layer-norm.html>`_.
+Dieses Beispiel muss auf Linux mit einer GPU ausgeführt werden, und triton sowie pytorch (zur Überprüfung der Berechnungskorrektheit) müssen installiert sein:
 
 .. code-block::
 
