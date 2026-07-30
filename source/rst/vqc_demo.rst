@@ -1,22 +1,22 @@
-Quantum Machine Learning Demos Using Autograd
+Quanten-Maschinenlern-Demos mit Autograd
 ########################################################################
 
-The following example uses the variational quantum circuit interface under ``pyvqnet.qnn.vqc`` to implement a quantum machine learning algorithm and example. The variational quantum circuit interface under ``pyvqnet.qnn.vqc`` uses state vectors to represent the evolution of quantum states under quantum logic gates, and calculates the gradient in the variational quantum circuit through automatic differentiation.
+Das folgende Beispiel verwendet das vari\-ations\-quan\-ten\-schalt\-kreis-In\-ter\-face unter ``pyvqnet.qnn.vqc``, um einen Quanten-Maschinenlern\-algorithmus und ein Beispiel zu implementieren. Das Variations\-Quanten\-schaltkreis\-Interface unter ``pyvqnet.qnn.vqc`` verwendet Zustandsvektoren, um die Evolution von Quantenzuständen unter Quantenlogikgattern darzustellen, und berechnet den Gradienten im Variations\-Quanten\-schaltkreis durch automatische Differenzierung.
 
-Please note the use of ``pyvqnet.qnn.vqc.QMachine`` in the following example. This class stores the data of quantum state vectors. When calculating batch data or after each measurement, ``pyvqnet.qnn.vqc.QMachine.reset_states`` must be performed to reinitialize the state vector data to the batch_size size of the input data.
-``pyvqnet.qnn.vqc`` also provides measurement interfaces such as MeasureAll, Probability, and Samples.
+Bitte beachten Sie die Verwendung von ``pyvqnet.qnn.vqc.QMachine`` im folgenden Beispiel. Diese Klasse speichert die Daten der Quantenzustandsvektoren. Bei der Berechnung von Batch-Daten oder nach jeder Messung muss ``pyvqnet.qnn.vqc.QMachine.reset_states`` ausgeführt werden, um die Zustandsvektordaten auf die batch_size der Eingabedaten zu reinitialisieren.
+``pyvqnet.qnn.vqc`` bietet auch Mess\-Schnitt\-stellen wie MeasureAll, Probability und Samples.
 
-In addition, ``pyvqnet.qnn.vqc.QModule`` is a class that the user-defined automatic differential sub-circuit model needs to inherit. Like the classic neural network model, it needs to define `__init__` and `forward` functions.
-When the last ``QTensor`` of the model runs `backward`, the parameter gradients of the variational sub-circuit in ``QModule`` can be calculated using automatic differentiation, and can be updated by the optimizer related to the gradient descent method.
+Darüber hinaus ist ``pyvqnet.qnn.vqc.QModule`` eine Klasse, die das benutzerdefinierte automatische Differenzial\-Teil\-schalt\-kreis-Modell erben muss. Wie das klassische neuronale Netzwerkmodell muss es `__init__`- und `forward`-Funktionen definieren.
+Wenn der letzte ``QTensor`` des Modells `backward` ausführt, können die Parametergradienten des Vari\-ations\-unter\-schalt\-kreises in ``QModule`` mittels automatischer Differenzierung berechnet und durch den Optimierer der Gradientenabstiegsmethode aktualisiert werden.
 
-Example of fitting a Fourier series on a GPU using quantum variational circuits
-====================================================================================
-Quantum computers can be used for supervised learning by mapping data inputs to predicted models through parameterized quantum circuits. While much work has been done to study the practical implications of this approach,
-many important theoretical properties of these models remain unknown. Here, we study how the strategy of encoding data into the model affects the expressive power of parameterized quantum circuits as function approximators.
+Beispiel zur Anpassung einer Fourier-Reihe auf einer GPU mit Quanten-Variationsschaltkreisen
+============================================================================================
+Quantencomputer können für überwachtes Lernen verwendet werden, indem Dateneingaben durch parametrisierte Quantenschaltkreise auf Vorhersagemodelle abgebildet werden. Obwohl bereits viel Arbeit zur Untersuchung der praktischen Auswirkungen dieses Ansatzes geleistet wurde,
+bleiben viele wichtige theoretische Eigenschaften dieser Modelle unbekannt. Hier untersuchen wir, wie die Strategie der Datenkodierung im Modell die Ausdruckskraft parametrisierter Quantenschaltkreise als Funktionsapproximatoren beeinflusst.
 
-This example relates common quantum machine learning models designed for quantum computers to Fourier series, following the paper `The effect of data encoding on the expressive power of variational quantum machine learning models <https://arxiv.org/pdf/2008.08605.pdf>`_.
+Dieses Beispiel setzt gängige Quanten-Maschinenlern\-modelle, die für Quantencomputer entwickelt wurden, in Beziehung zu Fourier-Reihen, basierend auf dem Paper `The effect of data encoding on the expressive power of variational quantum machine learning models <https://arxiv.org/pdf/2008.08605.pdf>`_.
 
-The quantum model is:
+Das Quantenmodell ist:
 
 .. image:: ./images/single_qubit_model_circuit.png
     :width: 600 px
@@ -24,7 +24,7 @@ The quantum model is:
 
 |
 
-Import the necessary libraries and define the variational quantum circuit model using ``pyvqnet.qnn.vqc``:
+Importieren Sie die erforderlichen Bibliotheken und definieren Sie das Variations-Quantenschaltkreis-Modell mit ``pyvqnet.qnn.vqc``:
 
 
 .. code-block::
@@ -39,15 +39,15 @@ Import the necessary libraries and define the variational quantum circuit model 
     from pyvqnet.qnn.vqc import QMachine,QModule,rx,rz,ry,\
         MeasureAll
     np.random.seed(42)
-    degree = 1  # degree of the target function
-    scaling = 1  # scaling of the data
-    coeffs = [0.15 + 0.15j]*degree  # coefficients of non-zero frequencies
-    coeff0 = 0.1  # coefficient of zero frequency
+    degree = 1  # Grad der Zielfunktion
+    scaling = 1  # Skalierung der Daten
+    coeffs = [0.15 + 0.15j]*degree  # Koeffizienten der Nicht-Null-Frequenzen
+    coeff0 = 0.1  # Koeffizient der Null-Frequenz
     r = 1
-    weights = 2 * np.pi * np.random.random(size=(r+1, 3))  # some random initial weights
+    weights = 2 * np.pi * np.random.random(size=(r+1, 3))  # einige zufällige Anfangswerte
     x = np.linspace(-6, 6, 70)
     def target_function(x):
-        """Generate a truncated Fourier series, where the data gets re-scaled."""
+        """Erzeugt eine abgeschnittene Fourier-Reihe, wobei die Daten neu skaliert werden."""
         res = coeff0
         for idx, coeff in enumerate(coeffs):
             exponent = np.complex128(scaling * (idx+1) * x * 1j)
@@ -89,8 +89,8 @@ Import the necessary libraries and define the variational quantum circuit model 
         def forward(self, x):
             return self.q_fourier_series(x)
 
-Training code, we use GPU for training here, we need to put the model `Model` and input `data`, `label` on GPU using ``toGPU`` or specify `device`.
-Other interfaces are no different from the code for training using CPU.
+Trainingscode: Wir verwenden hier die GPU für das Training. Wir müssen das Modell `Model` und die Eingaben `data`, `label` mit ``toGPU`` auf die GPU legen oder `device` angeben.
+Die anderen Schnittstellen unterscheiden sich nicht vom Code für das Training mit der CPU.
 
 
 .. code-block::
@@ -110,11 +110,11 @@ Other interfaces are no different from the code for training using CPU.
             count = 0
             for step in range(max_steps):
                 optimizer.zero_grad()
-                # Select batch of data
+                # Batch von Daten auswählen
                 batch_index = np.random.randint(0, len(x), (batch_size,))
                 x_batch = x[batch_index].reshape(batch_size,1)
                 y_batch = target_y[batch_index].reshape(batch_size,1)
-                #load data into GPU
+                # Daten in GPU laden
                 data, label = QTensor(x_batch,dtype=kfloat32,device=DEV_GPU), QTensor(y_batch,dtype=kfloat32,device=DEV_GPU)
                 result = model(data)
                 loss_b = loss(label, result)
@@ -136,10 +136,10 @@ Other interfaces are no different from the code for training using CPU.
 
 
 
-HQCNN example of hybrid quantum classical neural network
-===================================================================
+HQCNN-Beispiel eines hybriden Quanten-Klassik-Neuronalen-Netzes
+=================================================================
 
-The HQCNN example is implemented using ``pyvqnet.qnn.vqc``, and image classification on the Mnist dataset is performed using a hybrid quantum classical network. In the quantum part, a simple quantum circuit with 1 qubit is defined here, which takes the output of the classical neural network layer as input, encodes quantum data through ``H``, ``RY`` logic gates, and calculates the Hamiltonian expectation value in the z direction as output.
+Das HQCNN-Beispiel wird mit ``pyvqnet.qnn.vqc`` implementiert und führt eine Bildklassifikation auf dem MNIST-Datensatz unter Verwendung eines hybriden Quanten-Klassik-Netzes durch. Im Quantenteil wird hier ein einfacher Quantenschaltkreis mit 1 Qubit definiert, der die Ausgabe der klassischen neuronalen Netzwerkschicht als Eingabe nimmt, Quantendaten durch ``H``- und ``RY``-Logikgatter kodiert und den Hamilton-Erwartungswert in z-Richtung als Ausgabe berechnet.
 
 .. image:: ./images/hqcnn_quantum_cir.png
     :width: 600 px
@@ -147,12 +147,12 @@ The HQCNN example is implemented using ``pyvqnet.qnn.vqc``, and image classifica
 
 |
 
-Since quantum circuits can be used together with classical neural networks for automatic differentiation, we can use VQNet's 2D convolution layer ``Conv2D``, pooling layer ``MaxPool2D``, fully connected layer ``Linear`` and the quantum circuit just built to build a model.
+Da Quantenschaltkreise zusammen mit klassischen neuronalen Netzen für die automatische Differenzierung verwendet werden können, können wir die 2D-Faltungsschicht ``Conv2D`` von VQNet, die Pooling-Schicht ``MaxPool2D``, die vollständig verbundene Schicht ``Linear`` und den gerade erstellten Quantenschaltkreis verwenden, um ein Modell zu erstellen.
 
-Through the definition of the Net and Hybrid classes inherited from the VQNet automatic differentiation module ``Module`` in the following code, and the definition of data forward calculation in the model forward function ``forward()``, we have built a model that can be automatically differentiated
-In this example, the MNIST data is convoluted, dimensionally reduced, quantum encoded, and measured to obtain the final features required for the classification task.
+Durch die Definition der Klassen Net und Hybrid, die vom VQNet-Modul ``Module`` für automatische Differenzierung erben, sowie die Definition der Datenvorwärtsberechnung in der Modell-Forward-Funktion ``forward()`` haben wir ein Modell erstellt, das automatisch differenziert werden kann.
+In diesem Beispiel werden die MNIST-Daten gefaltet, dimensional reduziert, quantenkodiert und gemessen, um die für die Klassifikation erforderlichen endgültigen Merkmale zu erhalten.
 
-The following is the neural network related code:
+Der folgende Code zeigt das neuronale Netzwerk:
 
 .. code-block::
 
@@ -186,20 +186,20 @@ The following is the neural network related code:
         raise ImportError("You should use Python 3.x")
     class Hybird(QModule):
         def __init__(self):
-            #this super(Hybird, self).__init__() is need
+            # diese super(Hybird, self).__init__() ist erforderlich
             super(Hybird, self).__init__()
             self.measure = MeasureAll(obs={"Z0":1})
-            #use only one qubit to create a qmachine
+            # nur ein Qubit verwenden, um eine QMachine zu erstellen
             self.qm = QMachine(1)
         def forward(self,x):
-            #this reset_states must be done to get real batch size.
+            # dieses reset_states muss ausgeführt werden, um die tatsächliche Batch-Größe zu erhalten.
             self.qm.reset_states(x.shape[0])
             hadamard(self.qm,[0])
             ry(self.qm,[0],x)
             return self.measure(q_machine=self.qm)
     class Net(Module):
         """
-        Hybird Quantum Classci Neural Network Module
+        Hybrides Quanten-Klassik-Neuronales-Netzwerk-Modul
         """
         def __init__(self):
             super(Net, self).__init__()
@@ -233,7 +233,7 @@ The following is the neural network related code:
             return x
 
 
-The following is data loading, training code:
+Der folgende Code dient zum Laden der Daten und zum Training:
 
 .. code-block::
 
@@ -246,7 +246,7 @@ The following is data loading, training code:
     }
     def _download(dataset_dir, file_name):
         """
-        Download mnist data if needed.
+        Lädt MNIST-Daten bei Bedarf herunter.
         """
         file_path = dataset_dir + "/" + file_name
         if os.path.exists(file_path):
@@ -269,7 +269,7 @@ The following is data loading, training code:
             _download(dataset_dir, v)
     def load_mnist(dataset="training_data", digits=np.arange(2), path="./examples"):
         """
-        load mnist data
+        Lädt MNIST-Daten.
         """
         from array import array as pyarray
         download_mnist(path)
@@ -315,7 +315,7 @@ The following is data loading, training code:
         y_train = y_train[idx_train]
         x_train = x_train / 255
         y_train = np.eye(2)[y_train].reshape(-1, 2)
-        # Test Leaving only labels 0 and 1
+        # Test: Nur die Labels 0 und 1 behalten
         idx_test = np.append(
             np.where(y_test == 0)[0][:test_num],
             np.where(y_test == 1)[0][:test_num])
@@ -326,7 +326,7 @@ The following is data loading, training code:
         return x_train, y_train, x_test, y_test
     def run():
         """
-        Run mnist train function
+        Führt die MNIST-Trainingsfunktion aus
         """
         x_train, y_train, x_test, y_test = data_select(100, 50)
         model = Net()
@@ -403,15 +403,15 @@ The following is data loading, training code:
     """
 
 
-Quantum reloading algorithm example
-===========================================
+Beispiel für Quanten-Daten-Wiederhochladungsalgorithmus
+========================================================
 
-The following uses the interface under ``pyvqnet.qnn.vqc`` to build a quantum data re-uploading algorithm example.
-In a neural network, each neuron receives information from all neurons in the upper layer (Figure a). In contrast, a single-bit quantum classifier receives the previous information processing unit and input (Figure b).
-In layman's terms, for traditional quantum circuits, when data upload is completed, the result can be directly obtained through several unitary transformations :math:`U(\theta_1,\theta_2,\theta_3)`.
-However, in the quantum data re-uploading (Quantum Data Re-upLoading, QDRL) task, the data needs to be re-uploaded before the unitary transformation.
+Im Folgenden wird die Schnittstelle unter ``pyvqnet.qnn.vqc`` verwendet, um ein Beispiel für einen Quanten-Daten-Wiederhochladungsalgorithmus zu erstellen.
+In einem neuronalen Netz empfängt jedes Neuron Informationen von allen Neuronen der oberen Schicht (Abbildung a). Im Gegensatz dazu empfängt ein Ein-Bit-Quantenklassifikator die vorherige Informationsverarbeitungseinheit und die Eingabe (Abbildung b).
+Vereinfacht ausgedrückt: Bei traditionellen Quantenschaltungen kann das Ergebnis nach Abschluss des Daten-Uploads direkt durch mehrere unitäre Transformationen :math:`U(\theta_1,\theta_2,\theta_3)` ermittelt werden.
+Bei der Quanten-Daten-Wiederhochladung (Quantum Data Re-upLoading, QDRL) müssen die Daten jedoch vor der unitären Transformation erneut hochgeladen werden.
 
-.. centered:: QDRL vs. Classical Neural Network Schematic Diagram
+.. centered:: QDRL vs. Klassisches Neuronales Netz - Schematische Darstellung
 
 .. image:: ./images/qdrl.png
     :width: 600 px
@@ -419,7 +419,7 @@ However, in the quantum data re-uploading (Quantum Data Re-upLoading, QDRL) task
 
 |
 
-Import the library and define the quantum neural network model:
+Importieren Sie die Bibliothek und definieren Sie das Quanten-Neuronale-Netzwerk-Modell:
 
 .. code-block::
 
@@ -483,7 +483,7 @@ Import the library and define the quantum neural network model:
             return x
 
 
-The following is data loading, training code:
+Der folgende Code dient zum Laden der Daten und zum Training:
 
 .. code-block::
 
@@ -514,7 +514,7 @@ The following is data loading, training code:
     optimizer = sgd.SGD(model.parameters(), lr=1)
     def train():
         """
-        Main function for train qdrl model
+        Hauptfunktion zum Training des QDRL-Modells
         """
         batch_size = 5
         model.train()
@@ -583,16 +583,15 @@ The following is data loading, training code:
     test_accuracy:0.934
     """
 
-Circuit-centric quantum classifiers algorithm example
-=============================================================
+Beispiel für schaltkreiszentrierte Quantenklassifikatoren
+=================================================================
 
-This example uses ``pyvqnet.qnn.vqc`` to implement the variable quantum circuit in the paper `Circuit-centric quantum classifiers <https://arxiv.org/pdf/1804.00633.pdf>`_ for binary classification tasks.
-This example is used to determine whether a binary number is odd or even. By encoding the binary number into the quantum bit, by optimizing the variable parameters in the circuit, the z-direction measurement value of the circuit can indicate whether the input is odd or even.
-A variational quantum circuit usually defines a subcircuit, which is a basic circuit architecture that can build complex variational circuits through repeated layers.
-Our circuit layer consists of multiple rotational logic gates and ``CNOT`` logic gates that entangle each qubit with its neighboring qubits.
-We also need a circuit to encode classical data into quantum states, so that the output measured by the circuit is related to the input.
-In this case, we encode the binary input into the corresponding order of qubits. For example, the input data 1101 is encoded into 4 qubits.
-
+Dieses Beispiel verwendet ``pyvqnet.qnn.vqc``, um den variablen Quantenschaltkreis aus dem Paper `Circuit-centric quantum classifiers <https://arxiv.org/pdf/1804.00633.pdf>`_ für binäre Klassifikationsaufgaben zu implementieren.
+Dieses Beispiel dient zur Bestimmung, ob eine Binärzahl gerade oder ungerade ist. Durch Kodierung der Binärzahl in das Quantenbit und Optimierung der variablen Parameter im Schaltkreis kann der Messwert in z-Richtung anzeigen, ob die Eingabe gerade oder ungerade ist.
+Ein variabler Quantenschaltkreis definiert üblicherweise einen Unterschaltkreis, eine grundlegende Schaltkreisarchitektur, die durch wiederholte Schichten komplexe variable Schaltkreise aufbauen kann.
+Unsere Schaltkreisschicht besteht aus mehreren Rotationslogikgattern und ``CNOT``-Logikgattern, die jedes Qubit mit seinen benachbarten Qubits verschränken.
+Wir benötigen auch einen Schaltkreis, um klassische Daten in Quantenzustände zu kodieren, sodass der vom Schaltkreis gemessene Output mit der Eingabe zusammenhängt.
+In diesem Fall kodieren wir die binäre Eingabe in die entsprechende Reihenfolge der Qubits. Beispielsweise wird der Eingabedatensatz 1101 in 4 Qubits kodiert.
 
 .. code-block::
 
@@ -639,8 +638,8 @@ In this case, we encode the binary input into the corresponding order of qubits.
                     get_cnot(nqubits,qm)
             build_circuit(self.w, x,range(4),self.qm)
             return qmeasure.MeasureAll(obs={'Z0': 1})(self.qm)
-        
-Data loading, model training process code:
+
+Datenlade- und Modelltrainingsprozess-Code:
 
 .. code-block::
 
@@ -668,7 +667,7 @@ Data loading, model training process code:
         return score
     def vqc_get_data(dataset_str):
         """
-        Tranform data to valid form
+        Wandelt Daten in ein gültiges Format um
         """
         if dataset_str == "train":
             datasets = np.array(qvc_train_data)
@@ -742,13 +741,13 @@ Data loading, model training process code:
     epoch:24, #### loss:0.040470016002655027 #####accuracy:1.0
     """
 
-Variational Shadow Quantum Learning for Classification model example
-===============================================================================
+Beispiel für Variational Shadow Quantum Learning (VSQL) für Klassifikationsmodelle
+===================================================================================
 
-Use the variable quantum circuit interface of ``pyvqnet.qnn.vqc`` to build a 2-classification model. When comparing the classification accuracy with a neural network with similar parameter accuracy, the two have similar accuracy. However, the number of parameters in the quantum circuit is much smaller than that of the classical neural network.
-The algorithm is based on the paper: `Variational Shadow Quantum Learning for Classification Model <https://arxiv.org/abs/2012.08288>`_ Reproduction.
+Verwenden Sie die variable Quantenschaltkreis-Schnittstelle von ``pyvqnet.qnn.vqc``, um ein 2-Klassifikationsmodell zu erstellen. Beim Vergleich der Klassifikationsgenauigkeit mit einem neuronalen Netz mit ähnlicher Parametergenauigkeit sind beide ähnlich genau. Allerdings ist die Anzahl der Parameter im Quantenschaltkreis wesentlich geringer als die des klassischen neuronalen Netzes.
+Der Algorithmus basiert auf der Reproduktion des Papers: `Variational Shadow Quantum Learning for Classification Model <https://arxiv.org/abs/2012.08288>`_.
 
-The overall model of VSQL quantum is as follows:
+Das Gesamtmodell des VSQL-Quantenverfahrens ist wie folgt:
 
 .. image:: ./images/vsql_model.PNG
     :width: 600 px
@@ -756,7 +755,7 @@ The overall model of VSQL quantum is as follows:
 
 |
 
-Define the variational quantum circuit model:
+Definieren Sie das Variations-Quantenschaltkreis-Modell:
 
 .. code-block::
 
@@ -803,7 +802,9 @@ Define the variational quantum circuit model:
                     pauli_str += "X" + str(position)+" "
                 D = {pauli_str:1}
                 return D
-            #this reset states to shape of batchsize
+            # Dies setzt die Zustände auf die Form der Batch-Größe zurück
+            self.qm.reset_states(x.shape[0])
+            weights = self.w.reshape([depth + 1, 3, n_qsc])
             self.qm.reset_states(x.shape[0])
             weights = self.w.reshape([depth + 1, 3, n_qsc])
             
@@ -831,7 +832,7 @@ Define the variational quantum circuit model:
             return tensor.cat(f_i,1)#->(Batch,n - n_qsc + 1)
     class QModel(Module):
         """
-        Model of VSQL
+        Modell des VSQL
         """
         def __init__(self):
             super().__init__()
@@ -843,7 +844,7 @@ Define the variational quantum circuit model:
             return x
 
 
-Define the data loading and training process code:
+Definieren Sie den Datenlade- und Trainingsprozess-Code:
 
 .. code-block::
 
@@ -855,13 +856,13 @@ Define the data loading and training process code:
         "test_label": "t10k-labels-idx1-ubyte.gz"
     }
     
-    #GLOBAL VAR
+    #GLOBALE VARIABLEN
     n = 10
     n_qsc = 2
     depth = 1
     def _download(dataset_dir, file_name):
         """
-        Download function for mnist dataset file
+        Lädt MNIST-Daten bei Bedarf herunter.
         """
         file_path = dataset_dir + "/" + file_name
         if os.path.exists(file_path):
@@ -890,7 +891,7 @@ Define the data loading and training process code:
                 digits=np.arange(2),
                 path="examples"):
         """
-        load mnist data
+        Lädt MNIST-Daten.
         """
         from array import array as pyarray
         download_mnist(path)
@@ -930,7 +931,7 @@ Define the data loading and training process code:
             plt.show()
     def run_vsql():
         """
-        VQSL MODEL
+        VSQL-MODELL
         """
         digits = [0, 1]
         x_train, y_train = load_mnist("training_data", digits)
@@ -1235,12 +1236,12 @@ Define the data loading and training process code:
     """
 
 
-QMLP Model Example
+QMLP-Modell-Beispiel
 ====================
 
-The following code implements a quantum multilayer perceptron (QMLP) architecture featuring error-tolerant input embedding, rich nonlinearities, and enhanced variational circuit simulation with parameterized two-qubit entangled gates. `QMLP: An Error-Tolerant Nonlinear Quantum MLP Architecture using Parameterized Two-Qubit Gates <https://arxiv.org/pdf/2206.01345.pdf>`_ .
+Der folgende Code implementiert eine Quanten-Multi-Layer-Perzeptron (QMLP)-Architektur mit fehlertoleranter Eingabeeinbettung, reichhaltigen Nichtlinearitäten und erweiterter Variationsschaltkreis-Simulation mit parametrisierten Zwei-Qubit-Verschränkungsgattern. `QMLP: An Error-Tolerant Nonlinear Quantum MLP Architecture using Parameterized Two-Qubit Gates <https://arxiv.org/pdf/2206.01345.pdf>`_ .
 
-First ,we use `pyvqnet.qnn.vqc` api to define a qnn.
+Zuerst verwenden wir ``pyvqnet.qnn.vqc``-APIs, um ein QNN zu definieren.
 
 .. code-block::
 
@@ -1288,7 +1289,7 @@ First ,we use `pyvqnet.qnn.vqc` api to define a qnn.
             self.qm.reset_states(x.shape[0])
             num_qubits = self.nq
             for i in range(num_qubits):
-                rx(self.qm,i,x[:,[i]])# use[:,i] will get shape of (batch),which is not valid for rx gates.
+                rx(self.qm,i,x[:,[i]])# use[:,i] wird die Form (batch) erhalten, was für rx-Gatter ungültig ist.
             vqc_rot_cir(self.qm,self.w[0:num_qubits*3],range(self.nq))
             vqc_crot_cir(self.qm,self.w[num_qubits*3:num_qubits*4],range(self.nq))
             for i in range(num_qubits):
@@ -1310,7 +1311,7 @@ First ,we use `pyvqnet.qnn.vqc` api to define a qnn.
             result = self.linear(quanutum_result)
             return result
 
-The following code is the training data loading and training process code:
+Der folgende Code ist der Trainingsdatenlade- und Trainingsprozess-Code:
 
 .. code-block::
 
@@ -1324,7 +1325,7 @@ The following code is the training data loading and training process code:
     }
     def _download(dataset_dir, file_name):
         """
-        Download mnist data if needed.
+        Lädt MNIST-Daten bei Bedarf herunter.
         """
         file_path = dataset_dir + "/" + file_name
         if os.path.exists(file_path):
@@ -1347,7 +1348,7 @@ The following code is the training data loading and training process code:
             _download(dataset_dir, v)
     def load_mnist(dataset="training_data", digits=np.arange(2), path="examples"):
         """
-        load mnist data
+        Lädt MNIST-Daten.
         """
         from array import array as pyarray
         download_mnist(path)
@@ -1393,7 +1394,7 @@ The following code is the training data loading and training process code:
         y_train = y_train[idx_train]
         x_train = x_train / 255
         y_train = np.eye(2)[y_train].reshape(-1, 2)
-        # Test Leaving only labels 0 and 1
+        # Test: Nur die Labels 0 und 1 behalten
         idx_test = np.append(
             np.where(y_test == 0)[0][:test_num],
             np.where(y_test == 1)[0][:test_num])
@@ -1445,7 +1446,7 @@ The following code is the training data loading and training process code:
                 n_train += 160
                 # Backward pass
                 loss.backward()
-                # Optimize the weights
+                # Gewichte optimieren
                 optimizer._step()
                 total_loss.append(loss_np)
             print("##########################")
@@ -1500,10 +1501,10 @@ The following code is the training data loading and training process code:
     10 loss is : 0.3220652020
     """
 
-Example of implementing a reinforcement learning algorithm using a quantum classical hybrid neural network model
-==================================================================================================================
+Beispiel zur Implementierung eines Reinforcement-Learning-Algorithmus mit einem hybriden Quanten-Klassik-Neuronalen-Netz
+==========================================================================================================================
 
-Load necessary libraries and define global variables
+Laden Sie die erforderlichen Bibliotheken und definieren Sie globale Variablen
 
 .. code-block::
 
@@ -1555,17 +1556,17 @@ Load necessary libraries and define global variables
     bias = QTensor([[0.0, 0.0, 0.0, 0.0]])
 
 
-The following code are quantum neural network definition:
+Der folgende Code ist die Definition des Quanten-Neuronalen-Netzes:
 
 .. code-block::
 
     def layer_circuit(qm,qubits, weights):
-        # Entanglement block
+        # Verschränkungsblock
         cnot(qm, [qubits[0], qubits[1]])
         cnot(qm, [qubits[1], qubits[2]])
         cnot(qm, [qubits[2], qubits[3]])
     
-        # u3 gate
+        # u3-Gatter
         for i in range(len(qubits)):
             u3(qm,qubits[i],weights[i])
     def encoder(encodings):
@@ -1585,9 +1586,9 @@ The following code are quantum neural network definition:
         def forward(self,x):
             qubits = range(self.num_qubits)
             all_ma = []
-            # x is batch data
+            # x sind Batch-Daten
             for i in range(x.shape[0]):
-                # each data should have unique initial statesvector
+                # Jeder Datenpunkt sollte einen eindeutigen anfänglichen Zustandsvektor haben
                 self.qm.reset_states(1)
                 if x[i]:
                     wires = encoder(x[i])
@@ -1606,7 +1607,7 @@ The following code are quantum neural network definition:
             quanutum_result = self.quantum_circuit(x)
             return quanutum_result
 
-Training code:
+Trainingscode:
 
 .. code-block::
 
@@ -1926,12 +1927,12 @@ Training code:
     # reward 1.0
     """
 
-Example of quantum classical transfer learning
-=====================================================
+Beispiel für Quanten-Klassik-Transferlernen
+=========================================================
 
-A machine learning method called transfer learning can be applied to image classifiers based on hybrid classical quantum networks. Based on VQNet's ``pyvqnet.qnn.vqc`` interface, we implement the following code example.
-Transfer learning is a well-established artificial neural network training technique based on the general intuition that if a pre-trained network is good at solving a given problem, then, with just some additional training, it can also be used to solve a different but related problem.
-Below, we first use a classical neural network CNN to train a classification model, then freeze some layer parameters, and add a variational quantum circuit to form a quantum classical hybrid neural network for transfer learning model training.
+Eine maschinelle Lernmethode namens Transferlernen kann auf Bildklassifikatoren angewendet werden, die auf hybriden klassisch-quantenmechanischen Netzen basieren. Basierend auf der VQNet ``pyvqnet.qnn.vqc``-Schnittstelle implementieren wir das folgende Codebeispiel.
+Transferlernen ist eine etablierte Trainings\-technik für künstliche neuronale Netze, die auf der allgemeinen Intuition basiert, dass ein vor\-trainiertes Netz, wenn es ein gegebenes Problem gut löst, mit nur geringfügigem zusätz\-lichem Training auch zur Lösung eines anderen, aber verwandten Problems verwendet werden kann.
+Im Folgenden trainieren wir zunächst mit einem klassischen neuronalen Netz (CNN) ein Klassifikationsmodell, frieren dann einige Schicht\-parameter ein und fügen einen Variations-Quantenschaltkreis hinzu, um ein hybrides Quanten-Klassik-Netz für das Transferlern\-Training zu bilden.
 
 
 .. code-block::
@@ -1971,12 +1972,12 @@ Below, we first use a classical neural network CNN to train a classification mod
     train_size = 50
     eval_size = 2
     EPOCHES = 3
-    n_qubits = 4  # Number of qubits
-    q_depth = 6  # Depth of the quantum circuit (number of variational layers)
+    n_qubits = 4  # Anzahl der Qubits
+    q_depth = 6  # Tiefe des Quantenschaltkreises (Anzahl der Variationsschichten)
     def q_h_vqc(qm, qubits):
         nq = len(qubits)
         for idx in range(nq):
-            hadamard(qm,qubits[idx])# to get shape of (batch,1) for ry
+            hadamard(qm,qubits[idx])# um die Form (batch,1) für ry zu erhalten
     def q_ry_embed_vqc(qm,param,qubits):
         nq = len(qubits)
         for idx in range(nq):
@@ -2015,7 +2016,7 @@ Below, we first use a classical neural network CNN to train a classification mod
             vqc_quantum_net(self.qm, x, self.w, range(self.nq))
             return self.ma(self.qm)
 
-The following is the code for loading data:
+Der folgende Code dient zum Laden der Daten:
 
 .. code-block::
 
@@ -2028,7 +2029,7 @@ The following is the code for loading data:
     }
     def _download(dataset_dir, file_name):
         """
-        Download dataset
+        Lädt den Datensatz herunter
         """
         file_path = dataset_dir + "/" + file_name
         if os.path.exists(file_path):
@@ -2097,7 +2098,7 @@ Classic neural network training, using ``SGD`` to train all neural network param
 
     class CNN(Module):
         """
-        Classical CNN
+        Klassisches CNN
         """
         def __init__(self):
             super(CNN, self).__init__()
@@ -2142,7 +2143,7 @@ Classic neural network training, using ``SGD`` to train all neural network param
             return x
     def classcal_cnn_model_training():
         """
-        load train data
+        Lädt Trainingsdaten
         """
         x_train, y_train = load_mnist("training_data", digits=np.arange(10))
         x_test, y_test = load_mnist("testing_data", digits=np.arange(10))
@@ -2177,7 +2178,7 @@ Classic neural network training, using ``SGD`` to train all neural network param
                 loss_np = np.array(loss.data)
                 # Backward pass
                 loss.backward()
-                # Optimize the weights
+                # Gewichte optimieren
                 optimizer._step()
                 total_loss.append(loss_np)
             loss_list.append(np.sum(total_loss) / len(total_loss))
@@ -2203,7 +2204,7 @@ Classic neural network training, using ``SGD`` to train all neural network param
             n_eval += 1
         print(f"Eval Accuracy: {correct / n_eval}")
 
-Quantum transfer learning model training, replace the model's `fc3` with the quantum neural network module, and use ``Adam`` to fine-tune with a learning rate of 0.005:
+Quanten-Transferlern-Modelltraining, ersetzen Sie das `fc3` des Modells durch das Quanten-Neuronale-Netzwerk-Modul und verwenden Sie ``Adam`` zur Feinabstimmung mit einer Lernrate von 0,005:
 
 .. code-block::
 
@@ -2211,20 +2212,20 @@ Quantum transfer learning model training, replace the model's `fc3` with the qua
         class Q_DressedQuantumNet(Module):
             def __init__(self):
                 """
-                Definition of the *dressed* layout.
+                Definition des *bekleideten* Layouts.
                 """
                 super().__init__()
                 self.pre_net = Linear(128, n_qubits)
                 self.post_net = Linear(n_qubits, 10)
                 self.qlayer = QNet(n_qubits)
             def forward(self, input_features):
-                # obtain the input features for the quantum circuit
-                # by reducing the feature dimension from 512 to 4
+                # Eingabemerkmale für den Quantenschaltkreis ermitteln,
+                # indem die Merkmalsdimension von 512 auf 4 reduziert wird
                 pre_out = self.pre_net(input_features)
                 q_in = tensor.tanh(pre_out) * np.pi / 2.0
                 q_out_elem = self.qlayer(q_in)
                 result = q_out_elem
-                # return the two-dimensional prediction from the postprocessing layer
+                # Gibt die zweidimensionale Vorhersage aus der Nachbearbeitungsschicht zurück
                 return self.post_net(result)
         x_train, y_train = load_mnist("training_data",
                                     digits=np.arange(10))
@@ -2260,13 +2261,13 @@ Quantum transfer learning model training, replace the model's `fc3` with the qua
                                     shuffle=True):
                 x = x.reshape(-1, 1, 28, 28)
                 optimizer_hybrid.zero_grad()
-                # Forward pass
+                # Vorwärtsdurchlauf
                 output = model_hybrid(x)
-                loss = loss_func(y, output)  # target output
+                loss = loss_func(y, output)  # Zielausgabe
                 loss_np = np.array(loss.data)
-                # Backward pass
+                # Rückwärtsdurchlauf
                 loss.backward()
-                # Optimize the weights
+                # Gewichte optimieren
                 optimizer_hybrid._step()
                 total_loss.append(loss_np)
             loss_list.append(np.sum(total_loss) / len(total_loss))
@@ -2339,13 +2340,13 @@ Quantum transfer learning model training, replace the model's `fc3` with the qua
     QCNN 9 eval loss is : 2.2818415833
     """
 
-Quantum convolutional neural network model based on small samples
-=========================================================================
+Quanten-Convolutional-Neural-Network-Modell basierend auf kleinen Stichproben
+=================================================================================
 
-The following example implements the quantum convolutional neural for small samples in the paper `Generalization in quantum machine learning from few training data <https://www.nature.com/articles/s41467-022-32550-3>`_ network model. For exploring generalization capabilities in quantum machine learning models.
+Das folgende Beispiel implementiert das Quanten-Convolutional-Neural-Network für kleine Stichproben aus dem Paper `Generalization in quantum machine learning from few training data <https://www.nature.com/articles/s41467-022-32550-3>`_. Zur Untersuchung der Generalisierungsfähigkeiten in Quanten-Maschinenlern-Modellen.
 
-To build the convolutional and pooling layers in a quantum circuit, we will follow the QCNN structure proposed in the paper. The former layer will extract local correlations, while the latter allows reducing the dimensionality of the feature vectors. In quantum circuits, a convolutional layer consists of a kernel scanned along the entire image, a unit of two qubits related to adjacent qubits.
-As for the pooling layer, we will use conditional single-qubit units that depend on neighboring qubit measurements. Finally, we use a dense layer to entangle all qubits of the final state using an all-to-all single gate, as shown below:
+Um die Faltungs- und Pooling-Schichten in einem Quantenschaltkreis zu erstellen, folgen wir der im Paper vorgeschlagenen QCNN-Struktur. Die erste Schicht extrahiert lokale Korrelationen, während die zweite die Dimensionalität der Merkmalsvektoren reduziert. In Quantenschaltkreisen besteht eine Faltungsschicht aus einem Kernel, der über das gesamte Bild gescannt wird, einer Einheit von zwei Qubits, die mit benachbarten Qubits verbunden sind.
+Für die Pooling-Schicht verwenden wir bedingte Ein-Qubit-Einheiten, die von Messungen benachbarter Qubits abhängen. Schließlich verwenden wir eine dichte Schicht (Dense Layer), um alle Qubits des Endzustands mit einem All-to-All-Gatter zu verschränken, wie unten gezeigt:
 
 .. image:: ./images/qcnn_structrue.png
    :width: 500 px
@@ -2353,7 +2354,7 @@ As for the pooling layer, we will use conditional single-qubit units that depend
 
 |
 
-Referring to the design method of this quantum convolution layer, we constructed the quantum circuit based on three quantum logic gates IsingXX, IsingYY, and IsingZZ, as shown in the following figure:
+In Anlehnung an die Entwurfsmethode dieser Quantenfaltungsschicht haben wir den Quantenschaltkreis basierend auf drei Quantenlogikgattern IsingXX, IsingYY und IsingZZ aufgebaut, wie in der folgenden Abbildung dargestellt:
 
 .. image:: ./images/Qcnn_circuit.png
    :width: 600 px
@@ -2361,8 +2362,7 @@ Referring to the design method of this quantum convolution layer, we constructed
 
 |
 
-The input data is a handwritten digit data set with dimensions of 8*8. It passes through the data encoding layer and the first layer of convolution, which is composed of IsingXX, IsingYY, IsingZZ, and U3, and then passes through a pooling layer, at 0, 2, The 5-bit qubit goes through a layer of convolution and a layer of pooling, and finally a layer of Random Unitary, which is composed of 15 random unitary matrices, corresponding to the classic Dense Layer. The measurement result is that the handwritten data is 0 and 1. The prediction probability of , the specific code implementation is as follows: Unitary, 
-which consists of 15 random You matrices corresponding to the classical Dense Layer, and the measurements are the predicted probabilities of handwritten data as 0 and 1. The specific code implementation is as follows:
+Bei den Eingabedaten handelt es sich um einen handgeschriebenen Zifferndatensatz mit den Dimensionen 8*8. Er durchläuft die Datenkodierungsschicht und die erste Faltungsschicht, die aus IsingXX, IsingYY, IsingZZ und U3 besteht, dann eine Pooling-Schicht, bei 0, 2, Das 5-Bit-Qubit durchläuft eine Faltungsschicht und eine Pooling-Schicht, und schließlich eine Random-Unitary-Schicht, die aus 15 zufälligen unitären Matrizen besteht und der klassischen Dense Layer entspricht. Das Messergebnis ist die Vorhersagewahrscheinlichkeit der handschriftlichen Daten als 0 und 1. Der spezifische Code ist wie folgt:
 
 .. code-block::
 
@@ -2394,7 +2394,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
     def convolutional_layer(qm, weights, wires, skip_first_layer=True):
 
         n_wires = len(wires)
-        assert n_wires >= 3, "this circuit is too small!"
+        assert n_wires >= 3, "dieser Schaltkreis ist zu klein!"
         for p in [0, 1]:
             for indx, w in enumerate(wires):
                 if indx % 2 == p and indx < n_wires - 1:
@@ -2412,7 +2412,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
         return qm
 
     def pooling_layer(qm, weights, wires):
-        """Adds a pooling layer to a circuit."""
+        """Fügt eine Pooling-Schicht zu einem Schaltkreis hinzu."""
         n_wires = len(wires)
         assert len(wires) >= 2, "this circuit is too small!"
         for indx, w in enumerate(wires):
@@ -2421,14 +2421,14 @@ which consists of 15 random You matrices corresponding to the classical Dense La
                 u3(q_machine=qm, params=weights, wires=wires[indx - 1])
 
     def conv_and_pooling(qm, kernel_weights, n_wires, skip_first_layer=True):
-        """Apply both the convolutional and pooling layer."""
+        """Wendet sowohl die Faltungs- als auch die Pooling-Schicht an."""
 
         convolutional_layer(qm, kernel_weights[:15], n_wires, skip_first_layer=skip_first_layer)
         pooling_layer(qm, kernel_weights[15:], n_wires)
         return qm
 
     def dense_layer(qm, weights, wires):
-        """Apply an arbitrary unitary gate to a specified set of wires."""
+        """Wendet ein beliebiges unitäres Gatter auf eine bestimmte Menge von Drähten an."""
 
         rzz(q_machine=qm,params=weights[0], wires=wires)
         rxx(q_machine=qm,params=weights[1], wires=wires)
@@ -2456,7 +2456,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
 
         VQC_AmplitudeEmbedding(input_feature = features, q_machine=qm)
 
-        # adds convolutional and pooling layers
+        # fügt Faltungs- und Pooling-Schichten hinzu
         for j in range(layers):
             conv_and_pooling(qm, weights[:, j], wires, skip_first_layer=(not j == 0))
             wires = wires[::2]
@@ -2471,7 +2471,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
 
 
     def load_digits_data(num_train, num_test, rng):
-        """Return training and testing data of digits dataset."""
+        """Gibt Trainings- und Testdaten des Zifferndatensatzes zurück."""
         digits = datasets.load_digits()
         features, labels = digits.data, digits.target
 
@@ -2482,7 +2482,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
         # normalize data
         features = features / np.linalg.norm(features, axis=1).reshape((-1, 1))
 
-        # subsample train and test split
+        # Trainings- und Test-split untersampeln
         train_indices = rng.choice(len(labels), num_train, replace=False)
         test_indices = rng.choice(
             np.setdiff1d(range(len(labels)), train_indices), num_test, replace=False
@@ -2513,15 +2513,15 @@ which consists of 15 random You matrices corresponding to the classical Dense La
 
     def train_qcnn(n_train, n_test, n_epochs):
 
-        # load data
+        # Daten laden
         x_train, y_train, x_test, y_test = load_digits_data(n_train, n_test, rng)
 
-        # init weights and optimizer
+        # Gewichte und Optimierer initialisieren
         model = Qcnn_ising()
 
         opti = Adam(model.parameters(), lr=0.01)
 
-        # data containers
+        # Datencontainer
         train_cost_epochs, test_cost_epochs, train_acc_epochs, test_acc_epochs = [], [], [], []
 
         for step in range(n_epochs):
@@ -2537,7 +2537,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
             opti.step()
 
             train_cost_epochs.append(train_cost.to_numpy())
-            # compute accuracy on training data
+            # Genauigkeit auf Trainingsdaten berechnen
 
             # print(tensor.sums(result[tensor.arange(0, len(y_train)), y_train] > 0.5))
             train_acc = tensor.sums(result[tensor.arange(0, len(y_train)), y_train] > 0.5) / result.shape[0]
@@ -2545,7 +2545,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
             # print(f"step {step}, train_acc {train_acc}")
             train_acc_epochs.append(train_acc.to_numpy())
 
-            # compute accuracy and cost on testing data
+            # Genauigkeit und Kosten auf Testdaten berechnen
             test_out = model(QTensor(x_test))
             test_acc = tensor.sums(test_out[tensor.arange(0, len(y_test)), y_test] > 0.5) / test_out.shape[0]
             test_acc_epochs.append(test_acc.to_numpy())
@@ -2580,7 +2580,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
 
         return results_df
 
-    # run training for multiple sizes
+    # Training für mehrere Größen ausführen
     train_sizes = [2, 5, 10, 20, 40, 80]
     results_df = run_iterations(n_train=2)
 
@@ -2588,15 +2588,15 @@ which consists of 15 random You matrices corresponding to the classical Dense La
     for n_train in train_sizes[1:]:
         results_df = pd.concat([results_df, run_iterations(n_train=n_train)])
 
-    save = 0 # 
-    draw = 0 # 
+    save = 0 # Speichern
+    draw = 0 # Zeichnen
 
     if save:
         results_df.to_csv('test_qcnn.csv', index=False)
     import pickle
 
     if draw:
-        # aggregate dataframe
+        # Datenrahmen zusammenfassen
         results_df = pd.read_csv('test_qcnn.csv')
         df_agg = results_df.groupby(["n_train", "step"]).agg(["mean", "std"])
         df_agg = df_agg.reset_index()
@@ -2607,7 +2607,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
 
         generalization_errors = []
 
-        # plot losses and accuracies
+        # Verluste und Genauigkeiten zeichnen
         for i, n_train in enumerate(train_sizes):
             df = df_agg[df_agg.n_train == n_train]
 
@@ -2660,7 +2660,7 @@ which consists of 15 random You matrices corresponding to the classical Dense La
         plt.show()
 
 
-The experimental results after running are shown in the figure below:
+Die experimentellen Ergebnisse nach der Ausführung sind in der folgenden Abbildung dargestellt:
 
 .. image:: ./images/result_qcnn_small.png
    :width: 1000 px
@@ -2669,17 +2669,18 @@ The experimental results after running are shown in the figure below:
 |
 
 
-Quantum kernel function model for handwritten digit recognition
+Quanten-Kernel-Funktionsmodell für handgeschriebene Ziffernerkennung
 =======================================================================
 
-The following example implements quantum kernel function in the paper `Quantum Advantage Seeker with Kernels (QuASK): a software framework to speed up the research in quantum machine learning <https://link.springer.com/article/10.1007/s42484-023-00107-2>`_  to evaluate the performance of quantum kernels based on a handwritten digit data set.
+Das folgende Beispiel implementiert die Quanten-Kernel-Funktion aus dem Paper `Quantum Advantage Seeker with Kernels (QuASK): a software framework to speed up the research in quantum machine learning <https://link.springer.com/article/10.1007/s42484-023-00107-2>`_, um die Leistung von Quanten-Kernels basierend auf einem handgeschriebenen Zifferndatensatz zu bewerten.
 
-This experiment implemented the design of two circuits in the quantum core matrix and quantum core mapping based on crz and ZZFeatureMap logic gates.
-The input data of the algorithm is a handwritten digital data set with dimensions of 8*8. Through PCA dimensionality reduction, the input data is reduced to the corresponding bit dimensions such as 2, 4, and 8. After that, the data is standardized and the training data is obtained. The set and test data are used for training. This implementation can be divided into two, namely quantum kernel matrix and kernel mapping.
-The quantum kernel matrix uses quantum circuits to calculate the similarity of each pair of data, and then forms a matrix and outputs it;
-Quantum kernel mapping calculates the mapping of two sets of data separately and then calculates the similarity matrix of the two sets of data.
+Dieses Experiment implementiert den Entwurf von zwei Schaltkreisen in der Quantenkernmatrix und der Quantenkernabbildung basierend auf crz- und ZZFeatureMap-Logikgattern.
+Die Eingabedaten des Algorithmus sind ein handgeschriebener digitaler Datensatz mit den Dimensionen 8*8. Durch PCA-Dimensionsreduktion werden die Eingabedaten auf die entsprechenden Bitdimensionen wie 2, 4 und 8 reduziert. Danach werden die Daten standardisiert und die Trainingsdaten ermittelt.
+Die Implementierung kann in zwei Teile unterteilt werden: Quantenkernmatrix und Kernabbildung.
+Die Quantenkernmatrix verwendet Quantenschaltkreise, um die Ähnlichkeit jedes Datenpaares zu berechnen, und bildet dann eine Matrix und gibt sie aus;
+Die Quantenkernabbildung berechnet die Abbildung zweier Datensätze getrennt und berechnet dann die Ähnlichkeitsmatrix der beiden Datensätze.
 
-The specific code implementation is as follows:
+Der spezifische Code ist wie folgt:
 
 .. code-block::
 
@@ -2710,50 +2711,50 @@ The specific code implementation is as follows:
     import functools as ft
 
     np.random.seed(42)
-    # data load
+    # Daten laden
     digits = datasets.load_digits(n_class=2)
-    # create lists to save the results
+    # Listen zum Speichern der Ergebnisse erstellen
     gaussian_accuracy = []
     quantum_accuracy = []
     projected_accuracy = []
     quantum_gaussian = []
     projected_gaussian = []
 
-    # reduce dimensionality
+    # Dimensionalität reduzieren
 
     def custom_data_map_func(x):
         """
-        custom data map function
+        Benutzerdefinierte Datenabbildungsfunktion
         """
         coeff = x[0] if x.shape[0] == 1 else ft.reduce(lambda m, n: m * n, x)
         return coeff.reshape([1])
 
     def vqnet_quantum_kernel(X_1, X_2=None):
         """
-        Create a Quantum Kernel given the template written in Pennylane framework
+        Erstellt einen Quanten-Kernel basierend auf der im Pennylane-Framework geschriebenen Vorlage
 
         Args:
-            feature_map: Pennylane template for the quantum feature map
-            X_1: First dataset 
-            X_2: Second dataset
+            feature_map: Pennylane-Vorlage für die Quanten-Merkmalsabbildung
+            X_1: Erster Datensatz
+            X_2: Zweiter Datensatz
 
         Returns:
-            Gram matrix
+            Gram-Matrix
         """
         if X_2 is None:
-            X_2 = X_1  # Training Gram matrix
+            X_2 = X_1  # Trainings-Gram-Matrix
         assert (
             X_1.shape[1] == X_2.shape[1]
         ), "The training and testing data must have the same dimensionality"
         N = X_1.shape[1]
 
-        # create device using JAX
+        # Gerät mit JAX erstellen
 
-        # create projector (measures probability of having all "00...0")
+        # Projektor erstellen (misst die Wahrscheinlichkeit, alle "00...0" zu haben)
         projector = np.zeros((2**N, 2**N))
         projector[0, 0] = 1
         projector = QTensor(projector,dtype=kcomplex128)
-        # define the circuit for the quantum kernel ("overlap test" circuit)
+        # Schaltkreis für den Quanten-Kernel definieren ("Overlap-Test"-Schaltkreis)
 
         def kernel(x1, x2):
             qm = QMachine(N, dtype=kcomplex128)
@@ -2791,19 +2792,19 @@ The specific code implementation is as follows:
 
     def vqnet_projected_quantum_kernel(X_1, X_2=None, params=QTensor([1.0])):
         """
-        Create a Quantum Kernel given the template written in Pennylane framework.
+        Erstellt einen Quanten-Kernel basierend auf der im Pennylane-Framework geschriebenen Vorlage.
 
         Args:
-            feature_map: Pennylane template for the quantum feature map
-            X_1: First dataset
-            X_2: Second dataset
-            params: List of one single parameter representing the constant in the exponentiation
+            feature_map: Pennylane-Vorlage für die Quanten-Merkmalsabbildung
+            X_1: Erster Datensatz
+            X_2: Zweiter Datensatz
+            params: Liste eines einzelnen Parameters, der die Konstante in der Potenzierung darstellt
 
         Returns:
-            Gram matrix
+            Gram-Matrix
         """
         if X_2 is None:
-            X_2 = X_1  # Training Gram matrix
+            X_2 = X_1  # Trainings-Gram-Matrix
         assert (
             X_1.shape[1] == X_2.shape[1]
         ), "The training and testing data must have the same dimensionality"
@@ -2811,14 +2812,14 @@ The specific code implementation is as follows:
 
         def projected_xyz_embedding(X):
             """
-            Create a Quantum Kernel given the template written in Pennylane framework
+            Erstellt einen Quanten-Kernel basierend auf der im Pennylane-Framework geschriebenen Vorlage
 
             Args:
-                embedding: Pennylane template for the quantum feature map
-                X: feature data (matrix)
+                embedding: Pennylane-Vorlage für die Quanten-Merkmalsabbildung
+                X: Merkmalsdaten (Matrix)
 
             Returns:
-                projected quantum feature map X
+            Projizierte Quanten-Merkmalsabbildung X
             """
             N = X.shape[1]
 
@@ -2832,7 +2833,7 @@ The specific code implementation is as follows:
                     + [MeasureAll(obs={f"Z{i}":1})(qm) for i in range(N)]
                 )
 
-            # build the gram matrix
+            # Gram-Matrix erstellen
             X_proj = [proj_feature_map(x) for x in X]
 
             return X_proj
@@ -2841,7 +2842,7 @@ The specific code implementation is as follows:
 
         # print(X_1_proj)
         # print(X_2_proj)
-        # build the gram matrix
+        # Gram-Matrix erstellen
 
         gamma = params[0]
         gram = tensor.zeros(shape=[X_1.shape[0], X_2.shape[0]],dtype=kfloat64)
@@ -2889,7 +2890,7 @@ The specific code implementation is as follows:
         x_tr_reduced = pca.transform(x_tr)
         x_te_reduced = pca.transform(x_te)
 
-        # normalize and scale
+        # normalisieren und skalieren
 
         std = StandardScaler().fit(x_tr_reduced)
         x_tr_norm = std.transform(x_tr_reduced)
@@ -2900,7 +2901,7 @@ The specific code implementation is as follows:
         x_tr_norm = minmax.transform(x_tr_norm)
         x_te_norm = minmax.transform(x_te_norm)
 
-        # select only 100 training and 20 test data
+        # nur 100 Trainings- und 20 Testdaten auswählen
 
         tr_size = 100
         x_tr = x_tr_norm[:tr_size]
@@ -2944,33 +2945,33 @@ The specific code implementation is as follows:
     # qubits 8, projected_accuracy 0.99
 
 
-Quantum Natural Gradient Interface Example
+Beispiel für Quantum Natural Gradient Interface
 ===================================================================
-Quantum machine learning models generally use gradient descent to optimize parameters in variable quantum logic circuits. The formula for the classical gradient descent method is as follows:
+Quanten-Maschinenlern-Modelle verwenden im Allgemeinen den Gradientenabstieg, um Parameter in variablen Quantenlogikschaltkreisen zu optimieren. Die Formel für die klassische Gradientenabstiegsmethode lautet wie folgt:
 
 .. math:: \theta_{t+1} = \theta_t -\eta \nabla \mathcal{L}(\theta),
 
-Essentially, at each iteration, we calculate the direction of the steepest gradient descent in the parameter space as the direction of parameter change.
-In any direction in the space, the speed of descent in the local range is not as fast as the negative gradient direction.
-The derivation of the direction of the steepest descent in different spaces depends on the norm of the differential of the parameter - the distance metric. The distance metric plays a core role here.
-Different metrics will result in different directions of the steepest descent. For the Euclidean space where the parameters are located in the classical optimization problem, the direction of the steepest descent is the negative gradient direction.
-Even so, at each step of parameter optimization, the parameter space changes as the loss function changes with the parameters. This makes it possible to find another, better distance norm.
+Im Wesentlichen berechnen wir bei jeder Iteration die Richtung des steilsten Gradientenabstiegs im Parameterraum als Richtung der Parameteränderung.
+In jeder Richtung des Raums ist die Abstiegs\-geschwindigkeit im lokalen Bereich nicht so schnell wie die negative Gradientenrichtung.
+Die Ableitung der Richtung des steilsten Abstiegs in verschiedenen Räumen hängt von der Norm des Differentials des Parameters ab - der Distanzmetrik. Die Distanzmetrik spielt hier eine zentrale Rolle.
+Verschiedene Metriken führen zu unterschiedlichen Richtungen des steilsten Abstiegs. Für den euklidischen Raum, in dem sich die Parameter im klassischen Optimierungsproblem befinden, ist die Richtung des steilsten Abstiegs die negative Gradientenrichtung.
+Dennoch ändert sich der Parameterraum bei jedem Schritt der Parameteroptimierung, da sich die Verlustfunktion mit den Parametern ändert. Dies ermöglicht es, eine andere, bessere Distanznorm zu finden.
 
-`Quantum Natural Gradient Method <https://arxiv.org/abs/1909.02108>`_ Borrowing the concept of the classical Natural Gradient Method `Amari (1998) <https://www.mitpressjournals.org/doi/abs/10.1162/089976698300017746>`__ ,
-we instead view the optimization problem as the probability distribution of possible output values ​​given an input (i.e., maximum likelihood estimation), and a better approach is to perform gradient descent in the distribution space, which is dimensionless and invariant with respect to parameterization. Therefore, regardless of the parameterization, each optimization step always chooses the best step size for each parameter.
-In quantum machine learning tasks, the quantum state space has a unique invariant metric tensor called the Fubini-Study metric tensor :math:`g_{ij}`.
-This tensor transforms the steepest descent in the parameter space of the quantum circuit into the steepest descent in the distribution space.
-The formula of quantum natural gradient is as follows:
+`Quantum Natural Gradient Method <https://arxiv.org/abs/1909.02108>`_ In Anlehnung an das Konzept der klassischen Natural Gradient Method `Amari (1998) <https://www.mitpressjournals.org/doi/abs/10.1162/089976698300017746>`__,
+betrachten wir das Optimierungsproblem stattdessen als die Wahrscheinlichkeitsverteilung möglicher Ausgabewerte bei einer gegebenen Eingabe (d.h. Maximum-Likelihood-Schätzung). Ein besserer Ansatz ist die Durchführung des Gradientenabstiegs im Verteilungsraum, der dimensionslos und invariant gegenüber der Parametrisierung ist. Daher wählt jeder Optimierungsschritt unabhängig von der Parametrisierung immer die beste Schrittgröße für jeden Parameter.
+Bei Quanten-Maschinenlern-Aufgaben hat der Quantenzustandsraum einen einzigartigen invarianten metrischen Tensor, den Fubini-Study-Metrik-Tensor :math:`g_{ij}`.
+Dieser Tensor transformiert den steilsten Abstieg im Parameterraum des Quantenschaltkreises in den steilsten Abstieg im Verteilungsraum.
+Die Formel des Quantum Natural Gradient lautet wie folgt:
 
 .. math:: \theta_{t+1} = \theta_t - \eta g^{+}(\theta_t)\nabla \mathcal{L}(\theta),
 
-where :math:`g^{+}` is the pseudo-inverse.
+wobei :math:`g^{+}` die Pseudoinverse ist.
 
-Below we implement an example of quantum natural gradient optimization of a quantum variational circuit parameter based on VQNet, where ``wrapper_calculate_qng`` is a decorator that needs to be added to the forward function of the model to be calculated for quantum natural gradient.
+Im Folgenden implementieren wir ein Beispiel für die Quantum Natural Gradient Optimization eines Quanten-Variationsschaltkreis-Parameters basierend auf VQNet, wobei ``wrapper_calculate_qng`` ein Dekorator ist, der zur Forward-Funktion des zu berechnenden Modells für den Quantum Natural Gradient hinzugefügt werden muss.
 
-Through the quantum natural gradient optimizer of ``pyvqnet.qnn.vqc.QNG``, the parameters of the `Parameter` type registered by the model can be optimized.
+Durch den Quantum Natural Gradient Optimizer von ``pyvqnet.qnn.vqc.QNG`` können die Parameter vom Typ `Parameter`, die vom Modell registriert wurden, optimiert werden.
 
-Our goal is to minimize the expectation of the following quantum variational circuit. It can be seen that it contains two layers of 3 quantum parameter-containing logic gates. The first layer is composed of RZ, RY logic gates on 0 and 1 bits, and the second layer is composed of RX logic gates on 2 bits.
+Unser Ziel ist es, den Erwartungswert des folgenden Quanten-Variationsschaltkreises zu minimieren. Man sieht, dass er zwei Schichten mit 3 quantenparameterhaltigen Logikgattern enthält. Die erste Schicht besteht aus RZ-, RY-Logikgattern auf den Bits 0 und 1, und die zweite Schicht besteht aus RX-Logikgattern auf Bit 2.
 
 
 .. image:: ./images/qng_all_cir.png
@@ -3011,19 +3012,19 @@ Our goal is to minimize the expectation of the following quantum variational cir
             vqc.ry(q_machine=self.qm, wires=1, params=np.pi / 3)
             vqc.ry(q_machine=self.qm, wires=2, params=np.pi / 7)
 
-            # V0(theta0, theta1): Parametrized layer 0
+            # V0(theta0, theta1): Parametrisierte Schicht 0
             vqc.rz(q_machine=self.qm, wires=0, params=self.p[0])
             vqc.rz(q_machine=self.qm, wires=1, params=self.p[1])
 
-            # W1: non-parametrized gates
+            # W1: Nicht-parametrisierte Gatter
             vqc.cnot(q_machine=self.qm, wires=[0, 1])
             vqc.cnot(q_machine=self.qm, wires=[1, 2])
 
-            # V_1(theta2, theta3): Parametrized layer 1
+            # V_1(theta2, theta3): Parametrisierte Schicht 1
             vqc.ry(q_machine=self.qm, params=self.p[2], wires=1)
             vqc.rx(q_machine=self.qm, params=self.p[3], wires=2)
 
-            # W2: non-parametrized gates
+            # W2: Nicht-parametrisierte Gatter
             vqc.cnot(q_machine=self.qm, wires=[0, 1])
             vqc.cnot(q_machine=self.qm, wires=[1, 2])
 
@@ -3048,25 +3049,25 @@ Our goal is to minimize the expectation of the following quantum variational cir
             vqc.ry(q_machine=self.qm, wires=1, params=np.pi / 3)
             vqc.ry(q_machine=self.qm, wires=2, params=np.pi / 7)
 
-            # V0(theta0, theta1): Parametrized layer 0
+            # V0(theta0, theta1): Parametrisierte Schicht 0
             vqc.rz(q_machine=self.qm, wires=0, params=self.p[0])
             vqc.rz(q_machine=self.qm, wires=1, params=self.p[1])
 
-            # W1: non-parametrized gates
+            # W1: Nicht-parametrisierte Gatter
             vqc.cnot(q_machine=self.qm, wires=[0, 1])
             vqc.cnot(q_machine=self.qm, wires=[1, 2])
 
-            # V_1(theta2, theta3): Parametrized layer 1
+            # V_1(theta2, theta3): Parametrisierte Schicht 1
             vqc.ry(q_machine=self.qm, params=self.p[2], wires=1)
             vqc.rx(q_machine=self.qm, params=self.p[3], wires=2)
 
-            # W2: non-parametrized gates
+            # W2: Nicht-parametrisierte Gatter
             vqc.cnot(q_machine=self.qm, wires=[0, 1])
             vqc.cnot(q_machine=self.qm, wires=[1, 2])
 
             return self.ma(q_machine=self.qm)
 
-Using the SGD classical gradient descent method as a baseline to compare the changes in loss values ​​of the two under the same number of iterations, it can be seen that using quantum natural gradient, the loss function decreases faster.
+Unter Verwendung der klassischen SGD-Gradientenabstiegsmethode als Basislinie zum Vergleich der Änderungen der Verlustwerte beider unter der gleichen Anzahl von Iterationen ist zu sehen, dass die Verlustfunktion bei Verwendung des Quantum Natural Gradient schneller abnimmt.
 
 .. code-block::
 
@@ -3119,22 +3120,22 @@ Using the SGD classical gradient descent method as a baseline to compare the cha
 
 
 
-Quantum Singular Value Decomposition
+Quanten-Singulärwertzerlegung (QSVD)
 ===============================================================================
 
-The following example implements the algorithm in the paper  `Variational Quantum Singular Value Decomposition <https://arxiv.org/abs/2006.02336>`_. 
+Das folgende Beispiel implementiert den Algorithmus aus dem Paper `Variational Quantum Singular Value Decomposition <https://arxiv.org/abs/2006.02336>`_.
 
-Singular Value Decomposition(abbreviation ``SVD``) is an important matrix decomposition in linear algebra. As a generalization of eigendecomposition on matrices of any dimension, 
-it is widely used in the field of machine learning and is often used in matrix compression, recommendation systems, and natural language processing.
+Die Singulärwertzerlegung (Abkürzung ``SVD``) ist eine wichtige Matrixzerlegung in der linearen Algebra. Als Verallgemeinerung der Eigenwertzerlegung auf Matrizen beliebiger Dimension,
+wird sie häufig im Bereich des maschinellen Lernens eingesetzt, insbesondere bei der Matrixkompression, Empfehlungssystemen und der natürlichen Sprachverarbeitung.
 
-Variational Quantum Singular Value Decomposition(abbreviation ``QSVD``) convert SVD into an optimization problem and solve it through variational quantum circuits.
+Die Variations-Quanten-Singulärwertzerlegung (Abkürzung ``QSVD``) wandelt die SVD in ein Optimierungsproblem um und löst es durch Variations-Quantenschaltkreise.
 
-In the paper, the matrix singular value decomposition is decomposed into four steps to solve:
+Im Paper wird die Matrix-Singulärwertzerlegung in vier Schritte unterteilt:
 
-    1. Input matrix with decomposition :math:`\mathbf{M}`, the order you want to compress to :math:`\mathbf{T}`, weights :math:`\mathbf{W}`, the unitary matrix of parameters :math:`\mathbf{U}(\theta)` and :math:`\mathbf{V}(\phi)`
-    2. Build a quantum neural network to estimate singular values :math:`m_j = Re\langle\psi_j\mid U(\theta)^\dagger M V(\phi) \mid\psi_j\rangle`, and maximize the sum of weighted singular values :math:`L(\theta, \phi) = \sum_{j=1}^{T} q_j \cdot \operatorname{Re}\langle\psi_j \mid U(\theta)^\dagger MV(\phi) \mid \psi_j\rangle`, weighting is to arrange the calculated singular values from large to small.
-    3. Read out the parameter value when maximizing and calculate :math:`\mathbf{U}(\alpha^{*})` and :math:`\mathbf{V}(\beta^{*})`
-    4. Output result: Singular Value :math:`m_1, \dots, m_r`, and singular matrix :math:`\mathbf{U}(\alpha^{*})` and :math:`\mathbf{V}(\beta^{*})`
+    1. Eingabematrix zur Zerlegung :math:`\mathbf{M}`, die Ordnung, auf die komprimiert werden soll :math:`\mathbf{T}`, Gewichte :math:`\mathbf{W}`, die unitäre Matrix der Parameter :math:`\mathbf{U}(\theta)` und :math:`\mathbf{V}(\phi)`
+    2. Aufbau eines Quanten-Neuronalen-Netzes zur Schätzung der Singulärwerte :math:`m_j = Re\langle\psi_j\mid U(\theta)^\dagger M V(\phi) \mid\psi_j\rangle`, und Maximierung der Summe der gewichteten Singulärwerte :math:`L(\theta, \phi) = \sum_{j=1}^{T} q_j \cdot \operatorname{Re}\langle\psi_j \mid U(\theta)^\dagger MV(\phi) \mid \psi_j\rangle`. Die Gewichtung dient dazu, die berechneten Singulärwerte von groß nach klein anzuordnen.
+    3. Auslesen des Parameterwerts bei Maximierung und Berechnung von :math:`\mathbf{U}(\alpha^{*})` und :math:`\mathbf{V}(\beta^{*})`
+    4. Ergebnisausgabe: Singulärwerte :math:`m_1, \dots, m_r` und singuläre Matrizen :math:`\mathbf{U}(\alpha^{*})` und :math:`\mathbf{V}(\beta^{*})`
 
 .. image:: ./images/qsvd.png
    :width: 700 px
@@ -3142,7 +3143,7 @@ In the paper, the matrix singular value decomposition is decomposed into four st
 
 |
 
-The pseudo code is as follows:
+Der Pseudocode lautet wie folgt:
 
 .. image:: ./images/qsvd_algorithm.png
    :width: 700 px
@@ -3150,7 +3151,7 @@ The pseudo code is as follows:
 
 |
 
-The quantum circuit design is as follows:
+Das Quantenschaltkreis-Design ist wie folgt:
 
 .. code-block::
 
@@ -3161,7 +3162,7 @@ The quantum circuit design is as follows:
     q2: ──RY(v_theta2)────RZ(v_theta5)─────────X────●────RY(v_theta8)────RZ(v_theta11)─────────X────●────RY(v_theta14)────RZ(v_theta17)─────────X────●────RY(v_theta20)────RZ(v_theta23)─────────X────●────RY(v_theta26)────RZ(v_theta29)─────────X────●────RY(v_theta32)────RZ(v_theta35)─────────X────●────RY(v_theta38)────RZ(v_theta41)─────────X────●────RY(v_theta44)────RZ(v_theta47)─────────X────●────RY(v_theta50)────RZ(v_theta53)─────────X────●────RY(v_theta56)────RZ(v_theta59)─────────X────●────RY(v_theta62)────RZ(v_theta65)─────────X────●────RY(v_theta68)────RZ(v_theta71)─────────X────●────RY(v_theta74)────RZ(v_theta77)─────────X────●────RY(v_theta80)────RZ(v_theta83)─────────X────●────RY(v_theta86)────RZ(v_theta89)─────────X────●────RY(v_theta92)────RZ(v_theta95)─────────X────●────RY(v_theta98)────RZ(v_theta101)─────────X────●────RY(v_theta104)────RZ(v_theta107)─────────X────●────RY(v_theta110)────RZ(v_theta113)─────────X────●────RY(v_theta116)────RZ(v_theta119)─────────X────●──
 
 
-The following is the specific QSVD implementation code:
+Der folgende Code ist die spezifische QSVD-Implementierung:
 
 .. code-block::
 
@@ -3182,39 +3183,39 @@ The following is the specific QSVD implementation code:
     import pyvqnet
     from pyvqnet.qnn.vqc import ry, QMachine, cnot, rz
 
-    n_qubits = 3  # qbits number
-    cir_depth = 20  # circuit depth
+    n_qubits = 3  # Anzahl der Qubits
+    cir_depth = 20  # Schaltkreistiefe
     N = 2**n_qubits
-    rank = 8  # learning rank
+    rank = 8  # Lernrang
     step = 7
-    ITR = 200  # iterations
-    LR = 0.02  # learning rate
+    ITR = 200  # Iterationen
+    LR = 0.02  # Lernrate
 
     if step == 0:
         weight = QTensor(np.ones(rank))
     else:
         weight = QTensor(np.arange(rank * step, 0, -step),requires_grad=True,dtype=kfloat32).reshape((-1,1))
 
-    # Define random seed
+    # Zufälligen Startwert festlegen
     np.random.seed(42)
 
     def mat_generator():
         '''
-        Generate a random complex matrix
+        Erzeugt eine zufällige komplexe Matrix
         '''
         matrix = np.random.randint(
             10, size=(N, N)) + 1j * np.random.randint(10, size=(N, N))
         return matrix
 
 
-    # Generate matrix M which will be decomposed
+    # Erzeuge Matrix M, die zerlegt werden soll
     M = mat_generator()
 
-    # m_copy is generated to error analysis
+    # m_copy wird für die Fehleranalyse erstellt
     m_copy = np.copy(M)
 
-    # Print M
-    print('Random matrix M is: ')
+    # M ausgeben
+    print('Zufällige Matrix M ist: ')
     print(M)
 
     # Get SVD results
@@ -3330,14 +3331,14 @@ The following is the specific QSVD implementation code:
         model_para = pyvqnet.utils.storage.load_parameters(f"vqc_svd_{ITR}.model")
         model.load_state_dict(model_para)
         qm_u_list, qm_v_list, result = model()
-        # U is qm_u_list
-        # V is qm_v_list
+        # U ist qm_u_list
+        # V ist qm_v_list
         print(result)
 
     if __name__=="__main__":
         run()
     
-loss and singular value results:
+Ergebnisse der Verlust- und Singulärwerte:
 
 .. code-block::
 
@@ -3363,13 +3364,13 @@ loss and singular value results:
     [[[54.829308]], [[19.001402]], [[14.423045]], [[12.262444]], [[10.100731]], [[7.5507345]], [[5.6469355]], [[-0.4976197]]]
 
 
-Optimization of variational quantum circuits
+Optimierung von Variations-Quantenschaltkreisen
 ====================================================
 
-VQNet currently provides 4 ways to optimize quantum logic gates in user-defined variational quantum circuits: fusion of revolving gates (commute_controlled_right, commute_controlled_left), controlled gate exchange (commute_controlled), and single-bit logic gate fusion (single_qubit_ops_fuse).
+VQNet bietet derzeit 4 Möglichkeiten zur Optimierung von Quantenlogikgattern in benutzerdefinierten Variations-Quantenschaltkreisen: Fusion von Drehgattern (commute_controlled_right, commute_controlled_left), kontrollierter Gatteraustausch (commute_controlled) und Ein-Bit-Logikgatter-Fusion (single_qubit_ops_fuse).
 
-Here, the `wrapper_compile` decorator is used to decorate the model forward function defined by `QModule`, and the three rules of `commute_controlled_right`, `merge_rotations`, and `single_qubit_ops_fuse` will be called continuously by default for line optimization.
-Finally, through the `op_history_summary` interface, the `op_history` information generated after running the `QModule` forward function is compared.
+Hier wird der `wrapper_compile`-Dekorator verwendet, um die von `QModule` definierte Modell-Forward-Funktion zu dekorieren. Die drei Regeln `commute_controlled_right`, `merge_rotations` und `single_qubit_ops_fuse` werden standardmäßig kontinuierlich für die Linienoptimierung aufgerufen.
+Schließlich wird über die `op_history_summary`-Schnittstelle der nach dem Ausführen der `QModule`-Forward-Funktion erzeugte `op_history`-Vergleich durchgeführt.
 
 
 .. code-block::
@@ -3564,20 +3565,19 @@ Finally, through the `op_history_summary` interface, the `op_history` informatio
     # total parameters: 27
     # #################################################
 
-Quantum dropout implementation
+Implementierung von Quantum Dropout
 ===================================
 
-Neural networks (NNs) typically require highly flexible models with a large number of trainable parameters in order to learn a specific basis function (or data distribution). However, it is not enough to be able to learn with low in-sample error; the ability to generalise is also very important.
+Neuronale Netze (NNs) benötigen typischerweise hochflexible Modelle mit einer großen Anzahl trainierbarer Parameter, um eine bestimmte Basisfunktion (oder Datenverteilung) zu erlernen. Es reicht jedoch nicht aus, nur mit niedrigem In-Sample-Fehler lernen zu können; die Fähigkeit zur Generalisierung ist ebenfalls sehr wichtig.
 
-Highly expressive models can suffer from overfitting problems, meaning that they are trained too well on the training data and as a result perform poorly on new unseen data. This occurs because the model learns the noise in the training data rather than the underlying patterns that can be generalised to new data.
+Hochausdrucksstarke Modelle können unter Überanpassungsproblemen leiden, was bedeutet, dass sie zu gut auf den Trainingsdaten trainiert werden und daher bei neuen, unbekannten Daten schlecht abschneiden. Dies geschieht, weil das Modell das Rauschen in den Trainingsdaten lernt, anstatt die zugrundeliegenden Muster, die auf neue Daten verallgemeinert werden können.
+Dropout ist eine gängige Technik in klassischen tiefen neuronalen Netzen (DNNs), um eine Überspezialisierung von Berechnungseinheiten zu verhindern und das Risiko der Überanpassung zu verringern.
 
-Dropout is a common technique in classical deep neural networks (DNNs) to prevent overspecialisation of computational units and reduce the risk of overfitting.
+Das Paper `A General Approach to Dropout in Quantum Neural Networks` zeigt, dass die Verwendung von überparametrisierten QNN-Modellen die Optimierungslandschaft verändern kann, indem eine große Anzahl lokaler Minima eliminiert wird. Einerseits macht eine Erhöhung der Parameterzahl das Training schneller und einfacher, andererseits kann dies dazu führen, dass das Modell die Daten überanpasst. Dies hängt auch eng mit der Neukodierung klassischer Daten zur Erzielung von Berechnungsnichtlinearität zusammen. Aus diesem Grund könnten wir, inspiriert von klassischen DNNs, in Betracht ziehen, eine Art "Dropout"-Technik auf QNNs anzuwenden. Dies entspricht dem zufälligen Auslassen einiger (Gruppen von) parametrisierten Gattern während des Trainings, um eine bessere Generalisierung zu erreichen.
 
-The paper `A General Approach to Dropout in Quantum Neural Networks` shows that the use of over-parameterised QNN models can change the optimisation landscape by eliminating a large number of local minima. On the one hand, an increase in the number of parameters makes training faster and easier, but on the other hand, it may cause the model to overfit the data. This is also closely related to recoding classical data to achieve computational nonlinearity. Because of this, inspired by classical DNNs, we could consider applying some kind of "dropout" technique to QNNs. This is equivalent to randomly dropping some (groups of) parameterised gates during training to achieve better generalisation.
+Im Folgenden zeige ich anhand des folgenden Beispiels, wie Quantum Dropout verwendet werden kann, um Überanpassungsprobleme beim Training von Quanten-Maschinenlern-Algorithmen zu vermeiden. Dabei setzen wir den Parameter des Logikgatters des Dropout auf 0, um den Dropout durchzuführen.
 
-Next I will show how to use quantum dropout to avoid overfitting problems in the training of quantum machine learning algorithms by the following sample, where we set the parameter of the logic gate of the dropout to 0 to perform the dropout.
-
-import the appropriate package
+Importieren Sie die entsprechenden Pakete
 
 .. code-block::
 
@@ -3591,17 +3591,17 @@ import the appropriate package
     from sklearn.preprocessing import MinMaxScaler
     from pyvqnet.nn import Parameter
 
-Set related global variables
+Legen Sie die zugehörigen globalen Variablen fest
 
 .. code-block::
 
-    # Set the number of layers of quantum circuits and other related global variables
+    # Anzahl der Schichten von Quantenschaltkreisen und andere zugehörige globale Variablen festlegen
     n_qubits = 5
     inner_layers = 3
     layers = 3
     params_per_layer = n_qubits * inner_layers 
 
-    # Set parameters related to model training
+    # Parameter für das Modelltraining festlegen
     epochs = 700
     n_run = 3
     seed =1234
@@ -3610,12 +3610,12 @@ Set related global variables
     test_history = {}
     opt_params = {}
 
-Building quantum circuits
+Aufbau von Quantenschaltkreisen
 
 .. code-block::
 
     def embedding(x, wires, qmachine):
-        # Encodes the datum multiple times in the register,
+        # Kodiert das Datum mehrfach im Register
         for i in wires:
             ry(qmachine, i, tensor.asin(x))
         for i in wires:
@@ -3626,20 +3626,20 @@ Building quantum circuits
         theta, wires, qmachine, rotations=[ry, rz, rx], entangler=cnot, keep_rotation=None
     ):
 
-        # the length of `rotations` defines the number of inner layers
+        # Die Länge von `rotations` definiert die Anzahl der inneren Schichten
         N = len(wires)
         wires = list(wires)
 
         counter = 0
-        # keep_rotations contains a list per each inner_layer
+        # keep_rotations enthält eine Liste pro inner_layer
         for rots in keep_rotation:
-            # we cicle over the elements of the lists inside keep_rotation
+            # Wir durchlaufen die Elemente der Listen in keep_rotation
             for qb, keep_or_drop in enumerate(rots):
-                rot = rotations[counter]  # each inner layer can have a different rotation
+                rot = rotations[counter]  # Jede innere Schicht kann eine andere Rotation haben
 
                 angle = theta[counter * N + qb]
-                # conditional statement implementing dropout
-                # if `keep_or_drop` is negative the rotation is dropped
+                # Bedingte Anweisung zur Implementierung von Dropout
+                # Wenn `keep_or_drop` negativ ist, wird die Rotation ausgelassen
                 if keep_or_drop < 0:
                     angle_drop = tensor.QTensor(0.0)
                 else:
@@ -3665,7 +3665,7 @@ Building quantum circuits
         
         return qm
 
-Generate a dropout list to randomly dropout the logic gates in the quantum line based on the dropout list
+Erstellen einer Dropout-Liste, um basierend auf der Dropout-Liste zufällig Logikgatter im Quantenschaltkreis auszulassen
 
 .. code-block::
 
@@ -3675,31 +3675,31 @@ Generate a dropout list to randomly dropout the logic gates in the quantum line 
         for lay in range(layers):
             out = np.random.choice(np.array(range(2)), p=np.array([1 - layer_drop_rate, layer_drop_rate]))
 
-            if out == 1:  # Layers to dropout
+            if out == 1:  # Schichten, die ausgelassen werden sollen
                 drop_layers.append(lay)
 
         keep_rot = []
 
         for i in range(layers):
-            # Each list is divided into layers
-            # This is related to the QNN we use
+            # Jede Liste ist in Schichten unterteilt
+            # Dies hängt mit dem von uns verwendeten QNN zusammen
             keep_rot_layer = [list(range(n_qubits)) for j in range(1, inner_layers + 1)]
 
-            if i in drop_layers:  # If you need to apply dropout at this level
+            if i in drop_layers:  # Wenn Dropout auf dieser Ebene angewendet werden muss
                 keep_rot_layer = [] 
                 inner_keep_r = [] 
                 for param in range(params_per_layer):
-                    # Each rotation has a probability p=rot_drop_rate to be dropped within the layer
-                    # Based on this probability, we sample for each parameter (rotation)
-                    # Whether it needs to be discarded
+                    # Jede Rotation hat eine Wahrscheinlichkeit p=rot_drop_rate, innerhalb der Schicht ausgelassen zu werden
+                    # Basierend auf dieser Wahrscheinlichkeit sampeln wir für jeden Parameter (Rotation)
+                    # Ob er verworfen werden muss
                     out = np.random.choice(np.array(range(2)), p=np.array([1 - rot_drop_rate, rot_drop_rate]))
 
-                    if out == 0:  # If reservations are required
+                    if out == 0:  # Wenn Beibehaltung erforderlich ist
                         inner_keep_r.append(param % n_qubits)  
-                    else:  # If the rotation needs to be discarded
+                    else:  # Wenn die Rotation verworfen werden muss
                         inner_keep_r.append(-1)
 
-                    if param % n_qubits == n_qubits - 1:  # If it's the last quantum bit of the register
+                    if param % n_qubits == n_qubits - 1:  # Wenn es das letzte Qubit des Registers ist
                         keep_rot_layer.append(inner_keep_r)
                         inner_keep_r = []
 
@@ -3707,7 +3707,7 @@ Generate a dropout list to randomly dropout the logic gates in the quantum line 
 
         return np.array(keep_rot)
 
-Adding quantum lines to a quantum neural network module
+Hinzufügen von Quantenschaltkreisen zu einem Quanten-Neuronalen-Netzwerk-Modul
 
 .. code-block::
 
@@ -3725,22 +3725,22 @@ Adding quantum lines to a quantum neural network module
             x = self.ma(qm)
             return x
 
-Making the sin dataset
+Erstellen des Sinus-Datensatzes
 
 .. code-block::
 
     def make_sin_dataset(dataset_size=100, test_size=0.4, noise_value=0.4, plot=False):
-        """1D regression problem y=sin(x*\pi)"""
-        # x-axis
+        """1D-Regressionsproblem y=sin(x*\pi)"""
+        # x-Achse
         x_ax = np.linspace(-1, 1, dataset_size)
         y = [[np.sin(x * np.pi)] for x in x_ax]
         np.random.seed(123)
-        # noise vector
+        # Rauschvektor
         noise = np.array([np.random.normal(0, 0.5, 1) for i in y]) * noise_value
         X = np.array(x_ax)
-        y = np.array(y + noise)  # apply noise
+        y = np.array(y + noise)  # Rauschen anwenden
 
-        # split the dataset
+        # Datensatz aufteilen
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=test_size, random_state=40, shuffle=True
         )
@@ -3760,7 +3760,7 @@ Making the sin dataset
     y = scaler.fit_transform(y)
     y_test = scaler.transform(y_test)
 
-    # reshaping for computation
+    # Umformen für die Berechnung
     y = y.reshape(-1,)
     y_test = y_test.reshape(-1,)
 
@@ -3790,7 +3790,7 @@ Making the sin dataset
 
 |
 
-Model training code
+Modell-Trainingscode
 
 .. code-block::
 
@@ -3802,11 +3802,11 @@ Model training code
         for tmp_seed in range(seed, seed + n_run):
             
             rng = np.random.default_rng(tmp_seed)
-            assert len(X.shape) == 2  # X must be a matrix
-            assert len(y.shape) == 1  # y must be an array
-            assert X.shape[0] == y.shape[0]  # compatibility check
+            assert len(X.shape) == 2  # X muss eine Matrix sein
+            assert len(y.shape) == 1  # y muss ein Array sein
+            assert X.shape[0] == y.shape[0]  # Kompatibilitätsprüfung
 
-            # lists for saving single run training and test cost trend
+            # Listen zum Speichern des Trainings- und Testkostenverlaufs eines einzelnen Durchlaufs
             costs = []
             test_costs = []
             model = QNN(layers)
@@ -3870,36 +3870,35 @@ Model training code
     ## 0.3-0.2  run 2 - epoch 695/700 --- Train cost:0.392473 --- Test cost:0.20580922
     ## 0.7-0.7  run 0 - epoch 695/700 --- Train cost:0.3922218 --- Test cost:0.2057379
 
-Overfitting can be prevented by randomly dropping out the parameters of the model during training, but the probability of dropping out needs to be designed appropriately, otherwise it can also lead to poor model training results.
+Überanpassung kann verhindert werden, indem die Parameter des Modells während des Trainings zufällig ausgelassen werden. Die Wahrscheinlichkeit des Dropouts muss jedoch angemessen gestaltet werden, da sonst auch schlechte Modelltrainingsergebnisse auftreten können.
 
 
-Quantum Circuit Boltzmann Machine
-===================================
+Quanten-Schaltkreis-Boltzmann-Maschine (QCBM)
+=============================================
 
-
-Quantum Circuit Boltzmann Machine Boltzmann machines have shown promise in unsupervised generative modeling, aiming to learn and represent probability distributions over classical datasets using purely quantum states. They have gained popularity due to their high expressive power. Boltzmann machines exploit the probabilistic interpretation of quantum wave functions, representing probability distributions using purely quantum states rather than thermal distributions (as in Boltzmann machines). This enables Boltzmann machines to directly generate samples by projecting measurements on qubits, offering a faster alternative to Gibbs sampling.
-Given a dataset :math:`\mathcal{D} = \{x\}` containing independent and identically distributed samples from an unknown target distribution :math:`\pi(x)`, QCBM is used to generate samples that are highly similar to the target distribution. QCBM transforms the input product state :math:`|\textbf{0} \rangle` into a parameterized quantum state :math:`|\psi_{\boldsymbol{\theta}}\rangle`. Measuring this output state in a computational basis produces a bit sample :math:`x \sim p_\theta(x)`.
+Quanten-Schaltkreis-Boltzmann-Maschinen (Quantum Circuit Boltzmann Machines) haben sich im unüberwachten generativen Modellieren als vielversprechend erwiesen. Ihr Ziel ist es, Wahrscheinlichkeitsverteilungen über klassische Datensätze unter Verwendung rein quantenmechanischer Zustände zu lernen und darzustellen. Sie haben aufgrund ihrer hohen Ausdruckskraft an Popularität gewonnen. Boltzmann-Maschinen nutzen die probabilistische Interpretation von Quantenwellenfunktionen und stellen Wahrscheinlichkeitsverteilungen unter Verwendung rein quantenmechanischer Zustände anstelle von thermischen Verteilungen dar (wie bei Boltzmann-Maschinen). Dies ermöglicht es Boltzmann-Maschinen, direkt Proben durch Projektionsmessungen auf Qubits zu erzeugen, was eine schnellere Alternative zum Gibbs-Sampling bietet.
+Gegeben sei ein Datensatz :math:`\mathcal{D} = \{x\}`, der unabhängige und identisch verteilte Stichproben aus einer unbekannten Zielverteilung :math:`\pi(x)` enthält. QCBM wird verwendet, um Stichproben zu erzeugen, die der Zielverteilung sehr ähnlich sind. QCBM transformiert den eingegebenen Produktzustand :math:`|\textbf{0} \rangle` in einen parametrisierten Quantenzustand :math:`|\psi_{\boldsymbol{\theta}}\rangle`. Die Messung dieses Ausgangszustands in einer Berechnungsbasis ergibt eine Bit-Stichprobe :math:`x \sim p_\theta(x)`.
 
 .. math::
    p_{\boldsymbol{\theta}}(x) = |\langle x | \psi_{\boldsymbol{\theta}} \rangle|^2.
 
-The goal is to align the model probability distribution :math:`p_{\boldsymbol{\theta}}` with the target distribution :math:`\pi`.
+Das Ziel ist es, die Modell-Wahrscheinlichkeitsverteilung :math:`p_{\boldsymbol{\theta}}` mit der Zielverteilung :math:`\pi` in Einklang zu bringen.
 
-In this example, we will implement a gradient-based QCBM algorithm using VQNet. We will describe the model and learning algorithm, then apply it to a dataset of 3x3 stripes and lattices, as well as a double Gaussian peak.
+In diesem Beispiel werden wir einen gradientenbasierten QCBM-Algorithmus mit VQNet implementieren. Wir werden das Modell und den Lernalgorithmus beschreiben und ihn dann auf einen Datensatz von 3x3-Streifen und -Gittern sowie auf einen doppelten Gaußschen Peak anwenden.
 
-To train the QCBM, we use the squared maximum mean discrepancy (MMD) as the loss function:
+Zum Training des QCBM verwenden wir die quadratische Maximum-Mean-Discrepancy (MMD) als Verlustfunktion:
 
 .. math::
     \mathcal{L}(\boldsymbol{\theta}) = \left|\sum_{x} p_{\boldsymbol{\theta}}(x) \phi(x)- \sum_{x} \pi(x) \phi(x)  \right|^2,
 
-where :math:`\phi(x)` maps :math:`x` to a larger feature space. Using the kernel function :math:`K(x,y) = \phi(x)^T\phi(y)` allows us to work in a lower-dimensional space.
-We use the radial basis function (RBF) kernel for this purpose, which is defined as:
+wobei :math:`\phi(x)` die Abbildung von :math:`x` auf einen größeren Merkmalsraum ist. Die Verwendung der Kernelfunktion :math:`K(x,y) = \phi(x)^T\phi(y)` ermöglicht es uns, in einem niedrigerdimensionalen Raum zu arbeiten.
+Wir verwenden den radialen Basisfunktionskern (RBF) für diesen Zweck, der wie folgt definiert ist:
 
 .. math::
     K(x,y) = \frac{1}{c}\sum_{i=1}^c \exp \left( \frac{|x-y|^2}{2\sigma_i^2} \right).
 
-Here, :math:`\sigma_i` is the bandwidth parameter that controls the width of the Gaussian kernel. :math:`\mathcal{L}` approaches zero if and only if :math:`p_{\boldsymbol{\theta}}` approaches :math:`\pi`.
-The loss function of the :math:`K(x,y)` is as follows:
+Hier ist :math:`\sigma_i` der Bandbreitenparameter, der die Breite des Gauß-Kerns steuert. :math:`\mathcal{L}` nähert sich Null genau dann, wenn sich :math:`p_{\boldsymbol{\theta}}` :math:`\pi` annähert.
+Die Verlustfunktion von :math:`K(x,y)` ist wie folgt:
 
 .. math::
     \mathcal{L} = \underset{x, y \sim p_{\boldsymbol{\theta}}}{\mathbb{E}}[{K(x,y)}]-2\underset{x\sim p_{\boldsymbol{\theta}},y\sim \pi}{\mathbb{E}}[K(x,y)]+\underset{x, y \sim \pi}{\mathbb{E}}[K(x, y)]
@@ -3913,7 +3912,7 @@ The loss function of the :math:`K(x,y)` is as follows:
     from pyvqnet import tensor
     from pyvqnet.qnn.vqc import VQC_StronglyEntanglingTemplate,QMachine,Probability,QModule
     from pyvqnet.optim import Adam
-    # this definition of MMD, QCBM and QC
+    # diese Definition von MMD, QCBM und QC
     class MMD:
         def __init__(self, scales, space):
             gammas = 1 / (2 * (scales**2))
@@ -3922,7 +3921,7 @@ The loss function of the :math:`K(x,y)` is as follows:
             self.K = sum(tl) / len(scales)
             self.scales = scales
         def k_expval(self, px, py):
-            # Kernel expectation value
+            # Kernel-Erwartungswert
             d1 = px @ self.K
     
             d1 = d1.reshape([d1.shape[0],1,-1])
@@ -4010,7 +4009,7 @@ The loss function of the :math:`K(x,y)` is as follows:
         return   loss_val, kl_div
     history = []
     divs = []
-    #start train with optim and qcbm
+    # Training mit Optimierer und QCBM starten
     n_iterations = 100
     for i in range(n_iterations):
         loss_val, kl_div = update_step(qcbm)
@@ -4085,7 +4084,7 @@ The loss function of the :math:`K(x,y)` is as follows:
     <QTensor [1, 1] DEV_CPU kfloat32> KL-div: 0.21417859196662903
     """
 
-Compare the target probability distribution with the QCBM prediction results, as shown below:
+Vergleichen Sie die Zielwahrscheinlichkeitsverteilung mit den QCBM-Vorhersageergebnissen, wie unten dargestellt:
 
 .. image:: ./images/qcbm.png
    :width: 600 px
@@ -4093,11 +4092,11 @@ Compare the target probability distribution with the QCBM prediction results, as
 
 |
 
-Time Series Data Prediction Based on QGRU
+Zeitreihenvorhersage basierend auf QGRU
 ====================================================
-The paper <https://ieeexplore.ieee.org/abstract/document/10806779> implements a novel QRNN model, which serves as a typical QRNN model.
-The quantum recurrent blocks (QRBs) are constructed in a hardware-efficient manner, and the QRNN is constructed by interleaving and stacking QRBs. This significantly reduces the algorithm's requirement for quantum device coherence time.
-The following example builds a QGRU model for time series data prediction using the Torch backend (Torch installation required). You will also need to download the sample data :download:`ba.csv <images/ba.csv>` to your local computer.
+Das Paper <https://ieeexplore.ieee.org/abstract/document/10806779> implementiert ein neuartiges QRNN-Modell, das als typisches QRNN-Modell dient.
+Die Quanten-Re\-kurrent-Blöcke (QRBs) werden auf hardwareeffiziente Weise konstruiert, und das QRNN wird durch Verschachtelung und Stapelung von QRBs aufgebaut. Dies reduziert die Anforderung an die Kohärenzzeit von Quantengeräten erheblich.
+Das folgende Beispiel erstellt ein QGRU-Modell für die Zeitreihenvorhersage unter Verwendung des Torch-Backends (Torch-Installation erforderlich). Sie müssen auch die Beispieldaten :download:`ba.csv <images/ba.csv>` auf Ihren lokalen Computer herunterladen.
 
 
 .. code-block::
@@ -4141,8 +4140,8 @@ The following example builds a QGRU model for time series data prediction using 
         pqc_circuit(q_machine, 2, pqc_params['f'], [qubits[2], qubits[5]])
         pqc_circuit(q_machine, 4, pqc_params['g'], [qubits[0], qubits[1], qubits[2], qubits[5]])
 
-    #Since the bits of the QGRU overlap between adjacent time steps, we construct a function to generate the qubits used by the QGRU at different times. Note that for a sequence of length x_length, a total of 4 + 3 * x_length qubits are required.
-    #We first define the four bits encoding the hidden state at the initial time as q_0\sim q_3, and continuously add the remaining bits as "auxiliary bits."
+    #Da die Bits des QGRU zwischen benachbarten Zeitschritten überlappen, konstruieren wir eine Funktion, um die vom QGRU zu verschiedenen Zeiten verwendeten Qubits zu erzeugen. Beachten Sie, dass für eine Sequenz der Länge x_length insgesamt 4 + 3 * x_length Qubits benötigt werden.
+    #Wir definieren zunächst die vier Bits, die den versteckten Zustand zum Anfangszeitpunkt kodieren, als q_0\sim q_3, und fügen kontinuierlich die restlichen Bits als "Hilfsbits" hinzu.
 
     def get_apply_qubits(x_length):
         
@@ -4244,7 +4243,7 @@ The following example builds a QGRU model for time series data prediction using 
             'g': Parameter([12])  # 4-qubit PQC
         })
     """
-    Next, we assemble and train the model, including the circuit, simulator, Hamiltonian, network layers, optimizer, and loss function. This article uses the expected value of $q_3$ as the prediction basis, so the Hamiltonian is set to $Z_3$.
+    Als nächstes setzen wir das Modell zusammen und trainieren es, einschließlich des Schaltkreises, des Simulators, des Hamiltonians, der Netzwerkschichten, des Optimierers und der Verlustfunktion. In diesem Artikel wird der Erwartungswert von $q_3$ als Vorhersagebasis verwendet, daher wird der Hamiltonian auf $Z_3$ gesetzt.
     """
     class QM(vqc.QModule):
         def __init__(self, nq = 4, name=""):
