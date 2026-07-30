@@ -1,29 +1,29 @@
 
 .. _vqnet_dist:
 
-VQNet Naive Distributed Computing Module
+VQNet Einfaches Verteiltes Rechnen-Modul
 *********************************************************
 
-Environment Deployment
+Umgebungseinrichtung
 =================================
 
-This section describes how to deploy the VQNet environment on Linux for CPU and GPU distributed computing.
+Dieser Abschnitt beschreibt, wie die VQNet-Umgebung unter Linux für verteiltes Rechnen mit CPU und GPU eingerichtet wird.
 
-MPI Installation
+MPI-Installation
 ^^^^^^^^^^^^^^^^^^^^^^
 
-MPI is a common library for inter-CPU communication, and the distributed computing function of CPU in VQNet is implemented based on MPI. 
-The following section describes how to install MPI on a Linux system (at present, the distributed computing function based on CPU is only supported on Linux).
+MPI ist eine verbreitete Bibliothek für die Kommunikation zwischen CPUs. Die verteilte Rechnen-Funktion der CPU in VQNet basiert auf MPI.
+Im folgenden Abschnitt wird beschrieben, wie MPI unter Linux installiert wird (derzeit wird die verteilte Rechnen-Funktion basierend auf der CPU nur unter Linux unterstützt).
 
-Detect if gcc, gfortran compilers are installed.
+Prüfen, ob die Compiler gcc und gfortran installiert sind.
 
 .. code-block::
         
     which gcc 
     which gfortran
 
-When the paths to gcc and gfortran are shown, you can proceed to the next step of installation. If you do not have the corresponding compilers, 
-please install them first. Once the compilers have been verified, use the wget command to download mpich.
+Wenn die Pfade zu gcc und gfortran angezeigt werden, können Sie mit dem nächsten Installationsschritt fortfahren. Falls die entsprechenden Compiler nicht vorhanden sind,
+installieren Sie diese bitte zuerst. Nachdem die Compiler überprüft wurden, laden Sie mpich mit dem Befehl wget herunter.
 
 .. code-block::
         
@@ -34,64 +34,64 @@ please install them first. Once the compilers have been verified, use the wget c
     make 
     make install 
 
-After compiling and installing mpich, configure its environment variables.
+Nach dem Kompilieren und Installieren von mpich konfigurieren Sie die Umgebungsvariablen.
 
 .. code-block::
         
     vim ~/.bashrc
 
-    # At the bottom of the document, add
+    # Am Ende der Datei folgende Zeile hinzufügen
     export PATH="/usr/local/mpich/bin:$PATH"
 
-After saving and exiting, use source to apply the changes.
+Nach dem Speichern und Schließen wenden Sie die Änderungen mit source an.
 
 .. code-block::
 
     source ~/.bashrc
 
-Use which to verify that the environment variables are configured correctly. If the path is displayed, the installation has completed successfully.
+Verwenden Sie which, um zu überprüfen, ob die Umgebungsvariablen korrekt konfiguriert sind. Wenn der Pfad angezeigt wird, ist die Installation erfolgreich abgeschlossen.
 
-In addition, you can install mpi4py via pip install. If you encounter the following error:
+Zusätzlich können Sie mpi4py mit pip installieren. Sollte der folgende Fehler auftreten:
 
 .. image:: ./images/mpi_bug.png
     :align: center
 
 |
 
-To resolve mpi4py and Python version incompatibility, you can do the following:
+Um die Inkompatibilität zwischen mpi4py und der Python-Version zu beheben, gehen Sie wie folgt vor:
 
 .. code-block::
 
-    # Back up the compiler for the current Python environment
+    # Compiler der aktuellen Python-Umgebung sichern
     pushd /root/anaconda3/envs/$CONDA_DEFAULT_ENV/compiler_compat && mv ld ld.bak && popd
 
-    # Re-install mpi4py
+    # mpi4py neu installieren
     pip install mpi4py
 
-    # Restore the original compiler
+    # Original-Compiler wiederherstellen
     pushd /root/anaconda3/envs/$CONDA_DEFAULT_ENV/compiler_compat && mv ld.bak ld && popd
 
-NCCL Installation
+NCCL-Installation
 ^^^^^^^^^^^^^^^^^^^^^^
 
-NCCL is a common library for GPU communication, and the distributed computing function of GPUs in VQNet is implemented based on NCCL.
-This software installs the NCCL dynamic link library by default at installation time, so it is generally not necessary to install NCCL separately.
-This section requires MPI support, so the MPI environment needs to be deployed as well.
+NCCL ist eine verbreitete Bibliothek für die GPU-Kommunikation. Die verteilte Rechnen-Funktion der GPUs in VQNet basiert auf NCCL.
+Diese Software installiert die dynamische NCCL-Bibliothek standardmäßig bei der Installation, daher ist es in der Regel nicht erforderlich, NCCL separat zu installieren.
+Dieser Abschnitt setzt MPI-Unterstützung voraus, daher muss auch die MPI-Umgebung eingerichtet werden.
 
-Distributed launch
+Verteilter Start
 =================================
  
-Using the Distributed Computing Interface started by the ``vqnetrun`` command, the parameters of ``vqnetrun`` are described below.
+Im Folgenden werden die Parameter des ``vqnetrun``-Befehls beschrieben, der die Schnittstelle für verteiltes Rechnen startet.
 
 n, np
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to control the number of processes started with the ``-n``, ``-np`` parameters, as shown in the following example.
+Die ``vqnetrun``-Schnittstelle ermöglicht die Steuerung der Anzahl gestarteter Prozesse mit den Parametern ``-n`` und ``-np``, wie im folgenden Beispiel gezeigt.
 
     Example::
 
         from pyvqnet.distributed import CommController
-        Comm_OP = CommController("mpi") # init mpi controller
+        Comm_OP = CommController("mpi") # MPI-Controller initialisieren
         
         rank = Comm_OP.getRank()
         size = Comm_OP.getSize()
@@ -103,8 +103,8 @@ The ``vqnetrun`` interface allows you to control the number of processes started
 backend
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to select the distributed backend with the ``--backend`` parameter, supporting ``mpi`` (default) and ``nccl`` modes.
-MPI mode is for CPU-based distributed computing, and NCCL mode is for GPU-based distributed computing.
+Die ``vqnetrun``-Schnittstelle ermöglicht die Auswahl des verteilten Backends mit dem Parameter ``--backend`` und unterstützt die Modi ``mpi`` (Standard) und ``nccl``.
+Der MPI-Modus ist für verteiltes Rechnen auf der CPU vorgesehen, der NCCL-Modus für verteiltes Rechnen auf der GPU.
 
     Example::
 
@@ -120,7 +120,7 @@ MPI mode is for CPU-based distributed computing, and NCCL mode is for GPU-based 
 nproc_per_node
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to control the number of processes started on each node with the ``--nproc_per_node`` parameter, only available in NCCL mode.
+Die ``vqnetrun``-Schnittstelle ermöglicht die Steuerung der Anzahl der Prozesse pro Knoten mit dem Parameter ``--nproc_per_node``. Dieser ist nur im NCCL-Modus verfügbar.
 
     Example::
 
@@ -136,14 +136,14 @@ The ``vqnetrun`` interface allows you to control the number of processes started
 output-filename
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to save the output to a specified file with the command line parameter ``--output-filename``.
+Die ``vqnetrun``-Schnittstelle ermöglicht das Speichern der Ausgabe in einer angegebenen Datei mit dem Befehlszeilenparameter ``--output-filename``.
 
-A sample implementation is as follows:
+Eine beispielhafte Implementierung sieht wie folgt aus:
 
     Example::
 
         from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("mpi") # init mpi controller
+        Comm_OP = CommController("mpi") # MPI-Controller initialisieren
         
         rank = Comm_OP.getRank()
         size = Comm_OP.getSize()
@@ -156,14 +156,14 @@ A sample implementation is as follows:
 verbose
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface can be used with the command line parameter ``--verbose`` to enable detailed communication logging and output the results.
+Die ``vqnetrun``-Schnittstelle kann mit dem Befehlszeilenparameter ``--verbose`` verwendet werden, um eine detaillierte Kommunikationsprotokollierung zu aktivieren und die Ergebnisse auszugeben.
 
-A sample implementation is as follows
+Eine beispielhafte Implementierung sieht wie folgt aus:
 
     Example::
 
         from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("mpi") # init mpi controller
+        Comm_OP = CommController("mpi") # MPI-Controller initialisieren
         
         rank = Comm_OP.getRank()
         size = Comm_OP.getSize()
@@ -176,14 +176,14 @@ A sample implementation is as follows
 start-timeout
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface can be used with the command line parameter ``-start-timeout`` to specify that all checks are performed and the process is started before the timeout. The default value is 30 seconds.
+Die ``vqnetrun``-Schnittstelle kann mit dem Befehlszeilenparameter ``-start-timeout`` verwendet werden, um festzulegen, dass alle Prüfungen durchgeführt und der Prozess vor dem Timeout gestartet werden. Der Standardwert beträgt 30 Sekunden.
 
-A sample implementation is as follows
+Eine beispielhafte Implementierung sieht wie folgt aus:
 
     Example::
 
         from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("mpi") # init mpi controller
+        Comm_OP = CommController("mpi") # MPI-Controller initialisieren
         
         rank = Comm_OP.getRank()
         size = Comm_OP.getSize()
@@ -196,54 +196,54 @@ A sample implementation is as follows
 CommController
 =================================
 
-    Distributed computing is used to control data communication between different processes under CPU and GPU. It generates different controllers for CPU (MPI) and GPU (NCCL), and calls the communication methods to complete data communication and synchronization between different processes.
+    Verteiltes Rechnen dient der Steuerung der Datenkommunikation zwischen verschiedenen Prozessen unter CPU und GPU. Es erzeugt unterschiedliche Controller für CPU (MPI) und GPU (NCCL) und ruft die Kommunikationsmethoden auf, um die Datenkommunikation und Synchronisation zwischen verschiedenen Prozessen durchzuführen.
 
 __init__
 ^^^^^^^^^^^^^^^^^^^^^^
 .. py:class:: pyvqnet.distributed.ControlComm.CommController(backend,rank=None,world_size=None)
     
-    CommController is used to control data communication under CPU and GPU. By setting the parameter `backend`, it generates the controller for CPU (MPI) or GPU (NCCL). (Currently, the distributed computing function only supports Linux.)
+    CommController dient der Steuerung der Datenkommunikation unter CPU und GPU. Durch die Angabe des Parameters `backend` wird der Controller für CPU (MPI) oder GPU (NCCL) erzeugt. (Derzeit wird die verteilte Rechnen-Funktion nur unter Linux unterstützt.)
 
-    :param backend: used to generate the data communication controller for cpu or gpu.
-    :param rank: This parameter is only useful in non-pyvqnet backends, the default value is: None.
-    :param world_size: This parameter is only useful in non-pyvqnet backends, the default value is: None.
+    :param backend: Wird verwendet, um den Datenkommunikations-Controller für CPU oder GPU zu erzeugen.
+    :param rank: Dieser Parameter ist nur in Nicht-pyvqnet-Backends nützlich, der Standardwert ist: None.
+    :param world_size: Dieser Parameter ist nur in Nicht-pyvqnet-Backends nützlich, der Standardwert ist: None.
         
     :return:
-        CommController instance.
+        CommController-Instanz.
 
     Examples::
 
         from pyvqnet.distributed import CommController
-        Comm_OP = CommController("nccl") # init nccl controller
+        Comm_OP = CommController("nccl") # NCCL-Controller initialisieren
 
-        # Comm_OP = CommController("mpi") # init mpi controller
+        # Comm_OP = CommController("mpi") # MPI-Controller initialisieren
 
  
     .. py:method:: getRank()
         
-        Used to get the process number of the current process.
+        Wird verwendet, um die Prozessnummer des aktuellen Prozesses zu erhalten.
 
-        :return: Returns the process number of the current process.
+        :return: Gibt die Prozessnummer des aktuellen Prozesses zurück.
 
         Examples::
 
             from pyvqnet.distributed import CommController
-            Comm_OP = CommController("nccl") # init nccl controller
+            Comm_OP = CommController("nccl") # NCCL-Controller initialisieren
             
             Comm_OP.getRank()
 
  
     .. py:method:: getSize()
     
-        Used to get the total number of processes started.
+        Wird verwendet, um die Gesamtzahl der gestarteten Prozesse zu erhalten.
 
 
-        :return: Returns the total number of processes.
+        :return: Gibt die Gesamtzahl der Prozesse zurück.
 
         Examples::
 
             from pyvqnet.distributed import CommController
-            Comm_OP = CommController("nccl") # init nccl controller
+            Comm_OP = CommController("nccl") # NCCL-Controller initialisieren
             
             Comm_OP.getSize()
             # vqnetrun --backend nccl --nproc_per_node 2 python test.py
@@ -253,15 +253,15 @@ __init__
 
     .. py:method:: getLocalRank()
     
-        Used to get the current process number on the current machine.
+        Wird verwendet, um die aktuelle Prozessnummer auf der aktuellen Maschine zu erhalten.
 
 
-        :return: The current process number on the current machine.
+        :return: Die aktuelle Prozessnummer auf der aktuellen Maschine.
 
         Examples::
 
             from pyvqnet.distributed import CommController
-            Comm_OP = CommController("nccl") # init nccl controller
+            Comm_OP = CommController("nccl") # NCCL-Controller initialisieren
             
             Comm_OP.getLocalRank()
             # vqnetrun --backend nccl --nproc_per_node 2 python test.py
@@ -269,12 +269,12 @@ __init__
 
     .. py:method:: split_groups(rankL)
         
-        Divide multiple communication groups according to the process number list set by the input parameter.
+        Teilt mehrere Kommunikationsgruppen entsprechend der durch den Eingabeparameter festgelegten Prozessnummernliste auf.
 
-        :param rankL: A list of process group ranks.
+        :param rankL: Eine Liste von Prozessgruppen-Ranks.
 
-        :return: When the backend is `nccl`, a tuple of process group ranks is returned. 
-                 When the backend is `mpi`, returns a list whose length is equal to the number of groups; each element is a tuple (comm, rank), where comm is the MPI communicator of the group and rank is the sequence number within the group..
+        :return: Wenn das Backend `nccl` ist, wird ein Tupel von Prozessgruppen-Ranks zurückgegeben.
+                 Wenn das Backend `mpi` ist, wird eine Liste zurückgegeben, deren Länge der Anzahl der Gruppen entspricht; jedes Element ist ein Tupel (comm, rank), wobei comm der MPI-Kommunikator der Gruppe und rank die Sequenznummer innerhalb der Gruppe ist.
 
         Examples::
             
@@ -290,9 +290,9 @@ __init__
  
     .. py:method:: barrier()
     
-        Synchronization.
+        Synchronisation.
 
-        :return: Synchronization.
+        :return: Synchronisation.
 
         Examples::
 
@@ -304,9 +304,9 @@ __init__
  
     .. py:method:: get_device_num()
     
-        Used to get the number of graphics cards on the current node, (only supported on gpu).
+        Wird verwendet, um die Anzahl der Grafikkarten auf dem aktuellen Knoten zu ermitteln (nur auf GPU unterstützt).
 
-        :return: Returns the number of graphics cards on the current node.
+        :return: Gibt die Anzahl der Grafikkarten auf dem aktuellen Knoten zurück.
 
         Examples::
 
@@ -320,10 +320,10 @@ __init__
  
     .. py:method:: allreduce(tensor, c_op = "avg")
     
-        Supports allreduce communication of data.
+        Unterstützt die Allreduce-Kommunikation von Daten.
 
-        :param tensor: Input data.
-        :param c_op: Calculation.
+        :param tensor: Eingabedaten.
+        :param c_op: Berechnungsoperation.
 
         Examples::
 
@@ -342,11 +342,11 @@ __init__
  
     .. py:method:: reduce(tensor, root = 0, c_op = "avg")
     
-        Supports reduce communication of data.
+        Unterstützt die Reduce-Kommunikation von Daten.
 
-        :param tensor: input.
-        :param root: Specifies the node to which the data is returned.
-        :param c_op: Calculation.
+        :param tensor: Eingabe.
+        :param root: Gibt den Knoten an, an den die Daten zurückgegeben werden.
+        :param c_op: Berechnungsoperation.
 
         Examples::
 
@@ -366,10 +366,10 @@ __init__
  
     .. py:method:: broadcast(tensor, root = 0)
     
-        Broadcasts data on the specified process root to all processes.
+        Sendet Daten vom angegebenen Prozess (root) an alle Prozesse.
 
-        :param tensor: input.
-        :param root: Specifies node.
+        :param tensor: Eingabe.
+        :param root: Gibt den Knoten an.
 
         Examples::
 
@@ -388,9 +388,9 @@ __init__
  
     .. py:method:: allgather(tensor)
     
-        Allgather the data on all processes together.
+        Sammelt die Daten aller Prozesse mit Allgather zusammen.
 
-        :param tensor: input.
+        :param tensor: Eingabe.
 
         Examples::
 
@@ -409,10 +409,10 @@ __init__
 
     .. py:method:: send(tensor, dest)
     
-        p2p communication interface.
+        P2P-Kommunikationsschnittstelle.
 
-        :param tensor: input.
-        :param dest: Destination process.
+        :param tensor: Eingabe.
+        :param dest: Zielprozess.
 
         Examples::
 
@@ -436,10 +436,10 @@ __init__
  
     .. py:method:: recv(tensor, source)
     
-        p2p communication interface.
+        P2P-Kommunikationsschnittstelle.
 
-        :param tensor: input.
-        :param source: Acceptance process.
+        :param tensor: Eingabe.
+        :param source: Quellprozess.
 
         Examples::
 
@@ -463,11 +463,11 @@ __init__
  
     .. py:method:: allreduce_group(tensor, c_op = "avg", group = None)
     
-        The group allreduce communication interface.
+        Die Gruppen-Allreduce-Kommunikationsschnittstelle.
 
-        :param tensor: input.
-        :param c_op: Calculation.
-        :param group: Communication group. When using the mpi backend, enter the group generated by `init_groups` or `split_groups` corresponding to the communication group. When using the nccl backend, enter the group number generated by `split_groups`.
+        :param tensor: Eingabe.
+        :param c_op: Berechnungsoperation.
+        :param group: Kommunikationsgruppe. Bei Verwendung des MPI-Backends geben Sie die von `init_groups` oder `split_groups` erzeugte Gruppe ein, die der Kommunikationsgruppe entspricht. Bei Verwendung des NCCL-Backends geben Sie die von `split_groups` erzeugte Gruppennummer ein.
 
 
         Examples::
@@ -490,12 +490,12 @@ __init__
  
     .. py:method:: reduce_group(tensor, root = 0, c_op = "avg", group = None)
     
-        Intra-group reduce communication interface.
+        Gruppeninterne Reduce-Kommunikationsschnittstelle.
 
-        :param tensor: Input.
-        :param root: Specify the process number.
-        :param c_op: Calculation.
-        :param group: Communication group. When using the mpi backend, enter the group generated by `init_groups` or `split_groups` corresponding to the communication group. When using the nccl backend, enter the group number generated by `split_groups`.
+        :param tensor: Eingabe.
+        :param root: Gibt die Prozessnummer an.
+        :param c_op: Berechnungsoperation.
+        :param group: Kommunikationsgruppe. Bei Verwendung des MPI-Backends geben Sie die von `init_groups` oder `split_groups` erzeugte Gruppe ein, die der Kommunikationsgruppe entspricht. Bei Verwendung des NCCL-Backends geben Sie die von `split_groups` erzeugte Gruppennummer ein.
 
         Examples::
             
@@ -518,11 +518,11 @@ __init__
  
     .. py:method:: broadcast_group(tensor, root = 0, group = None)
     
-        Intra-group broadcast communication interface.
+        Gruppeninterne Broadcast-Kommunikationsschnittstelle.
 
-        :param tensor: Input.
-        :param root: Specify the process number to broadcast from, default:0.
-        :param group: Communication group. When using the mpi backend, enter the group generated by `init_groups` or `split_groups` corresponding to the communication group. When using the nccl backend, enter the group number generated by `split_groups`.
+        :param tensor: Eingabe.
+        :param root: Gibt die Prozessnummer an, von der aus gesendet wird, Standard: 0.
+        :param group: Kommunikationsgruppe. Bei Verwendung des MPI-Backends geben Sie die von `init_groups` oder `split_groups` erzeugte Gruppe ein, die der Kommunikationsgruppe entspricht. Bei Verwendung des NCCL-Backends geben Sie die von `split_groups` erzeugte Gruppennummer ein.
 
         Examples::
             
@@ -546,10 +546,10 @@ __init__
  
     .. py:method:: allgather_group(tensor, group = None)
     
-        The group allgather communication interface.
+        Die Gruppen-Allgather-Kommunikationsschnittstelle.
 
-        :param tensor: Input.
-        :param group: Communication group. When using the mpi backend, enter the group generated by `init_groups` or `split_groups` corresponding to the communication group. When using the nccl backend, enter the group number generated by `split_groups`.
+        :param tensor: Eingabe.
+        :param group: Kommunikationsgruppe. Bei Verwendung des MPI-Backends geben Sie die von `init_groups` oder `split_groups` erzeugte Gruppe ein, die der Kommunikationsgruppe entspricht. Bei Verwendung des NCCL-Backends geben Sie die von `split_groups` erzeugte Gruppennummer ein.
 
         Examples::
             
@@ -572,9 +572,9 @@ __init__
  
     .. py:method:: grad_allreduce(optimizer)
     
-        Update the gradient of the parameters in the optimizer with allreduce.
+        Aktualisiert die Gradienten der Parameter im Optimierer mit Allreduce.
 
-        :param optimizer: optimizer.
+        :param optimizer: Optimierer.
 
         Examples::
             
@@ -620,9 +620,9 @@ __init__
  
     .. py:method:: param_allreduce(model)
     
-        Update the parameters in the model in an allreduce manner.
+        Aktualisiert die Parameter im Modell mittels Allreduce.
 
-        :param model: Model.
+        :param model: Modell.
 
         Examples::
         
@@ -652,10 +652,10 @@ __init__
  
     .. py:method:: broadcast_model_params(model, root = 0)
     
-        Broadcasts the model parameters on the specified process number.
+        Sendet die Modellparameter auf der angegebenen Prozessnummer an alle Prozesse.
 
-        :param model: Models.
-        :param root: Specify the process number.
+        :param model: Modell.
+        :param root: Gibt die Prozessnummer an.
 
         Examples::
         
@@ -684,13 +684,13 @@ __init__
 
     .. py:method:: nccl_async_all_gather( output, input, group=None, async_op=False):
 
-        Use NCCL for asynchronous or synchronous all_gather on GPU data.
+        Verwendet NCCL für asynchrones oder synchrones Allgather auf GPU-Daten.
 
-        :param output: QTensor - The target QTensor for all_gather result.
-        :param input: QTensor - The QTensor to be gathered.
-        :param group: Communication process group, group is a tuple containing group indices. Default: None, no group is used.
-        :param async_op: Whether this operation is asynchronous, default: False.
-        :return: Work - An asynchronous communication handle. Use wait() to wait for this operation to complete.
+        :param output: QTensor - Der Ziel-QTensor für das Allgather-Ergebnis.
+        :param input: QTensor - Der QTensor, der eingesammelt werden soll.
+        :param group: Kommunikationsprozessgruppe, group ist ein Tupel mit Gruppenindizes. Standard: None, es wird keine Gruppe verwendet.
+        :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
+        :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
         Examples::
 
@@ -707,13 +707,13 @@ __init__
 
     .. py:method:: nccl_async_all_reduce(tensor, c_op="avg",group=None, async_op=False):
 
-        Use NCCL for asynchronous or synchronous allreduce on GPU data.
+        Verwendet NCCL für asynchrones oder synchrones Allreduce auf GPU-Daten.
 
-        :param tensor: QTensor - The QTensor that needs to be reduced.
-        :param c_op: Computation method, can be "sum" or "avg", default value is "avg".
-        :param group: Communication process group, group is a tuple containing group indices. Default: None, no group is used.
-        :param async_op: Whether this operation is asynchronous, default: False.
-        :return: Work - An asynchronous communication handle. Use wait() to wait for this operation to complete.
+        :param tensor: QTensor - Der QTensor, der reduziert werden soll.
+        :param c_op: Berechnungsmethode, kann "sum" oder "avg" sein, Standardwert ist "avg".
+        :param group: Kommunikationsprozessgruppe, group ist ein Tupel mit Gruppenindizes. Standard: None, es wird keine Gruppe verwendet.
+        :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
+        :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
         Examples::
 
@@ -728,14 +728,14 @@ __init__
 
     .. py:method:: nccl_async_reduce( tensor_, dest, c_op="avg", group=None, async_op=False ):
 
-        Use NCCL for asynchronous or synchronous reduce on GPU data.
+        Verwendet NCCL für asynchrones oder synchrones Reduce auf GPU-Daten.
 
-        :param tensor_: QTensor - The QTensor that needs to be reduced.
-        :param dest: The destination rank of the reduced QTensor.
-        :param c_op: Computation method, can be "sum" or "avg", default value is "avg".
-        :param group: Communication process group, group is a tuple containing group indices. Default: None, no group is used.
-        :param async_op: Whether this operation is asynchronous, default: False.
-        :return: Work - An asynchronous communication handle. Use wait() to wait for this operation to complete.
+        :param tensor_: QTensor - Der QTensor, der reduziert werden soll.
+        :param dest: Der Ziel-Rank des reduzierten QTensor.
+        :param c_op: Berechnungsmethode, kann "sum" oder "avg" sein, Standardwert ist "avg".
+        :param group: Kommunikationsprozessgruppe, group ist ein Tupel mit Gruppenindizes. Standard: None, es wird keine Gruppe verwendet.
+        :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
+        :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
         Examples::
 
@@ -750,13 +750,13 @@ __init__
 
     .. py:method:: nccl_async_broadcast(tensor, src, group=None, async_op=False )
 
-        Use NCCL for asynchronous or synchronous broadcast on GPU data.
+        Verwendet NCCL für asynchrones oder synchrones Broadcast auf GPU-Daten.
 
-        :param tensor: QTensor - The QTensor that needs to be broadcast.
-        :param src: The source rank of the broadcast QTensor.
-        :param group: Communication process group, group is a tuple containing group indices. Default: None, no group is used.
-        :param async_op: Whether this operation is asynchronous, default: False.
-        :return: Work - An asynchronous communication handle. Use wait() to wait for this operation to complete.
+        :param tensor: QTensor - Der QTensor, der gesendet werden soll.
+        :param src: Der Quell-Rank des zu sendenden QTensor.
+        :param group: Kommunikationsprozessgruppe, group ist ein Tupel mit Gruppenindizes. Standard: None, es wird keine Gruppe verwendet.
+        :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
+        :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
         Examples::
 
@@ -775,12 +775,12 @@ __init__
 
     .. py:method:: nccl_async_send( t, dest, async_op=False ):
 
-        Use NCCL for asynchronous or synchronous P2P send on GPU data.
+        Verwendet NCCL für asynchrones oder synchrones P2P-Senden auf GPU-Daten.
 
-        :param t: QTensor - The QTensor that needs to be sent.
-        :param dest: The destination rank to send the QTensor to.
-        :param async_op: Whether this operation is asynchronous, default: False.
-        :return: Work - An asynchronous communication handle. Use wait() to wait for this operation to complete.
+        :param t: QTensor - Der QTensor, der gesendet werden soll.
+        :param dest: Der Ziel-Rank, an den der QTensor gesendet werden soll.
+        :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
+        :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
         Examples::
 
@@ -802,12 +802,12 @@ __init__
 
     .. py:method:: nccl_async_recv( t, src, async_op=False ):
 
-        Use NCCL for asynchronous or synchronous P2P receive on GPU data.
+        Verwendet NCCL für asynchrones oder synchrones P2P-Empfangen auf GPU-Daten.
 
-        :param t: QTensor - The QTensor that receives the data.
-        :param src: The source rank of the received QTensor.
-        :param async_op: Whether this operation is asynchronous, default: False.
-        :return: Work - An asynchronous communication handle. Use wait() to wait for this operation to complete.
+        :param t: QTensor - Der QTensor, der die Daten empfängt.
+        :param src: Der Quell-Rank des empfangenen QTensor.
+        :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
+        :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
         Examples::
 
@@ -831,17 +831,17 @@ __init__
 split_data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In multi-process, use ``split_data`` to slice the data according to the number of processes and return the data on the corresponding process.
+Verwendet ``split_data``, um die Daten in Mehrprozess-Umgebungen entsprechend der Anzahl der Prozesse aufzuteilen und die Daten auf dem entsprechenden Prozess zurückzugeben.
 
 .. py:function:: pyvqnet.distributed.datasplit.split_data(x_train, y_train, shuffle=False)
 
-Set parameters for distributed computation.
+Legt Parameter für verteiltes Rechnen fest.
 
-    :param x_train: `np.array` - training data.
-    :param y_train: `np.array` - Training data labels.
-    :param shuffle: `bool` - Whether to shuffle and then slice, default is False.
+    :param x_train: `np.array` - Trainingsdaten.
+    :param y_train: `np.array` - Labels der Trainingsdaten.
+    :param shuffle: `bool` - Gibt an, ob vor dem Aufteilen gemischt werden soll, Standard ist False.
 
-    :return: sliced training data and labels.
+    :return: Aufgeteilte Trainingsdaten und Labels.
 
     Example::
 
@@ -856,13 +856,13 @@ Set parameters for distributed computation.
 get_local_rank
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Use ``get_local_rank`` to get the process number on the current machine.
+Verwenden Sie ``get_local_rank``, um die Prozessnummer auf der aktuellen Maschine zu erhalten.
 
 .. py:function:: pyvqnet.distributed.ControlComm.get_local_rank()
 
-    Used to get the current process number on the current machine.
+    Wird verwendet, um die aktuelle Prozessnummer auf der aktuellen Maschine zu erhalten.
 
-    :return: current process number on the current machine.
+    :return: Aktuelle Prozessnummer auf der aktuellen Maschine.
 
     Example::
 
@@ -873,13 +873,13 @@ Use ``get_local_rank`` to get the process number on the current machine.
 
 get_rank
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Use ``get_rank`` to get the process number on the current machine.
+Verwenden Sie ``get_rank``, um die Prozessnummer auf der aktuellen Maschine zu erhalten.
 
 .. py:function:: pyvqnet.distributed.ControlComm.get_rank()
 
-    Used to get the process number of the current process.
+    Wird verwendet, um die Prozessnummer des aktuellen Prozesses zu erhalten.
 
-    :return: the process number of the current process.
+    :return: Die Prozessnummer des aktuellen Prozesses.
 
     Example::
 
@@ -890,14 +890,14 @@ Use ``get_rank`` to get the process number on the current machine.
 
 init_groups
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Use ``init_groups`` to initialise cpu-based process groups based on the given list of process numbers.
+Verwenden Sie ``init_groups``, um CPU-basierte Prozessgruppen basierend auf der angegebenen Liste von Prozessnummern zu initialisieren.
 
 .. py:function:: pyvqnet.distributed.ControlComm.init_groups(rank_lists)
 
-    Used to initialise the process communication group for `mpi` backend.
+    Wird verwendet, um die Prozesskommunikationsgruppe für das `mpi`-Backend zu initialisieren.
 
-    :param rank_lists: List of communication process groups.
-    :return: A list of initialised process groups.
+    :param rank_lists: Liste der Kommunikationsprozessgruppen.
+    :return: Eine Liste der initialisierten Prozessgruppen.
 
     Example::
 
@@ -921,21 +921,21 @@ PipelineParallelTrainingWrapper
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. py:class:: pyvqnet.distributed.pp.PipelineParallelTrainingWrapper(args,join_layers,trainset)
     
-    Pipeline Parallel Training Wrapper implements 1F1B training. Available only on Linux platforms with a GPU.
-    More algorithm details can be found at (https://www.deepspeed.ai/tutorials/pipeline/).
+    Der Pipeline-Parallel-Training-Wrapper implementiert das 1F1B-Training. Nur auf Linux-Plattformen mit GPU verfügbar.
+    Weitere algorithmische Details finden Sie unter (https://www.deepspeed.ai/tutorials/pipeline/).
 
-    :param args: Parameter dictionary. See examples.
-    :param join_layers: List of Sequential modules.
-    :param trainset: Dataset.
+    :param args: Parameterwörterbuch. Siehe Beispiele.
+    :param join_layers: Liste von Sequential-Modulen.
+    :param trainset: Datensatz.
 
     :return:
-        PipelineParallelTrainingWrapper instance.
+        PipelineParallelTrainingWrapper-Instanz.
 
-    The following uses the CIFAR10 dataset `CIFAR10_Dataset` to train the classification task on AlexNet on 2 GPUs.
-    In this example, it is divided into two pipeline parallel processes `pipeline_parallel_size` = 2.
-    The batch size is `train_batch_size` = 64, on a single GPU it is `train_micro_batch_size_per_gpu` = 32.
-    Other configuration parameters can be found in `args`.
-    In addition, each process needs to configure the environment variable `LOCAL_RANK` in the `__main__` function.
+    Im Folgenden wird der CIFAR10-Datensatz `CIFAR10_Dataset` verwendet, um die Klassifikationsaufgabe auf AlexNet auf 2 GPUs zu trainieren.
+    In diesem Beispiel wird in zwei Pipeline-Parallel-Prozesse `pipeline_parallel_size` = 2 aufgeteilt.
+    Die Batchgröße beträgt `train_batch_size` = 64, auf einer einzelnen GPU beträgt sie `train_micro_batch_size_per_gpu` = 32.
+    Weitere Konfigurationsparameter finden Sie in `args`.
+    Zusätzlich muss jeder Prozess die Umgebungsvariable `LOCAL_RANK` in der `__main__`-Funktion konfigurieren.
 
     Examples::
 
@@ -1052,21 +1052,21 @@ ZeroModelInitial
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. py:class:: pyvqnet.distributed.ZeroModelInitial(args,model,optimizer)
     
-    Zero1 api interface, currently only for linux platform based on GPU parallel computing.
+    Zero1-API-Schnittstelle, derzeit nur für Linux-Plattformen mit GPU-Parallelverarbeitung.
 
-    :param args: parameters dict.
-    :param model: Module.
-    :param optimizer: Optimizer.
+    :param args: Parameterwörterbuch.
+    :param model: Modul.
+    :param optimizer: Optimierer.
 
     :return:
-        Zero1 Engine.
+        Zero1-Engine.
 
-The following uses the MNIST dataset to train a classification task on an MLP model on 2 GPUs.
+Im Folgenden wird der MNIST-Datensatz verwendet, um eine Klassifikationsaufgabe auf einem MLP-Modell auf 2 GPUs zu trainieren.
 
-    The batch size is `train_batch_size` = 64, and the stage `stage` of `zero_optimization` is set to 1. 
-    If Optimizer is None, the setting of `optimizer` in `args` is used. Other configuration parameters can be found in `args`. 
+    Die Batchgröße beträgt `train_batch_size` = 64, und die Stufe `stage` von `zero_optimization` ist auf 1 gesetzt.
+    Wenn der Optimierer None ist, wird die Einstellung von `optimizer` in `args` verwendet. Weitere Konfigurationsparameter finden Sie in `args`.
     
-    In addition, each process needs to be configured with the environment variable `LOCAL_RANK`.
+    Zusätzlich muss jeder Prozess mit der Umgebungsvariable `LOCAL_RANK` konfiguriert werden.
     
     .. code-block::
 
@@ -1239,24 +1239,24 @@ ColumnParallelLinear
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. py:class:: pyvqnet.distributed.ColumnParallelLinear(input_size,output_size,weight_initializer,bias_initializer,use_bias,dtype,name,tp_comm)
     
-    Tensor-parallel computation with column-parallel linear layer
+    Tensor-parallele Berechnung mit spaltenparalleler linearer Schicht
     
-    The linear layer is defined as Y = XA + b. Its 2D parallel rows are A = [A_1, ... , A_p].
+    Die lineare Schicht ist definiert als Y = XA + b. Ihre 2D-parallelen Zeilen sind A = [A_1, ... , A_p].
 
-    :param input_size: first dimension of matrix A.
-    :param output_size: second dimension of matrix A.
-    :param weight_initializer: `callable` - defaults to normal.
-    :param bias_initializer: `callable` - defaults to zeros.
-    :param use_bias: `bool` - defaults to True.
-    :param dtype: default: None,use default data type.
-    :param name: name of module,default:"".
+    :param input_size: Erste Dimension der Matrix A.
+    :param output_size: Zweite Dimension der Matrix A.
+    :param weight_initializer: `callable` - Standard ist normal.
+    :param bias_initializer: `callable` - Standard ist zeros.
+    :param use_bias: `bool` - Standard ist True.
+    :param dtype: Standard: None, verwendet den Standard-Datentyp.
+    :param name: Name des Moduls, Standard: "".
     :param tp_comm: Comm Controller.
 
-    The following uses the MNIST dataset to train a classification task on an MLP model on 2 GPUs.
+    Im Folgenden wird der MNIST-Datensatz verwendet, um eine Klassifikationsaufgabe auf einem MLP-Modell auf 2 GPUs zu trainieren.
 
-    The usage is similar to that of the classic Linear layer.
+    Die Verwendung ist ähnlich wie bei der klassischen Linear-Schicht.
 
-    Multi-process usage based on `# vqnetrun --backend nccl --nproc_per_node 2 python test.py`.
+    Mehrprozess-Nutzung basierend auf `# vqnetrun --backend nccl --nproc_per_node 2 python test.py`.
 
     Examples::
 
@@ -1413,25 +1413,25 @@ RowParallelLinear
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. py:class:: pyvqnet.distributed.RowParallelLinear(input_size,output_size,weight_initializer,bias_initializer,use_bias,dtype,name,tp_comm)
     
-    Tensor-parallel computation with column-parallel linear layer.
+    Tensor-parallele Berechnung mit zeilenparalleler linearer Schicht.
 
-    The linear layer is defined as Y = XA + b. A is parallelized along its first dimension and X along its second dimension.
+    Die lineare Schicht ist definiert als Y = XA + b. A wird entlang seiner ersten Dimension und X entlang seiner zweiten Dimension parallelisiert.
     A = transpose([A_1 .. A_p]) X = [X_1, ..., X_p].
 
-    :param input_size: first dimension of matrix A.
-    :param output_size: second dimension of matrix A.
-    :param weight_initializer: `callable` - defaults to normal.
-    :param bias_initializer: `callable` - defaults to zeros.
-    :param use_bias: `bool` - defaults to True.
-    :param dtype: default: None,use default data type.
-    :param name: name of module,default:"".
+    :param input_size: Erste Dimension der Matrix A.
+    :param output_size: Zweite Dimension der Matrix A.
+    :param weight_initializer: `callable` - Standard ist normal.
+    :param bias_initializer: `callable` - Standard ist zeros.
+    :param use_bias: `bool` - Standard ist True.
+    :param dtype: Standard: None, verwendet den Standard-Datentyp.
+    :param name: Name des Moduls, Standard: "".
     :param tp_comm: Comm Controller.
 
-    The following uses the MNIST dataset to train a classification task on an MLP model on 2 GPUs.
+    Im Folgenden wird der MNIST-Datensatz verwendet, um eine Klassifikationsaufgabe auf einem MLP-Modell auf 2 GPUs zu trainieren.
 
-    The usage is similar to that of the classic Linear layer.
+    Die Verwendung ist ähnlich wie bei der klassischen Linear-Schicht.
 
-    Multi-process usage based on `# vqnetrun --backend nccl --nproc_per_node 2 python test.py`.
+    Mehrprozess-Nutzung basierend auf `# vqnetrun --backend nccl --nproc_per_node 2 python test.py`.
 
     Examples::
 
@@ -1583,39 +1583,39 @@ RowParallelLinear
         print(f'Accuracy of the model on the 10000 Train images: {train_acc}% time cost {time2 - time1}')
 
 
-Bit Reordering
+Bit-Umordnung
 =================================
 
-Qubit reordering is a technique in bit parallelism. Its core goal is to reduce the number of bit transformations required by bit parallelism by changing the order of quantum logic gates. The following modules are required for building large-bit quantum circuits based on bit parallelism. Refer to the paper `Lazy Qubit Reordering for Accelerating Parallel State-Vector-based Quantum Circuit Simulation <https://export.arxiv.org/abs/2410.04252>`__.
+Bei der Qubit-Umordnung handelt es sich um eine Technik des Bit-Parallelismus. Ihr Kernziel ist es, die Anzahl der benötigten Bit-Transformationen im Bit-Parallelismus zu reduzieren, indem die Reihenfolge der Quantenlogikgatter geändert wird. Die folgenden Module werden für den Aufbau großer Bit-Quantenschaltungen auf Basis des Bit-Parallelismus benötigt. Siehe auch das Paper `Lazy Qubit Reordering for Accelerating Parallel State-Vector-based Quantum Circuit Simulation <https://export.arxiv.org/abs/2410.04252>`__.
 
-The following interfaces require `mpi` to launch multiple processes for computation.
+Die folgenden Schnittstellen erfordern `mpi`, um mehrere Prozesse für die Berechnung zu starten.
 
 DistributeQMachine
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. py:class:: pyvqnet.distributed.qubits_reorder.DistributeQMachine(num_wires, dtype, grad_mode)
     
-    A class for simulating bit-parallel variational quantum computations, including quantum states on a subset of bits on each node. Each node applies for a distributed quantum variational circuit simulation via MPI. The value of N must be equal to a power of 2 raised to the number of distributed parallel bits, `global_qubit`, and can be configured via `set_qr_config`.
+    Eine Klasse zur Simulation bit-paralleler varianter Quantenberechnungen, einschließlich Quantenzuständen auf einer Teilmenge von Bits auf jedem Knoten. Jeder Knoten beantragt eine verteilte Quanten-Variationsschaltungssimulation via MPI. Der Wert von N muss gleich einer Potenz von 2 hoch der Anzahl verteilter paralleler Bits, `global_qubit`, sein und kann über `set_qr_config` konfiguriert werden.
 
-    :param num_wires: The number of bits in the complete quantum circuit.
-    :param dtype: The data type of the computation data. The default is pyvqnet.kcomplex64, corresponding to the parameter precision of pyvqnet.kfloat32.
-    :param grad_mode: Set to adjoint when backpropagating ``DistQuantumLayerAdjoint``.
+    :param num_wires: Die Anzahl der Bits in der vollständigen Quantenschaltung.
+    :param dtype: Der Datentyp der Berechnungsdaten. Der Standardwert ist pyvqnet.kcomplex64, entsprechend der Parameterpräzision von pyvqnet.kfloat32.
+    :param grad_mode: Auf adjoint setzen bei der Rückwärtspropagation von ``DistQuantumLayerAdjoint``.
 
     .. note::
 
-        The number of bits input is the number of bits required for the entire quantum circuit. DistributeQMachine will build a quantum simulator based on the global number of bits, which is ``num_wires - global_qubit``.
+        Die eingegebene Anzahl von Bits ist die Anzahl der Bits, die für die gesamte Quantenschaltung benötigt werden. DistributeQMachine erstellt einen Quantensimulator basierend auf der globalen Anzahl von Bits, die ``num_wires - global_qubit`` beträgt.
 
-        Backpropagation must be based on ``DistQuantumLayerAdjoint``.
+        Die Rückwärtspropagation muss auf ``DistQuantumLayerAdjoint`` basieren.
 
     .. warning::
 
-        This interface only supports running under Linux;
+        Diese Schnittstelle wird nur unter Linux unterstützt;
 
-        The bit-parallel parameters in ``DistributeQMachine`` must be configured, as shown in the example, including:
+        Die Bit-Parallelismus-Parameter in ``DistributeQMachine`` müssen konfiguriert werden, wie im Beispiel gezeigt, einschließlich:
 
         .. code-block::
 
             qm.set_just_defined(True)
-            qm.set_save_op_history_flag(True) # open save op
+            qm.set_save_op_history_flag(True) # Speicheroperation aktivieren
             qm.set_qr_config({'qubit': total qubits number, 'global_qubit':  distributed qubits number})
     
     
@@ -1641,8 +1641,8 @@ DistributeQMachine
                 self.qm = DistributeQMachine(num_wires, dtype=dtype, grad_mode=grad_mode)
                 
                 self.qm.set_just_defined(True)
-                self.qm.set_save_op_history_flag(True) # open save op
-                self.qm.set_qr_config({"qubit": num_wires, # open qubit reordered, set config
+                self.qm.set_save_op_history_flag(True) # Speicheroperation aktivieren
+                self.qm.set_qr_config({"qubit": num_wires, # Qubit-Umordnung aktivieren, Konfiguration setzen
                                         "global_qubit": 1}) # global_qubit == log2(nproc)
                 
                 self.params = pyvqnet.nn.Parameter([qubit])
@@ -1686,18 +1686,18 @@ DistQuantumLayerAdjoint
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. py:class:: pyvqnet.distributed.qubits_reorder.DistQuantumLayerAdjoint(vqc_module,name)
     
-    A DistQuantumLayer layer that computes gradients for parameters in bit-parallel computations using the adjoint matrix approach.
+    Eine DistQuantumLayer-Schicht, die Gradienten für Parameter in bit-parallelen Berechnungen mit dem Ansatz der adjungierten Matrix berechnet.
 
-    :param vqc_module: The input implicit ``DistributeQMachine`` module.
-    :param name: The module name.
+    :param vqc_module: Das eingegebene implizite ``DistributeQMachine``-Modul.
+    :param name: Der Modulname.
 
     .. note::
 
-        The input vqc_module module must contain ``DistributeQMachine``. Adjoint backpropagation gradient computations are performed based on ``DistributeQMachine`` in bit-parallel computations.
+        Das eingegebene vqc_module-Modul muss ``DistributeQMachine`` enthalten. Die adjungierte Rückwärtspropagations-Gradientenberechnung wird basierend auf ``DistributeQMachine`` in bit-parallelen Berechnungen durchgeführt.
 
     .. warning::
 
-        This interface is only supported on Linux;
+        Diese Schnittstelle wird nur unter Linux unterstützt;
 
 
     Examples::
@@ -1722,8 +1722,8 @@ DistQuantumLayerAdjoint
                 self.qm = DistributeQMachine(num_wires, dtype=dtype, grad_mode=grad_mode)
                 
                 self.qm.set_just_defined(True)
-                self.qm.set_save_op_history_flag(True) # open save op
-                self.qm.set_qr_config({"qubit": num_wires, # open qubit reordered, set config
+                self.qm.set_save_op_history_flag(True) # Speicheroperation aktivieren
+                self.qm.set_qr_config({"qubit": num_wires, # Qubit-Umordnung aktivieren, Konfiguration setzen
                                             "global_qubit": 1}) # global_qubit == log2(nproc)
                 
                 self.params = pyvqnet.nn.Parameter([qubit])
