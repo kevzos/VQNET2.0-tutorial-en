@@ -1,32 +1,32 @@
-Steps of VQNet Installation
+Passos para instalação do VQNet
 ==================================
 
-VQNet python package Installation
+Instalação do pacote Python VQNet
 ----------------------------------
 
-We provide precompiled Python packages for installation on Linux, Windows, macOS 13+ (arm64), supporting **Python 3.10**.
+Fornecemos pacotes Python pré-compilados para instalação no Linux, Windows, macOS 13+ (arm64), compatíveis com **Python 3.10**.
 
-Download the corresponding archive from the official website, extract it, navigate to the extracted directory, and run the following steps:
+Baixe o arquivo correspondente do site oficial, extraia-o, navegue até o diretório extraído e execute os seguintes passos:
 
 .. code-block::
 
-    # For Windows
+    # Para Windows
     ./install.bat
-    # For macOS and Linux
+    # Para macOS e Linux
     ./install.sh
  
 
 
-For Windows and Linux systems, the pyvqnet package includes built-in acceleration features for classic neural network computations based on Nvidia CUDA, which depends on the specific version of NVIDIA CUDA 12.6 runtime libraries (automatically installed with the package).
-The package is optimized for the following CUDA architectures:
-**sm_80** (NVIDIA A100, A30 series data center GPUs) and **sm_86** (NVIDIA GeForce RTX 30 series consumer GPUs). Please ensure you are using a GPU that supports these architectures; otherwise, the program may not function correctly.
+Para sistemas Windows e Linux, o pacote pyvqnet inclui recursos de aceleração integrados para cálculos de redes neurais clássicas baseados em Nvidia CUDA, que dependem da versão específica das bibliotecas de tempo de execução NVIDIA CUDA 12.6 (instaladas automaticamente com o pacote).
+O pacote é otimizado para as seguintes arquiteturas CUDA:
+**sm_80** (GPUs de data center NVIDIA A100, série A30) e **sm_86** (GPUs de consumo NVIDIA GeForce série RTX 30). Certifique-se de estar usando uma GPU compatível com essas arquiteturas; caso contrário, o programa pode não funcionar corretamente.
 
     .. important::
 
-        Please note that since this package does not distinguish between CPU/GPU versions, it depends on NVIDIA CUDA runtime libraries under Windows and Linux, which are automatically installed with the package. This may cause conflicts with other software that depends on different versions.
+        Observe que, como este pacote não faz distinção entre versões CPU/GPU, ele depende das bibliotecas de tempo de execução NVIDIA CUDA no Windows e Linux, que são instaladas automaticamente com o pacote. Isso pode causar conflitos com outros softwares que dependem de versões diferentes.
 
 
-Validate VQNet's installation
+Validação da instalação do VQNet
 ----------------------------------
 
 .. code-block::
@@ -36,8 +36,8 @@ Validate VQNet's installation
     a = arange(1,25).reshape([2, 3, 4])
     print(a)
 
-Testing GPU Functionality in VQNet
-----------------------------------
+Teste da funcionalidade GPU no VQNet
+----------------------------------------
 
 .. code-block::
 
@@ -46,27 +46,27 @@ Testing GPU Functionality in VQNet
     a = ones([4,5],device = DEV_GPU_0)
     print(a)
 
-A simple case of VQNet
---------------------------
-Here we introduce a case that consists of classical neural network modules and quantum modules of VQNet to describe the workflow of quantum machine learning. 
-It refers to `Data re-uploading for a universal quantum classifier <https://arxiv.org/abs/1907.02085>`_ .
-Generally, there are the following parts of quantum computing module in quantum machine learning:
+Um caso simples com o VQNet
+---------------------------
+Aqui apresentamos um caso composto por módulos de redes neurais clássicas e módulos quânticos do VQNet para descrever o fluxo de trabalho do aprendizado de máquina quântico.
+Faz referência a `Data re-uploading for a universal quantum classifier <https://arxiv.org/abs/1907.02085>`_ .
+Geralmente, as seguintes partes do módulo de computação quântica estão presentes no aprendizado de máquina quântico:
 
-(1)Encoder:encoding classical data into quantum state;
+(1) Codificador: codificação de dados clássicos em estado quântico;
 
-(2)Ansats: training the parameters in Parameterized Quantum Gates;
+(2) Ansatz: treinamento dos parâmetros em portas quânticas parametrizadas;
 
-(3)Measurement: measuring the value of a qubit(projection of qubit's quantum state in a specified axis).
+(3) Medição: medição do valor de um qubit (projeção do estado quântico do qubit em um eixo especificado).
 
-Quantum computing module is the theoretical basis of the hybrid model of quantum classical neural network, which is also differentiable like classical neural network modules. VQNet supports quantum computing modules and classical computing modules to form a hybrid machine learning model, and provides various optimization algorithms for parameter optimization. (e.g. Convolution layer, pooling layer, fully connected layer, activation function, etc.)
+O módulo de computação quântica é a base teórica do modelo híbrido de rede neural quântico-clássica, que também é diferenciável como os módulos de redes neurais clássicas. O VQNet suporta módulos de computação quântica e módulos de computação clássica para formar um modelo híbrido de aprendizado de máquina, e fornece vários algoritmos de otimização para otimização de parâmetros (por exemplo, camada de convolução, camada de pooling, camada totalmente conectada, função de ativação, etc.).
 
 .. figure:: ./images/classic-quantum.PNG
 
-In the quantum computing module, VQNet supports the use of the efficient quantum software computing package pyqpanda3 to build quantum modules.
-Using the various commonly used interfaces provided by pyqpanda3, users can quickly build quantum computing modules.
+No módulo de computação quântica, o VQNet suporta o uso do pacote de software de computação quântica eficiente pyqpanda3 para construir módulos quânticos.
+Usando as várias interfaces comumente utilizadas fornecidas pelo pyqpanda3, os usuários podem construir rapidamente módulos de computação quântica.
 
-The following example uses pyqpanda3 to build a quantum computing module. Through VQNet, this quantum module can be directly embedded into a hybrid machine learning model for quantum circuit parameter training.
-In this example, 1 qubit is used, multiple parameterized rotation gates `RZ`, `RY`, `RZ` are used to encode the input x, and the `probs_measure` function is used to observe the probability measurement result of the qubit as output.
+O exemplo a seguir usa o pyqpanda3 para construir um módulo de computação quântica. Através do VQNet, este módulo quântico pode ser diretamente incorporado em um modelo híbrido de aprendizado de máquina para treinamento de parâmetros do circuito quântico.
+Neste exemplo, 1 qubit é usado, várias portas de rotação parametrizadas `RZ`, `RY`, `RZ` são usadas para codificar a entrada x, e a função `probs_measure` é usada para observar o resultado da medição de probabilidade do qubit como saída.
 
 .. code-block::
 
@@ -123,12 +123,12 @@ In this example, 1 qubit is used, multiple parameterized rotation gates `RZ`, `R
 
         return prob
 
-Our task is to classify this randomly generated data using a binary classification approach. In this task,
-the center of a circle is at the origin, points within radius 1 colored in red belong to one category, and the samples colored in blue belong to another category.
+Nossa tarefa é classificar esses dados gerados aleatoriamente usando uma abordagem de classificação binária. Nesta tarefa,
+o centro de um círculo está na origem, os pontos dentro do raio 1 coloridos em vermelho pertencem a uma categoria, e as amostras coloridas em azul pertencem a outra categoria.
 
 .. figure:: ./images/origin_circle.png
 
-The pipeline of the training process
+O pipeline do processo de treinamento
 
 .. code-block::
 
