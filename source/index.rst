@@ -32,20 +32,20 @@ Scénarios d'application riches et support d'exemples
 VQNet n'est pas seulement un outil de développement puissant, mais il est également largement utilisé dans de nombreux projets internes, notamment dans les domaines de l'optimisation énergétique, de l'analyse de données médicales, du traitement d'images, etc. Pour aider les utilisateurs à démarrer rapidement, VQNet propose une variété de scénarios allant des tutoriels de base aux applications avancées sur le site officiel et la documentation en ligne de l'API. Ces ressources permettent aux utilisateurs de comprendre facilement comment utiliser VQNet pour résoudre des problèmes concrets et construire rapidement leurs propres applications d'apprentissage automatique quantique.
 
 .. toctree::
-    :caption: Installation Guide
+    :caption: Guide d'installation
     :maxdepth: 2
 
     rst/install.rst
 
 .. toctree::
-    :caption: Hands-on Examples
+    :caption: Exemples pratiques
     :maxdepth: 2
 
     rst/vqc_demo.rst
     rst/qml_demo.rst
 
 .. toctree::
-    :caption: Classic neural network API
+    :caption: API de réseau neuronal classique
     :maxdepth: 2
 
     rst/QTensor.rst
@@ -53,20 +53,20 @@ VQNet n'est pas seulement un outil de développement puissant, mais il est égal
     rst/utils.rst
 
 .. toctree::
-    :caption: QNN API integrated with pyqpanda
+    :caption: API QNN intégrée avec pyqpanda
     :maxdepth: 2
 
     rst/qnn.rst
     rst/qnn_pq3.rst
 
 .. toctree::
-    :caption: Autograd QNN API
+    :caption: API QNN avec Autograd
     :maxdepth: 2
 
     rst/vqc.rst
 
 .. toctree:: 
-    :caption: Others 
+    :caption: Autres 
     :maxdepth: 2 
     
     rst/torch_api.rst
