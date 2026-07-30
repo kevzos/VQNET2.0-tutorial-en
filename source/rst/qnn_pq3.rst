@@ -1,13 +1,13 @@
-Use pyQPanda3 quantum machine learning module
+Use o módulo de aprendizado de máquina quântico pyQPanda3
 #########################################################
 
 .. warning::
 
-    The quantum computing part of the following interface uses pyqpanda3.
+    A parte de computação quântica da seguinte interface usa pyqpanda3.
 
-    If you use the QCloud function under this module, there will be errors when importing pyqpanda2 in the code or using pyvqnet's pyqpanda2 related package interface.
+    Se você usar a função QCloud neste módulo, haverá erros ao importar pyqpanda2 no código ou ao usar a interface de pacote relacionada ao pyqpanda2 do pyvqnet.
 
-Quantum computing layer
+Camada de computação quântica
 ***********************************
 
 .. _QuantumLayer_pq3:
@@ -15,38 +15,38 @@ Quantum computing layer
 QuantumLayer
 ============================
 
-If you are familiar with pyQPanda3 syntax, you can use the interface QuantumLayer to customize the pyqpanda3 simulator for calculation.
+Se você está familiarizado com a sintaxe do pyQPanda3, pode usar a interface QuantumLayer para personalizar o simulador pyqpanda3 para cálculo.
 
 .. py:class:: pyvqnet.qnn.pq3.quantumlayer.QuantumLayer(qprog_with_measure,para_num,diff_method:str = "parameter_shift",delta:float = 0.01,dtype=None,name="")
 
-    Abstract computation module of variational quantum layer. Use pyQPanda3 to simulate a parameterized quantum circuit and get the measurement results. This variational quantum layer inherits the gradient computation module of the VQNet framework. It can use parameter drift method to calculate the gradient of circuit parameters, train variational quantum circuit models or embed variational quantum circuits into hybrid quantum and classical models.
+    Módulo de computação abstrata de camada quântica variacional. Use pyQPanda3 para simular um circuito quântico parametrizado e obter os resultados de medição. Esta camada quântica variacional herda o módulo de cálculo de gradiente do framework VQNet. Ela pode usar o método de desvio de parâmetro para calcular o gradiente dos parâmetros do circuito, treinar modelos de circuito quântico variacional ou incorporar circuitos quânticos variacionais em modelos híbridos quânticos e clássicos.
 
-    :param qprog_with_measure: Quantum circuit operation and measurement functions built with pyQPanda.
-    :param para_num: `int` - number of parameters.
-    :param diff_method: Method for solving quantum circuit parameter gradients, "parameter shift" or "finite difference", default parameter offset.
-    :param delta: \delta when calculating gradients by finite difference.
-    :param dtype: data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
-    :param name: the name of this module, defaults to "".
+    :param qprog_with_measure: Função de operação e medição de circuito quântico construída com pyQPanda.
+    :param para_num: ``int`` - número de parâmetros.
+    :param diff_method: Método para resolver gradientes de parâmetros do circuito quântico, "parameter shift" ou "finite difference", padrão é deslocamento de parâmetro.
+    :param delta: \delta ao calcular gradientes por diferença finita.
+    :param dtype: tipo de dado do parâmetro, padrão: None, usa o tipo de dado padrão: kfloat32, representando números de ponto flutuante de 32 bits.
+    :param name: o nome deste módulo, padrão é "".
 
-    :return: a module that can calculate quantum circuits.
-
-    .. note::
-
-        qprog_with_measure is a quantum circuit function defined in pyQPanda3.
-
-        This function must contain two parameters, input and parameter, as function input (even if a parameter is not actually used), and the output is the measurement result or expected value of the circuit (needs to be np.ndarray or a list containing values), otherwise it will not run properly in QpandaQCircuitVQCLayerLite.
-
-        The use of the quantum circuit function qprog_with_measure (input, param) can be referred to the example below.
-
-        `input`: Input one-dimensional classical data. If not, input None
-
-        `param`: Input one-dimensional variational quantum circuit parameters to be trained
+    :return: um módulo que pode calcular circuitos quânticos.
 
     .. note::
 
-        This class has aliases `QuantumLayerV2`, `QpandaQCircuitVQCLayerLite`.
+        qprog_with_measure é uma função de circuito quântico definida no pyQPanda3.
 
-    Example::
+        Esta função deve conter dois parâmetros, input e parameter, como entrada da função (mesmo que um parâmetro não seja realmente usado), e a saída é o resultado da medição ou valor esperado do circuito (precisa ser np.ndarray ou uma lista contendo valores), caso contrário não funcionará corretamente no QpandaQCircuitVQCLayerLite.
+
+        O uso da função de circuito quântico qprog_with_measure (input, param) pode ser consultado no exemplo abaixo.
+
+        ``input``: Dado clássico unidimensional de entrada. Se não houver, insira None
+
+        ``param``: Parâmetros do circuito quântico variacional unidimensional a serem treinados
+
+    .. note::
+
+        Esta classe tem os apelidos ``QuantumLayerV2``, ``QpandaQCircuitVQCLayerLite``.
+
+    Exemplo::
 
         from pyvqnet.qnn.pq3.measure import ProbsMeasure
         from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
@@ -89,16 +89,16 @@ If you are familiar with pyQPanda3 syntax, you can use the interface QuantumLaye
             return rlt_prob
         pqc = QuantumLayer(pqctest,3)
 
-        #classic data as input
+        #dados clássicos como entrada
         input = QTensor([[1,2,3,4],[4,2,2,3],[3.0,3,2,2]] )
 
-        #forward circuits
+        #circuitos forward
         rlt = pqc(input)
 
         print(rlt)
 
         grad = ones(rlt.data.shape)*1000
-        #backward circuits
+        #circuitos backward
         rlt.backward(grad)
 
         print(pqc.m_para.grad)
@@ -108,38 +108,38 @@ QpandaQProgVQCLayer
 
 .. py:class:: pyvqnet.qnn.pq3.quantumlayer.QuantumLayerV3(origin_qprog_func,para_num,qvm_type="cpu", pauli_str_dict=None, shots=1000, initializer=None,dtype=None,name="")
 
-    It submits the parameterized quantum circuit to the local QPanda3 full-amplitude simulator for calculation and trains the parameters in the circuit.
-    It supports batch data and uses the parameter shift rule to estimate the gradient of the parameters.
-    For CRX, CRY, CRZ, this layer uses the formula in https://iopscience.iop.org/article/10.1088/1367-2630/ac2cb3, and the rest of the logic gates use the default parameter drift method to calculate the gradient.
+    Envia o circuito quântico parametrizado para o simulador de amplitude total local QPanda3 para cálculo e treina os parâmetros no circuito.
+    Suporta dados em lote e usa a regra de deslocamento de parâmetro para estimar o gradiente dos parâmetros.
+    Para CRX, CRY, CRZ, esta camada usa a fórmula em https://iopscience.iop.org/article/10.1088/1367-2630/ac2cb3, e o restante das portas lógicas usa o método de desvio de parâmetro padrão para calcular o gradiente.
 
-    :param origin_qprog_func: The callable quantum circuit function built by QPanda.
-    :param para_num: `int` - Number of parameters; parameters are one-dimensional.
-    :param qvm_type: `str` - Type of pyqpanda3 simulator to use, `cpu` or `gpu`, default `cpu`.
-    :param pauli_str_dict: `dict|list` - Dictionary or list of dictionaries representing the Pauli operators in the quantum circuit. Default is None.
-    :param shots: `int` - Number of measurement shots. Default is 1000.
-    :param initializer: Initializer for parameter values. Default is None.
-    :param dtype: Data type of the parameter. Default is None, which means using the default data type.
-    :param name: Name of the module. Default is the empty string.
+    :param origin_qprog_func: A função de circuito quântico chamável construída por QPanda.
+    :param para_num: ``int`` - Número de parâmetros; os parâmetros são unidimensionais.
+    :param qvm_type: ``str`` - Tipo de simulador pyqpanda3 a ser usado, ``cpu`` ou ``gpu``, padrão ``cpu``.
+    :param pauli_str_dict: ``dict|list`` - Dicionário ou lista de dicionários representando os operadores de Pauli no circuito quântico. O padrão é None.
+    :param shots: ``int`` - Número de medições. O padrão é 1000.
+    :param initializer: Inicializador para valores de parâmetros. O padrão é None.
+    :param dtype: Tipo de dado do parâmetro. O padrão é None, o que significa usar o tipo de dado padrão.
+    :param name: Nome do módulo. O padrão é a string vazia.
 
-    :return: Returns a QpandaQProgVQCLayer class
+    :return: Retorna uma classe QpandaQProgVQCLayer
 
     .. note::
 
-        origin_qprog_func is a quantum circuit function defined by the user using pyQPanda3.
+        origin_qprog_func é uma função de circuito quântico definida pelo usuário usando pyQPanda3.
 
-        This function must contain two parameters, input and parameter, as function input (even if a parameter is not actually used), and the output is pyqpanda3.core.QProg type data, otherwise it cannot run properly in QuantumLayerV3.
+        Esta função deve conter dois parâmetros, input e parameter, como entrada da função (mesmo que um parâmetro não seja realmente usado), e a saída é dados do tipo pyqpanda3.core.QProg, caso contrário não pode ser executada corretamente no QuantumLayerV3.
 
         origin_qprog_func (input,param )
 
-        `input`: user-defined array class input 1-dimensional classical data
+        ``input``: classe de array definida pelo usuário para entrada de dados clássicos unidimensionais
 
-        `param`: array_like input user-defined 1-dimensional quantum circuit parameters
+        ``param``: entrada array_like de parâmetros de circuito quântico unidimensional definidos pelo usuário
 
     .. note::
 
-        This class has an alias `QuantumLayerV3` .
+        Esta classe tem um apelido ``QuantumLayerV3`` .
 
-    Example::
+    Exemplo::
 
         import pyqpanda3.core as pq
         import pyvqnet
@@ -195,45 +195,45 @@ QpandaQProgVQCLayer
 QuantumBatchAsyncQcloudLayer
 ==================================
 
-When you install the latest version of pyqpanda3, you can use this interface to define a variational circuit and submit it to the originqc real chip for operation.
+Quando você instala a versão mais recente do pyqpanda3, pode usar esta interface para definir um circuito variacional e enviá-lo ao chip real originqc para operação.
 
 .. py:class:: pyvqnet.qnn.pq3.quantumlayer.QuantumBatchAsyncQcloudLayer(origin_qprog_func, qcloud_token, para_num, pauli_str_dict=None, shots = 1000, initializer=None, dtype=None, name="", diff_method="parameter_shift", submit_kwargs={}, query_kwargs={})
     
-    An abstract computing module for the originqc real chip using pyqpanda3 QCLOUD. It submits parameterized quantum circuits to the real chip and obtains measurement results.
-    If diff_method == "random_coordinate_descent" , the layer will randomly select a single parameter to calculate the gradient, and other parameters will remain zero. Reference: https://arxiv.org/abs/2311.00088
+    Um módulo de computação abstrata para o chip real originqc usando pyqpanda3 QCLOUD. Ele envia circuitos quânticos parametrizados para o chip real e obtém resultados de medição.
+    Se diff_method == "random_coordinate_descent", a camada selecionará aleatoriamente um único parâmetro para calcular o gradiente, e outros parâmetros permanecerão zero. Referência: https://arxiv.org/abs/2311.00088
 
     .. note::
 
-        qcloud_token is the api token you applied for from the cloud platform.
+        qcloud_token é o token de api que você solicitou da plataforma em nuvem.
 
-        origin_qprog_func needs to return data of type pyqpanda3.core.QProg. If pauli_str_dict is not set, it is necessary to ensure that the measure has been inserted into the QProg.
+        origin_qprog_func precisa retornar dados do tipo pyqpanda3.core.QProg. Se pauli_str_dict não for definido, é necessário garantir que a medição foi inserida no QProg.
 
-        origin_qprog_func must be in the following format:
+        origin_qprog_func deve estar no seguinte formato:
 
         origin_qprog_func(input,param)
 
-            `input`: Input 1~2D classical data. In the case of 2D, the first dimension is the batch size
+            ``input``: Dados clássicos de entrada 1~2D. No caso de 2D, a primeira dimensão é o tamanho do lote
 
-            `param`: Input the parameters to be trained for the 1D variational quantum circuit
+            ``param``: Parâmetros a serem treinados para o circuito quântico variacional 1D
 
     .. note::
 
-        In the current version, the default total timeout for a single circuit's submission to the QCloud  is 60 seconds. If a timeout occurs due to QCloud being busy, you can set the value of the `total_timeout` key in ``query_kwargs`` to the desired number of waiting seconds.
+        Na versão atual, o tempo limite total padrão para o envio de um único circuito ao QCloud é de 60 segundos. Se ocorrer um tempo limite devido ao QCloud estar ocupado, você pode definir o valor da chave ``total_timeout`` em ``query_kwargs`` para o número desejado de segundos de espera.
 
-    :param origin_qprog_func: The variational quantum circuit function built by QPanda, which must return a QProg.
-    :param qcloud_token: `str` - The type of quantum machine or the cloud token used for execution.
-    :param para_num: `int` - The number of parameters, the parameter is a QTensor of size [para_num].
-    :param pauli_str_dict: `dict|list` - A dictionary or list of dictionaries representing the Pauli operators in the quantum circuit. The default is "None", which performs measurement operations. If a dictionary of Pauli operators is entered, a single expectation or multiple expectations will be calculated.
-    :param shots: `int` - The number of measurements. The default value is 1000.
-    :param initializer: Initializer for parameter values. The default is "None", which uses a 0~2*pi normal distribution.
-    :param dtype: The data type of the parameter. The default value is None, which means using the default data type pyvqnet.kfloat32.
-    :param name: The name of the module. The default is an empty string.
-    :param diff_method: Differentiation method for gradient calculation. The default is "parameter_shift", "random_coordinate_descent".
-    :param submit_kwargs: Additional keyword parameters for submitting quantum circuits, default: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, when test_qcloud_fake is set to True, local CPUQVM simulation.
-    :param query_kwargs: Additional keyword parameters for querying quantum results, default: {"timeout":1,"total_timeout":60,"print_query_info":True,"sub_circuits_split_size":1}.
-    :return: A module that can compute quantum circuits.
+    :param origin_qprog_func: A função de circuito quântico variacional construída por QPanda, que deve retornar um QProg.
+    :param qcloud_token: ``str`` - O tipo de máquina quântica ou o token de nuvem usado para execução.
+    :param para_num: ``int`` - O número de parâmetros, o parâmetro é um QTensor de tamanho [para_num].
+    :param pauli_str_dict: ``dict|list`` - Um dicionário ou lista de dicionários representando os operadores de Pauli no circuito quântico. O padrão é "None", que realiza operações de medição. Se um dicionário de operadores de Pauli for inserido, uma expectativa única ou múltiplas expectativas serão calculadas.
+    :param shots: ``int`` - O número de medições. O valor padrão é 1000.
+    :param initializer: Inicializador para valores de parâmetros. O padrão é "None", que usa uma distribuição normal 0~2*pi.
+    :param dtype: O tipo de dado do parâmetro. O valor padrão é None, o que significa usar o tipo de dado padrão pyvqnet.kfloat32.
+    :param name: O nome do módulo. O padrão é uma string vazia.
+    :param diff_method: Método de diferenciação para cálculo do gradiente. O padrão é "parameter_shift", "random_coordinate_descent".
+    :param submit_kwargs: Parâmetros de palavra-chave adicionais para envio de circuitos quânticos, padrão: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, quando test_qcloud_fake é definido como True, simulação local CPUQVM.
+    :param query_kwargs: Parâmetros de palavra-chave adicionais para consultar resultados quânticos, padrão: {"timeout":1,"total_timeout":60,"print_query_info":True,"sub_circuits_split_size":1}.
+    :return: Um módulo que pode calcular circuitos quânticos.
 
-    Example::
+    Exemplo::
 
         import pyqpanda3.core as pq
         import pyvqnet
@@ -317,32 +317,33 @@ QuantumLayerAdjoint
 
 .. py:class:: pyvqnet.qnn.pq3.quantumlayer.QuantumLayerAdjoint(pq3_vqc_circuit, param_num, pauli_dicts, dtype = None, name="")
 
-    This class uses the pyqpanda3 VQCircuit interface to compute the gradients of parameters in a quantum circuit with respect to the Hamiltonian using the adjoint method.
+    Esta classe usa a interface VQCircuit do pyqpanda3 para calcular os gradientes dos parâmetros em um circuito quântico em relação ao Hamiltoniano usando o método adjunto.
 
-    This class supports batch input and multiple Hamiltonian outputs.
+    Esta classe suporta entrada em lote e múltiplas saídas Hamiltonianas.
 
     .. note::
 
-        When using this interface, you must construct the circuit using logic gates from VQCircuit.
+        Ao usar esta interface, você deve construir o circuito usando portas lógicas do VQCircuit.
 
-        Currently, limited logic gates are supported; an exception will be thrown if unsupported.
+        Atualmente, portas lógicas limitadas são suportadas; uma exceção será lançada se não for suportada.
 
-        The ``pq3_vqc_circuit`` input parameter can only contain two parameters, `x` and `param`, which must be a one-dimensional array or list.
+        O parâmetro de entrada ``pq3_vqc_circuit`` pode conter apenas dois parâmetros, ``x`` e ``param``, que devem ser um array ou lista unidimensional.
 
-        In the ``pq3_vqc_circuit`` function, users must use ``pyqpanda3.vqcircuit.VQCircuit().set_Param`` to customize how inputs and parameters are handled.
+        Na função ``pq3_vqc_circuit``, os usuários devem usar ``pyqpanda3.vqcircuit.VQCircuit().set_Param`` para personalizar como entradas e parâmetros são processados.
 
-        In addition, users must pre-enter the number of parameters in ``param_num``. This interface will initialize a parameter ``m_para`` with a length of ``param_num``.
+        Além disso, os usuários devem pré-inserir o número de parâmetros em ``param_num``. Esta interface inicializará um parâmetro ``m_para`` com um comprimento de ``param_num``.
 
-        See the example below.
+        Veja o exemplo abaixo.
 
-    :param pq3_vqc_circuit: Customize the pyqpanda3 VQCircuit circuit.
-    :param param_num: Number of parameters. :param pauli_dicts: Expected observations, can be a list.
-    :param dtype: Parameter type, kfloat32 or kfloat64, default: None, use kfloat32.
-    :param name: The name of this interface.
-    :return: Returns a QuantumLayerAdjoint instance
+    :param pq3_vqc_circuit: Personaliza o circuito pyqpanda3 VQCircuit.
+    :param param_num: Número de parâmetros.
+    :param pauli_dicts: Observações esperadas, pode ser uma lista.
+    :param dtype: Tipo de parâmetro, kfloat32 ou kfloat64, padrão: None, use kfloat32.
+    :param name: O nome desta interface.
+    :return: Retorna uma instância de QuantumLayerAdjoint
 
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3 import QuantumLayerAdjoint
         from pyvqnet import tensor
@@ -472,31 +473,31 @@ VQCQCloudLayer
 
 .. py:class:: pyvqnet.qnn.pq3.vqc_qcloud_layer.VQCQCloudLayer(vqc_module, qcloud_token, pauli_str_dict=None, shots=1000, name="", submit_kwargs={}, query_kwargs={})
 
-    Submit VQC Module to QCloud real chip or pyqpanda3 local simulator for execution.
+    Envia o Módulo VQC para o chip real QCloud ou para o simulador local pyqpanda3 para execução.
 
-    Forward propagation: Instead of executing VQNet's quantum variational circuit computation, it calls the quantum real chip or qpanda local simulator for computation.
+    Propagação forward: Em vez de executar o cálculo do circuito quântico variacional do VQNet, chama o chip quântico real ou o simulador local qpanda para o cálculo.
 
-    Backward propagation: Uses the parameter_shift rule to compute gradients. For each input dimension and each trainable parameter in the VQC,
-    generates +/- pi/2 shifted circuits and submits them for computation, retrieves results to compute the jacobian. Gradients are set on the input tensor and the VQC's trainable Parameters.
-
-    .. note::
-
-        The default total timeout for a single circuit submission to QCloud is 60 seconds. If timeout occurs due to QCloud being busy, you can set the ``total_timeout`` key in ``query_kwargs`` to specify the wait seconds.
+    Propagação backward: Usa a regra parameter_shift para calcular gradientes. Para cada dimensão de entrada e cada parâmetro treinável no VQC,
+    gera circuitos deslocados em +/- pi/2 e os envia para cálculo, recupera resultados para calcular o jacobiano. Os gradientes são definidos no tensor de entrada e nos Parâmetros treináveis do VQC.
 
     .. note::
 
-        You cannot define a measurement function (such as ``MeasureAll``) in ``vqc_module``. Measurement should be specified via the ``pauli_str_dict`` parameter to indicate observables.
-        For example: ``VQCQCloudLayer(vqc_module, token, pauli_str_dict={'Z0': 1, 'Z1': 1})``.
+        O tempo limite total padrão para o envio de um único circuito ao QCloud é de 60 segundos. Se ocorrer um tempo limite devido ao QCloud estar ocupado, você pode definir a chave ``total_timeout`` em ``query_kwargs`` para especificar os segundos de espera.
 
-    :param vqc_module: VQNet VQC Module, must include a QMachine with save_ir=True.
-    :param qcloud_token: QCloud API token. Pass an empty string if using a local simulator.
-    :param pauli_str_dict: Pauli operator dictionary for expectation value computation. Default is None, which performs measurement operation.
-    :param shots: Number of measurements. Default is 1000.
-    :param name: Module name. Default is empty string.
-    :param submit_kwargs: Additional keyword parameters for submitting quantum circuits, default: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, when test_qcloud_fake is set to True, local CPUQVM simulation.
-    :param query_kwargs: Additional keyword arguments for querying quantum results. Default: {"timeout":1,"total_timeout":60, "print_query_info":True,"sub_circuits_split_size":1}.
+    .. note::
 
-    Example::
+        Você não pode definir uma função de medição (como ``MeasureAll``) em ``vqc_module``. A medição deve ser especificada através do parâmetro ``pauli_str_dict`` para indicar observáveis.
+        Por exemplo: ``VQCQCloudLayer(vqc_module, token, pauli_str_dict={'Z0': 1, 'Z1': 1})``.
+
+    :param vqc_module: Módulo VQC do VQNet, deve incluir uma QMachine com save_ir=True.
+    :param qcloud_token: Token da API QCloud. Passe uma string vazia se estiver usando um simulador local.
+    :param pauli_str_dict: Dicionário de operadores de Pauli para cálculo do valor esperado. O padrão é None, que realiza operação de medição.
+    :param shots: Número de medições. O padrão é 1000.
+    :param name: Nome do módulo. O padrão é string vazia.
+    :param submit_kwargs: Parâmetros de palavra-chave adicionais para envio de circuitos quânticos, padrão: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, quando test_qcloud_fake é definido como True, simulação local CPUQVM.
+    :param query_kwargs: Argumentos de palavra-chave adicionais para consultar resultados quânticos. Padrão: {"timeout":1,"total_timeout":60, "print_query_info":True,"sub_circuits_split_size":1}.
+
+    Exemplo::
 
         from pyvqnet.qnn.vqc import *
         from pyvqnet.qnn.pq3 import VQCQCloudLayer
@@ -538,19 +539,19 @@ grad
 ===============
 .. py:function:: pyvqnet.qnn.pq3.quantumlayer.grad(quantum_prog_func, input_params, *args)
 
-    The grad function provides an interface for calculating the gradient of the parameters of the user-designed quantum circuit with parameters.
-    Users can use pyQPanda3 to design the circuit running function ``quantum_prog_func`` as shown below, and pass it as a parameter to the grad function.
-    The second parameter of the grad function is the coordinates of the quantum logic gate parameter gradient you want to calculate.
-    The shape of the return value is [num of parameters,num of output].
+    A função grad fornece uma interface para calcular o gradiente dos parâmetros do circuito quântico com parâmetros projetado pelo usuário.
+    Os usuários podem usar pyQPanda3 para projetar a função de execução do circuito ``quantum_prog_func`` como mostrado abaixo, e passá-la como um parâmetro para a função grad.
+    O segundo parâmetro da função grad são as coordenadas do gradiente do parâmetro da porta lógica quântica que você deseja calcular.
+    A forma do valor de retorno é [número de parâmetros, número de saídas].
 
-    :param quantum_prog_func: quantum circuit running function designed by pyQPanda3.
-    :param input_params: parameters to be calculated for the gradient.
-    :param \*args: other parameters input to the quantum_prog_func function.
+    :param quantum_prog_func: função de execução do circuito quântico projetada por pyQPanda3.
+    :param input_params: parâmetros para os quais o gradiente será calculado.
+    :param \*args: outros parâmetros de entrada para a função quantum_prog_func.
     :return:
-        Gradient of parameters
+        Gradiente dos parâmetros
 
 
-    Examples::
+    Exemplos::
 
         from pyvqnet.qnn.pq3 import grad, ProbsMeasure
         import pyqpanda3.core as pq
@@ -584,24 +585,23 @@ grad
 
 
 
-
 QLinear
 ==============
 
-QLinear implements a quantum full-connection algorithm. First, the data is encoded into a quantum state, and then the evolution operation and measurement are performed through quantum circuits to obtain the final full-connection result.
+QLinear implementa um algoritmo quântico de conexão completa. Primeiro, os dados são codificados em um estado quântico, e então a operação de evolução e medição são realizadas através de circuitos quânticos para obter o resultado final de conexão completa.
 
 .. image:: ./images/qlinear_cir.png
 
 .. py:class:: pyvqnet.qnn.qlinear.QLinear(input_channels,output_channels,machine: str = "CPU")
 
-    Quantum fully connected module. The input to the fully connected module is of shape (input channels, output channels). Note that this layer does not take variational quantum parameters.
+    Módulo quântico totalmente conectado. A entrada do módulo totalmente conectado tem a forma (canais de entrada, canais de saída). Note que esta camada não recebe parâmetros quânticos variacionais.
 
-    :param input_channels: `int` - Number of input channels.
-    :param output_channels: `int` - Number of output channels.
-    :param machine: `str` - The virtual machine to use, CPU simulation is used by default.
-    :return: Quantum fully connected layer.
+    :param input_channels: ``int`` - Número de canais de entrada.
+    :param output_channels: ``int`` - Número de canais de saída.
+    :param machine: ``str`` - A máquina virtual a ser usada, simulação CPU é usada por padrão.
+    :return: Camada quântica totalmente conectada.
 
-    Example::
+    Exemplo::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.qlinear import QLinear
@@ -627,34 +627,34 @@ QLinear implements a quantum full-connection algorithm. First, the data is encod
 Qconv
 ==========================
 
-    Qconv is a quantum convolution algorithm interface.
-    Quantum convolution operation uses quantum circuits to perform convolution operations on classical data. It does not need to calculate multiplication and addition operations. It only needs to encode the data into quantum states, and then perform evolution operations and measurements through quantum circuits to obtain the final convolution results.
-    Apply for the same number of quantum bits according to the number of input data in the range of the convolution kernel, and then build quantum circuits for calculation.
+    Qconv é uma interface de algoritmo de convolução quântica.
+    A operação de convolução quântica usa circuitos quânticos para realizar operações de convolução em dados clássicos. Ela não precisa calcular operações de multiplicação e adição. Basta codificar os dados em estados quânticos e, em seguida, realizar operações de evolução e medições através de circuitos quânticos para obter os resultados finais da convolução.
+    Aplica o mesmo número de bits quânticos de acordo com o número de dados de entrada dentro do intervalo do kernel de convolução e, em seguida, constrói circuitos quânticos para o cálculo.
 
     .. image:: ./images/qcnn.png
 
-    The quantum circuit is encoded by first inserting :math:`RY` and :math:`RZ` gates on each qubit, and then using :math:`Z` and :math:`U3` on any two qubits to entangle and exchange information. The following is an example of 4 qubits
+    O circuito quântico é codificado inserindo primeiro portas :math:`RY` e :math:`RZ` em cada qubit, e depois usando :math:`Z` e :math:`U3` em quaisquer dois qubits para entrelaçar e trocar informações. Abaixo está um exemplo de 4 qubits
 
     .. image:: ./images/qcnn_cir.png
 
 .. py:class:: pyvqnet.qnn.qcnn.qconv.QConv(input_channels,output_channels,quantum_number,stride=(1, 1),padding=(0, 0),kernel_initializer=normal,machine:str = "CPU", dtype=None, name ="")
 
-    Quantum convolution module. Replace the Conv2D kernel with a quantum circuit. The input of the conv module is of shape (batch size, input channels, height, width) `Samuel et al. (2020) <https://arxiv.org/abs/2012.12177>`_ .
+    Módulo de convolução quântica. Substitui o kernel Conv2D por um circuito quântico. A entrada do módulo conv tem a forma (tamanho do lote, canais de entrada, altura, largura) `Samuel et al. (2020) <https://arxiv.org/abs/2012.12177>`_ .
 
-        :param input_channels: `int` - Number of input channels.
-        :param output_channels: `int` - Number of output channels.
-        :param quantum_number: `int` - The size of a single kernel.
-        :param stride: `tuple` - The stride, defaults to (1,1).
-        :param padding: `tuple` - Padding, defaults to (0,0).
-        :param kernel_initializer: `callable` - Defaults to normal distribution.
-        :param machine: `str` - The virtual machine to use, defaults to CPU simulation.
-        :param dtype: The data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
-        :param name: The name of this module, defaults to "".
+        :param input_channels: ``int`` - Número de canais de entrada.
+        :param output_channels: ``int`` - Número de canais de saída.
+        :param quantum_number: ``int`` - O tamanho de um único kernel.
+        :param stride: ``tuple`` - O passo, padrão é (1,1).
+        :param padding: ``tuple`` - Preenchimento, padrão é (0,0).
+        :param kernel_initializer: ``callable`` - Padrão é distribuição normal.
+        :param machine: ``str`` - A máquina virtual a ser usada, padrão é simulação CPU.
+        :param dtype: O tipo de dado do parâmetro, padrão: None, usa o tipo de dado padrão: kfloat32, representando números de ponto flutuante de 32 bits.
+        :param name: O nome deste módulo, padrão é "".
 
-        :return: Quantum convolution layer.
+        :return: Camada de convolução quântica.
 
 
-        Example::
+        Exemplo::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.qnn.qcnn.qconv import QConv
@@ -670,17 +670,17 @@ Qconv
             #  [0.7992646, 0.7992646]]]
             # ]
 
-Quantum logic gates
+Portas lógicas quânticas
 ************************************
 
-The way to process quantum bits is quantum logic gate. Using quantum logic gate, we consciously evolve quantum states. Quantum logic gate is the basis of quantum algorithm.
+A maneira de processar bits quânticos é através de portas lógicas quânticas. Usando portas lógicas quânticas, evoluímos conscientemente os estados quânticos. A porta lógica quântica é a base do algoritmo quântico.
 
-Basic quantum logic gate
+Porta lógica quântica básica
 =============================
 
-In this section, we use the various logic gates of pyqpanda3 developed by Origin Quantum to build quantum circuits and perform quantum simulation.
-The logic gates currently supported by pyQPanda3 can refer to the definition of pyQPanda3 Quantum logic gate.
-In addition, VQNet also encapsulates some commonly used quantum logic gate combinations in quantum machine learning:
+Nesta seção, usamos as várias portas lógicas do pyqpanda3 desenvolvidas pela Origin Quantum para construir circuitos quânticos e realizar simulações quânticas.
+As portas lógicas atualmente suportadas pelo pyQPanda3 podem ser consultadas na definição de portas lógicas quânticas do pyQPanda3.
+Além disso, o VQNet também encapsula algumas combinações de portas lógicas quânticas comumente usadas em aprendizado de máquina quântico:
 
 
 BasicEmbeddingCircuit
@@ -688,16 +688,16 @@ BasicEmbeddingCircuit
 
 .. py:function:: pyvqnet.qnn.pq3.template.BasicEmbeddingCircuit(input_feat,qlist)
     
-    Encode n binary features into the ground state of n qubits.
+    Codifica n características binárias no estado fundamental de n qubits.
 
-    For example, for ``features=([0, 1, 1])``, the ground state is :math:`|011 \rangle` in a quantum system.
+    Por exemplo, para ``features=([0, 1, 1])``, o estado fundamental é :math:`|011 \rangle` em um sistema quântico.
 
-    :param input_feat: ``(n)`` binary input of size.
-    :param qlist: qubits to construct the template circuit.
-    :return: quantum circuit.
+    :param input_feat: entrada binária de tamanho ``(n)``.
+    :param qlist: qubits para construir o circuito template.
+    :return: circuito quântico.
 
 
-    Example::
+    Exemplo::
 
             from pyvqnet.qnn.pq3.template import BasicEmbeddingCircuit
             import pyqpanda3.core as pq
@@ -714,24 +714,24 @@ AngleEmbeddingCircuit
 
 .. py:function:: pyvqnet.qnn.pq3.template.AngleEmbeddingCircuit(input_feat,qubits,rotation:str='X')
 
-    Encode :math:`N` features into the rotation angle of :math:`n` qubits, where :math:`N \leq n`.
+    Codifica :math:`N` características no ângulo de rotação de :math:`n` qubits, onde :math:`N \leq n`.
 
-    Rotation can be chosen as: 'X' , 'Y' , 'Z', as defined by the ``rotation`` parameter:
+    A rotação pode ser escolhida como: 'X', 'Y', 'Z', conforme definido pelo parâmetro ``rotation``:
 
-    * ``rotation='X'`` Use the feature as the angle of the RX rotation.
+    * ``rotation='X'`` Usa a característica como o ângulo da rotação RX.
 
-    * ``rotation='Y'`` Use the feature as the angle of the RY rotation.
+    * ``rotation='Y'`` Usa a característica como o ângulo da rotação RY.
 
-    * ``rotation='Z'`` Use the feature as the angle of the RZ rotation.
+    * ``rotation='Z'`` Usa a característica como o ângulo da rotação RZ.
 
-    The length of ``features`` must be less than or equal to the number of qubits. If the length in ``features`` is less than qubits, the circuit does not apply the remaining rotation gates.
+    O comprimento de ``features`` deve ser menor ou igual ao número de qubits. Se o comprimento de ``features`` for menor que o número de qubits, o circuito não aplica as portas de rotação restantes.
 
-    :param input_feat: numpy array representing the parameters.
-    :param qubits: qubit indices.
-    :param rotation: what rotation to use, defaults to "X".
-    :return: quantum circuit.
+    :param input_feat: array numpy representando os parâmetros.
+    :param qubits: índices dos qubits.
+    :param rotation: qual rotação usar, padrão é "X".
+    :return: circuito quântico.
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3.template import AngleEmbeddingCircuit
         import numpy as np 
@@ -750,18 +750,18 @@ IQPEmbeddingCircuits
 
 .. py:function:: pyvqnet.qnn.pq3.template.IQPEmbeddingCircuits(input_feat,qubits,rep:int = 1)
     
-    Encode :math:`n` features into :math:`n` qubits using diagonal gates of an IQP circuit.
+    Codifica :math:`n` características em :math:`n` qubits usando portas diagonais de um circuito IQP.
 
-    The encoding is proposed by `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
+    A codificação foi proposta por `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
 
-    The basic IQP circuit can be repeated by specifying ``n_repeats``.
+    O circuito IQP básico pode ser repetido especificando ``n_repeats``.
 
-    :param input_feat: numpy array representing the parameters.
-    :param qubits: list of qubit indices.
-    :param rep: Repeat the quantum circuit block, the default number of times is 1.
-    :return: quantum circuit.
+    :param input_feat: array numpy representando os parâmetros.
+    :param qubits: lista de índices dos qubits.
+    :param rep: Repetir o bloco do circuito quântico, o número padrão de vezes é 1.
+    :return: circuito quântico.
 
-    Example::
+    Exemplo::
 
         import numpy as np
         from pyvqnet.qnn.pq3.template import IQPEmbeddingCircuits
@@ -776,7 +776,7 @@ RotCircuit
 
 .. py:function:: pyvqnet.qnn.pq3.template.RotCircuit(para,qubits)
 
-    Arbitrary single qubit rotation. The number of qlists should be 1, and the number of parameters should be 3.
+    Rotação arbitrária de um único qubit. O número de qlists deve ser 1, e o número de parâmetros deve ser 3.
 
     .. math::
 
@@ -785,11 +785,11 @@ RotCircuit
         e^{-i(\phi-\omega)/2}\sin(\theta/2) & e^{i(\phi+\omega)/2}\cos(\theta/2)
         \end{bmatrix}.
 
-    :param para: numpy array representing parameters :math:`[\phi, \theta, \omega]`.
-    :param qubits: qubit index, only single qubits are accepted.
-    :return: quantum circuit.
+    :param para: array numpy representando os parâmetros :math:`[\phi, \theta, \omega]`.
+    :param qubits: índice do qubit, apenas qubits únicos são aceitos.
+    :return: circuito quântico.
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3.template import RotCircuit
         import pyqpanda3.core as pq
@@ -806,7 +806,7 @@ CRotCircuit
 
 .. py:function:: pyvqnet.qnn.pq3.template.CRotCircuit(para,control_qubits,rot_qubits)
 
-    Controlled Rot operator.
+    Operador Rot controlado.
 
     .. math:: 
         
@@ -817,12 +817,12 @@ CRotCircuit
         0 & 0 & e^{-i(\phi-\omega)/2}\sin(\theta/2) & e^{i(\phi+\omega)/2}\cos(\theta/2)
         \end{bmatrix}.
 
-    :param para: A numpy array representing the parameters :math:`[\phi, \theta, \omega]`.
-    :param control_qubits: qubit index, the number of qubits should be 1.
-    :param rot_qubits: Rot qubit index, the number of qubits should be 1.
-    :return: quantum circuit.
+    :param para: Um array numpy representando os parâmetros :math:`[\phi, \theta, \omega]`.
+    :param control_qubits: índice do qubit de controle, o número de qubits deve ser 1.
+    :param rot_qubits: índice do qubit de rotação, o número de qubits deve ser 1.
+    :return: circuito quântico.
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3.template import CRotCircuit
         import pyqpanda3.core as pq
@@ -840,7 +840,7 @@ CSWAPcircuit
 
 .. py:function:: pyvqnet.qnn.pq3.template.CSWAPcircuit(qubits)
 
-    Controlled SWAP circuit.
+    Circuito SWAP controlado.
 
     .. math:: 
         
@@ -857,12 +857,12 @@ CSWAPcircuit
 
     .. note:: 
         
-        The first qubit provided corresponds to the **control qubit** .
+        O primeiro qubit fornecido corresponde ao **qubit de controle** .
 
-    :param qubits: list of qubit indices. The first qubit is the control qubit. The length of qlist must be 3.
-    :return: The quantum circuit.
+    :param qubits: lista de índices dos qubits. O primeiro qubit é o qubit de controle. O comprimento de qlist deve ser 3.
+    :return: O circuito quântico.
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3 import CSWAPcircuit
         import pyqpanda3.core as pq
@@ -879,7 +879,7 @@ Controlled_Hadamard
 
 .. py:function:: pyvqnet.qnn.pq3.template.Controlled_Hadamard(qubits)
     
-    Controlled Hadamard logic gate
+    Porta lógica Hadamard controlada
 
     .. math:: 
         CH = \begin{bmatrix}
@@ -889,9 +889,9 @@ Controlled_Hadamard
         0 & 0 & \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}
         \end{bmatrix}.
 
-    :param qubits: qubit index.
+    :param qubits: índice do qubit.
 
-    Examples::
+    Exemplos::
 
         import pyqpanda3.core as pq
 
@@ -908,7 +908,7 @@ CCZ
 
 .. py:function:: pyvqnet.qnn.pq3.template.CCZ(qubits)
 
-    Controlled-controlled-Z logic gate.
+    Porta lógica Z controlada-controlada.
 
     .. math::
 
@@ -924,12 +924,12 @@ CCZ
         0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & -1
         \end{pmatrix}
 
-    :param qubits: qubit index.
+    :param qubits: índice do qubit.
 
     :return:
         pyQPanda3 QCircuit
 
-    Example::
+    Exemplo::
 
         import pyqpanda3.core as pq
 
@@ -947,22 +947,22 @@ FermionicSingleExcitation
 
 .. py:function:: pyvqnet.qnn.pq3.template.FermionicSingleExcitation(weight, wires, qubits)
 
-    Coupled cluster single excitation operator for exponentiation of tensor products of Pauli matrices. The matrix form is given by:
+    Operador de excitação única de cluster acoplado para exponenciação de produtos tensoriais de matrizes de Pauli. A forma matricial é dada por:
 
     .. math::
 
         \hat{U}_{pr}(\theta) = \mathrm{exp} \{ \theta_{pr} (\hat{c}_p^\dagger \hat{c}_r
         -\mathrm{H.c.}) \},
 
-    :param weight: variable parameter on qubit p.
-    :param wires: represents a subset of qubit indices in the interval [r, p]. The minimum length must be 2. The first index value is interpreted as r and the last index value is interpreted as p.
-        The intermediate indices are acted upon by CNOT gates to compute the parity of the qubit set.
-    :param qubits: qubit indices.
+    :param weight: parâmetro variável no qubit p.
+    :param wires: representa um subconjunto de índices de qubits no intervalo [r, p]. O comprimento mínimo deve ser 2. O primeiro valor do índice é interpretado como r e o último valor do índice é interpretado como p.
+        Os índices intermediários são operados por portas CNOT para calcular a paridade do conjunto de qubits.
+    :param qubits: índices dos qubits.
 
     :return:
         pyQPanda3 QCircuit
 
-    Examples::
+    Exemplos::
 
         from pyvqnet.qnn.pq3 import FermionicSingleExcitation, expval
 
@@ -980,19 +980,19 @@ FermionicDoubleExcitation
 
 .. py:function:: pyvqnet.qnn.pq3.template.FermionicDoubleExcitation(weight, wires1, wires2, qubits)
 
-    Coupled clustered double excitation operator for the tensor product of Pauli matrices, matrix form is given by:
+    Operador de dupla excitação de cluster acoplado para o produto tensorial de matrizes de Pauli, a forma matricial é dada por:
 
     .. math::
 
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \{ \theta (\hat{c}_p^\dagger \hat{c}_q^\dagger
         \hat{c}_r \hat{c}_s - \mathrm{H.c.}) \},
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` is the fermion annihilation and
-    creation operators and indexes :math:`r, s` and :math:`p, q` on occupied and
-    empty molecular orbitals respectively. Using the `Jordan-Wigner transformation
-    <https://arxiv.org/abs/1208.5986>`_ the fermion operator defined above can be written
-    in terms of the Pauli matrix (see
-    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ for more details)
+    onde :math:`\hat{c}` e :math:`\hat{c}^\dagger` são os operadores de aniquilação e
+    criação de férmions e os índices :math:`r, s` e :math:`p, q` em orbitais moleculares
+    ocupados e vazios respectivamente. Usando a `transformação de Jordan-Wigner
+    <https://arxiv.org/abs/1208.5986>`_ o operador férmion definido acima pode ser escrito
+    em termos da matriz de Pauli (veja
+    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ para mais detalhes)
 
     .. math::
 
@@ -1002,15 +1002,15 @@ FermionicDoubleExcitation
         \hat{Y}_s \hat{X}_r \hat{Y}_q \hat{Y}_p +\\ \hat{X}_s \hat{Y}_r \hat{Y}_q \hat{Y}_p +
         \hat{X}_s \hat{X}_r \hat{X}_q \hat{Y}_p - \mathrm{H.c.} ) \Big\}
 
-    :param weight: variable parameter
-    :param wires1: represents the subset of qubits in the interval [s, r] occupied by the index list of qubits. The first index is interpreted as s and the last index is interpreted as r. The CNOT gate operates on the middle indexes to calculate the parity of a set of qubits.
-    :param wires2: represents the subset of qubits in the interval [q, p] occupied by the index list of qubits. The first root index is interpreted as q and the last index is interpreted as p. The CNOT gate operates on the middle index to compute the parity of a set of qubits.
-    :param qubits: qubit indexes.
+    :param weight: parâmetro variável
+    :param wires1: representa o subconjunto de qubits no intervalo [s, r] ocupado pela lista de índices dos qubits. O primeiro índice é interpretado como s e o último índice é interpretado como r. A porta CNOT opera nos índices intermediários para calcular a paridade de um conjunto de qubits.
+    :param wires2: representa o subconjunto de qubits no intervalo [q, p] ocupado pela lista de índices dos qubits. O primeiro índice raiz é interpretado como q e o último índice é interpretado como p. A porta CNOT opera no índice intermediário para calcular a paridade de um conjunto de qubits.
+    :param qubits: índices dos qubits.
 
     :return:
         pyQPanda3 QCircuit
 
-    Examples::
+    Exemplos::
 
         import pyqpanda3.core as pq
         from pyvqnet.qnn.pq3 import FermionicDoubleExcitation, expval
@@ -1029,9 +1029,9 @@ UCCSD
 
 .. py:function:: pyvqnet.qnn.pq3.template.UCCSD(weights, wires, s_wires, d_wires, init_state, qubits)
 
-    Implements the Unitary Coupled Cluster Single and Double Excitation Simulation (UCCSD). UCCSD is a VQE simulation, commonly used to run quantum chemistry simulations.
+    Implementa a Simulação de Excitação Única e Dupla de Cluster Acoplado Unitário (UCCSD). UCCSD é uma simulação VQE, comumente usada para executar simulações de química quântica.
 
-    In the first-order Trotter approximation, the UCCSD unitary function is given by:
+    Na aproximação de Trotter de primeira ordem, a função unitária UCCSD é dada por:
 
     .. math::
 
@@ -1041,22 +1041,22 @@ UCCSD
         \prod_{p > q > r > s} \mathrm{exp} \Big\{\theta_{pqrs}
         (\hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r \hat{c}_s-\mathrm{H.c.}) \Big\}
     
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are fermion annihilation and
+    onde :math:`\hat{c}` e :math:`\hat{c}^\dagger` são os operadores de aniquilação e
 
-    Create operators and indices :math:`r, s` and :math:`p, q` are the occupied and
-    empty molecular orbitals, respectively. (For more details see
+    criação de férmions e os índices :math:`r, s` e :math:`p, q` são os orbitais moleculares
+    ocupados e vazios, respectivamente. (Para mais detalhes veja
     `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_):
 
-    :param weights: tensor of size ``(len(s_wires)+ len(d_wires))`` containing the parameters
-     :math: `\theta_{pr}` and :math: `\theta_{pqrs}` input to the Z rotations ``FermionicSingleExcitation`` and ``FermionicDoubleExcitation`` .
-    :param wires: qubit indices to be templated
-    :param s_wires: list sequence containing qubit indices ``[r,...,p]`` generated by a single excitation
-     :math: `\vert r, p \rangle = \hat{c}_p^\dagger \hat{c}_r \vert \mathrm{HF} \rangle`, where :math:`\vert \mathrm{HF} \rangle` denotes the Hartee-Fock reference state.
-    :param d_wires: sequence of lists, each containing two lists Specify indices ``[s, ...,r]`` and ``[q,..., p]`` .Define dual excitation :math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \vert \mathrm{HF} \rangle` .
-    :param init_state: occupation-number vector of length ``len(wires)`` representing the high-frequency state. ``init_state`` Initialize the qubit state.
-    :param qubits: Qubit index.
+    :param weights: tensor de tamanho ``(len(s_wires)+ len(d_wires))`` contendo os parâmetros
+     :math:`\theta_{pr}` e :math:`\theta_{pqrs}` de entrada para as rotações Z ``FermionicSingleExcitation`` e ``FermionicDoubleExcitation`` .
+    :param wires: índices dos qubits a serem transformados em template
+    :param s_wires: sequência de lista contendo índices de qubits ``[r,...,p]`` gerados por uma excitação única
+     :math:`| r, p \rangle = \hat{c}_p^\dagger \hat{c}_r | \mathrm{HF} \rangle`, onde :math:`| \mathrm{HF} \rangle` denota o estado de referência de Hartree-Fock.
+    :param d_wires: sequência de listas, cada uma contendo duas listas. Especifica os índices ``[s, ...,r]`` e ``[q,..., p]`` . Define a excitação dupla :math:`| s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r \hat{c}_s | \mathrm{HF} \rangle` .
+    :param init_state: vetor de número de ocupação de comprimento ``len(wires)`` representando o estado de alta frequência. ``init_state`` Inicializa o estado do qubit.
+    :param qubits: Índice do qubit.
 
-    Examples::
+    Exemplos::
         
         import pyqpanda3.core as pq
         from pyvqnet.tensor import tensor
@@ -1076,19 +1076,19 @@ QuantumPoolingCircuit
 
 .. py:function:: pyvqnet.qnn.pq3.template.QuantumPoolingCircuit(sources_wires, sinks_wires, params,qubits)
 
-    Quantum circuit that downsamples data.
+    Circuito quântico que reduz a amostragem de dados.
 
-    To reduce the number of qubits in the circuit, first create pairs of qubits in the system. After initially pairing all qubits, apply the generalized 2-qubit unitary to each pair of qubits. And after applying these two qubit unitary, ignore one qubit in each pair of qubits for the rest of the neural network.
+    Para reduzir o número de qubits no circuito, primeiro crie pares de qubits no sistema. Após emparelhar inicialmente todos os qubits, aplique a unitária generalizada de 2 qubits a cada par de qubits. E após aplicar estas duas unitárias de qubit, ignore um qubit em cada par de qubits para o resto da rede neural.
 
-    :param sources_wires: Source qubit indices to be ignored.
-    :param sinks_wires: Target qubit indices to be retained.
-    :param params: Input parameters.
-    :param qubits: Qubit indices.
+    :param sources_wires: Índices dos qubits de origem a serem ignorados.
+    :param sinks_wires: Índices dos qubits de destino a serem mantidos.
+    :param params: Parâmetros de entrada.
+    :param qubits: Índices dos qubits.
 
     :return:
         pyQPanda3 QCircuit
 
-    Examples::
+    Exemplos::
 
         from pyvqnet.qnn.pq3.template import QuantumPoolingCircuit
         import pyqpanda3.core as pq
@@ -1099,27 +1099,27 @@ QuantumPoolingCircuit
         cir = QuantumPoolingCircuit([0, 1], [2, 3], p, qlists)
         print(cir)
 
-Commonly used quantum circuit combinations
+Combinações de circuitos quânticos comumente usadas
 ***********************************************************
-VQNet provides some quantum circuits commonly used in quantum machine learning research
+O VQNet fornece alguns circuitos quânticos comumente usados em pesquisa de aprendizado de máquina quântico
 
 HardwareEfficientAnsatz
 =============================
 
 .. py:class:: pyvqnet.qnn.pq3.ansatz.HardwareEfficientAnsatz(qubits,single_rot_gate_list,entangle_gate="CNOT",entangle_rules='linear',depth=1)
 
-    Implementation of Hardware Efficient Ansatz introduced in the paper: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
+    Implementação do Hardware Efficient Ansatz introduzido no artigo: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
 
-    :param qubits: qubit index.
-    :param single_rot_gate_list: Single qubit rotation gate list consisting of one or more rotation gates acting on each qubit. Currently supported are Rx, Ry, Rz.
-    :param entangle_gate: Non-parametric entanglement gate. Supports CNOT, CZ. Default: CNOT.
-    :param entangle_rules: How the entanglement gate is used in the circuit. ``linear`` means that the entanglement gate will act on every adjacent qubit. ``all`` means that the entanglement gate will act on any two qbuits. Default: ``linear``.
-    :param depth: Depth in ansatz, default: 1.
+    :param qubits: índice do qubit.
+    :param single_rot_gate_list: Lista de portas de rotação de qubit único consistindo em uma ou mais portas de rotação atuando em cada qubit. Atualmente suportadas são Rx, Ry, Rz.
+    :param entangle_gate: Porta de entrelaçamento não paramétrica. Suporta CNOT, CZ. Padrão: CNOT.
+    :param entangle_rules: Como a porta de entrelaçamento é usada no circuito. ``linear`` significa que a porta de entrelaçamento atuará em cada qubit adjacente. ``all`` significa que a porta de entrelaçamento atuará em quaisquer dois qubits. Padrão: ``linear``.
+    :param depth: Profundidade no ansatz, padrão: 1.
 
     :return:
-        A HardwareEfficientAnsatz instance
+        Uma instância de HardwareEfficientAnsatz
 
-    Example::
+    Exemplo::
 
         import pyqpanda3.core as pq
         from pyvqnet.tensor import QTensor,tensor
@@ -1141,17 +1141,17 @@ BasicEntanglerTemplate
 
 .. py:class:: pyvqnet.qnn.pq3.template.BasicEntanglerTemplate(weights=None, num_qubits=1, rotation=pyqpanda3.RX)
     
-    A layer consisting of single-parameter single-qubit rotations on each qubit, followed by multiple CNOT gates combined in a closed chain or ring.
-    The ring of CNOT gates connects each qubit to its neighbors, with the last qubit considered a neighbor of the first.
-    The number of layers :math:`L` is determined by the first dimension of the parameter ``weights``.
+    Uma camada consistindo de rotações de qubit único com um único parâmetro em cada qubit, seguidas por múltiplas portas CNOT combinadas em uma cadeia fechada ou anel.
+    O anel de portas CNOT conecta cada qubit aos seus vizinhos, com o último qubit considerado vizinho do primeiro.
+    O número de camadas :math:`L` é determinado pela primeira dimensão do parâmetro ``weights``.
 
-    :param weights: A weight tensor of shape `(L, len(qubits))`. Each weight is used as a parameter in a quantum parametric gate. The default value is: ``None``, then `(1,1)` normally distributed random numbers are used as weights.
-    :param num_qubits: The number of qubits, default is 1.
-    :param rotation: Use a single-parameter single-qubit gate, ``pyqpanda3.RX`` is used as the default value.
+    :param weights: Um tensor de pesos de forma `(L, len(qubits))`. Cada peso é usado como um parâmetro em uma porta paramétrica quântica. O valor padrão é: ``None``, então números aleatórios normalmente distribuídos ``(1,1)`` são usados como pesos.
+    :param num_qubits: O número de qubits, padrão é 1.
+    :param rotation: Use uma porta de qubit único com um parâmetro, ``pyqpanda3.RX`` é usado como valor padrão.
     :return:
-        A BasicEntanglerTemplate instance
+        Uma instância de BasicEntanglerTemplate
 
-    Example::
+    Exemplo::
 
         import pyqpanda3.core as pq
         import numpy as np
@@ -1175,17 +1175,17 @@ StronglyEntanglingTemplate
 
 .. py:class:: pyvqnet.qnn.pq3.template.StronglyEntanglingTemplate(weights=None, num_qubits=1, ranges=None)
 
-    Layers consisting of single qubit rotations and entanglers, as in `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
-    The parameter ``weights`` contains the weights of each layer. So the number of layers :math:`L` is equal to the first dimension of ``weights``.
-    It contains 2-qubit CNOT gates acting on :math:`M` qubits, :math:`i = 1,...,M`. The second qubit number of each gate is given by the formula :math:`(i+r)\mod M`, where :math:`r` is a hyperparameter called ``range``, and :math:`0 < r < M`.
+    Camadas consistindo de rotações de qubit único e entrelaçadores, como no `design de classificador centrado em circuito <https://arxiv.org/abs/1804.00633>`__ .
+    O parâmetro ``weights`` contém os pesos de cada camada. Então o número de camadas :math:`L` é igual à primeira dimensão de ``weights``.
+    Ele contém portas CNOT de 2 qubits atuando em :math:`M` qubits, :math:`i = 1,...,M`. O segundo número de qubit de cada porta é dado pela fórmula :math:`(i+r)\mod M`, onde :math:`r` é um hiperparâmetro chamado ``range``, e :math:`0 < r < M`.
 
-    :param weights: Weight tensor of shape ``(L, M, 3)``, default value: None, use a random tensor of shape ``(1,1,3)``.
-    :param num_qubits: Number of qubits, default value: 1.
-    :param ranges: Sequence that determines the range hyperparameters for each subsequent layer; default value: None, use :math:`r=l \ mod M` as the value of ranges.
+    :param weights: Tensor de pesos de forma ``(L, M, 3)``, valor padrão: None, usa um tensor aleatório de forma ``(1,1,3)``.
+    :param num_qubits: Número de qubits, valor padrão: 1.
+    :param ranges: Sequência que determina os hiperparâmetros de intervalo para cada camada subsequente; valor padrão: None, usa :math:`r=l \mod M` como o valor de ranges.
     :return:
-        A StronglyEntanglingTemplate instance
+        Uma instância de StronglyEntanglingTemplate
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3 import StronglyEntanglingTemplate
         import pyqpanda3.core as pq
@@ -1211,16 +1211,16 @@ ComplexEntanglingTemplate
 
 .. py:class:: pyvqnet.qnn.pq3.ComplexEntanglingTemplate(weights,num_qubits,depth)
 
-    Strongly entangled layer consisting of U3 gates and CNOT gates.
-    This circuit template is from the following paper: https://arxiv.org/abs/1804.00633.
+    Camada fortemente entrelaçada consistindo de portas U3 e portas CNOT.
+    Este modelo de circuito é do seguinte artigo: https://arxiv.org/abs/1804.00633.
 
-    :param weights: parameters, shape [depth,num_qubits,3]
-    :param num_qubits: number of qubits.
-    :param depth: depth of the subcircuit.
+    :param weights: parâmetros, forma [depth,num_qubits,3]
+    :param num_qubits: número de qubits.
+    :param depth: profundidade do subcircuito.
     :return:
-        A ComplexEntanglingTemplate instance
+        Uma instância de ComplexEntanglingTemplate
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3 import ComplexEntanglingTemplate
         import pyqpanda3.core as pq
@@ -1244,20 +1244,21 @@ Quantum_Embedding
 
 .. py:class:: pyvqnet.qnn.pq3.Quantum_Embedding(qubits, machine, num_repetitions_input, depth_input, num_unitary_layers, num_repetitions)
 
-    Use RZ,RY,RZ to create a variational quantum circuit to encode classical data into quantum states.
-    Reference `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
-    After initializing the class, its member function ``compute_circuit`` is the running function, which can be used as a parameter to input the ``QuantumLayerV2`` class to form a layer of the quantum machine learning model.
+    Use RZ, RY, RZ para criar um circuito quântico variacional para codificar dados clássicos em estados quânticos.
+    Referência `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
 
-    :param qubits: The quantum bits requested by pyQPanda3.
-    :param machine: Quantum virtual machine applied by pyQPanda3.
-    :param num_repetitions_input: The number of repetitions of encoding the input in the submodule.
-    :param depth_input: The feature dimension of the input data.
-    :param num_unitary_layers: The number of repetitions of the variational quantum gate in each submodule.
-    :param num_repetitions: The number of repetitions of the submodule.
+    Após inicializar a classe, sua função membro ``compute_circuit`` é a função de execução, que pode ser usada como um parâmetro para a classe ``QuantumLayerV2`` para formar uma camada do modelo de aprendizado de máquina quântico.
+
+    :param qubits: Os bits quânticos solicitados pelo pyQPanda3.
+    :param machine: Máquina virtual quântica aplicada pelo pyQPanda3.
+    :param num_repetitions_input: O número de repetições de codificação da entrada no submódulo.
+    :param depth_input: A dimensão da característica dos dados de entrada.
+    :param num_unitary_layers: O número de repetições da porta quântica variacional em cada submódulo.
+    :param num_repetitions: O número de repetições do submódulo.
     :return:
-        A Quantum_Embedding instance
+        Uma instância de Quantum_Embedding
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3 import QuantumLayerV2,Quantum_Embedding
         from pyvqnet.tensor import tensor
@@ -1287,7 +1288,7 @@ Quantum_Embedding
         print(data_in.grad)
 
 
-Measure quantum circuits
+Medir circuitos quânticos
 ************************************
 
 expval
@@ -1295,22 +1296,22 @@ expval
 
 .. py:function:: pyvqnet.qnn.pq3.measure.expval(machine,prog,pauli_str_dict,shots=1000,noise_model=None)
 
-    The expected value of the provided Hamiltonian observation.
+    O valor esperado da observação Hamiltoniana fornecida.
 
-    If the observation is :math:`0.7Z\otimes X\otimes I+0.2I\otimes Z\otimes I`,
-    then the Hamiltonian dict will be ``{{'Z0, X1':0.7} ,{'Z1':0.2}}``.
+    Se a observação for :math:`0.7Z\otimes X\otimes I+0.2I\otimes Z\otimes I`,
+    então o dicionário Hamiltoniano será ``{{'Z0, X1':0.7} ,{'Z1':0.2}}``.
 
-    The expval api now supports the pyQPanda3 simulator.
+    A API expval agora suporta o simulador pyQPanda3.
 
-    :param machine: The quantum machine created by pyQPanda3.
-    :param prog: The quantum program created by pyQPanda3.
-    :param pauli_str_dict: Hamiltonian observed value.
-    :param shots: Number of measurements, default is 1000.
-    :param noise_model: Noise model to apply, default is None (ideal simulation).
+    :param machine: A máquina quântica criada pelo pyQPanda3.
+    :param prog: O programa quântico criado pelo pyQPanda3.
+    :param pauli_str_dict: Valor observado Hamiltoniano.
+    :param shots: Número de medições, padrão é 1000.
+    :param noise_model: Modelo de ruído a ser aplicado, padrão é None (simulação ideal).
 
-    :return: expected value.
+    :return: valor esperado.
 
-    Example::
+    Exemplo::
 
         import pyqpanda3.core as pq
         from pyvqnet.qnn.pq3.measure import expval
@@ -1336,21 +1337,21 @@ QuantumMeasure
 
 .. py:function:: pyvqnet.qnn.pq3.measure.QuantumMeasure(machine,prog,measure_qubits:list,shots:int = 1000, qcloud_option="",noise_model=None)
 
-    Computes quantum circuit measurements. Returns measurements obtained by Monte Carlo methods.
+    Calcula medições de circuitos quânticos. Retorna medições obtidas por métodos de Monte Carlo.
 
-    For more details on measurement, please refer to the pyQPanda3 documentation.
+    Para mais detalhes sobre medição, consulte a documentação do pyQPanda3.
 
-    The QuantumMeasure api currently only supports pyQPanda3 ``CPUQVM`` or ``QCloud`` .
+    A API QuantumMeasure atualmente suporta apenas ``CPUQVM`` ou ``QCloud`` do pyQPanda3.
 
-    :param machine: The quantum virtual machine allocated by pyQPanda3.
-    :param prog: The quantum program created by pyQPanda3.
-    :param measure_qubits: List containing the measurement bit indices.
-    :param shots: The number of measurements, the default value is 1000.
-    :param qcloud_option: Set the qcloud configuration, the default value is "", you can pass in a QCloudOptions class, which is only useful when using qcloud.
-    :param noise_model: Noise model to apply, default is None (ideal simulation).
-    :return: Returns the measurement results obtained by the Monte Carlo method.
+    :param machine: A máquina virtual quântica alocada pelo pyQPanda3.
+    :param prog: O programa quântico criado pelo pyQPanda3.
+    :param measure_qubits: Lista contendo os índices dos bits de medição.
+    :param shots: O número de medições, o valor padrão é 1000.
+    :param qcloud_option: Define a configuração qcloud, o valor padrão é "", você pode passar uma classe QCloudOptions, que é útil apenas ao usar qcloud.
+    :param noise_model: Modelo de ruído a ser aplicado, padrão é None (simulação ideal).
+    :return: Retorna os resultados de medição obtidos pelo método de Monte Carlo.
 
-    Example::
+    Exemplo::
 
         from pyqpanda3.core import *
         circuit = QCircuit(3)
@@ -1380,21 +1381,21 @@ ProbsMeasure
 
 .. py:function:: pyvqnet.qnn.pq3.measure.ProbsMeasure(machine,prog,measure_qubits:list,shots=1,noise_model=None)
 
-    Compute circuit probability measurements.
+    Calcula medições de probabilidade do circuito.
 
-    For more details, please refer to the pyQPanda3 documentation on probability measurement.
+    Para mais detalhes, consulte a documentação do pyQPanda3 sobre medição de probabilidade.
 
-    The ProbsMeasure api currently only supports pyQPanda ``CPUQVM`` or ``QCloud``.
+    A API ProbsMeasure atualmente suporta apenas ``CPUQVM`` ou ``QCloud`` do pyQPanda.
 
-    :param measure_qubits: List containing the measurement qubit indices.
-    :param prog: The quantum program created by qpanda.
-    :param machine: The quantum virtual machine allocated by pyQPanda.
-    :param shots: Number of measurements, default is 1, which computes the theoretical value.
-    :param noise_model: Noise model to apply, default is None (ideal simulation).
-    :return: Measure qubits in lexicographic order.
+    :param measure_qubits: Lista contendo os índices dos qubits de medição.
+    :param prog: O programa quântico criado pelo qpanda.
+    :param machine: A máquina virtual quântica alocada pelo pyQPanda.
+    :param shots: Número de medições, padrão é 1, que calcula o valor teórico.
+    :param noise_model: Modelo de ruído a ser aplicado, padrão é None (simulação ideal).
+    :return: Mede qubits em ordem lexicográfica.
 
 
-    Example::
+    Exemplo::
 
         from pyqpanda3.core import *
         from pyvqnet.qnn.pq3.measure import probs_measure
@@ -1425,14 +1426,14 @@ DensityMatrixFromQstate
 ===========================
 .. py:function:: pyvqnet.qnn.pq3.measure.DensityMatrixFromQstate(state, indices)
     
-    Compute the density matrix of a quantum state over a specific set of qubits.
+    Calcula a matriz densidade de um estado quântico sobre um conjunto específico de qubits.
 
-    :param state: 1D list of state vectors. The size of this list should be ``(2**N,)`` For a number of qubits ``N``, qstate should start from 000 -> 111.
-    :param indices: List of qubit indices in the considered subsystem.
+    :param state: Lista 1D de vetores de estado. O tamanho desta lista deve ser ``(2**N,)``. Para um número de qubits ``N``, qstate deve começar de 000 -> 111.
+    :param indices: Lista de índices de qubits no subsistema considerado.
     :return: 
-        Density matrix of size ``(2**len(indices), 2**len(indices))`` .
+        Matriz densidade de tamanho ``(2**len(indices), 2**len(indices))`` .
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3.measure import DensityMatrixFromQstate
         qstate = [(0.9306699299765968+0j), (0.18865613455240968+0j), (0.1886561345524097+0j), (0.03824249173404786+0j), -0.048171819846746615j, -0.00976491131165138j, -0.23763904794287155j, -0.048171819846746615j]
@@ -1447,19 +1448,19 @@ VN_Entropy
 ==============
 .. py:function:: pyvqnet.qnn.pq3.measure.VN_Entropy(state, indices, base=None)
     
-    Computes the Von Neumann entropy given a state vector on a given list of qubits.
+    Calcula a entropia de Von Neumann dado um vetor de estado em uma lista de qubits.
 
     .. math::
 
         S( \rho ) = -\text{Tr}( \rho \log ( \rho ))
 
-    :param state: 1D list of state vectors. The size of this list should be ``(2**N,)`` For a number of qubits ``N``, qstate should start from 000 -> 111.
-    :param indices: List of qubit indices in the subsystem under consideration.
-    :param base: Base of the logarithm. If None, the natural logarithm is used.
+    :param state: Lista 1D de vetores de estado. O tamanho desta lista deve ser ``(2**N,)``. Para um número de qubits ``N``, qstate deve começar de 000 -> 111.
+    :param indices: Lista de índices de qubits no subsistema em consideração.
+    :param base: Base do logaritmo. Se None, o logaritmo natural é usado.
 
-    :return: floating point value of von Neumann entropy.
+    :return: valor de ponto flutuante da entropia de von Neumann.
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3.measure import VN_Entropy
         qstate = [(0.9022961387408862 + 0j), -0.06676534788028633j,
@@ -1473,25 +1474,25 @@ Mutal_Info
 ==============
 .. py:function:: pyvqnet.qnn.pq3.measure.Mutal_Info(state, indices0, indices1, base=None)
 
-    Computes the mutual information given the state vector on two lists of sub-qubits.
+    Calcula a informação mútua dado o vetor de estado em duas listas de sub-qubits.
 
     .. math::
 
         I(A, B) = S(\rho^A) + S(\rho^B) - S(\rho^{AB})
-        where :math:`S` is the von Neumann entropy.
+        onde :math:`S` é a entropia de von Neumann.
 
-    Mutual information is a measure of the correlation between two sub-systems. More specifically, it quantifies the amount of information one system can gain by measuring the other.
+    Informação mútua é uma medida da correlação entre dois sub-sistemas. Mais especificamente, ela quantifica a quantidade de informação que um sistema pode obter ao medir o outro.
 
-    Each state can be given as a state vector in the computation basis.
+    Cada estado pode ser dado como um vetor de estado na base de computação.
 
-    :param state: 1D list of state vectors. The size of this list should be ``(2**N,)`` For number of qubits ``N`` , qstate should start from 000 -> 111.
-    :param indices0: List of qubit indices in the first subsystem.
-    :param indices1: List of qubit indices in the second subsystem.
-    :param base: Base of logarithms. If None, natural logarithms are used. Default is None.
+    :param state: Lista 1D de vetores de estado. O tamanho desta lista deve ser ``(2**N,)``. Para um número de qubits ``N``, qstate deve começar de 000 -> 111.
+    :param indices0: Lista de índices de qubits no primeiro subsistema.
+    :param indices1: Lista de índices de qubits no segundo subsistema.
+    :param base: Base dos logaritmos. Se None, logaritmos naturais são usados. Padrão é None.
 
-    :return: Mutual information between subsystems
+    :return: Informação mútua entre subsistemas
 
-    Example::
+    Exemplo::
 
         from pyvqnet.qnn.pq3.measure import Mutal_Info
         qstate = [(0.9022961387408862 + 0j), -0.06676534788028633j,
@@ -1506,23 +1507,23 @@ Purity
 
 .. py:function:: pyvqnet.qnn.pq3.measure.Purity(state, qubits_idx)
 
-    Compute the purity of a particular qubit from the state vector.
+    Calcula a pureza de um qubit específico a partir do vetor de estado.
 
     .. math::
 
         \gamma = \text{Tr}(\rho^2)
         
-    where :math:`\rho` is the density matrix. The purity of a normalized quantum state satisfies :math:`\frac{1}{d} \leq \gamma \leq 1` ,
-    where :math:`d` is the dimension of the Hilbert space.
-    The purity of a pure state is 1.
+    onde :math:`\rho` é a matriz densidade. A pureza de um estado quântico normalizado satisfaz :math:`\frac{1}{d} \leq \gamma \leq 1` ,
+    onde :math:`d` é a dimensão do espaço de Hilbert.
+    A pureza de um estado puro é 1.
 
-    :param state: quantum state obtained from pyqpanda3
-    :param qubits_idx: qubit index for which purity is to be calculated
+    :param state: estado quântico obtido do pyqpanda3
+    :param qubits_idx: índice do qubit para o qual a pureza deve ser calculada
 
     :return:
-        purity
+        pureza
 
-    Examples::
+    Exemplos::
 
         from pyvqnet.qnn.pq3.measure import Purity
         qstate = [(0.9306699299765968 + 0j), (0.18865613455240968 + 0j),

@@ -1,14 +1,14 @@
-Quantum Machine Learning API using QPanda2
+API de Machine Learning Quântico usando QPanda2
 ####################################################
 
 
 .. warning::
 
-    The quantum computing part of the following interface uses pyQPanda2.
+    A parte de computação quântica da interface a seguir usa pyQPanda2.
 
-    Due to the compatibility issues between pyQPanda2 and pyqpanda3, you need to install pyqpnda2 yourself, `pip install pyqpanda`
+    Devido a problemas de compatibilidade entre pyQPanda2 e pyqpanda3, você precisa instalar o pyqpnda2 por conta própria, `pip install pyqpanda`
 
-Quantum Computing Layer
+Camada de Computação Quântica
 ***********************************
 
 .. _QuantumLayer:
@@ -16,22 +16,22 @@ Quantum Computing Layer
 QuantumLayer
 =================================
 
-QuantumLayer is a package class of autograd module that supports ariational quantum circuits. You can define a function as an argument, such as ``qprog_with_measure``, This function needs to contain the quantum circuit defined by pyQPanda: It generally contains coding-circuit, evolution-circuit and measurement-operation.
-This QuantumLayer class can be embedded into the hybrid quantum classical machine learning model and minimize the objective function or loss function of the hybrid quantum classical model through the classical gradient descent method.
-You can specify the gradient calculation method of quantum circuit parameters in ``QuantumLayer`` by change the parameter ``diff_method``. ``QuantumLayer`` currently supports two methods, one is ``finite_diff`` and the other is ``parameter-shift`` methods.
+QuantumLayer é uma classe de pacote do módulo autograd que suporta circuitos quânticos variacionais. Você pode definir uma função como argumento, como ``qprog_with_measure``. Esta função precisa conter o circuito quântico definido por pyQPanda: geralmente contém circuito de codificação, circuito de evolução e operação de medição.
+Esta classe QuantumLayer pode ser incorporada ao modelo híbrido de aprendizado de máquina quântico-clássico e minimizar a função objetivo ou função de perda do modelo híbrido quântico-clássico através do método clássico de descida de gradiente.
+Você pode especificar o método de cálculo do gradiente dos parâmetros do circuito quântico em ``QuantumLayer`` alterando o parâmetro ``diff_method``. ``QuantumLayer`` atualmente suporta dois métodos: ``finite_diff`` e ``parameter-shift``.
 
-The ``finite_diff`` method is one of the most traditional and common numerical methods for estimating function gradient.The main idea is to replace partial derivatives with differences:
+O método ``finite_diff`` é um dos métodos numéricos mais tradicionais e comuns para estimar o gradiente de uma função. A ideia principal é substituir derivadas parciais por diferenças:
 
 .. math::
 
     f^{\prime}(x)=\lim _{h \rightarrow 0} \frac{f(x+h)-f(x)}{h}
 
 
-For the ``parameter-shift`` method we use the objective function, such as:
+Para o método ``parameter-shift`` usamos a função objetivo, como:
 
 .. math:: O(\theta)=\left\langle 0\left|U^{\dagger}(\theta) H U(\theta)\right| 0\right\rangle
 
-It is theoretically possible to calculate the gradient of parameters about Hamiltonian in a quantum circuit by the more precise method: ``parameter-shift``.
+É teoricamente possível calcular o gradiente dos parâmetros em relação ao Hamiltoniano em um circuito quântico pelo método mais preciso: ``parameter-shift``.
 
 .. math::
 
@@ -40,47 +40,47 @@ It is theoretically possible to calculate the gradient of parameters about Hamil
 
 .. py:class:: pyvqnet.qnn.quantumlayer.QuantumLayer(qprog_with_measure,para_num,machine_type_or_cloud_token,num_of_qubits:int,num_of_cbits:int = 1,diff_method:str = "parameter_shift",delta:float = 0.01, dtype=None, name='')
 
-    Abstract calculation module for variational quantum circuits. It simulates a parameterized quantum circuit and gets the measurement result.
-    QuantumLayer inherits from Module ,so that it can calculate gradients of circuits parameters,and train variational quantum circuits model or embed variational quantum circuits into hybird quantum and classic model.
+    Módulo de cálculo abstrato para circuitos quânticos variacionais. Simula um circuito quântico parametrizado e obtém o resultado da medição.
+    QuantumLayer herda de Module, para que possa calcular gradientes dos parâmetros do circuito e treinar modelos de circuitos quânticos variacionais ou incorporar circuitos quânticos variacionais em modelos híbridos quântico-clássicos.
     
-    This class dos not need you to initialize virtual machine in the ``qprog_with_measure`` function.
+    Esta classe não requer que você inicialize a máquina virtual na função ``qprog_with_measure``.
 
-    :param qprog_with_measure: callable quantum circuits functions ,cosntructed by pyQPanda2
-    :param para_num: `int` - Number of parameter
-    :param machine_type_or_cloud_token: qpanda machine type or pyQPanda2 QCLOUD token
-    :param num_of_qubits: num of qubits
-    :param num_of_cbits: num of classic bits
-    :param diff_method: 'parameter_shift' or 'finite_diff'
-    :param delta:  delta for diff
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param qprog_with_measure: funções de circuitos quânticos chamáveis, construídas por pyQPanda2
+    :param para_num: `int` - Número de parâmetros
+    :param machine_type_or_cloud_token: tipo de máquina qpanda ou token QCLOUD do pyQPanda2
+    :param num_of_qubits: número de qubits
+    :param num_of_cbits: número de bits clássicos
+    :param diff_method: 'parameter_shift' ou 'finite_diff'
+    :param delta: delta para a diferença
+    :param dtype: O tipo de dado do parâmetro, padrão: None, usa o tipo de dado padrão kfloat32, que representa um número de ponto flutuante de 32 bits.
+    :param name: nome da camada de saída
 
-    :return: a module can calculate quantum circuits .
+    :return: um módulo capaz de calcular circuitos quânticos.
 
     .. note::
-        qprog_with_measure is a quantum circuit function defined in pyQPanda2.
+        qprog_with_measure é uma função de circuito quântico definida em pyQPanda2.
 
-        This function should contain following parameters,otherwise it can not run properly in QuantumLayer.
+        Esta função deve conter os seguintes parâmetros, caso contrário não funcionará corretamente no QuantumLayer.
 
         qprog_with_measure (input,param,qubits,cbits,m_machine)
 
-            `input`: array_like input 1-dim classic data
+            `input`: array_like entrada 1-dim de dados clássicos
 
-            `param`: array_like input 1-dim quantum circuit's parameters
+            `param`: array_like entrada 1-dim dos parâmetros do circuito quântico
 
-            `qubits`: qubits allocated by QuantumLayer
+            `qubits`: qubits alocados pelo QuantumLayer
 
-            `cbits`: cbits allocated by QuantumLayer.if your circuits does not use cbits,you should also reserve this parameter.
+            `cbits`: cbits alocados pelo QuantumLayer. Se seu circuito não usar cbits, você também deve reservar este parâmetro.
 
-            `m_machine`: simulator created by QuantumLayer
+            `m_machine`: simulador criado pelo QuantumLayer
 
-        Use the ``m_para`` attribute of QuantumLayer to get the training parameters of the variable quantum circuit. The parameter is a ``QTensor`` class, which can be converted into a numpy array using the ``to_numpy()`` interface.
+        Use o atributo ``m_para`` do QuantumLayer para obter os parâmetros de treinamento do circuito quântico variacional. O parâmetro é da classe ``QTensor``, que pode ser convertido em um array numpy usando a interface ``to_numpy()``.
 
     .. note::
 
-        The class have alias: `QpandaQCircuitVQCLayer` .
+        A classe possui um alias: `QpandaQCircuitVQCLayer` .
 
-    Example::
+    Exemplo::
 
         import pyqpanda as pq
         from pyvqnet.qnn.measure import ProbsMeasure
@@ -119,12 +119,12 @@ It is theoretically possible to calculate the gradient of parameters about Hamil
             return rlt_prob
 
         pqc = QuantumLayer(pqctest,3,"cpu",4,1)
-        #classic data as input
+        #dados clássicos como entrada
         input = QTensor([[1,2,3,4],[40,22,2,3],[33,3,25,2.0]] )
-        #forward circuits
+        #circuito forward
         rlt = pqc(input)
         grad =  QTensor(np.ones(rlt.data.shape)*1000)
-        #backward circuits
+        #circuito backward
         rlt.backward(grad)
         print(rlt)
         # [
@@ -136,43 +136,43 @@ It is theoretically possible to calculate the gradient of parameters about Hamil
 QuantumLayerV2
 =================================
 
-If you are more familiar with pyQPanda2 syntax, please using QuantumLayerV2 class, you can define the quantum circuits function by using ``qubits``, ``cbits`` and ``machine``, then take it as a argument ``qprog_with_measure`` of QuantumLayerV2.
+Se você está mais familiarizado com a sintaxe do pyQPanda2, use a classe QuantumLayerV2. Você pode definir a função de circuito quântico usando ``qubits``, ``cbits`` e ``machine``, e então passá-la como argumento ``qprog_with_measure`` do QuantumLayerV2.
 
 .. py:class:: pyvqnet.qnn.quantumlayer.QuantumLayerV2(qprog_with_measure, para_num, diff_method: str = 'parameter_shift', delta: float = 0.01, dtype=None, name='')
 
-    Abstract calculation module for variational quantum circuits. It simulates a parameterized quantum circuit and gets the measurement result.
-    QuantumLayer inherits from Module ,so that it can calculate gradients of circuits parameters,and train variational quantum circuits model or embed variational quantum circuits into hybird quantum and classic model.
+    Módulo de cálculo abstrato para circuitos quânticos variacionais. Simula um circuito quântico parametrizado e obtém o resultado da medição.
+    QuantumLayerV2 herda de Module, para que possa calcular gradientes dos parâmetros do circuito e treinar modelos de circuitos quânticos variacionais ou incorporar circuitos quânticos variacionais em modelos híbridos quântico-clássicos.
     
-    To use this module, you need to create your quantum virtual machine and allocate qubits and cbits.
+    Para usar este módulo, você precisa criar sua máquina virtual quântica e alocar qubits e cbits.
 
-    :param qprog_with_measure: callable quantum circuits functions ,cosntructed by pyQPanda2
-    :param para_num: `int` - Number of parameter
-    :param diff_method: 'parameter_shift' or 'finite_diff'
-    :param delta:  delta for diff
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
-    :return: a module can calculate quantum circuits .
+    :param qprog_with_measure: funções de circuitos quânticos chamáveis, construídas por pyQPanda2
+    :param para_num: `int` - Número de parâmetros
+    :param diff_method: 'parameter_shift' ou 'finite_diff'
+    :param delta: delta para a diferença
+    :param dtype: O tipo de dado do parâmetro, padrão: None, usa o tipo de dado padrão kfloat32, que representa um número de ponto flutuante de 32 bits.
+    :param name: nome da camada de saída
+    :return: um módulo capaz de calcular circuitos quânticos.
 
     .. note::
-        qprog_with_measure is a quantum circuit function defined in pyQPanda.
+        qprog_with_measure é uma função de circuito quântico definida em pyQPanda.
 
-        This function should contains following parameters,otherwise it can not run properly in QuantumLayerV2.
+        Esta função deve conter os seguintes parâmetros, caso contrário não funcionará corretamente no QuantumLayerV2.
 
-        Compared to QuantumLayer, you should allocate qubits and simulator yourself,
+        Comparado ao QuantumLayer, você deve alocar qubits e o simulador por conta própria,
 
-        and you may also need to allocate cbits if qprog_with_measure needs quantum measure.
+        e você também pode precisar alocar cbits se qprog_with_measure precisar de medição quântica.
 
         qprog_with_measure (input,param)
 
-        `input`: array_like input 1-dim classic data
+        `input`: array_like entrada 1-dim de dados clássicos
 
-        `param`: array_like input 1-dim quantum circuit's parameters
+        `param`: array_like entrada 1-dim dos parâmetros do circuito quântico
 
     .. note::
 
-        The class have alias: `QpandaQCircuitVQCLayerLite` .
+        A classe possui um alias: `QpandaQCircuitVQCLayerLite` .
 
-    Example::
+    Exemplo::
 
         import pyqpanda as pq
         from pyvqnet.qnn.measure import ProbsMeasure
@@ -215,17 +215,16 @@ If you are more familiar with pyQPanda2 syntax, please using QuantumLayerV2 clas
             rlt_prob = ProbsMeasure([0,2],prog,m_machine,qubits)
             return rlt_prob
 
-
         pqc = QuantumLayerV2(pqctest,3)
 
-        #classic data as input
+        #dados clássicos como entrada
         input = QTensor([[1,2,3,4],[4,2,2,3],[3,3,2,2.0]] )
 
-        #forward circuits
+        #circuito forward
         rlt = pqc(input)
 
         grad =  QTensor(np.ones(rlt.data.shape)*1000)
-        #backward circuits
+        #circuito backward
         rlt.backward(grad)
         print(rlt)
 
@@ -238,52 +237,53 @@ If you are more familiar with pyQPanda2 syntax, please using QuantumLayerV2 clas
  
 
 
+
 NoiseQuantumLayer
 =================================
 
-In the real quantum computer, due to the physical characteristics of the quantum bit, there is always inevitable calculation error. In order to better simulate this error in quantum virtual machine, VQNet also supports quantum virtual machine with noise. The simulation of quantum virtual machine with noise is closer to the real quantum computer. We can customize the supported logic gate type and the noise model supported by the logic gate.
-The existing supported quantum noise model is defined in pyQPanda2's ``NoiseQVM``.
+Em um computador quântico real, devido às características físicas do bit quântico, sempre há erros de cálculo inevitáveis. Para simular melhor esse erro em uma máquina virtual quântica, o VQNet também suporta máquina virtual quântica com ruído. A simulação da máquina virtual quântica com ruído é mais próxima do computador quântico real. Podemos personalizar o tipo de porta lógica suportada e o modelo de ruído suportado pela porta lógica.
+O modelo de ruído quântico existente suportado é definido no ``NoiseQVM`` do pyQPanda2.
 
-We can use ``NoiseQuantumLayer`` to define an automatic microclassification of quantum circuits. ``NoiseQuantumLayer`` supports pyQPanda2 quantum virtual machine with noise. You can define a function as an argument ``qprog_with_measure``. This function needs to contain the quantum circuit defined by pyQPanda, as also you need to pass in a argument ``noise_set_config``, by using the pyQPanda interface to set up the noise model.
+Podemos usar ``NoiseQuantumLayer`` para definir uma miclassificação automática de circuitos quânticos. ``NoiseQuantumLayer`` suporta máquina virtual quântica pyQPanda2 com ruído. Você pode definir uma função como argumento ``qprog_with_measure``. Esta função precisa conter o circuito quântico definido por pyQPanda, e você também precisa passar um argumento ``noise_set_config``, usando a interface pyQPanda para configurar o modelo de ruído.
 
 .. py:class:: pyvqnet.qnn.quantumlayer.NoiseQuantumLayer(qprog_with_measure, para_num, machine_type, num_of_qubits: int, num_of_cbits: int = 1, diff_method: str = 'parameter_shift', delta: float = 0.01, noise_set_config=None, dtype=None, name='')
 
-    Abstract calculation module for variational quantum circuits. It simulates a parameterized quantum circuit and gets the measurement result.
-    QuantumLayer inherits from Module ,so that it can calculate gradients of circuits parameters,and train variational quantum circuits model or embed variational quantum circuits into hybird quantum and classic model.
+    Módulo de cálculo abstrato para circuitos quânticos variacionais. Simula um circuito quântico parametrizado e obtém o resultado da medição.
+    NoiseQuantumLayer herda de Module, para que possa calcular gradientes dos parâmetros do circuito e treinar modelos de circuitos quânticos variacionais ou incorporar circuitos quânticos variacionais em modelos híbridos quântico-clássicos.
     
-    This module should be initialized with noise model by ``noise_set_config``.
+    Este módulo deve ser inicializado com modelo de ruído através de ``noise_set_config``.
 
-    :param qprog_with_measure: callable quantum circuits functions ,cosntructed by pyQPanda2
-    :param para_num: `int` - Number of para_num
-    :param machine_type: pyQPanda2 machine type
-    :param num_of_qubits: num of qubits
-    :param num_of_cbits: num of cbits
-    :param diff_method: 'parameter_shift' or 'finite_diff'
-    :param delta:  delta for diff
-    :param noise_set_config: noise set function
-    :param dtype: The data type of the parameter, default: None, use the default data type kfloat32, which represents a 32-bit floating point number.
-    :param name: name of the output layer
+    :param qprog_with_measure: funções de circuitos quânticos chamáveis, construídas por pyQPanda2
+    :param para_num: `int` - Número de parâmetros
+    :param machine_type: tipo de máquina pyQPanda2
+    :param num_of_qubits: número de qubits
+    :param num_of_cbits: número de cbits
+    :param diff_method: 'parameter_shift' ou 'finite_diff'
+    :param delta: delta para a diferença
+    :param noise_set_config: função de configuração de ruído
+    :param dtype: O tipo de dado do parâmetro, padrão: None, usa o tipo de dado padrão kfloat32, que representa um número de ponto flutuante de 32 bits.
+    :param name: nome da camada de saída
     
-    :return: a module can calculate quantum circuits with noise model.
+    :return: um módulo capaz de calcular circuitos quânticos com modelo de ruído.
 
     .. note::
-        qprog_with_measure is a quantum circuit function defined in pyQPanda.
+        qprog_with_measure é uma função de circuito quântico definida em pyQPanda.
 
-        This function should contains following parameters,otherwise it can not run properly in NoiseQuantumLayer.
+        Esta função deve conter os seguintes parâmetros, caso contrário não funcionará corretamente no NoiseQuantumLayer.
 
         qprog_with_measure (input,param,qubits,cbits,m_machine)
 
-        `input`: array_like input 1-dim classic data
+        `input`: array_like entrada 1-dim de dados clássicos
 
-        `param`: array_like input 1-dim quantum circuit's parameters
+        `param`: array_like entrada 1-dim dos parâmetros do circuito quântico
 
-        `qubits`: qubits allocated by NoiseQuantumLayer
+        `qubits`: qubits alocados pelo NoiseQuantumLayer
 
-        `cbits`: cbits allocated by NoiseQuantumLayer.if your circuits does not use cbits,you should also reserve this parameter.
+        `cbits`: cbits alocados pelo NoiseQuantumLayer. Se seu circuito não usar cbits, você também deve reservar este parâmetro.
 
-        `m_machine`: simulator created by NoiseQuantumLayer
+        `m_machine`: simulador criado pelo NoiseQuantumLayer
 
-    Example::
+    Exemplo::
 
         import pyqpanda as pq
         from pyvqnet.qnn.measure import ProbsMeasure
@@ -308,9 +308,9 @@ We can use ``NoiseQuantumLayer`` to define an automatic microclassification of q
 
             counts = np.array(list(result.values()))
             states = np.array(list(result.keys())).astype(float)
-            # Compute probabilities for each state
+            # Calcula probabilidades para cada estado
             probabilities = counts / 100
-            # Get state expectation
+            # Obtém a expectativa do estado
             expectation = np.sum(states * probabilities)
             return expectation
 
@@ -362,7 +362,7 @@ We can use ``NoiseQuantumLayer`` to define an automatic microclassification of q
         # 55., 45., 25., 5.,
         # 5., 50., -25., -15.]
 
-Here is an example of ``noise_set_config``, here we add the noise model BITFLIP_KRAUS_OPERATOR where the noise argument p=0.01 to the quantum gate ``RX`` , ``RY`` , ``RZ`` , ``X`` , ``Y`` , ``Z`` , ``H``, etc.
+Aqui está um exemplo de ``noise_set_config``, onde adicionamos o modelo de ruído BITFLIP_KRAUS_OPERATOR com argumento de ruído p=0.01 às portas quânticas ``RX`` , ``RY`` , ``RZ`` , ``X`` , ``Y`` , ``Z`` , ``H``, etc.
 
 .. code-block::
 
@@ -392,12 +392,12 @@ QiskitLayer
 
 .. py:class:: pyvqnet.qnn.QiskitLayer(qiskit_circuits,para_num)
 
-    A wrapper layer for implementing forward and backward propagation with Qiskit circuits in VQNet. QISKIT_VQC is a class that defines a Qiskit quantum circuit and its run function.
-    The following example demonstrates how it works. This layer only supports circuit inputs and weights as parameters.
+    Uma camada wrapper para implementar propagação forward e backward com circuitos Qiskit no VQNet. QISKIT_VQC é uma classe que define um circuito quântico Qiskit e sua função de execução.
+    O exemplo a seguir demonstra como funciona. Esta camada suporta apenas entradas de circuito e pesos como parâmetros.
     
-    :param cirq_vqc: A class that defines the definition, backend, and execution functions of a Qiskit circuit.
-    :param para_num: `int` - The number of para_num.
-    :return: A class capable of running qiskit quantum circuit models.
+    :param cirq_vqc: Uma classe que define a definição, o backend e as funções de execução de um circuito Qiskit.
+    :param para_num: `int` - O número de parâmetros.
+    :return: Uma classe capaz de executar modelos de circuitos quânticos qiskit.
 
     Example::
 
@@ -550,7 +550,7 @@ QiskitLayer
         class QISKIT_VQC:
 
             def __init__(self, n_qubits, backend, shots):
-                # --- Circuit definition ---
+                # --- Definição do circuito ---
 
                 qc = ClassicalRegister(1)
                 self.qc = qc
@@ -597,7 +597,7 @@ QiskitLayer
                 Expectation = np.real(statevec.expectation_value(Pauli('ZIII')))
                 return Expectation
 
-        #define qiskit circuits class
+        #define a classe de circuitos qiskit
         circuit = QISKIT_VQC(4, simulator, 1000)
 
         class Model_qiskit(Module):
@@ -636,7 +636,7 @@ QiskitLayer
             epoch = 2
 
             loss = MeanSquaredError()
-            print("start training..............")
+            print("iniciando treinamento..............")
             model.train()
 
             TL=[]
@@ -679,17 +679,17 @@ CirqLayer
 
 .. py:class:: pyvqnet.qnn.CirqLayer(cirq_vqc,para_num)
 
-    A cirq circuit encapsulation layer for implementing forward and backward propagation in vqnet. CIRQ_VQC is a class that requires users to define a cirq quantum circuit and its `run` function. The following example demonstrates its working principle.
-    This layer only supports circuit inputs and weights as parameters.
+    Uma camada de encapsulamento de circuito cirq para implementar propagação forward e backward no vqnet. CIRQ_VQC é uma classe que exige que os usuários definam um circuito quântico cirq e sua função `run`. O exemplo a seguir demonstra seu princípio de funcionamento.
+    Esta camada suporta apenas entradas de circuito e pesos como parâmetros.
 
-    :param cirq_vqc: A class defining the definition, backend, and running functions of a Cirq circuit.
-    :param para_num: `int` - The number of para_nums.
-    :return: A class capable of running the Cirq quantum circuit model.
+    :param cirq_vqc: Uma classe que define a definição, o backend e as funções de execução de um circuito Cirq.
+    :param para_num: `int` - O número de parâmetros.
+    :return: Uma classe capaz de executar o modelo de circuito quântico Cirq.
 
 
     .. note::
 
-        The following example code requires `cirq==1.5.0, numpy <2`.
+        O código de exemplo a seguir requer `cirq==1.5.0, numpy <2`.
 
     Example::
 
@@ -793,11 +793,11 @@ CirqLayer
                 q3 = cirq.NamedQubit ('q3')
                 qubits = [q0,q1,q2,q3]
                 self.qubits = [q0,q1,q2,q3]
-                ###define varational parameters
+                ###define parâmetros variacionais
                 param = sympy.symbols(f'theta(0:24)')
                 self.theta = np.asarray(param).reshape((4,6))
 
-                ###define circuits
+                ###define circuitos
                 circuit = cirq.Circuit()
 
                 for i ,q in enumerate(qubits):
@@ -832,7 +832,7 @@ CirqLayer
 
                 return expectation
 
-        #define cirq circuits class
+        #define a classe de circuitos cirq
         circuit = CIRQ_VQC()
 
         class Model_cirq(Module):
@@ -872,7 +872,7 @@ CirqLayer
             epoch = 5
 
             loss = MeanSquaredError()
-            print("start training..............")
+            print("iniciando treinamento..............")
             model.train()
 
             TL=[]
@@ -905,17 +905,17 @@ CirqLayer
         
             run_cirq()
 
-Quantum Gates
+Portas Quânticas
 ***********************************
 
-The way to deal with qubits is called quantum gates. Using quantum gates, we consciously evolve quantum states. Quantum gates are the basis of quantum algorithms.
+A forma de lidar com qubits é chamada de portas quânticas. Usando portas quânticas, evoluímos conscientemente os estados quânticos. Portas quânticas são a base dos algoritmos quânticos.
 
-Basic quantum gates
+Portas quânticas básicas
 =================================
 
-In VQNet, we use each logic gate of pyQPanda developed by Origin Quantum to build quantum circuit and conduct quantum simulation.
-The gates currently supported by pyQPanda can be defined in pyQPanda's quantum gate section.
-In addition, VQNet also encapsulates some quantum gate combinations commonly used in quantum machine learning.
+No VQNet, usamos cada porta lógica do pyQPanda desenvolvido pela Origin Quantum para construir circuitos quânticos e realizar simulações quânticas.
+As portas atualmente suportadas pelo pyQPanda podem ser definidas na seção de portas quânticas do pyQPanda.
+Além disso, o VQNet também encapsula algumas combinações de portas quânticas comumente usadas em aprendizado de máquina quântico.
 
 
 
@@ -924,12 +924,12 @@ AmplitudeEmbeddingCircuit
 
 .. py:function:: pyvqnet.qnn.template.AmplitudeEmbeddingCircuit(input_feat, qubits)
 
-    Encodes :math:`2^n` features into the amplitude vector of :math:`n` qubits.
-    To represent a valid quantum state vector, the L2-norm of ``features`` must be one.
+    Codifica :math:`2^n` características no vetor de amplitude de :math:`n` qubits.
+    Para representar um vetor de estado quântico válido, a norma L2 de ``features`` deve ser um.
 
-    :param input_feat: numpy array which represents paramters
-    :param qubits: qubits allocated by pyQPanda
-    :return: quantum circuits
+    :param input_feat: array numpy que representa os parâmetros
+    :param qubits: qubits alocados por pyQPanda
+    :return: circuitos quânticos
 
     Example::
 
@@ -954,14 +954,14 @@ AmplitudeEmbeddingCircuit
 
 
 
-Quantum Machine Learning APIs using pyQPanda2
+APIs de Machine Learning Quântico usando pyQPanda2
 ***************************************************************************
 
-Quantum Generative Adversarial Networks for learning and loading random distributions
-==================================================================================================
+Redes Adversariais Generativas Quânticas para aprendizado e carregamento de distribuições aleatórias
+====================================================================================================
 
-Quantum Generative Adversarial Networks(`QGAN <https://www.nature.com/articles/s41534-019-0223-2>`_ )algorithm uses pure quantum variational circuits to prepare the generated quantum states with specific random distribution, which can reduce the logic gates required to generate specific quantum states and reduce the complexity of quantum circuits.It uses the classical GAN model structure, which has two sub-models: Generator and Discriminator. The Generator generates a specific distribution for the quantum circuit.And the Discriminator discriminates the generated data samples generated by the Generator and the real randomly distributed training data samples.
-Here is an example of VQNet implementing QGAN learning and loading random distributions based on the paper `Quantum Generative Adversarial Networks for learning and loading random distributions <https://www.nature.com/articles/s41534-019-0223-2>`_ of Christa Zoufal.
+O algoritmo de Redes Adversariais Generativas Quânticas (`QGAN <https://www.nature.com/articles/s41534-019-0223-2>`_ ) usa circuitos quânticos variacionais puros para preparar os estados quânticos gerados com distribuição aleatória específica, o que pode reduzir as portas lógicas necessárias para gerar estados quânticos específicos e reduzir a complexidade dos circuitos quânticos. Ele usa a estrutura clássica do modelo GAN, que possui dois submodelos: Generator e Discriminator. O Generator gera uma distribuição específica para o circuito quântico. E o Discriminator discrimina as amostras de dados geradas pelo Generator e as amostras de dados de treinamento reais distribuídas aleatoriamente.
+Aqui está um exemplo do VQNet implementando o aprendizado e carregamento de distribuições aleatórias do QGAN baseado no artigo `Quantum Generative Adversarial Networks for learning and loading random distributions <https://www.nature.com/articles/s41534-019-0223-2>`_ de Christa Zoufal.
 
 .. image:: ./images/qgan-arch.PNG
    :width: 600 px
@@ -969,7 +969,7 @@ Here is an example of VQNet implementing QGAN learning and loading random distri
 
 |
 
-In order to realize the construction of ``QGANAPI`` class of quantum generative adversarial network by VQNet, the quantum generator is used to prepare the initial state of the real distributed data. The number of quantum bits is 3, and the repetition times of the internal parametric circuit module of the quantum generator is 1. Meanwhile, KL is used as the metric for the QGAN loading random distribution.
+Para realizar a construção da classe ``QGANAPI`` de rede adversarial generativa quântica pelo VQNet, o gerador quântico é usado para preparar o estado inicial dos dados distribuídos reais. O número de bits quânticos é 3, e o número de repetições do módulo de circuito paramétrico interno do gerador quântico é 1. Enquanto isso, KL é usado como métrica para o carregamento de distribuição aleatória do QGAN.
 
 .. code-block::
 
@@ -979,20 +979,20 @@ In order to realize the construction of ``QGANAPI`` class of quantum generative 
     from pyvqnet.qnn.qgan.qgan_utils import QGANAPI
     import numpy as np
 
-    num_of_qubits = 3  # paper config
+    num_of_qubits = 3  # configuração do artigo
     rep = 1
     number_of_data = 10000
-    # Load data samples from different distributions
+    # Carrega amostras de dados de diferentes distribuições
     mu = 1
     sigma = 1
     real_data = np.random.lognormal(mean=mu, sigma=sigma, size=number_of_data)
 
 
-    # intial
+    # inicializa
     save_dir = None
     qgan_model = QGANAPI(
         real_data,
-        # numpy generated data distribution, 1 - dim.
+        # distribuição de dados gerada por numpy, 1 - dim.
         num_of_qubits,
         batch_size=2000,
         num_epochs=2000,
@@ -1004,30 +1004,30 @@ In order to realize the construction of ``QGANAPI`` class of quantum generative 
         if_save_param_dir=save_dir
     )
 
-The following is the ``train`` module of QGAN.
+A seguir está o módulo ``train`` do QGAN.
 
 .. code-block::
 
-    # train
-    qgan_model.train()  # train qgan
+    # treina
+    qgan_model.train()  # treina qgan
 
 
-The ``eval`` module of QGAN is designed to draw the loss function curve and probability distribution diagram between the random distribution prepared by QGAN and the real distribution.
-
-.. code-block::
-
-    # show probability distribution function of generated distribution and real distribution
-    qgan_model.eval(real_data)  #draw pdf
-
-The ``get_trained_quantum_parameters`` module of QGAN is used to get training parameters and output them as a numpy array. If ``save_DIR`` is not empty, the training parameters are saved to a file.The ``Load_param_and_eval`` module of QGAN loads training parameters, and the ``get_circuits_with_trained_param`` module obtains pyQPanda circuit generated by quantum generator after training.
+O módulo ``eval`` do QGAN foi projetado para desenhar a curva da função de perda e o diagrama de distribuição de probabilidade entre a distribuição aleatória preparada pelo QGAN e a distribuição real.
 
 .. code-block::
 
-    # get trained quantum parameters
+    # mostra a função de distribuição de probabilidade da distribuição gerada e da distribuição real
+    qgan_model.eval(real_data)  #desenha pdf
+
+O módulo ``get_trained_quantum_parameters`` do QGAN é usado para obter os parâmetros de treinamento e gerá-los como um array numpy. Se ``save_DIR`` não estiver vazio, os parâmetros de treinamento são salvos em um arquivo. O módulo ``Load_param_and_eval`` do QGAN carrega os parâmetros de treinamento, e o módulo ``get_circuits_with_trained_param`` obtém o circuito pyQPanda gerado pelo gerador quântico após o treinamento.
+
+.. code-block::
+
+    # obtém parâmetros quânticos treinados
     param = qgan_model.get_trained_quantum_parameters()
     print(f" trained param {param}")
 
-    #load saved parameters files
+    #carrega arquivos de parâmetros salvos
     if save_dir is not None:
         path = os.path.join(
             save_dir, qgan_model._start_time + "trained_qgan_param.pickle")
@@ -1036,20 +1036,20 @@ The ``get_trained_quantum_parameters`` module of QGAN is used to get training pa
         param = t3["quantum_parameters"]
         print(f" trained param {param}")
 
-    #show probability distribution function of generated distribution and real distribution
+    #mostra a função de distribuição de probabilidade da distribuição gerada e da distribuição real
     qgan_model.load_param_and_eval(param)
 
-    #calculate metric
+    #calcula métrica
     print(qgan_model.eval_metric(param, "kl"))
 
-    #get generator quantum circuit
+    #obtém o circuito quântico do gerador
     m_machine = pq.CPUQVM()
     m_machine.init_qvm()
     qubits = m_machine.qAlloc_many(num_of_qubits)
     qpanda_cir = qgan_model.get_circuits_with_trained_param(qubits)
     print(qpanda_cir)
 
-In general, QGAN learning and loading random distribution requires multiple training models with different random seeds to obtain the expected results. For example, the following is the graph of the probability distribution function between the lognormal distribution implemented by QGAN and the real lognormal distribution, and the loss function curve between QGAN's generator and discriminator.
+Em geral, o aprendizado e carregamento de distribuição aleatória do QGAN requer múltiplos modelos de treinamento com diferentes sementes aleatórias para obter os resultados esperados. Por exemplo, a seguir está o gráfico da função de distribuição de probabilidade entre a distribuição lognormal implementada pelo QGAN e a distribuição lognormal real, e a curva da função de perda entre o gerador e o discriminador do QGAN.
 
 .. image:: ./images/qgan-loss.png
    :width: 600 px
@@ -1064,17 +1064,17 @@ In general, QGAN learning and loading random distribution requires multiple trai
 |
 
 
-quantum kernal SVM
+SVM com kernel quântico
 =================================
 
-In machine learning tasks, data often cannot be separated by a hyperplane in the original space. A common technique for finding such hyperplanes is to apply a nonlinear transformation function to the data.
-This function is called a feature map, through which we can calculate how close the data points are in this new feature space for the classification task of machine learning.
+Em tarefas de aprendizado de máquina, os dados frequentemente não podem ser separados por um hiperplano no espaço original. Uma técnica comum para encontrar tais hiperplanos é aplicar uma função de transformação não linear aos dados.
+Esta função é chamada de mapa de características, através do qual podemos calcular quão próximos os pontos de dados estão neste novo espaço de características para a tarefa de classificação do aprendizado de máquina.
 
-This example refers to the thesis: `Supervised learning with quantum enhanced feature spaces <https://arxiv.org/pdf/1804.11326.pdf>`_ .
-The first method constructs variational circuits for data classification tasks.
+Este exemplo refere-se à tese: `Supervised learning with quantum enhanced feature spaces <https://arxiv.org/pdf/1804.11326.pdf>`_ .
+O primeiro método constrói circuitos variacionais para tarefas de classificação de dados.
 
-``gen_vqc_qsvm_data`` is the data needed to generate this example. ``vqc_qsvm`` is a variable sub-circuit class used to classify the input data.
-The ``vqc_qsvm.plot()`` function visualizes the distribution of the data.
+``gen_vqc_qsvm_data`` são os dados necessários para gerar este exemplo. ``vqc_qsvm`` é uma classe de subcircuito variável usada para classificar os dados de entrada.
+A função ``vqc_qsvm.plot()`` visualiza a distribuição dos dados.
 
 .. image:: ./images/VQC-SVM.png
    :width: 600 px
@@ -1096,30 +1096,30 @@ The ``vqc_qsvm.plot()`` function visualizes the distribution of the data.
         training_size = 20
         test_size = 10
         gap = 0.3
-        #sub-circuits repeat times
+        #vezes de repetição dos subcircuitos
         rep = 3
 
-        #defines QSVM class
+        #define a classe QSVM
         VQC_QSVM = vqc_qsvm(batch_size, maxiter, rep)
-        #randomly generates data from thesis.
+        #gera dados aleatoriamente a partir da tese.
         train_features, test_features, train_labels, test_labels, samples = \
             gen_vqc_qsvm_data(training_size=training_size, test_size=test_size, gap=gap)
         VQC_QSVM.plot(train_features, test_features, train_labels, test_labels, samples)
-        #train
+        #treina
         VQC_QSVM.train(train_features, train_labels)
-        #test
+        #testa
         rlt, acc_1 = VQC_QSVM.predict(test_features, test_labels)
         print(f"testing_accuracy {acc_1}")
 
 
-In addition to the above-mentioned direct use of variational quantum circuits to map classical data features to quantum feature spaces, in the paper `Supervised learning with quantum enhanced feature spaces <https://arxiv.org/pdf/1804.11326.pdf>`_,
-the method of directly estimating kernel functions using quantum circuits and classifying them using classical support vector machines is also introduced.
-Analogy to various kernel functions in classical SVM :math:`K(i,j)` , use quantum kernel function to define the inner product of classical data in quantum feature space :math:`\phi(\mathbf{x}_i)` :
+Além do uso direto de circuitos quânticos variacionais mencionado acima para mapear características de dados clássicos para espaços de características quânticas, no artigo `Supervised learning with quantum enhanced feature spaces <https://arxiv.org/pdf/1804.11326.pdf>`_,
+também é introduzido o método de estimar diretamente funções kernel usando circuitos quânticos e classificá-los usando máquinas de vetor de suporte clássicas.
+Analogia a várias funções kernel no SVM clássico :math:`K(i,j)` , use a função kernel quântica para definir o produto interno de dados clássicos no espaço de características quânticas :math:`\phi(\mathbf{x}_i)` :
 
 .. math::
     |\langle \phi(\mathbf{x}_j) | \phi(\mathbf{x}_i) \rangle |^2 =  |\langle 0 | U^\dagger(\mathbf{x}_j) U(\mathbf{x}_i) | 0 \rangle |^2
 
-Using VQNet and pyQPanda, we define a ``QuantumKernel_VQNet`` to generate a quantum kernel function and use ``sklearn`` for classification:
+Usando VQNet e pyQPanda, definimos um ``QuantumKernel_VQNet`` para gerar uma função kernel quântica e usar ``sklearn`` para classificação:
 
 .. image:: ./images/qsvm-kernel.png
    :width: 600 px
@@ -1150,40 +1150,40 @@ Using VQNet and pyQPanda, we define a ``QuantumKernel_VQNet`` to generate a quan
     print(f"quantum kernel classification test score: {score}")
 
 
-Simultaneous Perturbation Stochastic Approximation optimizers
+Otimizador de Aproximação Estocástica por Perturbação Simultânea
 =================================================================
 
 
 .. py:function:: pyvqnet.qnn.SPSA(maxiter: int = 1000, save_steps: int = 1, last_avg: int = 1, c0: float = _C0, c1: float = 0.2, c2: float = 0.602, c3: float = 0.101, c4: float = 0, init_para=None, model=None, calibrate_flag=False)
     
 
-    Simultaneous Perturbation Stochastic Approximation (SPSA) optimizer.
+    Otimizador de Aproximação Estocástica por Perturbação Simultânea (SPSA).
 
-    SPSA provides a stochastic method for approximating the gradient of a multivariate differentiable cost function.
-    To achieve this, the cost function is evaluated twice using a perturbed parameter vector: each component of the original parameter vector is simultaneously shifted by a randomly generated value.
-    Further information is available on the `SPSA website <http://www.jhuapl.edu/SPSA>`__.
+    O SPSA fornece um método estocástico para aproximar o gradiente de uma função de custo diferenciável multivariada.
+    Para conseguir isso, a função de custo é avaliada duas vezes usando um vetor de parâmetros perturbado: cada componente do vetor de parâmetros original é deslocado simultaneamente por um valor gerado aleatoriamente.
+    Mais informações estão disponíveis no `site do SPSA <http://www.jhuapl.edu/SPSA>`__.
 
-    :param maxiter: The maximum number of iterations to perform. Default value: 1000.
-    :param save_steps: Save the intermediate information of each save_steps step. Default value: 1.
-    :param last_avg: Averaging parameter for last_avg iterations.
-        If last_avg = 1, only the last iteration is considered. Default value: 1.
-    :param c0: initial a. Step size for updating parameters. Default value: 0.2*pi
-    :param c1: initial c. The step size used to approximate the gradient. Default: 0.1.
-    :param c2: alpha from the paper, used to adjust a(c0) at each iteration. Default value: 0.602.
-    :param c3: gamma in the paper, used to adjust c(c1) at each iteration. Default value: 0.101.
-    :param c4: Also used to control the parameters of a. Default value: 0.
-    :param init_para: Initialization parameters. Default: None.
-    :param model: Parametric model: model. Default: None.
-    :param calibrate_flag: whether to calibrate hpyer parameters a and c, default value: False.
+    :param maxiter: O número máximo de iterações a serem realizadas. Valor padrão: 1000.
+    :param save_steps: Salva as informações intermediárias de cada save_steps passos. Valor padrão: 1.
+    :param last_avg: Parâmetro de média para as últimas last_avg iterações.
+        Se last_avg = 1, apenas a última iteração é considerada. Valor padrão: 1.
+    :param c0: a inicial. Tamanho do passo para atualizar parâmetros. Valor padrão: 0.2*pi
+    :param c1: c inicial. O tamanho do passo usado para aproximar o gradiente. Padrão: 0.1.
+    :param c2: alpha do artigo, usado para ajustar a(c0) a cada iteração. Valor padrão: 0.602.
+    :param c3: gamma do artigo, usado para ajustar c(c1) a cada iteração. Valor padrão: 0.101.
+    :param c4: Também usado para controlar os parâmetros de a. Valor padrão: 0.
+    :param init_para: Parâmetros de inicialização. Padrão: None.
+    :param model: Modelo paramétrico: model. Padrão: None.
+    :param calibrate_flag: se deve calibrar os hiperparâmetros a e c, valor padrão: False.
 
-    :return: an SPSA optimizer instance
+    :return: uma instância do otimizador SPSA
 
 
     .. warning::
 
-        SPSA only supports 1-dim paramters.
+        SPSA suporta apenas parâmetros 1-dim.
 
-    Example::
+    Exemplo::
 
         import numpy as np
         import pyqpanda as pq
@@ -1236,16 +1236,16 @@ Simultaneous Perturbation Stochastic Approximation optimizers
 
 .. py:function:: pyvqnet.qnn.SPSA._step(input_data)
 
-    use SPSA to optimize input data.
+    usa SPSA para otimizar dados de entrada.
 
-    :param input_data: input data
+    :param input_data: dados de entrada
     :return:
 
-        train_para: final parameter
+        train_para: parâmetro final
 
-        theta_best: The average parameters of after last `last_avg`.
+        theta_best: A média dos parâmetros após o último `last_avg`.
 
-    Example::
+    Exemplo::
 
         import numpy as np
         import pyqpanda as pq
@@ -1307,28 +1307,28 @@ Simultaneous Perturbation Stochastic Approximation optimizers
         y = model(data)
         print(y)
 
-Quantum fisher information computation matrix
+Matriz de informação de Fisher quântica
 ========================================================
 
 .. py:class:: pyvqnet.qnn.opt.quantum_fisher(py_qpanda_config, params, target_gate_type_lists,target_gate_bits_lists, qcir_lists, wires)
     
-    Returns the quantum fisher information matrix for a quantum circuit.
+    Retorna a matriz de informação de Fisher quântica para um circuito quântico.
 
     .. math::
 
         \mathrm{QFIM}_{i, j}=4 \operatorname{Re}\left[\left\langle\partial_i \psi(\boldsymbol{\theta}) \mid \partial_j \psi(\boldsymbol{\theta})\right\rangle-\left\langle\partial_i \psi(\boldsymbol{\theta}) \mid \psi(\boldsymbol{\theta})\right\rangle\left\langle\psi(\boldsymbol{\theta}) \mid \partial_j \psi(\boldsymbol{\theta})\right\rangle\right]
 
-    The short version is :math::math:`\left|\partial_j \psi(\boldsymbol{\theta})\right\rangle:=\frac{\partial}{\partial \theta_j}|\psi(\boldsymbol{\theta})\rangle`.
+    A versão resumida é :math::math:`\left|\partial_j \psi(\boldsymbol{\theta})\right\rangle:=\frac{\partial}{\partial \theta_j}|\psi(\boldsymbol{\theta})\rangle`.
 
     .. note::
 
-        Currently only RX,RY,RZ are supported.
+        Atualmente apenas RX, RY, RZ são suportados.
 
-    :param params: Variable parameters in circuits.
-    :param target_gate_type_lists: Supports "RX", "RY", "RZ" or lists.
-    :param target_gate_bits_lists:  Which quantum bit or bits the parameterised gate acts on .
-    :param qcir_lists: The list of quantum circles before the target parameterised gate to compute the metric tensor, see the following example.
-    :param wires: Total Quantum Bit Index for Quantum Circuits.
+    :param params: Parâmetros variáveis nos circuitos.
+    :param target_gate_type_lists: Suporta "RX", "RY", "RZ" ou listas.
+    :param target_gate_bits_lists:  Em qual bit ou bits quânticos a porta parametrizada atua.
+    :param qcir_lists: A lista de circuitos quânticos antes da porta parametrizada alvo para calcular o tensor métrico, veja o exemplo a seguir.
+    :param wires: Índice total de bits quânticos para circuitos quânticos.
 
     Example::
     
@@ -1377,8 +1377,8 @@ Quantum fisher information computation matrix
         mt = quantum_fisher(config, params2, [['RX', 'RY', 'RZ', 'RZ']],
                                 [[0, 1, 2, 3]], qcir, [0, 1, 2, 3])
 
-        # The above example shows that there are no identical gates in the same layer, 
-        # but in the same layer you need to modify the logic gates according to the following example.
+        # O exemplo acima mostra que não há portas idênticas na mesma camada, 
+        # mas na mesma camada você precisa modificar as portas lógicas de acordo com o exemplo a seguir.
         
         n_wires = 3
         def layer_subcircuit_01(config: pyqpanda_config_wrapper, params):
@@ -1401,9 +1401,9 @@ Quantum fisher information computation matrix
             qcir = pq.QCircuit()
             qcir.insert(pq.RX(config._qubits[0], params[0]))
             qcir.insert(pq.RY(config._qubits[1], params[1]))
-            qcir.insert(pq.CNOT(config._qubits[0], config._qubits[1])) #  01 part
+            qcir.insert(pq.CNOT(config._qubits[0], config._qubits[1])) #  parte 01
             
-            qcir.insert(pq.RZ(config._qubits[1], params[2]))  #  02 part
+            qcir.insert(pq.RZ(config._qubits[1], params[2]))  #  parte 02
             
             qcir.insert(pq.RZ(config._qubits[1], params[3]))
             return qcir
@@ -1456,6 +1456,6 @@ Quantum fisher information computation matrix
         
         params2 = QTensor([0.5, 0.5, 0.5, 0.25], requires_grad=True)
 
-        mt = quantum_fisher(config, params2, [['RX', 'RY'], ['RZ'], ['RZ']], # rx,ry counts as layer one, first rz as layer two, second rz as layer three.
+        mt = quantum_fisher(config, params2, [['RX', 'RY'], ['RZ'], ['RZ']], # rx,ry conta como camada um, primeiro rz como camada dois, segundo rz como camada três.
                                 [[0, 1], [1], [1]], qcir, [0, 1])
 
