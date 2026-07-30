@@ -1,14 +1,14 @@
 .. _qtensor_api:
 
-QTensor Module
+Módulo QTensor
 ###########################
 
-VQNet quantum machine learning uses the data structure QTensor which is Python interface. QTensor supports common multidimensional matrix operations including creating functions, mathematical functions, logical functions, matrix transformations, etc.
+O aprendizado de máquina quântico do VQNet utiliza a estrutura de dados QTensor, que é uma interface Python. O QTensor suporta operações matriciais multidimensionais comuns, incluindo funções de criação, funções matemáticas, funções lógicas, transformações matriciais, etc.
 
 
 
 
-QTensor's Functions and Attributes
+Funções e Atributos do QTensor
 ******************************************
 
 
@@ -17,17 +17,17 @@ QTensor
 
 .. py:class:: pyvqnet.tensor.tensor.QTensor(data, requires_grad=False, nodes=None, device=0, dtype=None, name='')
 
-    Wrapper of data structure with dynamic computational graph construction
-    and automatic differentiation.
+    Encapsulamento da estrutura de dados com construção dinâmica de grafo computacional
+    e diferenciação automática.
 
-    :param data: _core.Tensor or numpy array which represents a QTensor
-    :param requires_grad: should tensor's gradient be tracked, defaults to False
-    :param nodes: list of successors in the computational graph, defaults to None
-    :param device: current device to save QTensor ,default = 0, use CPU.
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
-    :param name: The name of the QTensor, default: "".
+    :param data: _core.Tensor ou array numpy que representa um QTensor
+    :param requires_grad: indica se o gradiente do tensor deve ser rastreado, padrão: False
+    :param nodes: lista de sucessores no grafo computacional, padrão: None
+    :param device: dispositivo atual para salvar o QTensor, padrão = 0, usa CPU.
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
+    :param name: O nome do QTensor, padrão: "".
 
-    :return: output QTensor
+    :return: QTensor de saída
 
 
     Example::
@@ -50,9 +50,9 @@ QTensor
 
     .. py:attribute:: ndim
 
-        Returns the number of dimensions of a tensor.
+        Retorna o número de dimensões de um tensor.
 
-        :return: The number of dimensions of a tensor.
+        :return: O número de dimensões de um tensor.
 
         Example::
 
@@ -65,9 +65,9 @@ QTensor
 
     .. py:attribute:: shape
 
-        Returns the dimensions of a tensor
+        Retorna as dimensões de um tensor
 
-        :return: A list of the dimensions of the tensor
+        :return: Uma lista das dimensões do tensor
 
         Example::
 
@@ -80,9 +80,9 @@ QTensor
 
     .. py:attribute:: size
 
-        Returns the number of elements of a tensor.
+        Retorna o número de elementos de um tensor.
 
-        :return: The number of elements of a tensor.
+        :return: O número de elementos de um tensor.
 
         Example::
 
@@ -95,9 +95,9 @@ QTensor
 
     .. py:method:: numel
 
-        Returns the number of elements in a tensor.
+        Retorna o número de elementos em um tensor.
 
-        :return: The number of elements in a tensor.
+        :return: O número de elementos em um tensor.
 
         Example::
 
@@ -110,27 +110,27 @@ QTensor
 
     .. py:attribute:: dtype
 
-        Returns the data type of a tensor.
+        Retorna o tipo de dados de um tensor.
 
-        Supported data types are as follows:
+        Os tipos de dados suportados são os seguintes:
 
             =========================================  ===============================
-            dtype                                      description
+            dtype                                      descrição
             =========================================  ===============================
-            ``pyvqnet.kbool``                          Boolean variable
-            ``pyvqnet.kuint8``                         8-bit integer (unsigned)
-            ``pyvqnet.kint8``                          8-bit integer (signed)
-            ``pyvqnet.kint16``                         16-bit integer (signed)
-            ``pyvqnet.kint32``                         32-bit integer (signed)
-            ``pyvqnet.kint64``                         64-bit integer (signed)
-            ``pyvqnet.kfloat32``                       32-bit floating point, see https://en.wikipedia.org/wiki/IEEE_754
-            ``pyvqnet.kfloat64``                       64-bit floating point, see https://en.wikipedia.org/wiki/IEEE_754
-            ``pyvqnet.kcomplex64``                     64-bit complex number, composed of two `float32`
-            ``pyvqnet.kcomplex128``                    128-bit complex number, composed of two `float64`
-            ``pyvqnet.kbfloat16``                      16-bit floating point, sometimes called Brain floating point format, with bit allocation of 1 sign bit, 8 exponent bits, and 7 mantissa bits
+            ``pyvqnet.kbool``                          Variável booleana
+            ``pyvqnet.kuint8``                         Inteiro de 8 bits (sem sinal)
+            ``pyvqnet.kint8``                          Inteiro de 8 bits (com sinal)
+            ``pyvqnet.kint16``                         Inteiro de 16 bits (com sinal)
+            ``pyvqnet.kint32``                         Inteiro de 32 bits (com sinal)
+            ``pyvqnet.kint64``                         Inteiro de 64 bits (com sinal)
+            ``pyvqnet.kfloat32``                       Ponto flutuante de 32 bits, veja https://en.wikipedia.org/wiki/IEEE_754
+            ``pyvqnet.kfloat64``                       Ponto flutuante de 64 bits, veja https://en.wikipedia.org/wiki/IEEE_754
+            ``pyvqnet.kcomplex64``                     Número complexo de 64 bits, composto por dois `float32`
+            ``pyvqnet.kcomplex128``                    Número complexo de 128 bits, composto por dois `float64`
+            ``pyvqnet.kbfloat16``                      Ponto flutuante de 16 bits, também chamado de formato Brain floating point, com alocação de bits: 1 bit de sinal, 8 bits de expoente e 7 bits de mantissa
             =========================================  ===============================
 
-        :return: The data type of the tensor.
+        :return: O tipo de dados do tensor.
 
         Example::
 
@@ -143,7 +143,7 @@ QTensor
 
     .. py:method:: zero_grad()
 
-        Sets gradient to zero. Will be used by optimizer in the optimization process.
+        Define o gradiente como zero. Será usado pelo otimizador no processo de otimização.
 
         :return: None
 
@@ -161,7 +161,7 @@ QTensor
  
     .. py:method:: backward(grad=None)
 
-        Computes the gradient of current QTensor .
+        Calcula o gradiente do QTensor atual.
 
         :return: None
 
@@ -180,13 +180,13 @@ QTensor
 
     .. py:method:: to_numpy()
 
-        Copy self data to a new numpy.array.
+        Copia os dados para um novo numpy.array.
 
-        :return: a new numpy.array contains QTensor data
+        :return: um novo numpy.array contendo os dados do QTensor
 
         .. note::
 
-            numpy does not support bfloat16 type, you need to convert to other numpy supported data types such as float32 first before calling this interface.
+            O numpy não suporta o tipo bfloat16; você precisa converter para outros tipos de dados suportados pelo numpy, como float32, antes de chamar esta interface.
 
         Example::
 
@@ -201,9 +201,9 @@ QTensor
  
     .. py:method:: item()
 
-            Return the only element from in the QTensor.Raises 'RuntimeError' if QTensor has more than 1 element.
+            Retorna o único elemento do QTensor. Lança 'RuntimeError' se o QTensor tiver mais de 1 elemento.
 
-            :return: only data of this object
+            :return: único dado deste objeto
 
             Example::
 
@@ -217,13 +217,13 @@ QTensor
  
     .. py:method:: argmax(*kargs)
 
-        Return the indices of the maximum value of all elements in the input QTensor,or
-        Return the indices of the maximum values of a QTensor across a dimension.
+        Retorna os índices do valor máximo de todos os elementos no QTensor de entrada, ou
+        Retorna os índices dos valores máximos de um QTensor ao longo de uma dimensão.
 
-        :param dim: dim (int) – the dimension to reduce,only accepts single axis. if dim == None, returns the indices of the maximum value of all elements in the input tensor.The valid dim range is [-R, R), where R is input's ndim. when dim < 0, it works the same way as dim + R.
-        :param keepdims:  whether the output QTensor has dim retained or not.
+        :param dim: dim (int) – a dimensão a ser reduzida, aceita apenas um único eixo. se dim == None, retorna os índices do valor máximo de todos os elementos no tensor de entrada. O intervalo válido de dim é [-R, R), onde R é o ndim da entrada. quando dim < 0, funciona da mesma forma que dim + R.
+        :param keepdims: indica se a dimensão do QTensor de saída é mantida ou não.
 
-        :return: the indices of the maximum value in the input QTensor.
+        :return: os índices do valor máximo no QTensor de entrada.
 
         Example::
 
@@ -258,13 +258,13 @@ QTensor
  
     .. py:method:: argmin(*kargs)
 
-        Return the indices of the minimum  value of all elements in the input QTensor,or
-        Return the indices of the minimum  values of a QTensor across a dimension.
+        Retorna os índices do valor mínimo de todos os elementos no QTensor de entrada, ou
+        Retorna os índices dos valores mínimos de um QTensor ao longo de uma dimensão.
 
-        :param dim: dim (int) – the dimension to reduce,only accepts single axis. if dim == None, returns the indices of the minimum value of all elements in the input tensor.The valid dim range is [-R, R), where R is input's ndim. when dim < 0, it works the same way as dim + R.
-        :param keepdims:  whether the output QTensor has dim retained or not.
+        :param dim: dim (int) – a dimensão a ser reduzida, aceita apenas um único eixo. se dim == None, retorna os índices do valor mínimo de todos os elementos no tensor de entrada. O intervalo válido de dim é [-R, R), onde R é o ndim da entrada. quando dim < 0, funciona da mesma forma que dim + R.
+        :param keepdims: indica se a dimensão do QTensor de saída é mantida ou não.
 
-        :return: the indices of the minimum  value in the input QTensor.
+        :return: os índices do valor mínimo no QTensor de entrada.
 
         Example::
 
@@ -295,9 +295,9 @@ QTensor
 
     .. py:method:: fill_(v)
 
-            Fill the QTensor with the specified value inplace.
+            Preenche o QTensor com o valor especificado, modificando-o internamente.
 
-            :param v: a scalar value
+            :param v: um valor escalar
             :return: None
 
             Example::
@@ -318,9 +318,9 @@ QTensor
     
     .. py:method:: all()
 
-            Return True, if all QTensor value is non-zero.
+            Retorna True se todos os valores do QTensor forem diferentes de zero.
 
-            :return: True,if all QTensor value is non-zero.
+            :return: True se todos os valores do QTensor forem diferentes de zero.
 
             Example::
 
@@ -337,9 +337,9 @@ QTensor
  
     .. py:method:: any()
 
-            Return True,if any QTensor value is non-zero.
+            Retorna True se algum valor do QTensor for diferente de zero.
 
-            :return: True,if any QTensor value is non-zero.
+            :return: True se algum valor do QTensor for diferente de zero.
 
             Example::
 
@@ -357,11 +357,11 @@ QTensor
  
     .. py:method:: fill_rand_binary_(v=0.5)
 
-        Fills a QTensor with values randomly sampled from a binomial distribution.
+        Preenche um QTensor com valores amostrados aleatoriamente de uma distribuição binomial.
 
-        If the data generated randomly after binomial distribution is greater than Binarization threshold,then the number of corresponding positions of the QTensor is set to 1, otherwise 0.
+        Se os dados gerados aleatoriamente pela distribuição binomial forem maiores que o limiar de binarização, o número nas posições correspondentes do QTensor é definido como 1, caso contrário, 0.
 
-        :param v: Binarization threshold
+        :param v: Limiar de binarização
         :return: None
 
         Example::
@@ -382,11 +382,11 @@ QTensor
  
     .. py:method:: fill_rand_signed_uniform_(v=1)
 
-        Fills a QTensor with values randomly sampled from a signed uniform distribution.
+        Preenche um QTensor com valores amostrados aleatoriamente de uma distribuição uniforme com sinal.
 
-        Scale factor of the values generated by the signed uniform distribution.
+        Fator de escala dos valores gerados pela distribuição uniforme com sinal.
 
-        :param v: a scalar value
+        :param v: um valor escalar
         :return: None
 
         Example::
@@ -409,11 +409,11 @@ QTensor
  
     .. py:method:: fill_rand_uniform_(v=1)
 
-        Fills a QTensor with values randomly sampled from a uniform distribution
+        Preenche um QTensor com valores amostrados aleatoriamente de uma distribuição uniforme.
 
-        Scale factor of the values generated by the uniform distribution.
+        Fator de escala dos valores gerados pela distribuição uniforme.
 
-        :param v: a scalar value
+        :param v: um valor escalar
         :return: None
 
         Example::
@@ -436,13 +436,13 @@ QTensor
 
     .. py:method:: fill_rand_normal_(m=0, s=1, fast_math=True)
 
-        Fills a QTensor with values randomly sampled from a normal distribution
-        Mean of the normal distribution. Standard deviation of the normal distribution.
-        Whether to use or not the fast math mode.
+        Preenche um QTensor com valores amostrados aleatoriamente de uma distribuição normal.
+        Média da distribuição normal. Desvio padrão da distribuição normal.
+        Indica se deve usar o modo fast math ou não.
 
-        :param m: mean of the normal distribution
-        :param s: standard deviation of the normal distribution
-        :param fast_math: True if use fast-math
+        :param m: média da distribuição normal
+        :param s: desvio padrão da distribuição normal
+        :param fast_math: True se usar fast-math
         :return: None
 
         Example::
@@ -464,10 +464,10 @@ QTensor
 
     .. py:method:: transpose(new_dims=None)
 
-        Reverse or permute the axes of an array.if new_dims = None, revsers the dim.
+        Inverte ou permuta os eixos de um array. Se new_dims = None, inverte as dimensões.
 
-        :param new_dims: the new order of the dimensions (list of integers).
-        :return:  result QTensor.
+        :param new_dims: a nova ordem das dimensões (lista de inteiros).
+        :return: QTensor resultante.
 
         Example::
 
@@ -492,10 +492,10 @@ QTensor
 
     .. py:method:: reshape(new_shape)
 
-        Change the tensor’s shape ,return a new QTensor.
+        Altera a forma do tensor e retorna um novo QTensor.
 
-        :param new_shape: the new shape (list of integers)
-        :return: a new QTensor
+        :param new_shape: a nova forma (lista de inteiros)
+        :return: um novo QTensor
 
         Example::
 
@@ -516,13 +516,13 @@ QTensor
 
     .. py:method:: reshape_(new_shape)
 
-        Change the shape of the current QTensor in place. This interface will first try to transform without changing the original memory data. If it fails, the current data will be copied to the new memory.
+        Altera a forma do QTensor atual internamente. Esta interface primeiro tenta transformar sem alterar os dados originais na memória. Se falhar, os dados atuais serão copiados para a nova memória.
 
         .. warning::
 
-            It is recommended to use the reshape interface. In some cases, the actual underlying memory location will be copied instead of modified in place.
+            Recomenda-se usar a interface reshape. Em alguns casos, a localização real da memória subjacente será copiada em vez de modificada internamente.
 
-        :param new_shape: the new shape (list of integers)
+        :param new_shape: a nova forma (lista de inteiros)
         :return: None
 
         Example::
@@ -546,9 +546,9 @@ QTensor
 
     .. py:method:: getdata()
 
-            Get the QTensor's data as a NumPy array.
+            Obtém os dados do QTensor como um array NumPy.
 
-            :return: a NumPy array
+            :return: um array NumPy
 
             Example::
 
@@ -568,25 +568,25 @@ QTensor
 
     .. py:method:: __getitem__()
 
-            Slicing indexing of QTensor is supported, or using QTensor as advanced index access input. A new QTensor will be returned.
+            O índice por fatia (slicing) do QTensor é suportado, assim como o uso do QTensor como índice de acesso avançado. Um novo QTensor será retornado.
 
-            The parameters start, stop, and step can be separated by a colon,such as start:stop:step, where start, stop, and step can be default
+            Os parâmetros start, stop e step podem ser separados por dois pontos, como start:stop:step, onde start, stop e step podem ser omitidos.
 
-            As a 1-D QTensor,indexing or slicing can only be done on a single axis.
+            Como um QTensor 1-D, a indexação ou fatia só pode ser feita em um único eixo.
 
-            As a 2-D QTensor and a multidimensional QTensor,indexing or slicing can be done on multiple axes.
+            Como um QTensor 2-D e um QTensor multidimensional, a indexação ou fatia pode ser feita em múltiplos eixos.
 
-            If you use QTensor as an index for advanced indexing, see numpy for `advanced indexing <https://docs.scipy.org/doc/numpy-1.10.1/reference/arrays.indexing.html>`_ .
+            Se você usar um QTensor como índice para indexação avançada, veja numpy para `advanced indexing <https://docs.scipy.org/doc/numpy-1.10.1/reference/arrays.indexing.html>`_ .
 
-            If your QTensor as an index is the result of a logical operation, then you do a Boolean index.
+            Se o seu QTensor como índice é o resultado de uma operação lógica, então você faz uma indexação booleana.
 
             .. note:: 
                 
-                We use an index form like a[3,4,1],but the form a[3][4][1] is not supported.
+                Usamos uma forma de índice como a[3,4,1], mas a forma a[3][4][1] não é suportada.
 
-            :param item: A integer or QTensor as an index.
+            :param item: Um inteiro ou QTensor usado como índice.
 
-            :return: A new QTensor.
+            :return: Um novo QTensor.
 
             Example::
 
@@ -659,23 +659,23 @@ QTensor
 
     .. py:method:: __setitem__()
 
-        Slicing indexing of QTensor is supported, or using QTensor as advanced index access input. A new QTensor will be returned.
+        O índice por fatia (slicing) do QTensor é suportado, assim como o uso do QTensor como índice de acesso avançado. Um novo QTensor será retornado.
 
-        The parameters start, stop, and step can be separated by a colon,such as start:stop:step, where start, stop, and step can be default
+        Os parâmetros start, stop e step podem ser separados por dois pontos, como start:stop:step, onde start, stop e step podem ser omitidos.
 
-        As a 1-D QTensor,indexing or slicing can only be done on a single axis.
+        Como um QTensor 1-D, a indexação ou fatia só pode ser feita em um único eixo.
 
-        As a 2-D QTensor and a multidimensional QTensor,indexing or slicing can be done on multiple axes.
+        Como um QTensor 2-D e um QTensor multidimensional, a indexação ou fatia pode ser feita em múltiplos eixos.
 
-        If you use QTensor as an index for advanced indexing, see numpy for `advanced indexing <https://docs.scipy.org/doc/numpy-1.10.1/reference/arrays.indexing.html>`_ .
+        Se você usar um QTensor como índice para indexação avançada, veja numpy para `advanced indexing <https://docs.scipy.org/doc/numpy-1.10.1/reference/arrays.indexing.html>`_ .
 
-        If your QTensor as an index is the result of a logical operation, then you do a Boolean index.
+        Se o seu QTensor como índice é o resultado de uma operação lógica, então você faz uma indexação booleana.
 
         .. note:: 
             
-            We use an index form like a[3,4,1],but the form a[3][4][1] is not supported.
+            Usamos uma forma de índice como a[3,4,1], mas a forma a[3][4][1] não é suportada.
 
-        :param item: A integer or QTensor as an index
+        :param item: Um inteiro ou QTensor usado como índice
 
         :return: None
 
@@ -811,22 +811,22 @@ QTensor
 
     .. py:method:: GPU(device: int = DEV_GPU_0)
 
-        Clone QTensor to specified GPU device.
+        Clona o QTensor para o dispositivo GPU especificado.
 
-        device specifies the device whose internal data is stored. When device >= DEV_GPU_0, the data is stored on the GPU.
-        If your computer has multiple GPUs, you can designate different devices to store data on. 
-        For example, device = DEV_GPU_1, DEV_GPU_2, DEV_GPU_3, ... indicates storage on GPUs with different serial numbers.
+        device especifica o dispositivo onde os dados internos são armazenados. Quando device >= DEV_GPU_0, os dados são armazenados na GPU.
+        Se o seu computador tiver múltiplas GPUs, você pode designar diferentes dispositivos para armazenar dados.
+        Por exemplo, device = DEV_GPU_1, DEV_GPU_2, DEV_GPU_3, ... indica armazenamento em GPUs com diferentes números de série.
         
         .. note::
-            QTensor cannot perform calculations on different GPUs.
-            A Cuda error will be raised if you try to create a QTensor on a GPU whose ID exceeds the maximum number of verified GPUs.
+            O QTensor não pode realizar cálculos em GPUs diferentes.
+            Um erro Cuda será gerado se você tentar criar um QTensor em uma GPU cujo ID exceda o número máximo de GPUs verificadas.
 
-        :param device: The device currently saving QTensor, default=DEV_GPU_0,
+        :param device: O dispositivo que está salvando o QTensor atualmente, padrão=DEV_GPU_0,
 
-        device = pyvqnet.DEV_GPU_0, stored in the first GPU, device = DEV_GPU_1,
-        stored in the second GPU, and so on.
+        device = pyvqnet.DEV_GPU_0, armazenado na primeira GPU, device = DEV_GPU_1,
+        armazenado na segunda GPU, e assim por diante.
 
-        :return: Clone QTensor to GPU device.
+        :return: Clona o QTensor para o dispositivo GPU.
 
         Examples::
 
@@ -840,9 +840,9 @@ QTensor
 
     .. py:method:: CPU()
 
-        Clone QTensor to specific CPU device
+        Clona o QTensor para o dispositivo CPU específico
 
-        :return: Clone QTensor to CPU device.
+        :return: Clona o QTensor para o dispositivo CPU.
 
         Examples::
 
@@ -855,18 +855,18 @@ QTensor
  
     .. py:method:: toGPU(device: int = DEV_GPU_0)
 
-        Move QTensor to specified GPU device.
+        Move o QTensor para o dispositivo GPU especificado.
 
-        device specifies the device whose internal data is stored. When device >= DEV_GPU, the data is stored on the GPU.
-        If your computer has multiple GPUs, you can designate different devices to store data on.
-        For example, device = DEV_GPU_1, DEV_GPU_2, DEV_GPU_3, ... indicates storage on GPUs with different serial numbers.
+        device especifica o dispositivo onde os dados internos são armazenados. Quando device >= DEV_GPU, os dados são armazenados na GPU.
+        Se o seu computador tiver múltiplas GPUs, você pode designar diferentes dispositivos para armazenar dados.
+        Por exemplo, device = DEV_GPU_1, DEV_GPU_2, DEV_GPU_3, ... indica armazenamento em GPUs com diferentes números de série.
 
         .. note::
 
-            QTensor cannot perform calculations on different GPUs. A Cuda error will be raised if you try to create a QTensor on a GPU whose ID exceeds the maximum number of verified GPUs.
+            O QTensor não pode realizar cálculos em GPUs diferentes. Um erro Cuda será gerado se você tentar criar um QTensor em uma GPU cujo ID exceda o número máximo de GPUs verificadas.
 
-        :param device: The device currently saving QTensor, default=DEV_GPU_0. device = pyvqnet.DEV_GPU_0, stored in the first GPU, device = DEV_GPU_1, stored in the second GPU, and so on.
-        :return: QTensor moved to GPU device.
+        :param device: O dispositivo que está salvando o QTensor atualmente, padrão=DEV_GPU_0. device = pyvqnet.DEV_GPU_0, armazenado na primeira GPU, device = DEV_GPU_1, armazenado na segunda GPU, e assim por diante.
+        :return: QTensor movido para o dispositivo GPU.
 
         Examples::
 
@@ -880,9 +880,9 @@ QTensor
     
     .. py:method:: toCPU()
 
-        Move QTensor to CPU
+        Move o QTensor para a CPU
 
-        :return: QTensor moved to CPU device.
+        :return: QTensor movido para o dispositivo CPU.
 
         Examples::
 
@@ -895,9 +895,9 @@ QTensor
     
     .. py:method:: isGPU()
 
-        Whether this QTensor's data is stored on GPU host memory.
+        Verifica se os dados deste QTensor estão armazenados na memória da GPU.
 
-        :return: Whether this QTensor's data is stored on GPU host memory.
+        :return: True se os dados deste QTensor estiverem armazenados na memória da GPU.
 
         Examples::
         
@@ -909,9 +909,9 @@ QTensor
  
     .. py:method:: isCPU()
 
-        Whether this QTensor's data is stored in CPU host memory.
+        Verifica se os dados deste QTensor estão armazenados na memória da CPU.
 
-        :return: Whether this QTensor's data is stored in CPU host memory.
+        :return: True se os dados deste QTensor estiverem armazenados na memória da CPU.
 
         Examples::
         
@@ -922,7 +922,7 @@ QTensor
             # True
 
 
-Create Functions
+Funções de Criação
 *****************************************************
 
 
@@ -931,13 +931,13 @@ ones
 
 .. py:function:: pyvqnet.tensor.ones(shape,device=0,dtype-None)
 
-    Return one-tensor with the input shape.
+    Retorna um tensor preenchido com 1 com a forma especificada.
 
-    :param shape: input shape
-    :param device: stored in which device,default 0 , CPU.
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
+    :param shape: forma de entrada
+    :param device: dispositivo de armazenamento, padrão 0, CPU.
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
     
-    :return: output QTensor with the input shape.
+    :return: QTensor de saída com a forma especificada.
 
     Example::
 
@@ -956,13 +956,13 @@ ones_like
 
 .. py:function:: pyvqnet.tensor.ones_like(t: pyvqnet.tensor.QTensor,device=0,dtype=None)
 
-    Return one-tensor with the same shape as the input QTensor.
+    Retorna um tensor preenchido com 1 com a mesma forma do QTensor de entrada.
 
-    :param t: input QTensor
-    :param device: stored in which device,default 0 , CPU.
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
+    :param t: QTensor de entrada
+    :param device: dispositivo de armazenamento, padrão 0, CPU.
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
     
-    :return:  output QTensor
+    :return: QTensor de saída
 
 
     Example::
@@ -980,14 +980,14 @@ full
 
 .. py:function:: pyvqnet.tensor.full(shape, value, device=0, dtype=None)
 
-    Create a QTensor of the specified shape and fill it with value.
+    Cria um QTensor com a forma especificada e o preenche com o valor indicado.
 
-    :param shape: shape of the QTensor to create
-    :param value: value to fill the QTensor with.
-    :param device: device to use,default = 0 ,use cpu device.
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
+    :param shape: forma do QTensor a ser criado
+    :param value: valor para preencher o QTensor.
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU.
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
     
-    :return: output QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -1007,14 +1007,14 @@ full_like
 
 .. py:function:: pyvqnet.tensor.full_like(t, value, device: int = 0, dtype=None)
 
-    Create a QTensor of the specified shape and fill it with value.
+    Cria um QTensor com a forma do tensor de entrada e o preenche com o valor indicado.
 
-    :param t:  input Qtensor
-    :param value: value to fill the QTensor with.
-    :param device: device to use,default = 0 ,use cpu device.
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
+    :param t: QTensor de entrada
+    :param value: valor para preencher o QTensor.
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU.
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
     
-    :return: output QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -1035,13 +1035,13 @@ zeros
 
 .. py:function:: pyvqnet.tensor.zeros(shape,device = 0,dtype=None)
 
-    Return zero-tensor of the input shape.
+    Retorna um tensor preenchido com 0 com a forma especificada.
 
-    :param shape: shape of tensor
-    :param device: device to use,default = 0 ,use cpu device
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
+    :param shape: forma do tensor
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
     
-    :return: output QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -1064,13 +1064,13 @@ zeros_like
 
 .. py:function:: pyvqnet.tensor.zeros_like(t: pyvqnet.tensor.QTensor,device: int = 0,dtype=None))
 
-    Return zero-tensor with the same shape as the input QTensor.
+    Retorna um tensor preenchido com 0 com a mesma forma do QTensor de entrada.
 
-    :param t: input QTensor
-    :param device: device to use,default = 0 ,use cpu device
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
+    :param t: QTensor de entrada
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
     
-    :return:  output QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -1087,15 +1087,15 @@ arange
 
 .. py:function:: pyvqnet.tensor.arange(start, end, step=1, device: int = 0,dtype=None, requires_grad=False)
 
-    Create a 1D QTensor with evenly spaced values within a given interval.
+    Cria um QTensor 1D com valores uniformemente espaçados dentro de um intervalo.
 
-    :param start: start of interval
-    :param end: end of interval
-    :param step: spacing between values
-    :param device: device to use,default = 0 ,use cpu device
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
-    :return: output QTensor
+    :param start: início do intervalo
+    :param end: fim do intervalo
+    :param step: espaçamento entre valores
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
+    :param requires_grad: indica se o gradiente do tensor deve ser rastreado, padrão: False
+    :return: QTensor de saída
 
     Example::
 
@@ -1111,15 +1111,15 @@ linspace
 
 .. py:function:: pyvqnet.tensor.linspace(start, end, num, device: int = 0,dtype=None, requires_grad= False)
 
-    Create a 1D QTensor with evenly spaced values within a given interval.
+    Cria um QTensor 1D com valores uniformemente espaçados dentro de um intervalo.
 
-    :param start: starting value
-    :param end: end value
-    :param nums: number of samples to generate
-    :param device: device to use,default = 0 ,use cpu device
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
-    :return: output QTensor
+    :param start: valor inicial
+    :param end: valor final
+    :param nums: número de amostras a serem geradas
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
+    :param requires_grad: indica se o gradiente do tensor deve ser rastreado, padrão: False
+    :return: QTensor de saída
 
     Example::
 
@@ -1135,16 +1135,16 @@ logspace
 
 .. py:function:: pyvqnet.tensor.logspace(start, end, num, base, device: int = 0,dtype=None,  requires_grad)
 
-    Create a 1D QTensor with evenly spaced values on a log scale.
+    Cria um QTensor 1D com valores uniformemente espaçados em uma escala logarítmica.
 
-    :param start: ``base ** start`` is the starting value
-    :param end: ``base ** end`` is the final value of the sequence
-    :param nums: number of samples to generate
-    :param base: the base of the log space
-    :param device: device to use,default = 0 ,use cpu device
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
-    :return: output QTensor
+    :param start: ``base ** start`` é o valor inicial
+    :param end: ``base ** end`` é o valor final da sequência
+    :param nums: número de amostras a serem geradas
+    :param base: a base do espaço logarítmico
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
+    :param requires_grad: indica se o gradiente do tensor deve ser rastreado, padrão: False
+    :return: QTensor de saída
 
     Example::
 
@@ -1161,15 +1161,15 @@ eye
 
 .. py:function:: pyvqnet.tensor.eye(size, offset: int = 0, device=0,dtype=None)
 
-    Create a size x size QTensor with ones on the diagonal and zeros
-    elsewhere.
+    Cria um QTensor de tamanho size x size com 1 na diagonal e 0
+    nas demais posições.
 
-    :param size: size of the (square) QTensor to create
-    :param offset: Index of the diagonal: 0 (the default) refers to the main diagonal, a positive value refers to an upper diagonal, and a negative value to a lower diagonal.
-    :param device: device to use,default = 0 ,use cpu device
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
+    :param size: tamanho do QTensor (quadrado) a ser criado
+    :param offset: Índice da diagonal: 0 (padrão) refere-se à diagonal principal, um valor positivo refere-se a uma diagonal superior e um valor negativo a uma diagonal inferior.
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
     
-    :return: output QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -1192,13 +1192,13 @@ diagonal
 .. py:function:: pyvqnet.tensor.diagonal(t: QTensor, offset: int = 0, dim1=0, dim2=1)
 
 
-    Returns a partial view of :attr:`t` with the diagonal elements appended as dimensions to the end of the shape relative to :attr:`dim1` and :attr:`dim2`.
-    :attr:`offset` is the offset of the main diagonal.
+    Retorna uma visão parcial de :attr:`t` com os elementos da diagonal anexados como dimensões ao final da forma em relação a :attr:`dim1` e :attr:`dim2`.
+    :attr:`offset` é o deslocamento da diagonal principal.
 
-    :param t: input tensor
-    :param offset: offset (0 means main diagonal, positive values ​​mean the nth diagonal above the main diagonal, negative values ​​mean the nth diagonal below the main diagonal)
-    :param dim1: first dimension to take the diagonal. Default: 0.
-    :param dim2: second dimension to take the diagonal. Default: 1.
+    :param t: tensor de entrada
+    :param offset: deslocamento (0 significa diagonal principal, valores positivos significam a n-ésima diagonal acima da diagonal principal, valores negativos significam a n-ésima diagonal abaixo da diagonal principal)
+    :param dim1: primeira dimensão para obter a diagonal. Padrão: 0.
+    :param dim2: segunda dimensão para obter a diagonal. Padrão: 1.
 
     Example::
 
@@ -1219,15 +1219,15 @@ diag
 
 .. py:function:: pyvqnet.tensor.diag(t, k: int = 0)
 
-    Select diagonal elements or construct a diagonal QTensor.
+    Seleciona elementos da diagonal ou constrói um QTensor diagonal.
 
-    Input a 2-D QTensor and return a new 1D tensor containing the selected diagonal elements. Input a 1-D QTensor and return a new 2D tensor whose selected diagonal elements are the input values ​​and the rest are 0
+    Insira um QTensor 2-D e retorna um novo tensor 1D contendo os elementos da diagonal selecionados. Insira um QTensor 1-D e retorna um novo tensor 2D cujos elementos da diagonal selecionados são os valores de entrada e o restante é 0.
 
-    :param t: input QTensor
-    :param k: offset (0 for the main diagonal, positive for the nth
-        diagonal above the main one, negative for the nth diagonal below the
-        main one)
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param k: deslocamento (0 para a diagonal principal, positivo para a n-ésima
+        diagonal acima da principal, negativo para a n-ésima diagonal abaixo da
+        principal)
+    :return: QTensor de saída
 
     Example::
 
@@ -1265,15 +1265,15 @@ randu
 
 .. py:function:: pyvqnet.tensor.randu(shape,min=0.0,max=1.0, device: int = 0, dtype=None, requires_grad=False)
 
-    Create a QTensor with uniformly distributed random values.
+    Cria um QTensor com valores aleatórios uniformemente distribuídos.
 
-    :param shape: shape of the QTensor to create
-    :param min: minimum value of uniform distribution,default: 0.
-    :param max: maximum value of uniform distribution,default: 1.
-    :param device: device to use,default = 0 ,use cpu device
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
-    :return: output QTensor
+    :param shape: forma do QTensor a ser criado
+    :param min: valor mínimo da distribuição uniforme, padrão: 0.
+    :param max: valor máximo da distribuição uniforme, padrão: 1.
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
+    :param requires_grad: indica se o gradiente do tensor deve ser rastreado, padrão: False
+    :return: QTensor de saída
 
 
     Example::
@@ -1294,15 +1294,15 @@ randn
 
 .. py:function:: pyvqnet.tensor.randn(shape, mean=0.0,std=1.0, device: int = 0, dtype=None, requires_grad=False)
 
-    Create a QTensor with normally distributed random values.
+    Cria um QTensor com valores aleatórios normalmente distribuídos.
 
-    :param shape: shape of the QTensor to create
-    :param mean: mean value of normally distribution,default: 0.
-    :param std: standard variance value of normally distribution,default: 1.
-    :param device: device to use,default = 0 ,use cpu device
-    :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
-    :return: output QTensor
+    :param shape: forma do QTensor a ser criado
+    :param mean: valor médio da distribuição normal, padrão: 0.
+    :param std: desvio padrão da distribuição normal, padrão: 1.
+    :param device: dispositivo a ser usado, padrão = 0, usa dispositivo CPU
+    :param dtype: O tipo de dados do parâmetro, padrão None, usa o tipo de dados padrão: kfloat32, que representa um número de ponto flutuante de 32 bits.
+    :param requires_grad: indica se o gradiente do tensor deve ser rastreado, padrão: False
+    :return: QTensor de saída
 
     Example::
 
@@ -1321,13 +1321,13 @@ binomial
 ==============================
 .. py:function:: pyvqnet.tensor.binomial(total_counts, probs)
     
-    Creates a binomial distribution parameterized by :attr:total_count and :attr:probs.
+    Cria uma distribuição binomial parametrizada por :attr:total_count e :attr:probs.
 
-    :param total_counts: Number of Bernoulli trials.
-    :param probs: Event probabilities.
+    :param total_counts: Número de tentativas de Bernoulli.
+    :param probs: Probabilidades dos eventos.
 
     :return:
-        QTensor for binomial distribution.
+        QTensor para distribuição binomial.
 
     Example::
 
@@ -1348,14 +1348,14 @@ multinomial
 
 .. py:function:: pyvqnet.tensor.multinomial(t, num_samples)
 
-    Returns a Tensor where each row contains num_samples indexed samples.
-    From the multinomial probability distribution located in the corresponding row of the tensor input.
+    Retorna um Tensor onde cada linha contém num_samples amostras indexadas.
+    A partir da distribuição de probabilidade multinomial localizada na linha correspondente do tensor de entrada.
 
-    :param t: Input probability distribution.
-    :param num_samples: numbers of sample.
+    :param t: Distribuição de probabilidade de entrada.
+    :param num_samples: número de amostras.
 
     :return:
-        output sample index
+        índice das amostras de saída
 
     Examples::
 
@@ -1377,12 +1377,12 @@ triu
 
 .. py:function:: pyvqnet.tensor.triu(t, diagonal=0)
 
-    Returns the upper triangular matrix of input t, with the rest set to 0.
+    Retorna a matriz triangular superior do tensor de entrada t, com o restante definido como 0.
 
-    :param t: input a QTensor
-    :param diagonal: The Offset default =0. Main diagonal is 0, positive is offset up,and negative is offset down
+    :param t: entrada de um QTensor
+    :param diagonal: O deslocamento, padrão = 0. Diagonal principal é 0, positivo é deslocado para cima e negativo é deslocado para baixo
 
-    :return: output a QTensor
+    :return: saída de um QTensor
 
     Examples::
 
@@ -1410,12 +1410,12 @@ tril
 
 .. py:function:: pyvqnet.tensor.tril(t, diagonal=0)
 
-    Returns the lower triangular matrix of input t, with the rest set to 0.
+    Retorna a matriz triangular inferior do tensor de entrada t, com o restante definido como 0.
 
-    :param t: input a QTensor
-    :param diagonal: The Offset default =0. Main diagonal is 0, positive is offset up,and negative is offset down
+    :param t: entrada de um QTensor
+    :param diagonal: O deslocamento, padrão = 0. Diagonal principal é 0, positivo é deslocado para cima e negativo é deslocado para baixo
 
-    :return: output a QTensor
+    :return: saída de um QTensor
 
     Examples::
 
@@ -1439,7 +1439,7 @@ tril
         # ]
 
 
-Math Functions
+Funções Matemáticas
 *****************************************************
 
 
@@ -1448,10 +1448,10 @@ floor
 
 .. py:function:: pyvqnet.tensor.floor(t)
 
-    Return a new QTensor with the floor of the elements of input, the largest integer less than or equal to each element.
+    Retorna um novo QTensor com o piso (floor) dos elementos de entrada, o maior inteiro menor ou igual a cada elemento.
 
-    :param t: input Qtensor
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -1468,10 +1468,10 @@ ceil
 
 .. py:function:: pyvqnet.tensor.ceil(t)
 
-    Return a new QTensor with the ceil of the elements of input, the smallest integer greater than or equal to each element.
+    Retorna um novo QTensor com o teto (ceil) dos elementos de entrada, o menor inteiro maior ou igual a cada elemento.
 
-    :param t: input Qtensor
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -1488,10 +1488,10 @@ round
 
 .. py:function:: pyvqnet.tensor.round(t)
 
-    Round QTensor values to the nearest integer.
+    Arredonda os valores do QTensor para o inteiro mais próximo.
 
-    :param t: input QTensor
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -1508,13 +1508,13 @@ sort
 
 .. py:function:: pyvqnet.tensor.sort(t, axis: int, descending=False, stable=True)
 
-    Sort QTensor along the axis
+    Ordena o QTensor ao longo do eixo
 
-    :param t: input QTensor
-    :param axis: sort axis
-    :param descending: sort order if desc
-    :param stable:  Whether to use stable sorting or not
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param axis: eixo de ordenação
+    :param descending: ordem decrescente se True
+    :param stable: indica se deve usar ordenação estável ou não
+    :return: QTensor de saída
 
     Example::
 
@@ -1537,13 +1537,13 @@ argsort
 
 .. py:function:: pyvqnet.tensor.argsort(t, axis: int, descending=False, stable=True)
 
-    Return an array of indices of the same shape as input that index data along the given axis in sorted order.
+    Retorna um array de índices com a mesma forma da entrada que indexa os dados ao longo do eixo fornecido em ordem classificada.
 
-    :param t: input QTensor
-    :param axis: sort axis
-    :param descending: sort order if desc
-    :param stable:  Whether to use stable sorting or not
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param axis: eixo de ordenação
+    :param descending: ordem decrescente se True
+    :param stable: indica se deve usar ordenação estável ou não
+    :return: QTensor de saída
 
     Example::
 
@@ -1566,16 +1566,16 @@ topK
 
 .. py:function:: pyvqnet.tensor.topK(t, k, axis=-1, if_descent=True)
 
-    Returns the k largest elements of the input tensor along the given axis.
+    Retorna os k maiores elementos do tensor de entrada ao longo do eixo fornecido.
 
-    If if_descent is False,then return k smallest elements.
+    Se if_descent for False, retorna os k menores elementos.
 
-    :param t: input a QTensor
-    :param k: numbers of largest elements or smallest elements
-    :param axis: sort axis,default = -1,the last axis
-    :param if_descent: sort order,defaults to True
+    :param t: entrada de um QTensor
+    :param k: número de maiores ou menores elementos
+    :param axis: eixo de ordenação, padrão = -1, o último eixo
+    :param if_descent: ordem decrescente, padrão True
 
-    :return: A new QTensor
+    :return: Um novo QTensor
 
     Examples::
 
@@ -1602,16 +1602,16 @@ argtopK
 
 .. py:function:: pyvqnet.tensor.argtopK(t, k, axis=-1, if_descent=True)
 
-    Return the index of the k largest elements along the given axis of the input tensor.
+    Retorna o índice dos k maiores elementos ao longo do eixo fornecido do tensor de entrada.
 
-    If if_descent is False,then return the index of k smallest elements.
+    Se if_descent for False, retorna o índice dos k menores elementos.
 
-    :param t: input a QTensor
-    :param k: numbers of largest elements or smallest elements
-    :param axis: sort axis,default = -1,the last axis
-    :param if_descent: sort order,defaults to True
+    :param t: entrada de um QTensor
+    :param k: número de maiores ou menores elementos
+    :param axis: eixo de ordenação, padrão = -1, o último eixo
+    :param if_descent: ordem decrescente, padrão True
 
-    :return: A new QTensor
+    :return: Um novo QTensor
 
     Examples::
 
@@ -1640,11 +1640,11 @@ add
 
 .. py:function:: pyvqnet.tensor.add(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Element-wise adds two QTensors, equivalent to t1 + t2.
+    Soma dois QTensors elemento a elemento, equivalente a t1 + t2.
 
-    :param t1: first QTensor
-    :param t2: second QTensor
-    :return:  output QTensor
+    :param t1: primeiro QTensor
+    :param t2: segundo QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -1662,12 +1662,12 @@ sub
 
 .. py:function:: pyvqnet.tensor.sub(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Element-wise subtracts two QTensors,  equivalent to t1 - t2.
+    Subtrai dois QTensors elemento a elemento, equivalente a t1 - t2.
 
 
-    :param t1: first QTensor
-    :param t2: second QTensor
-    :return:  output QTensor
+    :param t1: primeiro QTensor
+    :param t2: segundo QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -1685,11 +1685,11 @@ mul
 
 .. py:function:: pyvqnet.tensor.mul(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Element-wise multiplies two QTensors, equivalent to t1 * t2.
+    Multiplica dois QTensors elemento a elemento, equivalente a t1 * t2.
 
-    :param t1: first QTensor
-    :param t2: second QTensor
-    :return:  output QTensor
+    :param t1: primeiro QTensor
+    :param t2: segundo QTensor
+    :return: QTensor de saída
 
 
     Example::
@@ -1708,12 +1708,12 @@ divide
 
 .. py:function:: pyvqnet.tensor.divide(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Element-wise divides two QTensors, equivalent to t1 / t2.
+    Divide dois QTensors elemento a elemento, equivalente a t1 / t2.
 
 
-    :param t1: first QTensor
-    :param t2: second QTensor
-    :return:  output QTensor
+    :param t1: primeiro QTensor
+    :param t2: segundo QTensor
+    :return: QTensor de saída
 
 
     Example::
@@ -1732,12 +1732,12 @@ sums
 
 .. py:function:: pyvqnet.tensor.sums(t: pyvqnet.tensor.QTensor, axis: Optional[int] = None, keepdims=False)
 
-    Sums all the elements in QTensor along given axis.if axis = None, sums all the elements in QTensor. 
+    Soma todos os elementos no QTensor ao longo do eixo fornecido. Se axis = None, soma todos os elementos no QTensor.
 
-    :param t: input QTensor
-    :param axis:  axis used to sums, defaults to None
-    :param keepdims:  whether the output tensor has dim retained or not. - defaults to False
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :param axis: eixo usado para soma, padrão None
+    :param keepdims: indica se a dimensão do tensor de saída é mantida ou não. - padrão False
+    :return: QTensor de saída
 
 
     Example::
@@ -1757,12 +1757,12 @@ cumsum
 
 .. py:function:: pyvqnet.tensor.cumsum(t, axis=-1)
 
-    Return the cumulative sum of input elements in the dimension axis.
+    Retorna a soma cumulativa dos elementos de entrada na dimensão do eixo.
 
-    :param t:  the input QTensor
-    :param axis:  Calculation of the axis,defaults to -1,use the last axis
+    :param t: o QTensor de entrada
+    :param axis: eixo de cálculo, padrão -1, usa o último eixo
 
-    :return:  output QTensor.
+    :return: QTensor de saída.
 
     Example::
 
@@ -1781,12 +1781,12 @@ mean
 
 .. py:function:: pyvqnet.tensor.mean(t: pyvqnet.tensor.QTensor, axis=None, keepdims=False)
 
-    Obtain the mean values in the QTensor along the axis.
+    Obtém os valores médios no QTensor ao longo do eixo.
 
-    :param t:  the input QTensor.
-    :param axis: the dimension to reduce.
-    :param keepdims:  whether the output QTensor has dim retained or not, defaults to False.
-    :return: returns the mean value of the input QTensor.
+    :param t: o QTensor de entrada.
+    :param axis: a dimensão a ser reduzida.
+    :param keepdims: indica se a dimensão do QTensor de saída é mantida ou não, padrão False.
+    :return: retorna o valor médio do QTensor de entrada.
 
     Example::
 
@@ -1803,13 +1803,13 @@ median
 
 .. py:function:: pyvqnet.tensor.median(t: pyvqnet.tensor.QTensor, axis=None, keepdims=False)
 
-    Obtain the median value in the QTensor.
+    Obtém o valor mediano no QTensor.
 
-    :param t: the input QTensor
-    :param axis:  An axis for averaging,defaults to None
-    :param keepdims:  whether the output QTensor has dim retained or not, defaults to False
+    :param t: o QTensor de entrada
+    :param axis: um eixo para cálculo da mediana, padrão None
+    :param keepdims: indica se a dimensão do QTensor de saída é mantida ou não, padrão False
 
-    :return: Return the median of the values in input or QTensor.
+    :return: Retorna a mediana dos valores no QTensor de entrada.
 
     Example::
 
@@ -1836,14 +1836,14 @@ std
 
 .. py:function:: pyvqnet.tensor.std(t: pyvqnet.tensor.QTensor, axis=None, keepdims=False, unbiased=True)
 
-    Obtain the standard variance value in the QTensor.
+    Obtém o valor do desvio padrão no QTensor.
 
 
-    :param t:  the input QTensor
-    :param axis:  the axis used to calculate the standard deviation,defaults to None
-    :param keepdims:  whether the output QTensor has dim retained or not, defaults to False
-    :param unbiased:  whether to use Bessel’s correction,default true
-    :return: Return the standard variance of the values in input or QTensor
+    :param t: o QTensor de entrada
+    :param axis: o eixo usado para calcular o desvio padrão, padrão None
+    :param keepdims: indica se a dimensão do QTensor de saída é mantida ou não, padrão False
+    :param unbiased: indica se deve usar a correção de Bessel, padrão True
+    :return: Retorna o desvio padrão dos valores no QTensor de entrada
 
     Example::
 
@@ -1870,16 +1870,16 @@ var
 
 .. py:function:: pyvqnet.tensor.var(t: pyvqnet.tensor.QTensor, axis=None, keepdims=False, unbiased=True)
 
-    Obtain the variance in the QTensor.
+    Obtém a variância no QTensor.
 
 
-    :param t:  the input QTensor.
-    :param axis:  The axis used to calculate the variance,defaults to None
-    :param keepdims:  whether the output QTensor has dim retained or not, defaults to False.
-    :param unbiased:  whether to use Bessel’s correction,default true.
+    :param t: o QTensor de entrada.
+    :param axis: o eixo usado para calcular a variância, padrão None
+    :param keepdims: indica se a dimensão do QTensor de saída é mantida ou não, padrão False.
+    :param unbiased: indica se deve usar a correção de Bessel, padrão True.
 
 
-    :return: Obtain the variance in the QTensor.
+    :return: Obtém a variância no QTensor.
 
     Example::
 
@@ -1897,11 +1897,11 @@ matmul
 
 .. py:function:: pyvqnet.tensor.matmul(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Matrix multiplications of two 2d , 3d , 4d matrix.
+    Multiplicação matricial de duas matrizes 2D, 3D, 4D.
 
-    :param t1: first QTensor
-    :param t2: second QTensor
-    :return:  output QTensor
+    :param t1: primeiro QTensor
+    :param t2: segundo QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -1933,19 +1933,19 @@ kron
 
 .. py:function:: pyvqnet.tensor.kron(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Computes the Kronecker product of ``t1`` and ``t2``, expressed in :math:`\otimes` . If ``t1`` is a :math:`(a_0 \times a_1 \times \dots \times a_n)` tensor and ``t2`` is a :math:`(b_0 \times b_1 \times \dots \ times b_n)` tensor, the result will be :math:`(a_0*b_0 \times a_1*b_1 \times \dots \times a_n*b_n)` tensor with the following entries:
+    Calcula o produto de Kronecker de ``t1`` e ``t2``, expresso em :math:`\otimes` . Se ``t1`` é um tensor :math:`(a_0 \times a_1 \times \dots \times a_n)` e ``t2`` é um tensor :math:`(b_0 \times b_1 \times \dots \ times b_n)`, o resultado será um tensor :math:`(a_0*b_0 \times a_1*b_1 \times \dots \times a_n*b_n)` com as seguintes entradas:
     
     .. math::
           (\text{input} \otimes \text{other})_{k_0, k_1, \dots, k_n} =
               \text{input}_{i_0, i_1, \dots, i_n} * \text{other}_{j_0, j_1, \dots, j_n},
 
-    where :math:`k_t = i_t * b_t + j_t` is :math:`0 \leq t \leq n`.
-    If one tensor has fewer dimensions than the other, it will be unpacked until it has the same dimensionality.
+    onde :math:`k_t = i_t * b_t + j_t` é :math:`0 \leq t \leq n`.
+    Se um tensor tiver menos dimensões que o outro, ele será descompactado até ter a mesma dimensionalidade.
 
-    :param t1: The first QTensor.
-    :param t2: The second QTensor.
+    :param t1: O primeiro QTensor.
+    :param t2: O segundo QTensor.
     
-    :return: Output QTensor .
+    :return: QTensor de saída.
 
     Example::
 
@@ -2041,20 +2041,20 @@ einsum
 
 .. py:function:: pyvqnet.tensor.einsum(equation, *operands)
     
-    Sum the products of the elements of the input operands along the specified dimension using a notation based on the Einstein summation convention.
+    Soma os produtos dos elementos dos operandos de entrada ao longo da dimensão especificada usando uma notação baseada na convenção de soma de Einstein.
 
     .. note::
 
-        This function uses opt_einsum (https://optimized-einsum.readthedocs.io/en/stable/) to speed up the computation or reduce memory consumption by optimizing the contraction order. This optimization occurs when there are at least three inputs.
+        Esta função usa opt_einsum (https://optimized-einsum.readthedocs.io/en/stable/) para acelerar o cálculo ou reduzir o consumo de memória otimizando a ordem de contração. Esta otimização ocorre quando há pelo menos três entradas.
 
-        For more complex `einsum`, opt_einsum can be additionally imported to compute directly on QTensor.
+        Para `einsum` mais complexos, opt_einsum pode ser importado adicionalmente para calcular diretamente no QTensor.
 
-    :param equation: The subscript of the Einstein summation.
-    :param operands: The tensor on which the Einstein summation is to be computed.
+    :param equation: O subscrito da soma de Einstein.
+    :param operands: O tensor no qual a soma de Einstein será calculada.
 
     :return:
 
-        The QTensor result.
+        O resultado QTensor.
 
     Example::
 
@@ -2076,10 +2076,10 @@ reciprocal
 
 .. py:function:: pyvqnet.tensor.reciprocal(t)
 
-    Compute the element-wise reciprocal of the QTensor.
+    Calcula o recíproco elemento a elemento do QTensor.
 
-    :param t: input QTensor
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2097,10 +2097,10 @@ sign
 
 .. py:function:: pyvqnet.tensor.sign(t)
 
-    Return a new QTensor with the signs of the elements of input.The sign function returns -1 if t < 0, 0 if t==0, 1 if t > 0.
+    Retorna um novo QTensor com os sinais dos elementos de entrada. A função sinal retorna -1 se t < 0, 0 se t == 0, 1 se t > 0.
 
-    :param t: input QTensor
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
 
     Example::
@@ -2120,10 +2120,10 @@ neg
 
 .. py:function:: pyvqnet.tensor.neg(t: pyvqnet.tensor.QTensor)
 
-    Unary negation of QTensor elements.
+    Negação unária dos elementos do QTensor.
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2140,13 +2140,13 @@ trace
 
 .. py:function:: pyvqnet.tensor.trace(t, k: int = 0)
 
-    Return the sum of the elements of the diagonal of the input 2-D matrix.
+    Retorna a soma dos elementos da diagonal da matriz 2-D de entrada.
 
-    :param t: input 2-D QTensor
-    :param k: offset (0 for the main diagonal, positive for the nth
-        diagonal above the main one, negative for the nth diagonal below the
-        main one)
-    :return: the sum of the elements of the diagonal of the input 2-D matrix
+    :param t: QTensor 2-D de entrada
+    :param k: deslocamento (0 para a diagonal principal, positivo para a n-ésima
+        diagonal acima da principal, negativo para a n-ésima diagonal abaixo da
+        principal)
+    :return: a soma dos elementos da diagonal da matriz 2-D de entrada
 
     Example::
 
@@ -2171,10 +2171,10 @@ exp
 
 .. py:function:: pyvqnet.tensor.exp(t: pyvqnet.tensor.QTensor)
 
-    Applies exponential function to all the elements of the input QTensor.
+    Aplica a função exponencial a todos os elementos do QTensor de entrada.
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2191,10 +2191,10 @@ acos
 
 .. py:function:: pyvqnet.tensor.acos(t: pyvqnet.tensor.QTensor)
 
-    Compute the element-wise inverse cosine of the QTensor.
+    Calcula o cosseno inverso elemento a elemento do QTensor.
 
-    :param t: input QTensor
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2227,10 +2227,10 @@ asin
 
 .. py:function:: pyvqnet.tensor.asin(t: pyvqnet.tensor.QTensor)
 
-    Compute the element-wise inverse sine of the QTensor.
+    Calcula o seno inverso elemento a elemento do QTensor.
 
-    :param t: input QTensor
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2248,10 +2248,10 @@ atan
 
 .. py:function:: pyvqnet.tensor.atan(t: pyvqnet.tensor.QTensor)
 
-    Compute the element-wise inverse tangent of the QTensor.
+    Calcula a tangente inversa elemento a elemento do QTensor.
 
-    :param t: input QTensor
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2269,11 +2269,11 @@ sin
 
 .. py:function:: pyvqnet.tensor.sin(t: pyvqnet.tensor.QTensor)
 
-    Applies sine function to all the elements of the input QTensor.
+    Aplica a função seno a todos os elementos do QTensor de entrada.
 
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2290,11 +2290,11 @@ cos
 
 .. py:function:: pyvqnet.tensor.cos(t: pyvqnet.tensor.QTensor)
 
-    Applies cosine function to all the elements of the input QTensor.
+    Aplica a função cosseno a todos os elementos do QTensor de entrada.
 
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2311,11 +2311,11 @@ tan
 
 .. py:function:: pyvqnet.tensor.tan(t: pyvqnet.tensor.QTensor)
 
-    Applies tangent function to all the elements of the input QTensor.
+    Aplica a função tangente a todos os elementos do QTensor de entrada.
 
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2332,10 +2332,10 @@ tanh
 
 .. py:function:: pyvqnet.tensor.tanh(t: pyvqnet.tensor.QTensor)
 
-    Applies hyperbolic tangent function to all the elements of the input QTensor.
+    Aplica a função tangente hiperbólica a todos os elementos do QTensor de entrada.
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2352,11 +2352,11 @@ sinh
 
 .. py:function:: pyvqnet.tensor.sinh(t: pyvqnet.tensor.QTensor)
 
-    Applies hyperbolic sine function to all the elements of the input QTensor.
+    Aplica a função seno hiperbólico a todos os elementos do QTensor de entrada.
 
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2373,11 +2373,11 @@ cosh
 
 .. py:function:: pyvqnet.tensor.cosh(t: pyvqnet.tensor.QTensor)
 
-    Applies hyperbolic cosine function to all the elements of the input QTensor.
+    Aplica a função cosseno hiperbólico a todos os elementos do QTensor de entrada.
 
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2394,11 +2394,11 @@ power
 
 .. py:function:: pyvqnet.tensor.power(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Raises first QTensor to the power of second QTensor.
+    Eleva o primeiro QTensor à potência do segundo QTensor.
 
-    :param t1: first QTensor
-    :param t2: second QTensor
-    :return:  output QTensor
+    :param t1: primeiro QTensor
+    :param t2: segundo QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -2416,10 +2416,10 @@ abs
 
 .. py:function:: pyvqnet.tensor.abs(t: pyvqnet.tensor.QTensor)
 
-    Applies abs function to all the elements of the input QTensor.
+    Aplica a função valor absoluto a todos os elementos do QTensor de entrada.
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2436,10 +2436,10 @@ log
 
 .. py:function:: pyvqnet.tensor.log(t: pyvqnet.tensor.QTensor)
 
-    Applies log (ln) function to all the elements of the input QTensor.
+    Aplica a função log (ln) a todos os elementos do QTensor de entrada.
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2456,12 +2456,12 @@ log_softmax
 
 .. py:function:: pyvqnet.tensor.log_softmax(t, axis=-1)
     
-    Sequentially calculate the results of the softmax function and the log function on the axis axis.
+    Calcula sequencialmente os resultados da função softmax e da função log no eixo especificado.
 
-    :param t: input QTensor .
-    :param axis: The axis used to calculate softmax, the default is -1.
+    :param t: QTensor de entrada.
+    :param axis: O eixo usado para calcular softmax, o padrão é -1.
 
-    :return: Output QTensor.
+    :return: QTensor de saída.
 
     Example::
 
@@ -2483,11 +2483,11 @@ sqrt
 
 .. py:function:: pyvqnet.tensor.sqrt(t: pyvqnet.tensor.QTensor)
 
-    Applies sqrt function to all the elements of the input QTensor.
+    Aplica a função raiz quadrada a todos os elementos do QTensor de entrada.
 
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2504,11 +2504,11 @@ square
 
 .. py:function:: pyvqnet.tensor.square(t: pyvqnet.tensor.QTensor)
 
-    Applies square function to all the elements of the input QTensor.
+    Aplica a função quadrado a todos os elementos do QTensor de entrada.
 
 
-    :param t: input QTensor
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :return: QTensor de saída
 
     Example::
 
@@ -2526,16 +2526,15 @@ eigh
 
 .. py:function:: pyvqnet.tensor.eigh(t: QTensor)
  
-    Returns the eigenvalues ​​and eigenvectors of a complex Hermitian (conjugate symmetric) or real symmetric matrix.
+    Retorna os autovalores e autovetores de uma matriz Hermitiana complexa (simétrica conjugada) ou matriz simétrica real.
 
-    Returns two objects, a 1D array containing the eigenvalues ​​of a,
-    and a 2D square matrix or matrix (depending on the input type) of the corresponding eigenvectors (in columns).
+    Retorna dois objetos, um array 1D contendo os autovalores,
+    e uma matriz quadrada 2D ou matriz (dependendo do tipo de entrada) dos autovetores correspondentes (em colunas).
 
-    :param: Input QTensor.
-    :param: Eigenvalues ​​and eigenvectors of t.
+    :param t: QTensor de entrada.
     :return:
 
-        Returns eigenvalues ​​and eigenvectors
+        Retorna autovalores e autovetores
 
     Examples::
 
@@ -2568,13 +2567,13 @@ frobenius_norm
 
 .. py:function:: pyvqnet.tensor.frobenius_norm(t: QTensor, axis: int = None, keepdims=False)
 
-    Computes the F-norm of the tensor on the input QTensor along the axis set by axis ,
-    if axis is None, returns the F-norm of all elements.
+    Calcula a norma F do tensor no QTensor de entrada ao longo do eixo definido por axis.
+    Se axis for None, retorna a norma F de todos os elementos.
 
-    :param t: Inpout QTensor .
-    :param axis: The axis used to find the F norm, the default is None.
-    :param keepdims: Whether the output tensor preserves the reduced dimensionality. The default is False.
-    :return: Output a QTensor or F-norm value.
+    :param t: QTensor de entrada.
+    :param axis: O eixo usado para calcular a norma F, o padrão é None.
+    :param keepdims: Se o tensor de saída preserva a dimensionalidade reduzida. O padrão é False.
+    :return: Saída de um QTensor ou valor da norma F.
 
 
     Example::
@@ -2593,7 +2592,7 @@ frobenius_norm
 
 
 
-Logic Functions
+Funções Lógicas
 **************************
 
 maximum
@@ -2601,12 +2600,12 @@ maximum
 
 .. py:function:: pyvqnet.tensor.maximum(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Element-wise maximum of two tensor.
+    Máximo elemento a elemento de dois tensores.
 
 
-    :param t1: first QTensor
-    :param t2: second QTensor
-    :return:  output QTensor
+    :param t1: primeiro QTensor
+    :param t2: segundo QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -2624,12 +2623,12 @@ minimum
 
 .. py:function:: pyvqnet.tensor.minimum(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Element-wise minimum of two tensor.
+    Mínimo elemento a elemento de dois tensores.
 
 
-    :param t1: first QTensor
-    :param t2: second QTensor
-    :return:  output QTensor
+    :param t1: primeiro QTensor
+    :param t2: segundo QTensor
+    :return: QTensor de saída
 
     Example::
 
@@ -2647,13 +2646,13 @@ min
 
 .. py:function:: pyvqnet.tensor.min(t: pyvqnet.tensor.QTensor, axis=None, keepdims=False)
 
-    Return min elements of the input QTensor alongside given axis.
-    if axis == None, return the min value of all elements in tensor.
+    Retorna os elementos mínimos do QTensor de entrada ao longo do eixo fornecido.
+    se axis == None, retorna o valor mínimo de todos os elementos no tensor.
 
-    :param t: input QTensor
-    :param axis: axis used for min, defaults to None
-    :param keepdims:  whether the output tensor has dim retained or not. - defaults to False
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param axis: eixo usado para min, padrão None
+    :param keepdims: indica se a dimensão do tensor de saída é mantida ou não. - padrão False
+    :return: QTensor de saída
 
     Example::
 
@@ -2673,13 +2672,13 @@ max
 
 .. py:function:: pyvqnet.tensor.max(t: pyvqnet.tensor.QTensor, axis=None, keepdims=False)
 
-    Return max elements of the input QTensor alongside given axis.
-    if axis == None, return the max value of all elements in tensor.
+    Retorna os elementos máximos do QTensor de entrada ao longo do eixo fornecido.
+    se axis == None, retorna o valor máximo de todos os elementos no tensor.
 
-    :param t: input QTensor
-    :param axis: axis used for max, defaults to None
-    :param keepdims:  whether the output tensor has dim retained or not. - defaults to False
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param axis: eixo usado para max, padrão None
+    :param keepdims: indica se a dimensão do tensor de saída é mantida ou não. - padrão False
+    :return: QTensor de saída
 
     Example::
 
@@ -2697,12 +2696,12 @@ clip
 
 .. py:function:: pyvqnet.tensor.clip(t: pyvqnet.tensor.QTensor, min_val, max_val)
 
-    Clips input QTensor to minimum and maximum value.
+    Limita o QTensor de entrada aos valores mínimo e máximo.
 
-    :param t: input QTensor
-    :param min_val:  minimum value
-    :param max_val:  maximum value
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :param min_val: valor mínimo
+    :param max_val: valor máximo
+    :return: QTensor de saída
 
     Example::
 
@@ -2719,12 +2718,12 @@ where
 
 .. py:function:: pyvqnet.tensor.where(condition: pyvqnet.tensor.QTensor, t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Return elements chosen from x or y depending on condition.
+    Retorna elementos escolhidos de x ou y dependendo da condição.
 
-    :param condition: condition tensor,need to have data type of kbool.
-    :param t1: QTensor from which to take elements if condition is met, defaults to None
-    :param t2: QTensor from which to take elements if condition is not met, defaults to None
-    :return: output QTensor
+    :param condition: tensor de condição, precisa ter tipo de dados kbool.
+    :param t1: QTensor do qual extrair elementos se a condição for atendida, padrão None
+    :param t2: QTensor do qual extrair elementos se a condição não for atendida, padrão None
+    :return: QTensor de saída
 
     Example::
 
@@ -2742,10 +2741,10 @@ nonzero
 
 .. py:function:: pyvqnet.tensor.nonzero(t)
 
-    Return a QTensor containing the indices of nonzero elements.
+    Retorna um QTensor contendo os índices dos elementos diferentes de zero.
 
-    :param t: input QTensor
-    :return: output QTensor contains indices of nonzero elements.
+    :param t: QTensor de entrada
+    :return: QTensor de saída contendo os índices dos elementos diferentes de zero.
 
     Example::
     
@@ -2769,10 +2768,10 @@ isfinite
 
 .. py:function:: pyvqnet.tensor.isfinite(t)
 
-    Test element-wise for finiteness (not infinity or not Not a Number).
+    Testa elemento a elemento se é finito (não é infinito nem NaN).
 
-    :param t: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
 
     Example::
 
@@ -2790,10 +2789,10 @@ isinf
 
 .. py:function:: pyvqnet.tensor.isinf(t)
 
-    Test element-wise for positive or negative infinity.
+    Testa elemento a elemento se é infinito positivo ou negativo.
 
-    :param t: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
     
     Example::
 
@@ -2811,10 +2810,10 @@ isnan
 
 .. py:function:: pyvqnet.tensor.isnan(t)
 
-    Test element-wise for Nan.
+    Testa elemento a elemento se é NaN.
 
-    :param t: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
     
     Example::
 
@@ -2832,10 +2831,10 @@ isneginf
 
 .. py:function:: pyvqnet.tensor.isneginf(t)
 
-    Test element-wise for negative infinity.
+    Testa elemento a elemento se é infinito negativo.
 
-    :param t: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
     
     Example::
 
@@ -2853,10 +2852,10 @@ isposinf
 
 .. py:function:: pyvqnet.tensor.isposinf(t)
 
-    Test element-wise for positive infinity.
+    Testa elemento a elemento se é infinito positivo.
 
-    :param t: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
     
     Example::
 
@@ -2874,11 +2873,11 @@ logical_and
 
 .. py:function:: pyvqnet.tensor.logical_and(t1, t2)
 
-    Compute the truth value of ``t1`` and ``t2`` element-wise.
+    Calcula o valor verdade de ``t1`` e ``t2`` elemento a elemento.
 
-    :param t1: input QTensor
-    :param t2: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t1: QTensor de entrada
+    :param t2: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
     
     Example::
 
@@ -2897,11 +2896,11 @@ logical_or
 
 .. py:function:: pyvqnet.tensor.logical_or(t1, t2)
 
-    Compute the truth value of ``t1 or t2`` element-wise.
+    Calcula o valor verdade de ``t1 or t2`` elemento a elemento.
 
-    :param t1: input QTensor
-    :param t2: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t1: QTensor de entrada
+    :param t2: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
 
     Example::
 
@@ -2920,10 +2919,10 @@ logical_not
 
 .. py:function:: pyvqnet.tensor.logical_not(t)
 
-    Compute the truth value of ``not t`` element-wise.
+    Calcula o valor verdade de ``not t`` elemento a elemento.
 
-    :param t: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
 
     Example::
 
@@ -2941,12 +2940,12 @@ logical_xor
 
 .. py:function:: pyvqnet.tensor.logical_xor(t1, t2)
 
-    Compute the truth value of ``t1 xor t2`` element-wise.
+    Calcula o valor verdade de ``t1 xor t2`` elemento a elemento.
 
-    :param t1: input QTensor
-    :param t2: input QTensor
+    :param t1: QTensor de entrada
+    :param t2: QTensor de entrada
 
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
 
     Example::
 
@@ -2965,12 +2964,12 @@ greater
 
 .. py:function:: pyvqnet.tensor.greater(t1, t2)
 
-    Return the truth value of ``t1 > t2`` element-wise.
+    Retorna o valor verdade de ``t1 > t2`` elemento a elemento.
 
 
-    :param t1: input QTensor
-    :param t2: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t1: QTensor de entrada
+    :param t2: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
 
     Example::
 
@@ -2990,11 +2989,11 @@ greater_equal
 
 .. py:function:: pyvqnet.tensor.greater_equal(t1, t2)
 
-    Return the truth value of ``t1 >= t2`` element-wise.
+    Retorna o valor verdade de ``t1 >= t2`` elemento a elemento.
 
-    :param t1: input QTensor
-    :param t2: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t1: QTensor de entrada
+    :param t2: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
 
     Example::
 
@@ -3014,11 +3013,11 @@ less
 
 .. py:function:: pyvqnet.tensor.less(t1, t2)
 
-    Return the truth value of ``t1 < t2`` element-wise.
+    Retorna o valor verdade de ``t1 < t2`` elemento a elemento.
 
-    :param t1: input QTensor
-    :param t2: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t1: QTensor de entrada
+    :param t2: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
 
     Example::
 
@@ -3038,11 +3037,11 @@ less_equal
 
 .. py:function:: pyvqnet.tensor.less_equal(t1, t2)
 
-    Return the truth value of ``t1 <= t2`` element-wise.
+    Retorna o valor verdade de ``t1 <= t2`` elemento a elemento.
 
-    :param t1: input QTensor
-    :param t2: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t1: QTensor de entrada
+    :param t2: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
 
     Example::
 
@@ -3062,11 +3061,11 @@ equal
 
 .. py:function:: pyvqnet.tensor.equal(t1, t2)
 
-    Return the truth value of ``t1 == t2`` element-wise.
+    Retorna o valor verdade de ``t1 == t2`` elemento a elemento.
 
-    :param t1: input QTensor
-    :param t2: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t1: QTensor de entrada
+    :param t2: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
     
     Example::
 
@@ -3086,11 +3085,11 @@ not_equal
 
 .. py:function:: pyvqnet.tensor.not_equal(t1, t2)
 
-    Return the truth value of ``t1 != t2`` element-wise.
+    Retorna o valor verdade de ``t1 != t2`` elemento a elemento.
 
-    :param t1: input QTensor
-    :param t2: input QTensor
-    :return: Output QTensor, which returns True when the corresponding position element meets the condition, otherwise returns False.
+    :param t1: QTensor de entrada
+    :param t2: QTensor de entrada
+    :return: QTensor de saída, que retorna True quando o elemento na posição correspondente atende à condição, caso contrário retorna False.
     
     Example::
 
@@ -3112,12 +3111,12 @@ bitwise_and
 
 .. py:function:: pyvqnet.tensor.bitwise_and(t1, t2)
  
-    Computes the bitwise AND of two QTensor elements.
+    Calcula o AND bit a bit de dois elementos QTensor.
 
-    :param t1: Input QTensor t1. Only integers or booleans are valid inputs.
-    :param t2: Input QTensor t2. Only integers or booleans are valid inputs.
+    :param t1: QTensor de entrada t1. Apenas inteiros ou booleanos são entradas válidas.
+    :param t2: QTensor de entrada t2. Apenas inteiros ou booleanos são entradas válidas.
     :return:
-        result QTensor
+        QTensor resultante
 
     Example::
 
@@ -3132,7 +3131,7 @@ bitwise_and
         #[[ 0, 0, 0, 0, 0, 0, 0, 0, 0,16, 0, 4, 2, 1]]
 
 
-Matrix Operations
+Operações Matriciais
 **********************
 
 select
@@ -3140,11 +3139,11 @@ select
 
 .. py:function:: pyvqnet.tensor.select(t: pyvqnet.tensor.QTensor, index)
 
-    Return QTensor in the QTensor at the given axis. following operation get same result's value.
+    Retorna QTensor no QTensor no eixo fornecido. A operação a seguir obtém o mesmo valor de resultado.
 
-    :param t: input QTensor
-    :param index: a string contains output dim
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param index: uma string contendo a dimensão de saída
+    :return: QTensor de saída
 
     Example::
 
@@ -3169,15 +3168,15 @@ broadcast
 
 .. py:function:: pyvqnet.tensor.broadcast(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Subject to certain restrictions, smaller arrays are placed throughout larger arrays so that they have compatible shapes. This interface can perform automatic differentiation on input parameter tensors.
+    Sujeito a certas restrições, arrays menores são distribuídos em arrays maiores para que tenham formas compatíveis. Esta interface pode realizar diferenciação automática nos tensores de parâmetros de entrada.
 
-    Reference https://numpy.org/doc/stable/user/basics.broadcasting.html
+    Referência https://numpy.org/doc/stable/user/basics.broadcasting.html
 
-    :param t1: input QTensor 1
-    :param t2: input QTensor 2
+    :param t1: QTensor de entrada 1
+    :param t2: QTensor de entrada 2
 
-    :return t11: with new broadcast shape t1.
-    :return t22: t2 with new broadcast shape.
+    :return t11: t1 com nova forma de broadcast.
+    :return t22: t2 com nova forma de broadcast.
 
     Example::
 
@@ -3219,11 +3218,11 @@ concatenate
 
 .. py:function:: pyvqnet.tensor.concatenate(args: list, axis=1)
 
-    Concatenate the input QTensor along the axis and return a new QTensor.
+    Concatena os QTensors de entrada ao longo do eixo e retorna um novo QTensor.
 
-    :param args: list consist of input QTensors
-    :param axis: dimension to concatenate. Has to be between 0 and the number of dimensions of concatenate tensors.
-    :return: output QTensor
+    :param args: lista de QTensors de entrada
+    :param axis: dimensão para concatenar. Deve estar entre 0 e o número de dimensões dos tensores a serem concatenados.
+    :return: QTensor de saída
 
     Example::
 
@@ -3244,11 +3243,11 @@ stack
 
 .. py:function:: pyvqnet.tensor.stack(QTensors: list, axis) 
 
-    Join a sequence of arrays along a new axis,return a new QTensor.
+    Junta uma sequência de arrays ao longo de um novo eixo, retorna um novo QTensor.
 
-    :param QTensors: list contains QTensors
-    :param axis: dimension to insert. Has to be between 0 and the number of dimensions of stacked tensors. 
-    :return: output QTensor
+    :param QTensors: lista contendo QTensors
+    :param axis: dimensão a ser inserida. Deve estar entre 0 e o número de dimensões dos tensores empilhados.
+    :return: QTensor de saída
 
     Example::
 
@@ -3283,11 +3282,11 @@ permute
 
 .. py:function:: pyvqnet.tensor.permute(t: pyvqnet.tensor.QTensor, dim: list)
 
-    Reverse or permute the axes of an array.
+    Inverte ou permuta os eixos de um array.
 
-    :param t: input QTensor
-    :param dim: the new order of the dimensions (list of integers)
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param dim: a nova ordem das dimensões (lista de inteiros)
+    :return: QTensor de saída
 
     Example::
 
@@ -3314,11 +3313,11 @@ transpose
 
 .. py:function:: pyvqnet.tensor.transpose(t: pyvqnet.tensor.QTensor, dim: list)
 
-    Transpose the axes of an array.if dim = None, reverse the dim. This function is same as permute.
+    Transpõe os eixos de um array. Se dim = None, inverte as dimensões. Esta função é igual a permute.
 
-    :param t: input QTensor
-    :param dim: the new order of the dimensions (list of integers)
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param dim: a nova ordem das dimensões (lista de inteiros)
+    :return: QTensor de saída
 
     Example::
 
@@ -3345,20 +3344,20 @@ tile
 
 .. py:function:: pyvqnet.tensor.tile(t: pyvqnet.tensor.QTensor, reps: list)
 
-    Construct a QTensor by repeating QTensor the number of times given by reps.
+    Constrói um QTensor repetindo o QTensor o número de vezes dado por reps.
 
-    If reps has length d, the result QTensor will have dimension of max(d, t.ndim).
+    Se reps tem comprimento d, o QTensor resultante terá dimensão max(d, t.ndim).
 
-    If t.ndim < d, t is expanded to be d-dimensional by inserting new axes from start dimension.
-    So a shape (3,) array is promoted to (1, 3) for 2-D replication, or shape (1, 1, 3) for 3-D replication.
+    Se t.ndim < d, t é expandido para d-dimensional inserindo novos eixos a partir da dimensão inicial.
+    Assim, um array de forma (3,) é promovido para (1, 3) para replicação 2-D, ou forma (1, 1, 3) para replicação 3-D.
 
-    If t.ndim > d, reps is expanded to t.ndim by inserting 1’s to it.
+    Se t.ndim > d, reps é expandido para t.ndim inserindo 1's.
 
-    Thus for an t of shape (2, 3, 4, 5), a reps of (4, 3) is treated as (1, 1, 4, 3).
+    Assim, para um t de forma (2, 3, 4, 5), um reps de (4, 3) é tratado como (1, 1, 4, 3).
 
-    :param t: input QTensor
-    :param reps: the number of repetitions per dimension.
-    :return: a new QTensor
+    :param t: QTensor de entrada
+    :param reps: o número de repetições por dimensão.
+    :return: um novo QTensor
 
     Example::
 
@@ -3384,11 +3383,11 @@ squeeze
 
 .. py:function:: pyvqnet.tensor.squeeze(t: pyvqnet.tensor.QTensor, axis: int = - 1)
 
-    Remove axes of length one .
+    Remove eixos de comprimento um.
 
-    :param t: input QTensor
-    :param axis: squeeze axis,if axis = -1 ,squeeze all the dimensions that have size of 1.
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param axis: eixo para squeeze, se axis = -1, remove todas as dimensões que têm tamanho 1.
+    :return: QTensor de saída
 
     Example::
 
@@ -3414,11 +3413,11 @@ unsqueeze
 
 .. py:function:: pyvqnet.tensor.unsqueeze(t: pyvqnet.tensor.QTensor, axis: int = 0)
 
-    Return a new QTensor with a dimension of size one inserted at the specified position.
+    Retorna um novo QTensor com uma dimensão de tamanho um inserida na posição especificada.
 
-    :param t: input QTensor
-    :param axis: unsqueeze axis,which will insert dimension.
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param axis: eixo para unsqueeze, onde a dimensão será inserida.
+    :return: QTensor de saída
 
     Example::
 
@@ -3447,16 +3446,16 @@ moveaxis
 
 .. py:function:: pyvqnet.tensor.moveaxis(t, source: int, destination: int)
 
-    Move dimensions of `t` from positions in `source` to positions in `destination`.
+    Move as dimensões de `t` das posições em `source` para as posições em `destination`.
 
-    Other dimensions of `t` that are not explicitly moved retain their original order and appear at positions not specified in `destination`.
+    Outras dimensões de `t` que não são explicitamente movidas mantêm sua ordem original e aparecem em posições não especificadas em `destination`.
 
-    :param t: Input QTensor.
-    :param source: (integer or tuple of integers) The original positions of the dimensions to be moved. These positions must be unique.
-    :param destination: (integer or tuple of integers) The destination positions for each original dimension. These positions must also be unique.
+    :param t: QTensor de entrada.
+    :param source: (inteiro ou tupla de inteiros) As posições originais das dimensões a serem movidas. Estas posições devem ser únicas.
+    :param destination: (inteiro ou tupla de inteiros) As posições de destino para cada dimensão original. Estas posições também devem ser únicas.
 
     :return:
-        New QTensor
+        Novo QTensor
 
 
     Example::
@@ -3472,12 +3471,12 @@ swapaxis
 
 .. py:function:: pyvqnet.tensor.swapaxis(t, axis1: int, axis2: int)
 
-    Interchange two axes of an array.The given dimensions axis1 and axis2 are swapped.
+    Troca dois eixos de um array. As dimensões fornecidas axis1 e axis2 são permutadas.
 
-    :param t: input QTensor
-    :param axis1: First axis.
-    :param axis2:  Destination position for the original axis. These must also be unique
-    :return: output QTensor
+    :param t: QTensor de entrada
+    :param axis1: Primeiro eixo.
+    :param axis2: Posição de destino para o eixo original. Estas também devem ser únicas.
+    :return: QTensor de saída
 
     Example::
 
@@ -3505,12 +3504,12 @@ masked_fill
 
 .. py:function:: pyvqnet.tensor.masked_fill(t, mask, value)
 
-    If mask == 1, fill with the specified value. The shape of the mask must be broadcastable from the shape of the input QTensor.
+    Se mask == 1, preenche com o valor especificado. A forma da máscara deve ser compatível para broadcast com a forma do QTensor de entrada.
 
-    :param t: input QTensor
-    :param mask: A QTensor
-    :param value: specified value
-    :return:  A QTensor
+    :param t: QTensor de entrada
+    :param mask: Um QTensor
+    :param value: valor especificado
+    :return: Um QTensor
 
     Examples::
 
@@ -3538,12 +3537,12 @@ flatten
 
 .. py:function:: pyvqnet.tensor.flatten(t: pyvqnet.tensor.QTensor, start: int = 0, end: int = - 1)
 
-    Flatten QTensor from dim start to dim end.
+    Achata o QTensor da dimensão start até a dimensão end.
 
-    :param t: input QTensor
-    :param start: dim start,default = 0,start from first dim.
-    :param end: dim end,default = -1,end with last dim.
-    :return:  output QTensor
+    :param t: QTensor de entrada
+    :param start: dimensão inicial, padrão = 0, começa da primeira dimensão.
+    :param end: dimensão final, padrão = -1, termina na última dimensão.
+    :return: QTensor de saída
 
     Example::
 
@@ -3561,12 +3560,12 @@ reshape
 
 .. py:function:: pyvqnet.tensor.reshape(t: pyvqnet.tensor.QTensor,new_shape)
 
-    Change QTensor's shape, return a new shape QTensor
+    Altera a forma do QTensor, retorna um QTensor com a nova forma
 
-    :param t: input QTensor.
-    :param new_shape: new shape
+    :param t: QTensor de entrada.
+    :param new_shape: nova forma
 
-    :return: a new shape QTensor.
+    :return: um QTensor com a nova forma.
 
     Example::
 
@@ -3590,12 +3589,12 @@ flip
 
 .. py:function:: pyvqnet.tensor.flip(t, flip_dims)
     
-    Reverses the QTensor along the specified axis, returning a new tensor.
+    Inverte o QTensor ao longo do eixo especificado, retornando um novo tensor.
 
-    :param t: Input QTensor.
-    :param flip_dims: The axis or list of axes to flip.
+    :param t: QTensor de entrada.
+    :param flip_dims: O eixo ou lista de eixos para inverter.
 
-    :return: Output QTensor.
+    :return: QTensor de saída.
 
     Example::
 
@@ -3625,9 +3624,9 @@ gather
 
 .. py:function:: pyvqnet.tensor.gather(t, dim, index)
 
-    Collect values along the axis specified by 'dim'.
+    Coleta valores ao longo do eixo especificado por 'dim'.
 
-    For 3-D tensors, the output is specified by:
+    Para tensores 3-D, a saída é especificada por:
 
     .. math::
 
@@ -3637,11 +3636,11 @@ gather
 
         out[i][j][k] = t[i][j][index[i][j][k]] , if dim == 2 \\
 
-    :param t: Input QTensor.
-    :param dim: The aggregation axis.
-    :param index: Index QTensor, should have the same dimension size as input.
+    :param t: QTensor de entrada.
+    :param dim: O eixo de agregação.
+    :param index: QTensor de índice, deve ter o mesmo tamanho de dimensão que a entrada.
 
-    :return: the aggregated result
+    :return: o resultado agregado
 
     Example::
 
@@ -3670,9 +3669,9 @@ scatter
 
 .. py:function:: pyvqnet.tensor.scatter(input, dim, index, src)
 
-    Writes all values in the tensor src to input at the indices specified in the indices tensor.
+    Escreve todos os valores no tensor src na entrada nos índices especificados no tensor de índices.
 
-    For 3-D tensors, the output is specified by:
+    Para tensores 3-D, a saída é especificada por:
 
     .. math::
 
@@ -3680,10 +3679,10 @@ scatter
         input[i][indices[i][j][k]][k] = src[i][j][k] , if dim == 1 \\
         input[i][j][indices[i][j][k]] = src[i][j][k] , if dim == 2 \\
 
-    :param input: Input QTensor.
-    :param dim: Scatter axis.
-    :param indices: Index QTensor, should have the same dimension size as the input.
-    :param src: The source tensor to scatter.
+    :param input: QTensor de entrada.
+    :param dim: Eixo de dispersão.
+    :param indices: QTensor de índice, deve ter o mesmo tamanho de dimensão que a entrada.
+    :param src: O tensor de origem a ser disperso.
 
     Example::
 
@@ -3737,14 +3736,14 @@ broadcast_to
 
 .. py:function:: pyvqnet.tensor.broadcast_to(t, ref)
 
-    Subject to certain constraints, the array t is "broadcast" to the reference shape so that they have compatible shapes.
+    Sujeito a certas restrições, o array t é "transmitido" (broadcast) para a forma de referência para que tenham formas compatíveis.
 
     https://numpy.org/doc/stable/user/basics.broadcasting.html
 
-    :param t: input QTensor
-    :param ref: Reference shape.
+    :param t: QTensor de entrada
+    :param ref: Forma de referência.
     
-    :return: The QTensor of the newly broadcasted t.
+    :return: O QTensor de t recém-transmitido.
 
     Example::
 
@@ -3758,7 +3757,7 @@ broadcast_to
 
 
 
-Utility Functions
+Funções Utilitárias
 *****************************************************
 
 
@@ -3767,10 +3766,10 @@ to_tensor
 
 .. py:function:: pyvqnet.tensor.to_tensor(x)
 
-    Convert input array to Qtensor if it isn't already.
+    Converte o array de entrada para QTensor, se ainda não for.
 
-    :param x: integer,float or numpy.array
-    :return: output QTensor
+    :param x: inteiro, float ou numpy.array
+    :return: QTensor de saída
 
     Example::
 
@@ -3785,16 +3784,16 @@ pad_sequence
 
 .. py:function:: pyvqnet.tensor.pad_sequence(qtensor_list, batch_first=False, padding_value=0)
 
-    Pad a list of variable-length tensors with ``padding_value``. ``pad_sequence`` stacks lists of tensors along new dimensions and pads them to equal length.
-    The input is a sequence of lists of size ``L x *``. L is variable length.
+    Preenche uma lista de tensores de comprimento variável com ``padding_value``. ``pad_sequence`` empilha listas de tensores ao longo de novas dimensões e as preenche para que tenham o mesmo comprimento.
+    A entrada é uma sequência de listas de tamanho ``L x *``. L é de comprimento variável.
 
-    :param qtensor_list: `list[QTensor]` - list of variable length sequences.
-    :param batch_first: 'bool' - If true, the output will be ``batch size x longest sequence length x *``, otherwise ``longest sequence length x batch size x *``. Default: False.
-    :param padding_value: 'float' - padding value. Default value: 0.
+    :param qtensor_list: `list[QTensor]` - lista de sequências de comprimento variável.
+    :param batch_first: 'bool' - Se True, a saída será ``tamanho do lote x comprimento da sequência mais longa x *``, caso contrário ``comprimento da sequência mais longa x tamanho do lote x *``. Padrão: False.
+    :param padding_value: 'float' - valor de preenchimento. Valor padrão: 0.
 
     :return:
-         If batch_first is ``False``, the tensor size is ``batch size x longest sequence length x *``.
-         Otherwise the size of the tensor is ``longest sequence length x batch size x *``.
+         Se batch_first for ``False``, o tamanho do tensor é ``tamanho do lote x comprimento da sequência mais longa x *``.
+         Caso contrário, o tamanho do tensor é ``comprimento da sequência mais longa x tamanho do lote x *``.
 
     Examples::
 
@@ -3841,16 +3840,16 @@ pad_packed_sequence
 
 .. py:function:: pyvqnet.tensor.pad_packed_sequence(sequence, batch_first=False, padding_value=0, total_length=None)
     
-    Pad a batch of packed variable-length sequences. It is the inverse of `pack_pad_sequence`.
-    When ``batch_first`` is True, it returns a tensor of shape ``B x T x *``, otherwise it returns ``T x B x *``.
-    Where `T` is the longest sequence length and `B` is the batch size.
+    Preenche um lote de sequências empacotadas de comprimento variável. É o inverso de `pack_pad_sequence`.
+    Quando ``batch_first`` é True, retorna um tensor de forma ``B x T x *``, caso contrário retorna ``T x B x *``.
+    Onde `T` é o comprimento da sequência mais longa e `B` é o tamanho do lote.
 
-    :param sequence: 'QTensor' - the data to be processed.
-    :param batch_first: 'bool' - If ``True``, batch will be the first dimension of the input. Default value: False.
-    :param padding_value: 'bool' - padding value. Default: 0.
-    :param total_length: 'bool' - If not ``None``, the output will be padded to length :attr:`total_length`. Default: None.
+    :param sequence: 'QTensor' - os dados a serem processados.
+    :param batch_first: 'bool' - Se ``True``, o lote será a primeira dimensão da entrada. Valor padrão: False.
+    :param padding_value: 'bool' - valor de preenchimento. Padrão: 0.
+    :param total_length: 'bool' - Se não for ``None``, a saída será preenchida até o comprimento :attr:`total_length`. Padrão: None.
     :return:
-        A tuple of tensors containing the padded sequences, and a list of lengths for each sequence in the batch. Batch elements will be reordered in their original order.
+        Uma tupla de tensores contendo as sequências preenchidas e uma lista de comprimentos para cada sequência no lote. Os elementos do lote serão reordenados em sua ordem original.
     
     Examples::
 
@@ -3916,19 +3915,19 @@ pack_pad_sequence
 
 .. py:function:: pyvqnet.tensor.pack_pad_sequence(input, lengths, batch_first=False, enforce_sorted=True)
     
-    Pack a Tensor containing variable-length padded sequences. If batch_first is True, `input` should have shape [batch size, length,*], otherwise shape [length, batch size,*].
+    Empacota um Tensor contendo sequências preenchidas de comprimento variável. Se batch_first for True, a `entrada` deve ter a forma [tamanho do lote, comprimento, ...], caso contrário, forma [comprimento, tamanho do lote, ...].
 
-    For unsorted sequences, use ``enforce_sorted`` is False. If :attr:`enforce_sorted` is ``True``, sequences should be sorted in descending order by length.
+    Para sequências não ordenadas, use ``enforce_sorted`` como False. Se :attr:`enforce_sorted` for ``True``, as sequências devem ser ordenadas em ordem decrescente por comprimento.
     
-    :param input: 'QTensor' - variable-length sequence batches for padding.
-    :param lengths: 'list' - list of sequence lengths for each batch
-         element.
-    :param batch_first: 'bool' - if ``True``, the input is expected to be ``B x T x *``
-         format, default: False.
-    :param enforce_sorted: 'bool' - if ``True``, the input should be
-         Contains sequences in descending order of length. If ``False``, the input will be sorted unconditionally. Default: True.
+    :param input: 'QTensor' - lotes de sequências de comprimento variável para preenchimento.
+    :param lengths: 'list' - lista de comprimentos de sequência para cada elemento
+         do lote.
+    :param batch_first: 'bool' - se ``True``, espera-se que a entrada esteja no formato ``B x T x *``
+         , padrão: False.
+    :param enforce_sorted: 'bool' - se ``True``, a entrada deve
+         conter sequências em ordem decrescente de comprimento. Se ``False``, a entrada será ordenada incondicionalmente. Padrão: True.
 
-    :return: A :class:`PackedSequence` object.
+    :return: Um objeto :class:`PackedSequence`.
 
     Examples::
 
@@ -3976,15 +3975,15 @@ functional_conv2d
 ==============================
 .. py:function:: pyvqnet.nn.functional.functional_conv2d(x, weight, bias, stride=(1,1), padding=(0,0), dilation=(1,1), groups=1)
     
-    Performs a 2D convolution on an input image consisting of multiple input planes.
+    Realiza uma convolução 2D em uma imagem de entrada composta por múltiplos planos de entrada.
 
-    :param x: 4D input tensor.
-    :param weight: 4D kernel tensor.
+    :param x: Tensor de entrada 4D.
+    :param weight: Tensor do kernel 4D.
 
-    :param stride: `tuple` - stride, defaults to (1, 1)
-    :param padding: Padding, controls the amount of padding on the input. This can be a string {'valid', 'same'} or a tuple of integers specifying the amount of implicit padding to apply to the input, defaulting to (0,0).
-    :param dilation: `tuple` - Spacing between kernel elements. Default: (0,0)
-    :param groups: `int` - Number of groups. Default value: 1 
+    :param stride: `tuple` - passo, padrão (1, 1)
+    :param padding: Preenchimento, controla a quantidade de padding na entrada. Pode ser uma string {'valid', 'same'} ou uma tupla de inteiros especificando a quantidade de padding implícito a ser aplicado à entrada, padrão (0,0).
+    :param dilation: `tuple` - Espaçamento entre elementos do kernel. Padrão: (0,0)
+    :param groups: `int` - Número de grupos. Valor padrão: 1 
 
     :return: qtensor 
 
@@ -4021,7 +4020,7 @@ no_grad
 
 .. py:function:: pyvqnet.no_grad()
 
-    Log backpropagation nodes when forward computation is disabled.
+    Desabilita o registro de nós de retropropagação durante o cálculo direto.
 
     Example::
 

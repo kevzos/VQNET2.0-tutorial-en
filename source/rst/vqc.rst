@@ -1,10 +1,10 @@
 .. _vqc_api:
 
-Autograd Variational Quantum Circuits' API
+API de Circuitos Quânticos Variacionais com Autograd
 ******************************************************************************
 
-VQNet is based on the construction of automatic differential operators and some commonly used quantum logic gates, quantum circuits and measurement methods. Automatic differentiation can be used to calculate gradients instead of the quantum circuit parameter-shift method.
-We can use VQC operators to form complex neural networks like other `Modules`. The virtual machine `QMachine` needs to be defined in `Module`, and the `states` in the machine need to be reset_states based on the input batchsize. Please see the following example for details.
+O VQNet é baseado na construção de operadores diferenciais automáticos e algumas portas lógicas quânticas comuns, circuitos quânticos e métodos de medição. A diferenciação automática pode ser usada para calcular gradientes em vez do método de deslocamento de parâmetros do circuito quântico.
+Podemos usar operadores VQC para formar redes neurais complexas como outros `Modules`. A máquina virtual `QMachine` precisa ser definida em `Module`, e os `states` na máquina precisam ser redefinidos com reset_states baseado no batchsize de entrada. Veja o exemplo a seguir para detalhes.
 
 .. code-block::
 
@@ -21,21 +21,21 @@ We can use VQC operators to form complex neural networks like other `Modules`. T
                                         entangle_gate="cnot",
                                         entangle_rules="linear",
                                         depth=2)
-            #VQC based RZ on 0 bits
+            #VQC baseado em RZ no bit 0
             self.encode1 = RZ(wires=0)
-            #VQC based RZ on 1 bit
+            #VQC baseado em RZ no bit 1
             self.encode2 = RZ(wires=1)
-            #VQC-based probability measurement on 0, 2 bits
+            #Medição de probabilidade baseada em VQC nos bits 0, 2
             self.measure = Probability(wires=[0,2])
-            #Quantum device QMachine, uses 4 bits.
+            #Dispositivo quântico QMachine, usa 4 bits.
             self.device = QMachine(4)
         def forward(self, x, *args, **kwargs):
-            #States must be reset to the same batchsize as the input.
+            #Os estados devem ser redefinidos com o mesmo batchsize da entrada.
             self.device.reset_states(x.shape[0])
             y = self.linearx(x)
-            #Encode the input to the RZ gate. Note that the input must be of shape [batchsize,1]
+            #Codifica a entrada para a porta RZ. Note que a entrada deve ter shape [batchsize,1]
             self.encode1(params = y[:, [0]],q_machine = self.device,)
-            #Encode the input to the RZ gate. Note that the input must be of shape [batchsize,1]
+            #Codifica a entrada para a porta RZ. Note que a entrada deve ter shape [batchsize,1]
             self.encode2(params = y[:, [1]],q_machine = self.device,)
             self.ansatz(q_machine =self.device)
             return self.measure(q_machine =self.device)
@@ -43,7 +43,7 @@ We can use VQC operators to form complex neural networks like other `Modules`. T
     bz=3
     inputx = tensor.arange(1.0,bz*4+1).reshape([bz,4])
     inputx.requires_grad= True
-    #Define like other Modules
+    #Define como outros Modules
     qlayer = QM()
     #Prequel
     y = qlayer(inputx)
@@ -52,7 +52,7 @@ We can use VQC operators to form complex neural networks like other `Modules`. T
     print(y)
 
 
-The following example demonstrates variational quantum computing on GPU (including data encoding and parameterized variational circuits):
+O exemplo a seguir demonstra a computação quântica variacional em GPU (incluindo codificação de dados e circuitos variacionais parametrizados):
 
 .. code-block::
 
@@ -69,36 +69,36 @@ The following example demonstrates variational quantum computing on GPU (includi
                                         entangle_gate="cnot",
                                         entangle_rules="linear",
                                         depth=2)
-            #VQC based RZ on 0 bits
+            #VQC baseado em RZ no bit 0
             self.encode1 = RZ(wires=0)
-            #VQC based RZ on 1 bit
+            #VQC baseado em RZ no bit 1
             self.encode2 = RZ(wires=1)
-            #RZ with trainable parameters has_params = True, trainable = True
+            #RZ com parâmetros treináveis has_params = True, trainable = True
             self.vqc = RZ(has_params = True,trainable = True,wires=1)
-            #VQC-based probability measurement on 0, 2 bits
+            #Medição de probabilidade baseada em VQC nos bits 0, 2
             self.measure = Probability(wires=[0,2])
-            #Quantum device QMachine, uses 4 bits.
+            #Dispositivo quântico QMachine, usa 4 bits.
             self.device = QMachine(4)
         def forward(self, x, *args, **kwargs):
-            #States must be reset to the same batchsize as the input.
+            #Os estados devem ser redefinidos com o mesmo batchsize da entrada.
             self.device.reset_states(x.shape[0])
             y = self.linearx(x)
-            #Encode the input to the RZ gate. Note that the input must be of shape [batchsize,1]
+            #Codifica a entrada para a porta RZ. Note que a entrada deve ter shape [batchsize,1]
             self.encode1(params = y[:, 0],q_machine = self.device,)
-            #Encode the input to the RZ gate. Note that the input must be of shape [batchsize,1]
+            #Codifica a entrada para a porta RZ. Note que a entrada deve ter shape [batchsize,1]
             self.encode2(params = y[:, 1],q_machine = self.device,)
-            #Variational circuit composed of RZ gates, will be included in training.
+            #Circuito variacional composto por portas RZ, será incluído no treinamento.
             self.vqc(q_machine =self.device)
             self.ansatz(q_machine =self.device)
             return self.measure(q_machine =self.device)
 
     bz =3
-    #create tensor on GPU
+    #cria tensor na GPU
     inputx = tensor.arange(1.0,bz*4+1,device=DEV_GPU).reshape([bz,4])
     inputx.requires_grad= True
-    #Define like other Modules
+    #Define como outros Modules
     qlayer = QM()
-    #move module to GPU
+    #move o módulo para GPU
     qlayer = qlayer.to(DEV_GPU)
     #Forward
     y = qlayer(inputx)
@@ -108,7 +108,7 @@ The following example demonstrates variational quantum computing on GPU (includi
 
 
 
-Simulator
+Simulador
 =======================================
 
 QMachine
@@ -116,12 +116,12 @@ QMachine
 
 .. py:class:: pyvqnet.qnn.vqc.QMachine(num_wires, dtype=pyvqnet.kcomplex64)
 
-    A simulator class for variable quantum computing, including statevectors whose states attribute is a quantum circuit.
+    Uma classe simuladora para computação quântica variacional, incluindo vetores de estado cujo atributo states é um circuito quântico.
 
-    :param num_wires: number of qubits.
-    :param dtype: the data type of the calculated data, the default is pyvqnet.kcomplex64, and the corresponding parameter precision is pyvqnet.kfloat32
+    :param num_wires: número de qubits.
+    :param dtype: o tipo de dado dos dados calculados, o padrão é pyvqnet.kcomplex64, e a precisão do parâmetro correspondente é pyvqnet.kfloat32
 
-    :return: Output QMachine.
+    :return: Saída QMachine.
 
     Example::
         
@@ -146,14 +146,14 @@ QMachine
 
     .. py:method:: reset_states(batchsize)
     
-        Reinitialize the initial state in the simulator and broadcast it to
-        (batchsize,[2]**num_qubits) dimensions to adapt to batch data training.
+        Reinicializa o estado inicial no simulador e o transmite para
+        as dimensões (batchsize,[2]**num_qubits) para se adaptar ao treinamento com dados em lote.
 
-        :param batchsize: batch processing size.
+        :param batchsize: tamanho do lote de processamento.
 
 
-Quantum Gates and Quantum Gates's Operation
-=============================================
+Portas Quânticas e Operação de Portas Quânticas
+===============================================
 
 
 i
@@ -161,12 +161,12 @@ i
 
 .. py:function:: pyvqnet.qnn.vqc.i(q_machine, wires, params=None,  use_dagger=False)
 
-    Apply quantum logic gates I to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica I aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -193,15 +193,15 @@ I
 
 .. py:class:: pyvqnet.qnn.vqc.I(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an I logic gate class.
+    Define uma classe de porta lógica I.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -218,12 +218,12 @@ hadamard
 
 .. py:function:: pyvqnet.qnn.vqc.hadamard(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates hadamard to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica hadamard aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -250,15 +250,15 @@ Hadamard
 
 .. py:class:: pyvqnet.qnn.vqc.Hadamard(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a Hadamard logic gate class.
+    Define uma classe de porta lógica Hadamard.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -275,12 +275,12 @@ t
 
 .. py:function:: pyvqnet.qnn.vqc.t(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates t to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica t aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -307,15 +307,15 @@ T
 
 .. py:class:: pyvqnet.qnn.vqc.T(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a T logic gate class.
+    Define uma classe de porta lógica T.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -332,12 +332,12 @@ s
 
 .. py:function:: pyvqnet.qnn.vqc.s(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates s to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica s aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -364,15 +364,15 @@ S
 
 .. py:class:: pyvqnet.qnn.vqc.S(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an S logic gate class.
+    Define uma classe de porta lógica S.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -389,12 +389,12 @@ paulix
 
 .. py:function:: pyvqnet.qnn.vqc.paulix(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates paulix to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica paulix aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -421,15 +421,15 @@ PauliX
 
 .. py:class:: pyvqnet.qnn.vqc.PauliX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a PauliX logic gate class.
+    Define uma classe de porta lógica PauliX.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -446,12 +446,12 @@ pauliy
 
 .. py:function:: pyvqnet.qnn.vqc.pauliy(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates pauliy to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica pauliy aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -478,15 +478,15 @@ PauliY
 
 .. py:class:: pyvqnet.qnn.vqc.PauliY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a PauliY logic gate class.
+    Define uma classe de porta lógica PauliY.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -504,12 +504,12 @@ pauliz
 
 .. py:function:: pyvqnet.qnn.vqc.pauliz(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates pauliz to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica pauliz aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -536,15 +536,15 @@ PauliZ
 
 .. py:class:: pyvqnet.qnn.vqc.PauliZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a PauliZ logic gate class.
+    Define uma classe de porta lógica PauliZ.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -561,12 +561,12 @@ x1
 
 .. py:function:: pyvqnet.qnn.vqc.x1(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates x1 to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica x1 aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -593,15 +593,15 @@ X1
 
 .. py:class:: pyvqnet.qnn.vqc.X1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an X1 logic gate class.
+    Define uma classe de porta lógica X1.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -618,12 +618,12 @@ y1
 
 .. py:function:: pyvqnet.qnn.vqc.y1(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates y1 to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica y1 aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
 
@@ -651,15 +651,15 @@ Y1
 
 .. py:class:: pyvqnet.qnn.vqc.Y1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an Y1 logic gate class.
+    Define uma classe de porta lógica Y1.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -676,12 +676,12 @@ z1
 
 .. py:function:: pyvqnet.qnn.vqc.z1(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates z1 to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica z1 aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -708,15 +708,15 @@ Z1
 
 .. py:class:: pyvqnet.qnn.vqc.Z1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an Z1 logic gate class.
+    Define uma classe de porta lógica Z1.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -733,12 +733,12 @@ rx
 
 .. py:function:: pyvqnet.qnn.vqc.rx(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates rx to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica rx aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -767,15 +767,15 @@ RX
 
 .. py:class:: pyvqnet.qnn.vqc.RX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RX logic gate class.
+    Define uma classe de porta lógica RX.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -792,12 +792,12 @@ ry
 
 .. py:function:: pyvqnet.qnn.vqc.ry(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates ry to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica ry aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -826,15 +826,15 @@ RY
 
 .. py:class:: pyvqnet.qnn.vqc.RY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RY logic gate class.
+    Define uma classe de porta lógica RY.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -851,12 +851,12 @@ rz
 
 .. py:function:: pyvqnet.qnn.vqc.rz(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates rz to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica rz aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -886,15 +886,15 @@ RZ
 
 .. py:class:: pyvqnet.qnn.vqc.RZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RZ logic gate class.
+    Define uma classe de porta lógica RZ.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -911,12 +911,12 @@ crx
 
 .. py:function:: pyvqnet.qnn.vqc.crx(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates crx to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica crx aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
 
@@ -949,15 +949,15 @@ CRX
 
 .. py:class:: pyvqnet.qnn.vqc.CRX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-     Define a CRX logic gate class.
+     Define uma classe de porta lógica CRX.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -974,12 +974,12 @@ cry
 
 .. py:function:: pyvqnet.qnn.vqc.cry(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates cry to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica cry aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1010,15 +1010,15 @@ CRY
 
 .. py:class:: pyvqnet.qnn.vqc.CRY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-     Define a CRY logic gate class.
+     Define uma classe de porta lógica CRY.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1035,12 +1035,12 @@ crz
 
 .. py:function:: pyvqnet.qnn.vqc.crz(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates crz to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica crz aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1071,15 +1071,15 @@ CRZ
 
 .. py:class:: pyvqnet.qnn.vqc.CRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a CRZ logic gate class.
+    Define uma classe de porta lógica CRZ.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1097,12 +1097,12 @@ u1
 
 .. py:function:: pyvqnet.qnn.vqc.u1(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates u1 to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica u1 aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1131,15 +1131,15 @@ U1
 
 .. py:class:: pyvqnet.qnn.vqc.U1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a U1 logic gate class.
+    Define uma classe de porta lógica U1.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1156,12 +1156,12 @@ u2
 
 .. py:function:: pyvqnet.qnn.vqc.u2(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates u2 to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica u2 aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1190,15 +1190,15 @@ U2
 
 .. py:class:: pyvqnet.qnn.vqc.U2(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a U2 logic gate class.
+    Define uma classe de porta lógica U2.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1215,12 +1215,12 @@ u3
 
 .. py:function:: pyvqnet.qnn.vqc.u3(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates u3 to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica u3 aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1246,18 +1246,17 @@ u3
 U3
 -----------------------------------------
 
-
 .. py:class:: pyvqnet.qnn.vqc.U3(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a U3 logic gate class.
+    Define uma classe de porta lógica U3.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1274,12 +1273,12 @@ cy
 
 .. py:function:: pyvqnet.qnn.vqc.cy(q_machine, wires, params=None, use_dagger=False)
 
-    Apply quantum logic gates cy to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica cy aos vetores de estado em ``q_machine``.
 
-    :param q_machine: Quantum virtual machine device.
-    :param wires: Qubit index.
-    :param params: Parameter matrix, default is None.
-    :param use_dagger: Whether to use conjugate transpose, the default is False.
+    :param q_machine: Dispositivo de máquina virtual quântica.
+    :param wires: Índice do qubit.
+    :param params: Matriz de parâmetros, o padrão é None.
+    :param use_dagger: Se deve usar a transposta conjugada, o padrão é False.
 
     Example::
 
@@ -1306,15 +1305,15 @@ CY
 
 .. py:class:: pyvqnet.qnn.vqc.CY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
 
-    Define a CY logic category.
+    Define uma classe de porta lógica CY.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it comes with parameters to be trained. If this layer uses external input data to construct a logic gate matrix, set it to False. If the parameters to be trained need to be initialized from this layer, it will be True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se esta camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se os parâmetros a serem treinados precisam ser inicializados a partir desta camada, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor, o padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1332,12 +1331,12 @@ cnot
 
 .. py:function:: pyvqnet.qnn.vqc.cnot(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates cnot to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica cnot aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1366,15 +1365,15 @@ CNOT
 
 .. py:class:: pyvqnet.qnn.vqc.CNOT(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a CNOT logic gate class.
+    Define uma classe de porta lógica CNOT.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1391,12 +1390,12 @@ cr
 
 .. py:function:: pyvqnet.qnn.vqc.cr(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates cr to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica cr aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1425,15 +1424,15 @@ CR
 
 .. py:class:: pyvqnet.qnn.vqc.CR(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a CR logic gate.
+    Define uma porta lógica CR.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1450,12 +1449,12 @@ iswap
 
 .. py:function:: pyvqnet.qnn.vqc.iswap(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates iswap to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica iswap aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1484,12 +1483,12 @@ swap
 
 .. py:function:: pyvqnet.qnn.vqc.swap(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates swap to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica swap aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1517,15 +1516,15 @@ SWAP
 
 .. py:class:: pyvqnet.qnn.vqc.SWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a SWAP logic gate class.
+    Define uma classe de porta lógica SWAP.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1543,13 +1542,13 @@ cswap
 
 .. py:function:: pyvqnet.qnn.vqc.cswap(q_machine, wires, params=None, use_dagger=False)
 
-    Apply quantum logic gates cswap to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica cswap aos vetores de estado em ``q_machine``.
 
-    :param q_machine: Quantum virtual machine device.
-    :param wires: Qubit index.
-    :param params: Parameter matrix, default is None.
-    :param use_dagger: Whether to use conjugate transpose, the default is False.
-    :return: Output QTensor.
+    :param q_machine: Dispositivo de máquina virtual quântica.
+    :param wires: Índice do qubit.
+    :param params: Matriz de parâmetros, o padrão é None.
+    :param use_dagger: Se deve usar a transposta conjugada, o padrão é False.
+    :return: Saída QTensor.
 
     Example::
 
@@ -1576,7 +1575,7 @@ CSWAP
 
 .. py:class:: pyvqnet.qnn.vqc.CSWAP(has_params: bool = False, trainable: bool = False, init_params=None, wires=None, dtype=pyvqnet.kcomplex64, use_dagger=False)
     
-    Define a SWAP logic gate class.
+    Define uma classe de porta lógica SWAP.
 
     .. math:: CSWAP = \begin{bmatrix}
             1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
@@ -1589,13 +1588,13 @@ CSWAP
             0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
         \end{bmatrix}.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it comes with parameters to be trained. If this layer uses external input data to construct a logic gate matrix, set it to False. If the parameters to be trained need to be initialized from this layer, it will be True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input parameters respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se esta camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se os parâmetros a serem treinados precisam ser inicializados a partir desta camada, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1641,12 +1640,12 @@ cz
 
 .. py:function:: pyvqnet.qnn.vqc.cz(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates cz to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica cz aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1673,15 +1672,15 @@ CZ
 
 .. py:class:: pyvqnet.qnn.vqc.CZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a CZ logic gate class.
+    Define uma classe de porta lógica CZ.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1698,12 +1697,12 @@ rxx
 
 .. py:function:: pyvqnet.qnn.vqc.rxx(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates rxx to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica rxx aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1732,15 +1731,15 @@ RXX
 
 .. py:class:: pyvqnet.qnn.vqc.RXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RXX logic gate class.
+    Define uma classe de porta lógica RXX.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1757,12 +1756,12 @@ ryy
 
 .. py:function:: pyvqnet.qnn.vqc.ryy(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates ryy to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica ryy aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1791,15 +1790,15 @@ RYY
 
 .. py:class:: pyvqnet.qnn.vqc.RYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RYY logic gate class.
+    Define uma classe de porta lógica RYY.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1817,12 +1816,12 @@ rzz
 
 .. py:function:: pyvqnet.qnn.vqc.rzz(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates rzz to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica rzz aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1851,15 +1850,15 @@ RZZ
 
 .. py:class:: pyvqnet.qnn.vqc.RZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RZZ logic gate class.
+    Define uma classe de porta lógica RZZ.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1876,12 +1875,12 @@ rzx
 
 .. py:function:: pyvqnet.qnn.vqc.rzx(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates rzx to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica rzx aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -1898,7 +1897,7 @@ rzx
         #     [0.       +0.j        0.       +0.j       ]]]
         # 
         # 
-        #   [[[0.       -0.0998334j 0.       +0.j       ]
+        #   [[0.       -0.0998334j 0.       +0.j       ]
         #     [0.       +0.j        0.       +0.j       ]]
         # 
         #    [[0.       +0.j        0.       +0.j       ]
@@ -1910,15 +1909,15 @@ RZX
 
 .. py:class:: pyvqnet.qnn.vqc.RZX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RZX logic gate class.
+    Define uma classe de porta lógica RZX.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1935,13 +1934,13 @@ toffoli
 
 .. py:function:: pyvqnet.qnn.vqc.toffoli(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates toffoli to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica toffoli aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
-    :return: Output QTensor.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
+    :return: Saída QTensor.
 
     Example::
         
@@ -1968,15 +1967,15 @@ Toffoli
 
 .. py:class:: pyvqnet.qnn.vqc.Toffoli(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a Toffoli logic gate class.
+    Define uma classe de porta lógica Toffoli.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -1994,13 +1993,13 @@ isingxx
 
 .. py:function:: pyvqnet.qnn.vqc.isingxx(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates isingxx to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica isingxx aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
-    :return: Output QTensor.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
+    :return: Saída QTensor.
 
     Example::
     
@@ -2030,15 +2029,15 @@ IsingXX
 
 .. py:class:: pyvqnet.qnn.vqc.IsingXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an IsingXX logic gate class.
+    Define uma classe de porta lógica IsingXX.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -2055,13 +2054,13 @@ isingyy
 
 .. py:function:: pyvqnet.qnn.vqc.isingyy(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates isingyy to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica isingyy aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
-    :return: Output QTensor.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
+    :return: Saída QTensor.
 
     Example::
     
@@ -2091,15 +2090,15 @@ IsingYY
 
 .. py:class:: pyvqnet.qnn.vqc.IsingYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an IsingYY logic gate class.
+    Define uma classe de porta lógica IsingYY.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -2116,13 +2115,13 @@ isingzz
 
 .. py:function:: pyvqnet.qnn.vqc.isingzz(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates isingzz to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica isingzz aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
-    :return: Output QTensor.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
+    :return: Saída QTensor.
 
     Example::
     
@@ -2153,15 +2152,15 @@ IsingZZ
 
 .. py:class:: pyvqnet.qnn.vqc.IsingZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an IsingZZ logic gate class.
+    Define uma classe de porta lógica IsingZZ.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -2178,13 +2177,13 @@ isingxy
 
 .. py:function:: pyvqnet.qnn.vqc.isingxy(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates isingxy to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica isingxy aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
-    :return: Output QTensor.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
+    :return: Saída QTensor.
 
     Example::
     
@@ -2214,15 +2213,15 @@ IsingXY
 
 .. py:class:: pyvqnet.qnn.vqc.IsingXY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an IsingXY logic gate class.
+    Define uma classe de porta lógica IsingXY.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
      Example::
 
@@ -2239,13 +2238,13 @@ phaseshift
 
 .. py:function:: pyvqnet.qnn.vqc.phaseshift(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates phaseshift to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica phaseshift aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
-    :return: Output QTensor.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
+    :return: Saída QTensor.
 
     Example::
     
@@ -2272,18 +2271,17 @@ phaseshift
 PhaseShift
 -----------------------------------------------
 
-
 .. py:class:: pyvqnet.qnn.vqc.PhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a PhaseShift logic gate class.
+    Define uma classe de porta lógica PhaseShift.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -2295,79 +2293,17 @@ PhaseShift
         layer(q_machine = device)
         print(device.states)
 
-multirz
---------------------
-
-.. py:function:: pyvqnet.qnn.vqc.multirz(q_machine, wires, params=None,  use_dagger=False)
-    
-    Acting quantum logic gates on state vectors in q_machine multirz.
-
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
-    :return: Output QTensor.
-
-    Example::
-    
-        from pyvqnet.qnn.vqc import QMachine
-        import pyvqnet.qnn.vqc as vqc
-        from pyvqnet.tensor import QTensor
-        qm = QMachine(4)
-        vqc.multirz(q_machine=qm,wires=[0, 1], params = QTensor([0.5]))
-        print(qm.states)
-
-        # [[[[[0.9689124-0.247404j 0.       +0.j      ]
-        #     [0.       +0.j       0.       +0.j      ]]
-        # 
-        #    [[0.       +0.j       0.       +0.j      ]
-        #     [0.       +0.j       0.       +0.j      ]]]
-        # 
-        # 
-        #   [[[0.       +0.j       0.       +0.j      ]
-        #     [0.       +0.j       0.       +0.j      ]]
-        # 
-        #    [[0.       +0.j       0.       +0.j      ]
-        #     [0.       +0.j       0.       +0.j      ]]]]]
-
-
-MultiRZ
--------------------------------------------------
-
-
-.. py:class:: pyvqnet.qnn.vqc.MultiRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
-    
-    Define a MultiRZ logic gate class.
-
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
-
-    Example::
-
-        from pyvqnet.qnn.vqc import MultiRZ,QMachine
-        device = QMachine(4)
-        layer = MultiRZ(has_params= True, trainable= True, wires=[0,2])
-        batchsize = 2
-        device.reset_states(batchsize)
-        layer(q_machine = device)
-        print(device.states)
-
 sdg
 --------------
 
 .. py:function:: pyvqnet.qnn.vqc.sdg(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates sdg to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica sdg aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -2398,15 +2334,15 @@ SDG
 
 .. py:class:: pyvqnet.qnn.vqc.SDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an SDG logic category.
+    Define uma classe de porta lógica SDG.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -2423,12 +2359,12 @@ tdg
 
 .. py:function:: pyvqnet.qnn.vqc.tdg(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates tdg to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica tdg aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -2458,15 +2394,15 @@ TDG
 
 .. py:class:: pyvqnet.qnn.vqc.TDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a TDG logic gate class.
+    Define uma classe de porta lógica TDG.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
     
@@ -2478,18 +2414,43 @@ TDG
         layer(q_machine = device)
         print(device.states)
 
+MultiRZ
+-------------------------------------------------
+
+
+.. py:class:: pyvqnet.qnn.vqc.MultiRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+    
+    Define uma classe de porta lógica MultiRZ.
+
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
+
+    Example::
+
+        from pyvqnet.qnn.vqc import MultiRZ,QMachine
+        device = QMachine(4)
+        layer = MultiRZ(has_params= True, trainable= True, wires=[0,2])
+        batchsize = 2
+        device.reset_states(batchsize)
+        layer(q_machine = device)
+        print(device.states)
 
 controlledphaseshift
 -----------------------------
 
 .. py:function:: pyvqnet.qnn.vqc.controlledphaseshift(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates controlledphaseshift to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica controlledphaseshift aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -2522,15 +2483,15 @@ ControlledPhaseShift
 
 .. py:class:: pyvqnet.qnn.vqc.ControlledPhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a ControlledPhaseShift logic gate class.
+    Define uma classe de porta lógica ControlledPhaseShift.
 
-    :param has_params: Whether there are parameters, such as RX, RY and other gates need to be set to True, those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it contains parameters to be trained. If the layer uses external input data to construct a logic gate matrix, set it to False. If it contains parameters to be trained, it is True. The default is False.
-    :param init_params: Initialization parameters, used to encode classic data QTensor, default is None,If it is a parameter-containing logic gate with p parameters, the input data dimension needs to be [1,p] or [p].
-    :param wires: Bit index of wire action, default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input parameter respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of this gate, the default is False.
-    :return: A Module that can be used to train the model.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se contém parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir uma matriz de porta lógica, defina como False. Se contém parâmetros a serem treinados, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização, usados para codificar dados clássicos QTensor. O padrão é None. Se for uma porta lógica com p parâmetros, a dimensão dos dados de entrada precisa ser [1,p] ou [p].
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a parâmetros de entrada float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada desta porta, o padrão é False.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -2547,18 +2508,17 @@ multicontrolledx
 
 .. py:function:: pyvqnet.qnn.vqc.multicontrolledx(q_machine, wires, params=None, use_dagger=False,control_values=None)
     
-    Apply quantum logic gates multicontrolledx to statevectors in ``q_machine``.
+    Aplica a porta lógica quântica multicontrolledx aos vetores de estado em ``q_machine``.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit index.
-    :param params: parameter matrix, default is None.
-    :param use_dagger: whether to conjugate transpose, default is False.
-    :param control_values: control value, default is None, control when the bit is 1.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None.
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
+    :param control_values: valor de controle, o padrão é None, controla quando o bit é 1.
 
 
     Example::
  
-
 
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2591,17 +2551,17 @@ MultiControlledX
 
 .. py:class:: pyvqnet.qnn.vqc.MultiControlledX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False,control_values=None)
     
-    Define a MultiControlledX logic gate class.
+    Define uma classe de porta lógica MultiControlledX.
 
-    :param has_params: Whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
-    :param trainable: Whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
-    :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
-    :param wires: Bit index of the wire action, the default is None.
-    :param dtype: The data precision of the internal matrix of the logic gate, which can be set to pyvqnet.kcomplex64, or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
-    :param use_dagger: Whether to use the transposed conjugate version of the gate, the default is False.
-    :param control_values: control value, default is None, control when the bit is 1.
+    :param has_params: Se possui parâmetros. Portas como RX, RY precisam ser configuradas como True; as sem parâmetros precisam ser False. O padrão é False.
+    :param trainable: Se possui parâmetros a serem treinados. Se a camada usa dados de entrada externos para construir a matriz da porta lógica, defina como False. Se os parâmetros a serem treinados precisam ser inicializados a partir desta camada, defina como True. O padrão é False.
+    :param init_params: Parâmetros de inicialização usados para codificar dados clássicos QTensor, o padrão é None.
+    :param wires: Índice do bit de atuação do fio, o padrão é None.
+    :param dtype: A precisão dos dados da matriz interna da porta lógica, que pode ser definida como pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondendo respectivamente a float ou double.
+    :param use_dagger: Se deve usar a versão transposta conjugada da porta, o padrão é False.
+    :param control_values: valor de controle, o padrão é None, controla quando o bit é 1.
 
-    :return: A Module that can be used to train the model.
+    :return: Um Module que pode ser usado para treinar o modelo.
 
     Example::
 
@@ -2654,18 +2614,17 @@ MultiControlledX
             [0.2480494-0.0311687j,0.2480494-0.0311687j]]]]]
         """
 
-
 single_excitation
 -----------------------------
 
 .. py:function:: pyvqnet.qnn.vqc.single_excitation(q_machine, wires, params=None,  use_dagger=False)
     
-    Acting quantum logic gates on state vectors in q_machine single_excitation.
+    Atua com portas lógicas quânticas nos vetores de estado em q_machine single_excitation.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -2695,12 +2654,12 @@ double_excitation
 
 .. py:function:: pyvqnet.qnn.vqc.double_excitation(q_machine, wires, params=None,  use_dagger=False)
     
-    Acting quantum logic gates on state vectors in q_machine double_excitation.
+    Atua com portas lógicas quânticas nos vetores de estado em q_machine double_excitation.
 
-    :param q_machine: quantum virtual machine device.
-    :param wires: qubit idx.
-    :param params: parameter matrix, defaults to None,For a logic gate operation function with p parameters, the dimension of the input parameter needs to be [1,p], or [p].
-    :param use_dagger: whether to conjugate transpose, the default is False.
+    :param q_machine: dispositivo de máquina virtual quântica.
+    :param wires: índice do qubit.
+    :param params: matriz de parâmetros, o padrão é None. Para uma função de operação de porta lógica com p parâmetros, a dimensão do parâmetro de entrada precisa ser [1,p] ou [p].
+    :param use_dagger: se deve usar a transposta conjugada, o padrão é False.
 
 
     Example::
@@ -2733,12 +2692,12 @@ VQC_BasisEmbedding
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_BasisEmbedding(basis_state,q_machine)
 
-    Encode binary features ``basis_state`` into the ground state of n qubits in ``q_machine``.
+    Codifica características binárias ``basis_state`` no estado fundamental de n qubits em ``q_machine``.
 
-    For example, for ``basis_state=([0, 1, 1])``, the ground state of the quantum system is :math:`|011 \rangle`.
+    Por exemplo, para ``basis_state=([0, 1, 1])``, o estado fundamental do sistema quântico é :math:`|011 \rangle`.
 
-    :param basis_state: binary input of size ``(n)``.
-    :param q_machine: quantum virtual machine device.
+    :param basis_state: entrada binária de tamanho ``(n)``.
+    :param q_machine: dispositivo de máquina virtual quântica.
 
 
     Example::
@@ -2759,22 +2718,22 @@ VQC_AngleEmbedding
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_AngleEmbedding(input_feat, wires, q_machine: pyvqnet.qnn.vqc.QMachine, rotation: str = "X")
 
-    Encodes the :math:`N` feature into the rotation angle of the :math:`n` qubit, where :math:`N \leq n` in ``q_machine`` .
+    Codifica as :math:`N` características no ângulo de rotação de :math:`n` qubits, onde :math:`N \leq n` em ``q_machine``.
 
-    Rotation can be selected as: 'X' , 'Y' , 'Z', such as the parameter definition of ``rotation`` is:
+    A rotação pode ser selecionada como: 'X', 'Y', 'Z', conforme a definição do parâmetro ``rotation``:
 
-    * ``rotation='X'`` Use feature as angle for RX rotation.
+    * ``rotation='X'`` Usa a característica como ângulo para rotação RX.
 
-    * ``rotation='Y'`` Use feature as angle for RY rotation.
+    * ``rotation='Y'`` Usa a característica como ângulo para rotação RY.
 
-    * ``rotation='Z'`` Use feature as angle for RZ rotation.
+    * ``rotation='Z'`` Usa a característica como ângulo para rotação RZ.
 
-     ``wires`` denote the idx of rotation gates on the qubits.
+     ``wires`` denota o índice das portas de rotação nos qubits.
 
-    :param input_feat: array representing the parameters.
-    :param wires: qubit idx.
-    :param q_machine: Quantum virtual machine device.
-    :param rotation: Rotation gate, default is "X".
+    :param input_feat: array representando os parâmetros.
+    :param wires: índice do qubit.
+    :param q_machine: Dispositivo de máquina virtual quântica.
+    :param rotation: Porta de rotação, o padrão é "X".
 
 
     Example::
@@ -2805,10 +2764,10 @@ VQC_AmplitudeEmbedding
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_AmplitudeEmbeddingCircuit(input_feature, q_machine)
 
-    Encode a :math:`2^n` feature into an amplitude vector of :math:`n` qubits in ``q_machine`` .
+    Codifica uma característica de :math:`2^n` em um vetor de amplitude de :math:`n` qubits em ``q_machine``.
 
-    :param input_feature: A numpy array representing the parameters.
-    :param q_machine: Quantum virtual machine device.
+    :param input_feature: Um array numpy representando os parâmetros.
+    :param q_machine: Dispositivo de máquina virtual quântica.
 
 
     Example::
@@ -2830,15 +2789,15 @@ VQC_IQPEmbedding
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_IQPEmbedding(input_feat, q_machine: pyvqnet.qnn.vqc.QMachine, rep: int = 1)
 
-    Apply diagonal gates using IQP lines encode :math:`n` features into :math:`n` qubits of ``q_machine`` ..
+    Aplica portas diagonais usando linhas IQP para codificar :math:`n` características em :math:`n` qubits de ``q_machine``.
 
-    The encoding was proposed by `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
+    A codificação foi proposta por `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
 
-    By specifying ``rep``, basic IQP lines can be repeated.
+    Especificando ``rep``, as linhas IQP básicas podem ser repetidas.
 
-    :param input_feat: A numpy array representing the parameters.
-    :param q_machine: Quantum virtual machine device.
-    :param rep: The number of times to repeat the quantum circuit block, the default number is 1.
+    :param input_feat: Um array numpy representando os parâmetros.
+    :param q_machine: Dispositivo de máquina virtual quântica.
+    :param rep: O número de vezes para repetir o bloco do circuito quântico, o número padrão é 1.
 
 
     Example::
@@ -2861,7 +2820,7 @@ VQC_RotCircuit
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_RotCircuit(q_machine, wire, params)
 
-    Apply Arbitrary single-qubit rotations in statevectors of ``q_machine`` .
+    Aplica rotações arbitrárias de um único qubit nos vetores de estado de ``q_machine``.
 
     .. math::
 
@@ -2871,10 +2830,10 @@ VQC_RotCircuit
         \end{bmatrix}.
 
 
-    :param q_machine: Quantum virtual machine device.
-    :param wire: Qubit idx.
-    :param params: Parameters :math:`[\phi, \theta, \omega]`.
-    :return: Output QTensor.
+    :param q_machine: Dispositivo de máquina virtual quântica.
+    :param wire: Índice do qubit.
+    :param params: Parâmetros :math:`[\phi, \theta, \omega]`.
+    :return: Saída QTensor.
 
     Example::
 
@@ -2895,7 +2854,7 @@ VQC_CRotCircuit
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_CRotCircuit(para,control_qubits,rot_wire,q_machine)
 
-	Controlled Rot circuit.
+	Circuito Rot controlado.
 
     .. math:: CR(\phi, \theta, \omega) = \begin{bmatrix}
             1 & 0 & 0 & 0 \\
@@ -2904,11 +2863,11 @@ VQC_CRotCircuit
             0 & 0 & e^{-i(\phi-\omega)/2}\sin(\theta/2) & e^{i(\phi+\omega)/2}\cos(\theta/2)
         \end{bmatrix}.
     
-    :param para: numpy array representing the parameters.
-    :param control_qubits: Idx of control bits.
-    :param rot_wire: Idx of rot bits.
-    :param q_machine: Quantum virtual machine device.
-    :return: Output QTensor.
+    :param para: array numpy representando os parâmetros.
+    :param control_qubits: Índice dos bits de controle.
+    :param rot_wire: Índice dos bits de rotação.
+    :param q_machine: Dispositivo de máquina virtual quântica.
+    :return: Saída QTensor.
 
     Example::
 
@@ -2930,7 +2889,7 @@ VQC_Controlled_Hadamard
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_Controlled_Hadamard(wires, q_machine)
 
-    Apply Controlled Hadamard operation in ``q_machine`` .
+    Aplica a operação Hadamard Controlada em ``q_machine``.
 
     .. math:: CH = \begin{bmatrix}
             1 & 0 & 0 & 0 \\
@@ -2939,8 +2898,8 @@ VQC_Controlled_Hadamard
             0 & 0 & \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}
         \end{bmatrix}.
 
-    :param wires: Qubit idx, the first is the control bit, and the list length is 2.
-    :param q_machine: Quantum virtual machine device.
+    :param wires: Índice do qubit, o primeiro é o bit de controle, e o comprimento da lista é 2.
+    :param q_machine: Dispositivo de máquina virtual quântica.
 
     Examples::
 
@@ -2963,7 +2922,7 @@ VQC_CCZ
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_CCZ(wires, q_machine)
 
-    Apply Controlled-controlled-Z logic in ``q_machine`` .
+    Aplica a lógica Controlled-controlled-Z em ``q_machine``.
 
     .. math::
 
@@ -2979,8 +2938,8 @@ VQC_CCZ
         0 & 0 & 0 & 0 & 0 & 0 & 0 & -1
         \end{pmatrix}
     
-    :param wires: List of qubit subscripts, the first bit is the control bit. The list length is 3.
-    :param q_machine: Quantum virtual machine device.
+    :param wires: Lista de índices dos qubits, o primeiro bit é o bit de controle. O comprimento da lista é 3.
+    :param q_machine: Dispositivo de máquina virtual quântica.
 
     :return:
             pyqpanda QCircuit 
@@ -3001,23 +2960,22 @@ VQC_CCZ
 
         # [[0.9999999]]
 
-
 VQC_FermionicSingleExcitation
 -----------------------------------------
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_FermionicSingleExcitation(weight, wires, q_machine)
 
-    A coupled cluster single-excitation operator for exponentiating the tensor product of a Pauli matrix. The matrix form is given by:
+    Um operador de excitação única de cluster acoplado para exponenciar o produto tensorial de uma matriz de Pauli. A forma matricial é dada por:
 
     .. math::
 
         \hat{U}_{pr}(\theta) = \mathrm{exp} \{ \theta_{pr} (\hat{c}_p^\dagger \hat{c}_r
         -\mathrm{H.c.}) \},
 
-    :param weight:  The parameter on qubit p has only one element.
-    :param wires: Denotes a subset of qubit indices in the interval [r, p]. Minimum length must be 2. The first index value is interpreted as r and the last index value as p.
-                 The intermediate index is acted on by the CNOT gate to calculate the parity of the qubit set.
-    :param q_machine: Quantum virtual machine device.
+    :param weight: O parâmetro no qubit p tem apenas um elemento.
+    :param wires: Denota um subconjunto de índices de qubit no intervalo [r, p]. O comprimento mínimo deve ser 2. O primeiro valor do índice é interpretado como r e o último como p.
+                 O índice intermediário sofre ação da porta CNOT para calcular a paridade do conjunto de qubits.
+    :param q_machine: Dispositivo de máquina virtual quântica.
 
     :return:
             pyqpanda QCircuit
@@ -3043,16 +3001,16 @@ VQC_FermionicDoubleExcitation
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_FermionicDoubleExcitation(weight, wires1, wires2, q_machine)
 
-    The coupled clustering dual excitation operator that exponentiates the tensor product of the Pauli matrix, the matrix form is given by:
+    O operador de dupla excitação de cluster acoplado que exponencia o produto tensorial da matriz de Pauli. A forma matricial é dada por:
 
     .. math::
 
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \{ \theta (\hat{c}_p^\dagger \hat{c}_q^\dagger
         \hat{c}_r \hat{c}_s - \mathrm{H.c.}) \},
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are the fermion annihilation and Create operators and indices :math:`r, s` and :math:`p, q` in the occupied and
-    are empty molecular orbitals, respectively. Use the `Jordan-Wigner transformation <https://arxiv.org/abs/1208.5986>`_ The fermion operator defined above can be written as
-    According to the Pauli matrix (for more details, see `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_)
+    onde :math:`\hat{c}` e :math:`\hat{c}^\dagger` são os operadores de aniquilação e criação de férmions e os índices :math:`r, s` e :math:`p, q` nos orbitais moleculares ocupados e
+    vazios, respectivamente. Usando a `transformação de Jordan-Wigner <https://arxiv.org/abs/1208.5986>`_, o operador fermiônico definido acima pode ser escrito
+    de acordo com a matriz de Pauli (para mais detalhes, veja `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_)
 
     .. math::
 
@@ -3062,12 +3020,12 @@ VQC_FermionicDoubleExcitation
         \hat{Y}_s \hat{X}_r \hat{Y}_q \hat{Y}_p +\\ \hat{X}_s \hat{Y}_r \hat{Y}_q \hat{Y}_p +
         \hat{X}_s \hat{X}_r \hat{X}_q \hat{Y}_p - \mathrm{H.c.}  ) \Big\}
 
-    :param weight: Variable parameter.
-    :param wires1: The index list of qubits representing the subset of qubits occupied in the interval [s, r]. The first index is interpreted as s, the last as r.
-     CNOT gates operate on intermediate indices to compute the parity of a set of qubits.
-    :param wires2: The index list of qubits representing the subset of qubits occupied in the interval [q, p]. The first index is interpreted as q, the last as p. 
-     CNOT gates operate on intermediate indices to compute the parity of a set of qubits.
-    :param q_machine: Quantum virtual machine device.
+    :param weight: Parâmetro variável.
+    :param wires1: A lista de índices de qubits representando o subconjunto de qubits ocupados no intervalo [s, r]. O primeiro índice é interpretado como s, o último como r.
+     Portas CNOT operam em índices intermediários para calcular a paridade de um conjunto de qubits.
+    :param wires2: A lista de índices de qubits representando o subconjunto de qubits ocupados no intervalo [q, p]. O primeiro índice é interpretado como q, o último como p. 
+     Portas CNOT operam em índices intermediários para calcular a paridade de um conjunto de qubits.
+    :param q_machine: Dispositivo de máquina virtual quântica.
 
     :return:
         pyqpanda QCircuit
@@ -3092,9 +3050,9 @@ VQC_UCCSD
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_UCCSD(weights, wires, s_wires, d_wires, init_state, q_machine)
 
-    Realize the unitary coupled cluster single-excitation and double-excitation design (UCCSD). UCCSD is the proposed VQE design, commonly used to run quantum chemistry simulations.
+    Realiza o projeto de excitação única e dupla de cluster unitário acoplado (UCCSD). UCCSD é o projeto VQE proposto, comumente usado para executar simulações de química quântica.
 
-    Within the first-order Trotter approximation, the UCCSD unitary function is given by:
+    Dentro da aproximação de Trotter de primeira ordem, a função unitária UCCSD é dada por:
 
     .. math::
 
@@ -3104,25 +3062,25 @@ VQC_UCCSD
         \prod_{p > q > r > s} \mathrm{exp} \Big\{\theta_{pqrs}
         (\hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r \hat{c}_s-\mathrm{H.c.}) \Big\}
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are the fermion annihilation and
-    Create operators and indices :math:`r, s` and :math:`p, q` in the occupied and
-    are empty molecular orbitals, respectively. (For more details see `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_):
+    onde :math:`\hat{c}` e :math:`\hat{c}^\dagger` são os operadores de aniquilação e
+    criação de férmions e os índices :math:`r, s` e :math:`p, q` nos orbitais moleculares ocupados e
+    vazios, respectivamente. (Para mais detalhes, veja `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_):
 
 
-    :param weights: A ``(len(s_wires)+ len(d_wires))`` tensor containing the parameters
-         :math:`\theta_{pr}` and :math:`\theta_{pqrs}` input Z rotation
-         ``FermionicSingleExcitation`` and ``FermionicDoubleExcitation``.
-    :param wires: Qubit indexing of template effects
-    :param s_wires: A sequence of lists ``[r,...,p]`` containing qubit indices
-         produced by a single excitation
+    :param weights: Um tensor ``(len(s_wires)+ len(d_wires))`` contendo os parâmetros
+         :math:`\theta_{pr}` e :math:`\theta_{pqrs}` de rotação Z de entrada
+         ``FermionicSingleExcitation`` e ``FermionicDoubleExcitation``.
+    :param wires: Indexação de qubits dos efeitos do template
+    :param s_wires: Uma sequência de listas ``[r,...,p]`` contendo índices de qubit
+         produzidos por uma excitação única
          :math:`\vert r, p \rangle = \hat{c}_p^\dagger \hat{c}_r \vert \mathrm{HF} \rangle`,
-         where :math:`\vert \mathrm{HF} \rangle` represents the Hartree-Fock reference state.
-    :param d_wires: sequence of lists, each list containing two lists
-         specify indices ``[s, ...,r]`` and ``[q,...,p]``
-         Define double excitation: math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \ vert \mathrm{HF} \rangle`.
-    :param init_state: length ``len(wires)`` occupation-number vector representation
-         high frequency state. ``init_state`` is the qubit initialization state.
-    :param q_machine: Quantum virtual machine device.
+         onde :math:`\vert \mathrm{HF} \rangle` representa o estado de referência de Hartree-Fock.
+    :param d_wires: sequência de listas, cada lista contendo duas listas
+         especificando índices ``[s, ...,r]`` e ``[q,...,p]``
+         Define dupla excitação: :math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \vert \mathrm{HF} \rangle`.
+    :param init_state: comprimento ``len(wires)`` vetor de representação de número de ocupação
+         estado de alta frequência. ``init_state`` é o estado de inicialização do qubit.
+    :param q_machine: Dispositivo de máquina virtual quântica.
 
     Examples::
 
@@ -3146,9 +3104,9 @@ VQC_ZFeatureMap
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_ZFeatureMap(input_feat, q_machine: pyvqnet.qnn.vqc.QMachine, data_map_func=None, rep: int = 2)
 
-    First-order bubblegum Z-evolution circuit.
+    Circuito de evolução-Z de primeira ordem.
 
-    For 3 quantum bits and 2 repetitions, the circuit is represented as:
+    Para 3 qubits e 2 repetições, o circuito é representado como:
 
     .. parsed-literal::
 
@@ -3160,12 +3118,12 @@ VQC_ZFeatureMap
         ┤ H ├┤ U1(2.0*x[2]) ├┤ H ├┤ U1(2.0*x[2]) ├
         └───┘└──────────────┘└───┘└──────────────┘
     
-    The Pauli string is fixed to ``Z``. Thus, the first order expansion will be a circuit without entanglement gates.
+    A string de Pauli é fixada como ``Z``. Assim, a expansão de primeira ordem será um circuito sem portas de emaranhamento.
 
-    :param input_feat: An array representing the input parameters.
-    :param q_machine: Quantum machine.
-    :param data_map_func: Parameter mapping matrix, design as ``data_map = lambda x: x``.
-    :param rep: Number of module repetitions.
+    :param input_feat: Um array representando os parâmetros de entrada.
+    :param q_machine: Máquina quântica.
+    :param data_map_func: Matriz de mapeamento de parâmetros, projetada como ``data_map = lambda x: x``.
+    :param rep: Número de repetições do módulo.
     
     Example::
 
@@ -3188,9 +3146,9 @@ VQC_ZZFeatureMap
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_ZZFeatureMap(input_feat, q_machine: pyvqnet.qnn.vqc.QMachine, data_map_func=None, entanglement: Union[str, List[List[int]],Callable[[int], List[int]]] = "full",rep: int = 2)
 
-    Second-order Pauli-Z evolution circuits.
+    Circuitos de evolução Pauli-Z de segunda ordem.
 
-    For 3 quantum bits, 1 repetition and linear entanglement, the circuit is represented as:
+    Para 3 qubits, 1 repetição e emaranhamento linear, o circuito é representado como:
 
     .. parsed-literal::
 
@@ -3202,7 +3160,7 @@ VQC_ZZFeatureMap
         ┤ H ├┤ U1(2.0*φ(x[2])) ├──────────────────────────────────┤ X ├┤ U1(2.0*φ(x[1],x[2])) ├┤ X ├
         └───┘└─────────────────┘                                  └───┘└──────────────────────┘└───┘
     
-    where ``φ`` is the classical nonlinear function that defaults to ``φ(x) = x`` if and ``φ(x,y) = (pi - x)(pi - y)``, design as:
+    onde ``φ`` é a função não linear clássica que padrão é ``φ(x) = x`` e ``φ(x,y) = (pi - x)(pi - y)``, projetada como:
     
     .. code-block::
         
@@ -3210,11 +3168,11 @@ VQC_ZZFeatureMap
             coeff = x if x.shape[-1] == 1 else ft.reduce(lambda x, y: (np.pi - x) * (np.pi - y), x)
             return coeff
 
-    :param input_feat: An array representing the input parameters.
-    :param q_machine: Quantum machine.
-    :param data_map_func: Parameter mapping matrix.
-    :param entanglement: specified entanglement structure.
-    :param rep: Number of module repetitions.
+    :param input_feat: Um array representando os parâmetros de entrada.
+    :param q_machine: Máquina quântica.
+    :param data_map_func: Matriz de mapeamento de parâmetros.
+    :param entanglement: estrutura de emaranhamento especificada.
+    :param rep: Número de repetições do módulo.
     
     Example::
 
@@ -3235,16 +3193,16 @@ VQC_AllSinglesDoubles
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_AllSinglesDoubles(weights, q_machine: pyvqnet.qnn.vqc.QMachine, hf_state, wires, singles=None, doubles=None)
 
-    Apply all ``SingleExcitation`` and ``DoubleExcitation`` operations on the ``q_machine`` to the initial Hartree-Fock state, preparing the molecular association state.
+    Aplica todas as operações ``SingleExcitation`` e ``DoubleExcitation`` no ``q_machine`` ao estado inicial de Hartree-Fock, preparando o estado de associação molecular.
 
-    :param weights: QTensor of size ``(len(singles) + len(doubles),)`` containing angles that enter vqc.qCircuit.single_excitation and vqc.qCircuit.double_excitation operations sequentially
-    :param q_machine: Quantum machine.
-    :param hf_state: Represents the length of the Hartree-Fock state ``len(wires)`` Occupancy count vector, ``hf_state`` is used to initialize the wires.
-    :param wires: Qubits action on.
-    :param singles: Sequence of lists with the two quantum bit indices on which the single_exitation operation acts.
-    :param doubles: Sequence of lists with the two quantum bit indices on which the double_exitation operation acts.
+    :param weights: QTensor de tamanho ``(len(singles) + len(doubles),)`` contendo ângulos que entram nas operações vqc.qCircuit.single_excitation e vqc.qCircuit.double_excitation sequencialmente
+    :param q_machine: Máquina quântica.
+    :param hf_state: Representa o comprimento do estado de Hartree-Fock ``len(wires)`` Vetor de contagem de ocupação, ``hf_state`` é usado para inicializar os fios.
+    :param wires: Qubits sobre os quais atuar.
+    :param singles: Sequência de listas com os dois índices de qubit nos quais a operação single_excitation atua.
+    :param doubles: Sequência de listas com os dois índices de qubit nos quais a operação double_excitation atua.
 
-    For example, the quantum circuit for the case of two electrons and six quantum bits is shown below:
+    Por exemplo, o circuito quântico para o caso de dois elétrons e seis qubits é mostrado abaixo:
     
 .. image:: ./images/all_singles_doubles.png
     :width: 600 px
@@ -3274,22 +3232,22 @@ VQC_BasisRotation
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_BasisRotation(q_machine: pyvqnet.qnn.vqc.QMachine, wires, unitary_matrix: QTensor, check=False)
 
-    Implement a circuit that provides a whole that can be used to perform precise monolithic base rotations.
+    Implementa um circuito que fornece um todo que pode ser usado para realizar rotações de base monolíticas precisas.
 
-    :class:`~.vqc.qCircuit.VQC_BasisRotation` Performs the following you-transform determined by single-particle fermions given in `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\ :math:`U(u)`
+    :class:`~.vqc.qCircuit.VQC_BasisRotation` realiza a seguinte transformação determinada por férmions de partícula única dada em `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\ :math:`U(u)`
     
     .. math::
 
         U(u) = \exp{\left( \sum_{pq} \left[\log u \right]_{pq} (a_p^\dagger a_q - a_q^\dagger a_p) \right)}.
     
-    :math:`U(u)` by using the scheme given in the paper `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\.
-    The decomposition of the input You matrix is efficiently implemented by a series of :class:`~vqc.qCircuit.phaseshift` and :class:`~vqc.qCircuit.single_exitation` gates.
+    :math:`U(u)` usando o esquema dado no artigo `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\.
+    A decomposição da matriz de entrada é eficientemente implementada por uma série de portas :class:`~vqc.qCircuit.phaseshift` e :class:`~vqc.qCircuit.single_exitation`.
     
 
-    :param q_machine: Quantum machine.
-    :param wires: Qubits action on.
-    :param unitary_matrix: Specify the matrix of the base transformation.
-    :param check: Tests if `unitary_matrix` is a You matrix.
+    :param q_machine: Máquina quântica.
+    :param wires: Qubits sobre os quais atuar.
+    :param unitary_matrix: Especifica a matriz da transformação de base.
+    :param check: Testa se `unitary_matrix` é uma matriz.
 
     Example::
 
@@ -3324,15 +3282,15 @@ VQC_QuantumPoolingCircuit
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_QuantumPoolingCircuit(ignored_wires, sinks_wires, params, q_machine)
 
-    A quantum circuit that downsamples data.
+    Um circuito quântico que reduz a amostragem dos dados.
 
-    To reduce the number of qubits in a circuit, pairs of qubits are first created in the system. After initially pairing all qubits, a generalized 2-qubit unitary is applied to each pair of qubits. 
-    And after applying the two-qubit unitary, one qubit in each pair of qubits is ignored in the rest of the neural network.
+    Para reduzir o número de qubits em um circuito, pares de qubits são criados primeiro no sistema. Após emparelhar inicialmente todos os qubits, uma unitária generalizada de 2 qubits é aplicada a cada par de qubits.
+    E após aplicar a unitária de dois qubits, um qubit em cada par de qubits é ignorado no restante da rede neural.
 
-    :param sources_wires: The source qubit index that will be ignored.
-    :param sinks_wires: The target qubit index to keep.
-    :param params: Input parameters.
-    :param q_machine: Quantum virtual machine device.
+    :param sources_wires: O índice do qubit de origem que será ignorado.
+    :param sinks_wires: O índice do qubit de destino a ser mantido.
+    :param params: Parâmetros de entrada.
+    :param q_machine: Dispositivo de máquina virtual quântica.
 
     :return:
         pyqpanda QCircuit
@@ -3362,15 +3320,15 @@ ExpressiveEntanglingAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.ExpressiveEntanglingAnsatz(type: int, num_wires: int, depth: int, name: str = "")
 
-    19 different ansatz from the paper `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
+    19 ansätze diferentes do artigo `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
 
-    :param type: Circuit type from 1 to 19, a total of 19 wires.
-    :param num_wires: Number of qubits.
-    :param depth: Circuit depth.
-    :param name: Name, default "".
+    :param type: Tipo de circuito de 1 a 19, total de 19 fios.
+    :param num_wires: Número de qubits.
+    :param depth: Profundidade do circuito.
+    :param name: Nome, padrão "".
 
     :return:
-        An ExpressiveEntanglingAnsatz instance
+        Uma instância de ExpressiveEntanglingAnsatz
 
     Example::
 
@@ -3411,35 +3369,32 @@ ExpressiveEntanglingAnsatz
         batch_y.backward()
         print(batch_y)
 
-
-
-
 vqc_qft_add_to_register
 -------------------------------------
 
 .. py:function:: pyvqnet.qnn.vqc.vqc_qft_add_to_register(q_machine, m, k)
 
-    Encode an unsigned integer `m` into a qubit and then add `k` to it.
+    Codifica um inteiro sem sinal `m` em um qubit e então adiciona `k` a ele.
 
     .. math:: \text{Sum(k)}\vert m \rangle = \vert m + k \rangle.
 
-    This unitary operation is implemented as follows:
+    Esta operação unitária é implementada da seguinte forma:
 
-    (1). Convert the state from the computational basis to the Fourier basis by applying the QFT to the :math:`\vert m \rangle` state.
+    (1). Converte o estado da base computacional para a base de Fourier aplicando a QFT ao estado :math:`\vert m \rangle`.
 
-    (2). Use the :math:`R_Z` gate to rotate the :math:`j` qubit by the angle :math:`\frac{2k\pi}{2^{j}}`, resulting in the new phase :math:`\frac{2(m + k)\pi}{2^{j}}`.
+    (2). Usa a porta :math:`R_Z` para girar o :math:`j`-ésimo qubit pelo ângulo :math:`\frac{2k\pi}{2^{j}}`, resultando na nova fase :math:`\frac{2(m + k)\pi}{2^{j}}`.
 
-    (3). Apply the inverse QFT back to the computational basis and obtain :math:`m+k`.
+    (3). Aplica a QFT inversa de volta à base computacional e obtém :math:`m+k`.
 
-    :param q_machine: The quantum machine to simulate.
-    :param m: The classical integer to embed into the register.
-    :param k: The classical integer to add to the register.
+    :param q_machine: A máquina quântica para simular.
+    :param m: O inteiro clássico a ser incorporado no registrador.
+    :param k: O inteiro clássico a ser adicionado ao registrador.
 
-    :retrun: Return the binary representation of the target sum.
+    :retrun: Retorna a representação binária da soma alvo.
 
     .. note::
 
-        Please note that the number of bits used by ``q_machine`` needs to be sufficient to encode the binary value of the resulting sum using the X basis state.
+        Observe que o número de bits usados por ``q_machine`` precisa ser suficiente para codificar o valor binário da soma resultante usando o estado base X.
 
     Example::
 
@@ -3458,26 +3413,26 @@ vqc_qft_add_two_register
 
 .. py:function:: vqc_qft_add_two_register(q_machine, m, k, wires_m, wires_k, wires_solution)
 
-    Add the unsigned integers encoded in the two qubits.
+    Soma os inteiros sem sinal codificados nos dois qubits.
 
     .. math:: \text{Sum}_2\vert m \rangle \vert k \rangle \vert 0 \rangle = \vert m \rangle \vert k \rangle \vert m+k \rangle
 
-    In this case, we can understand the third register (initially at :math:`0`) as a counter that will count the number of units :math:`m` and :math:`k` add up to. Binary factorization will make this easy. If we have :math:`\vert m \rangle = \vert \overline{q_0q_1q_2} \rangle`, then if :math:`q_2 = 1`, then we must add :math:`1` to the counter, otherwise add nothing. In general, if the :math:`i`-th qubit is in the :math:`\vert 1 \rangle` state, we should add :math:`2^{n-i-1}` units, otherwise add 0.
+    Neste caso, podemos entender o terceiro registrador (inicialmente em :math:`0`) como um contador que contará o número de unidades que :math:`m` e :math:`k` somam. A fatoração binária tornará isso fácil. Se tivermos :math:`\vert m \rangle = \vert \overline{q_0q_1q_2} \rangle`, então se :math:`q_2 = 1`, devemos adicionar :math:`1` ao contador, caso contrário, não adicionar nada. Em geral, se o :math:`i`-ésimo qubit estiver no estado :math:`\vert 1 \rangle`, devemos adicionar :math:`2^{n-i-1}` unidades, caso contrário, adicionar 0.
 
-    :param q_machine: The quantum machine to simulate.
-    :param m: The classical integer embedded in the register as lhs.
-    :param k: The classical integer embedded in the register as rhs.
-    :param wires_m: The index of the qubit to encode m.
-    :param wires_k: The index of the qubit to encode k.
-    :param wires_solution: The index of the qubit to encode the solution.
+    :param q_machine: A máquina quântica para simular.
+    :param m: O inteiro clássico incorporado no registrador como lhs.
+    :param k: O inteiro clássico incorporado no registrador como rhs.
+    :param wires_m: O índice do qubit para codificar m.
+    :param wires_k: O índice do qubit para codificar k.
+    :param wires_solution: O índice do qubit para codificar a solução.
 
-    :retrun: Return the binary representation of the target sum.
+    :retrun: Retorna a representação binária da soma alvo.
 
     .. note::
 
-        The number of bits used in ``wires_m`` needs to be enough to encode the binary value of `m` using the X basis state.
-        ``wires_k`` uses enough bits to encode the binary value of `k` using the X basis state.
-        ``wires_solution`` uses enough bits to encode the binary value of the result using the X basis state.
+        O número de bits usados em ``wires_m`` precisa ser suficiente para codificar o valor binário de `m` usando o estado base X.
+        ``wires_k`` usa bits suficientes para codificar o valor binário de `k` usando o estado base X.
+        ``wires_solution`` usa bits suficientes para codificar o valor binário do resultado usando o estado base X.
 
     Example::
 
@@ -3485,9 +3440,9 @@ vqc_qft_add_two_register
         from pyvqnet.qnn.vqc import QMachine,Samples, vqc_qft_add_two_register
 
 
-        wires_m = [0, 1, 2]             # qubits needed to encode m
-        wires_k = [3, 4, 5]             # qubits needed to encode k
-        wires_solution = [6, 7, 8, 9]   # qubits needed to encode the solution
+        wires_m = [0, 1, 2]             # qubits necessários para codificar m
+        wires_k = [3, 4, 5]             # qubits necessários para codificar k
+        wires_solution = [6, 7, 8, 9]   # qubits necessários para codificar a solução
         dev = QMachine(len(wires_m) + len(wires_k) + len(wires_solution))
 
         vqc_qft_add_two_register(dev,3, 7, wires_m, wires_k, wires_solution)
@@ -3502,32 +3457,32 @@ vqc_qft_mul
 
 .. py:function:: vqc_qft_mul(q_machine, m, k, wires_m, wires_k, wires_solution)
 
-    Add the values ​​encoded in two qubits.
+    Multiplica os valores codificados em dois qubits.
 
     .. math:: \text{Mul}\vert m \rangle \vert k \rangle \vert 0 \rangle = \vert m \rangle \vert k \rangle \vert m\cdot k \rangle
 
-    :param q_machine: The quantum machine to simulate.
-    :param m: The classical integer embedded in a register as the left-hand side.
-    :param k: The classical integer embedded in a register as the right-hand side.
-    :param wires_m: The qubit index to encode m.
-    :param wires_k: The qubit index to encode k.
-    :param wires_solution: The qubit index to encode the solution.
+    :param q_machine: A máquina quântica para simular.
+    :param m: O inteiro clássico incorporado em um registrador como o lado esquerdo.
+    :param k: O inteiro clássico incorporado em um registrador como o lado direito.
+    :param wires_m: O índice do qubit para codificar m.
+    :param wires_k: O índice do qubit para codificar k.
+    :param wires_solution: O índice do qubit para codificar a solução.
 
-    :retrun: Return the binary representation of the target product.
+    :retrun: Retorna a representação binária do produto alvo.
 
     .. note::
 
-        ``wires_m`` needs to use enough bits to encode the binary value of `m` using the X basis state.
-        ``wires_k`` uses enough bits to encode the binary value of `k` using the X basis state.
-        ``wires_solution`` uses enough bits to encode the binary value of the result using the X basis state.
+        ``wires_m`` precisa usar bits suficientes para codificar o valor binário de `m` usando o estado base X.
+        ``wires_k`` usa bits suficientes para codificar o valor binário de `k` usando o estado base X.
+        ``wires_solution`` usa bits suficientes para codificar o valor binário do resultado usando o estado base X.
 
     Example::
 
         import numpy as np
         from pyvqnet.qnn.vqc import QMachine,Samples, vqc_qft_mul
-        wires_m = [0, 1, 2]           # qubits needed to encode m
-        wires_k = [3, 4, 5]           # qubits needed to encode k
-        wires_solution = [6, 7, 8, 9, 10]  # qubits needed to encode the solution
+        wires_m = [0, 1, 2]           # qubits necessários para codificar m
+        wires_k = [3, 4, 5]           # qubits necessários para codificar k
+        wires_solution = [6, 7, 8, 9, 10]  # qubits necessários para codificar a solução
         
         dev = QMachine(len(wires_m) + len(wires_k) + len(wires_solution))
 
@@ -3544,11 +3499,11 @@ VQC_FABLE
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_FABLE(wires)
 
-    Constructs a VQC-based QCircuit using a fast approximate block coding method. For matrices of certain structures [`arXiv:2205.00081 <https://arxiv.org/abs/2205.00081>`_], the FABLE method can simplify the block coding circuit without losing accuracy.
+    Constrói um QCircuit baseado em VQC usando um método rápido de codificação aproximada de blocos. Para matrizes de certas estruturas [`arXiv:2205.00081 <https://arxiv.org/abs/2205.00081>`_], o método FABLE pode simplificar o circuito de codificação de blocos sem perder precisão.
 
-    :param wires: The qlist index to which the operator acts.
+    :param wires: O índice qlist ao qual o operador atua.
 
-    :return: Returns an instance of the VQC-based FABLE class.
+    :return: Retorna uma instância da classe FABLE baseada em VQC.
 
     Examples::
 
@@ -3578,12 +3533,12 @@ VQC_LCU
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_LCU(wires)
 
-    Build a VQC-based QCircuit using Linear Combination Unit (LCU), `Hamiltonian Simulation via Qubitization <https://arxiv.org/abs/1610.06546>`_.
-    Input dtype can be kfloat32, kfloat64, kcomplex64, kcomplex128
-    Input should be Hermitian.
+    Constrói um QCircuit baseado em VQC usando Combinação Linear de Unidades (LCU), `Hamiltonian Simulation via Qubitization <https://arxiv.org/abs/1610.06546>`_.
+    O dtype de entrada pode ser kfloat32, kfloat64, kcomplex64, kcomplex128.
+    A entrada deve ser Hermitiana.
 
-    :param wires: qlist index on which operator to act, may require auxiliary qubits.
-    :param check_hermitian: Check if input is Hermitian, default: True.
+    :param wires: Índice qlist no qual o operador atua, pode exigir qubits auxiliares.
+    :param check_hermitian: Verifica se a entrada é Hermitiana, padrão: True.
 
     Examples::
 
@@ -3621,12 +3576,11 @@ VQC_QSVT
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_QSVT(A, angles, wires)
 
-    Implements the
-    `quantum singular value transformation <https://arxiv.org/abs/1806.01838>`__ (QSVT) circuit.
+    Implementa o circuito de `transformação de valor singular quântica <https://arxiv.org/abs/1806.01838>`__ (QSVT).
 
-    :param A: The general :math:`(n \times m)` matrix to encode.
-    :param angles: The list of angles to shift to get the desired polynomial.
-    :param wires: The qubit indices that A acts on.
+    :param A: A matriz geral :math:`(n \times m)` a ser codificada.
+    :param angles: A lista de ângulos para deslocar e obter o polinômio desejado.
+    :param wires: Os índices de qubit nos quais A atua.
 
     Example::
 
@@ -3658,7 +3612,7 @@ VQC_QSVT
             [ 0.       +0.j       , 0.       +0.j       ]]]]]
         """
 
-Quantum Measurements
+Medições Quânticas
 =============================================
 
 VQC_Purity
@@ -3666,20 +3620,20 @@ VQC_Purity
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_Purity(state, qubits_idx, num_wires)
 
-    Calculate the purity on a particular qubit ``qubits_idx`` from the state vector ``state``.
+    Calcula a pureza em um qubit específico ``qubits_idx`` a partir do vetor de estado ``state``.
 
     .. math::
         \gamma = \text{Tr}(\rho^2)
 
-    where :math:`\rho` is a density matrix. The purity of a normalized quantum state satisfies :math:`\frac{1}{d} \leq \gamma \leq 1` ,
-    where :math:`d` is the dimension of the Hilbert space.
-    The purity of the pure state is 1.
+    onde :math:`\rho` é uma matriz densidade. A pureza de um estado quântico normalizado satisfaz :math:`\frac{1}{d} \leq \gamma \leq 1`,
+    onde :math:`d` é a dimensão do espaço de Hilbert.
+    A pureza do estado puro é 1.
 
-    :param state: Quantum state obtained from pyqpanda get_qstate()
-    :param qubits_idx: Qubit index for which to calculate purity
-    :param num_wires: Qubit idx
+    :param state: Estado quântico obtido de pyqpanda get_qstate()
+    :param qubits_idx: Índice do qubit para o qual calcular a pureza
+    :param num_wires: Índice do qubit
 
-    :return: purity
+    :return: pureza
 
     Example::
 
@@ -3705,12 +3659,12 @@ VQC_VarMeasure
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_VarMeasure(q_machine, obs)
 
-    Return the measurement variance of the provided observable ``obs`` in statevectors in ``q_machine`` .
+    Retorna a variância da medição do observável fornecido ``obs`` nos vetores de estado em ``q_machine``.
 
-    :param q_machine: Quantum state obtained from pyqpanda get_qstate()
-    :param obs: observables
+    :param q_machine: Estado quântico obtido de pyqpanda get_qstate()
+    :param obs: observáveis
 
-    :return: variance value
+    :return: valor da variância
 
     Example::
 
@@ -3730,12 +3684,12 @@ VQC_DensityMatrixFromQstate
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_DensityMatrixFromQstate(state, indices)
 
-    Computes the density matrix of quantum states ``state`` over a specific set of qubits ``indices`` .
+    Calcula a matriz densidade dos estados quânticos ``state`` sobre um conjunto específico de qubits ``indices``.
 
-    :param state: A 1D list of state vectors. The size of this list should be ``(2**N,)`` For the number of qubits ``N``, qstate should start from 000 -> 111.
-    :param indices: A list of qubit indices in the considered subsystem.
+    :param state: Uma lista 1D de vetores de estado. O tamanho desta lista deve ser ``(2**N,)`` Para o número de qubits ``N``, qstate deve começar de 000 -> 111.
+    :param indices: Uma lista de índices de qubit no subsistema considerado.
 
-    :return: A density matrix of size "(b, 2**len(indices), 2**len(indices))".
+    :return: Uma matriz densidade de tamanho "(b, 2**len(indices), 2**len(indices))".
 
     Example::
 
@@ -3772,27 +3726,26 @@ VQC_DensityMatrixFromQstate
         #  [0.       -0.3827205j 0.       -0.1674582j 0.1906232+0.j
         #   0.4356633+0.j       ]]]   
 
-
 Probability
 --------------------
 
 .. py:class:: pyvqnet.qnn.vqc.Probability(wires, name="")
 
-    Calculating the probability measurements of quantum circuits on specific bits
+    Calcula as medições de probabilidade de circuitos quânticos em bits específicos
 
-    :param wires: Measure qubit idx.
-    :param name: name of module
+    :param wires: Índice do qubit de medição.
+    :param name: nome do módulo
 
     .. py:method:: forward(q_machine)
 
-        Perform probability measurement calculations
+        Realiza cálculos de medição de probabilidade
 
-        :param q_machine: quantum state vector simulator
-        :return: probability measurement results
+        :param q_machine: simulador de vetor de estado quântico
+        :return: resultados da medição de probabilidade
 
     .. note::
 
-        The probability measurement results calculated using this class are generally [b, len(wires)], where b is the batch number b of q_machine.reset_states(b).
+        Os resultados da medição de probabilidade calculados usando esta classe são geralmente [b, len(wires)], onde b é o número do lote b de q_machine.reset_states(b).
 
  
 
@@ -3821,29 +3774,29 @@ MeasureAll
 
 .. py:class:: pyvqnet.qnn.vqc.MeasureAll(obs,name="")
 
-    Computes the measurement results of a quantum circuit. Supports input of observables ``obs``. This can be in dictionary format, representing an observable composed of multiple Pauli operators, or in list format, representing a list of observables with multiple expected values.
-    For example:
+    Calcula os resultados de medição de um circuito quântico. Suporta entrada de observáveis ``obs``. Pode ser no formato de dicionário, representando um observável composto por múltiplos operadores de Pauli, ou no formato de lista, representando uma lista de observáveis com múltiplos valores esperados.
+    Por exemplo:
 
-        {\'X0\': 0.23} indicates a PauliX effect on qubit 0, with a coefficient of 0.23.
+        {\'X0\': 0.23} indica um efeito PauliX no qubit 0, com um coeficiente de 0.23.
 
-        {\'X1 Z2\': 2.4,\'Y2\': -0.5} corresponds to the observed value 2.4 * X1 @ Z2 - 0.5 * Y2.
+        {\'X1 Z2\': 2.4,\'Y2\': -0.5} corresponde ao valor observado 2.4 * X1 @ Z2 - 0.5 * Y2.
 
-        [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] corresponds to the two observed values 4 * X1 @ Z2 + 3 * Z1 @ Z0 and 3.5 * X1 @ Y2 @ Z0.
+        [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] corresponde aos dois valores observados 4 * X1 @ Z2 + 3 * Z1 @ Z0 e 3.5 * X1 @ Y2 @ Z0.
 
-    :param obs: observables  pauli operator string dict.
+    :param obs: observáveis string dict do operador pauli.
 
     .. note::
 
-        If ``obs`` is a list, the measurement result calculated using this class is generally [b, obs list length], where b is the batch number b of q_machine.reset_states(b).
+        Se ``obs`` for uma lista, o resultado da medição calculado usando esta classe é geralmente [b, comprimento da lista de obs], onde b é o número do lote b de q_machine.reset_states(b).
 
-        If ``obs`` is a dictionary, the measurement result calculated using this class is generally [b,1], where b is the batch number b of q_machine.reset_states(b).
+        Se ``obs`` for um dicionário, o resultado da medição calculado usando esta classe é geralmente [b,1], onde b é o número do lote b de q_machine.reset_states(b).
 
     .. py:method:: forward(q_machine)
 
-        Perform measurement operation
+        Realiza a operação de medição
 
-        :param q_machine: quantum state vector simulator
-        :return: measurement result, QTensor.
+        :param q_machine: simulador de vetor de estado quântico
+        :return: resultado da medição, QTensor.
 
 
 
@@ -3876,24 +3829,24 @@ Samples
 
 .. py:class:: pyvqnet.qnn.vqc.Samples(wires=None, obs=None, shots = 1,name="")
     
-    Get the observation ``obs`` result with ``shots`` on the specified wires ``wires``.
+    Obtém o resultado da observação ``obs`` com ``shots`` nos fios especificados ``wires``.
 
     .. py:method:: forward(q_machine)
 
-        Perform sampling operations.
+        Realiza operações de amostragem.
 
-        :param q_machine: The quantum state vector simulator in effect
-        :return: Measurement results, QTensor.
+        :param q_machine: O simulador de vetor de estado quântico em uso
+        :return: Resultados da medição, QTensor.
 
     .. note::
 
-        The measurement results calculated using this class are generally [b, shots, len(wires)], where b is the batch number b of q_machine.reset_states(b).
+        Os resultados da medição calculados usando esta classe são geralmente [b, shots, len(wires)], onde b é o número do lote b de q_machine.reset_states(b).
 
-    :param wires: Sample qubit index. Default value: None, use all bits of the simulator at runtime.
-    :param obs: This value can only be None.
-    :param shots: Number of sample repetitions, default value: 1.
-    :param name: Name of this module, default value: "".
-    :return: A measurement method class
+    :param wires: Índice do qubit de amostragem. Valor padrão: None, usa todos os bits do simulador em tempo de execução.
+    :param obs: Este valor só pode ser None.
+    :param shots: Número de repetições de amostragem, valor padrão: 1.
+    :param name: Nome deste módulo, valor padrão: "".
+    :return: Uma classe de método de medição
 
     Example::
 
@@ -3933,22 +3886,22 @@ HermitianExpval
 
 .. py:class:: pyvqnet.qnn.vqc.HermitianExpval(obs, name="")
 
-    Compute the expectation of a Hermitian observable ``obs`` of a quantum circuit.
+    Calcula a expectativa de um observável Hermitiano ``obs`` de um circuito quântico.
     
-    :param obs: Hermitian quantity.
-    :param name: The name of the module, default: "".
-    :return: A HermitianExpval instance.
+    :param obs: Quantidade Hermitiana.
+    :param name: O nome do módulo, padrão: "".
+    :return: Uma instância de HermitianExpval.
 
     .. py:method:: forward(q_machine)
 
-        Perform Hermitian measurement.
+        Realiza a medição Hermitiana.
 
-        :param q_machine: quantum state vector simulator
-        :return: measurement result, QTensor.
+        :param q_machine: simulador de vetor de estado quântico
+        :return: resultado da medição, QTensor.
 
     .. note::
 
-        The measurement result calculated using this class is generally [b,1], where b is the batch number b of q_machine.reset_states(b).
+        O resultado da medição calculado usando esta classe é geralmente [b,1], onde b é o número do lote b de q_machine.reset_states(b).
 
     Example::
 
@@ -4008,24 +3961,24 @@ HermitianExpval
         #  [0.7028297]]
 
 
-Commonly used quantum variation circuit templates
-=====================================================
+Modelos de circuito de variação quântica comumente usados
+=========================================================
 
 VQC_HardwareEfficientAnsatz
 -----------------------------------------
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_HardwareEfficientAnsatz(n_qubits,single_rot_gate_list,entangle_gate="CNOT",entangle_rules='linear',depth=1,initial=None,dtype=None)
 
-    The implementation of Hardware Efficient Ansatz introduced in the paper:`Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__.
+    A implementação do Hardware Efficient Ansatz introduzido no artigo:`Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__.
 
-    :param n_qubits: Number of qubits.
-    :param single_rot_gate_list: A single qubit rotation gate list is constructed by one or several rotation gate that act on every qubit.Currently support Rx, Ry, Rz.
-    :param entangle_gate: The non parameterized entanglement gate.CNOT,CZ is supported.default:CNOT.
-    :param entangle_rules: How entanglement gate is used in the circuit. 'linear' means the entanglement gate will be act on every neighboring qubits. 'all' means the entanglment gate will be act on any two qbuits. Default:linear.
-    :param depth: The depth of ansatz, default:1.
-    :param initial: initial one same value for paramaters,default:None,this module will initialize parameters randomly.
-    :param dtype: data dtype of parameters.
-    :return: a VQC_HardwareEfficientAnsatz instance.
+    :param n_qubits: Número de qubits.
+    :param single_rot_gate_list: Uma lista de portas de rotação de qubit único é construída por uma ou várias portas de rotação que atuam em cada qubit. Atualmente suporta Rx, Ry, Rz.
+    :param entangle_gate: A porta de emaranhamento não parametrizada. CNOT, CZ são suportados. Padrão: CNOT.
+    :param entangle_rules: Como a porta de emaranhamento é usada no circuito. 'linear' significa que a porta de emaranhamento atuará em cada par de qubits vizinhos. 'all' significa que a porta de emaranhamento atuará em quaisquer dois qubits. Padrão: linear.
+    :param depth: A profundidade do ansatz, padrão: 1.
+    :param initial: valor inicial único para parâmetros, padrão: None, este módulo inicializará os parâmetros aleatoriamente.
+    :param dtype: tipo de dado dos parâmetros.
+    :return: uma instância de VQC_HardwareEfficientAnsatz.
 
     Example::
 
@@ -4070,16 +4023,16 @@ VQC_BasicEntanglerTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_BasicEntanglerTemplate(num_layer=1, num_qubits=1, rotation="RX", initial=None, dtype=None)
 
-    A layer consisting of a single-parameter single-qubit rotation on each qubit, followed by a closed chain or ring combination of multiple CNOT gates.
+    Uma camada que consiste em uma rotação de qubit único com um parâmetro em cada qubit, seguida por uma cadeia fechada ou combinação em anel de múltiplas portas CNOT.
 
-    A CNOT gate ring connects each qubit to its neighbors, with the last qubit considered to be a neighbor of the first qubit.
+    Um anel de porta CNOT conecta cada qubit aos seus vizinhos, com o último qubit sendo considerado vizinho do primeiro qubit.
 
-    :param num_layers: number of repeat layers, default: 1.
-    :param num_qubits: number of qubits, default: 1.
-    :param rotation: one-parameter single-qubit gate to use, default: `RX`
-    :param initial: initialized same value for all paramters. default:None,parameters will be initialized randomly.
-    :param dtype: data type of parameter, default:None,use float32.
-    :return: A VQC_BasicEntanglerTemplate instance
+    :param num_layers: número de camadas de repetição, padrão: 1.
+    :param num_qubits: número de qubits, padrão: 1.
+    :param rotation: porta de qubit único com um parâmetro a ser usada, padrão: `RX`
+    :param initial: valor inicializado para todos os parâmetros. padrão: None, os parâmetros serão inicializados aleatoriamente.
+    :param dtype: tipo de dado do parâmetro, padrão: None, usa float32.
+    :return: Uma instância de VQC_BasicEntanglerTemplate
 
     Example::
 
@@ -4121,15 +4074,15 @@ VQC_StronglyEntanglingTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_StronglyEntanglingTemplate(num_layers=1, num_qubits=1, ranges=None,initial=None, dtype=None)
 
-    A layer consisting of a single qubit rotation and an entangler, see `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__.
+    Uma camada que consiste em uma rotação de qubit único e um emaranhador, veja `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__.
 
-    :param num_layers: number of repeat layers, default: 1.
-    :param num_qubits: number of qubits, default: 1.
-    :param ranges: sequence determining the range hyperparameter for each subsequent layer; default: None
-                                using :math: `r=l \mod M` for the :math:`l` th layer and :math:`M` qubits.
-    :param initial: initial value for all parameters.default: None,initialized randomly.
-    :param dtype: data type of parameter, default:None,use float32.
-    :return: A VQC_StronglyEntanglingTemplate instance.
+    :param num_layers: número de camadas de repetição, padrão: 1.
+    :param num_qubits: número de qubits, padrão: 1.
+    :param ranges: sequência que determina o parâmetro de alcance para cada camada subsequente; padrão: None
+                                usando :math: `r=l \mod M` para a :math:`l`-ésima camada e :math:`M` qubits.
+    :param initial: valor inicial para todos os parâmetros. padrão: None, inicializado aleatoriamente.
+    :param dtype: tipo de dado do parâmetro, padrão: None, usa float32.
+    :return: Uma instância de VQC_StronglyEntanglingTemplate.
 
     Example::
 
@@ -4165,25 +4118,24 @@ VQC_StronglyEntanglingTemplate
 
         # [[0.3745951 0.154298  0.059156  0.4119509]]
 
-
 VQC_QuantumEmbedding
 --------------------------
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_QuantumEmbedding( num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
 
-    Use RZ,RY,RZ to create variational quantum circuits that encode classical data into quantum states.
-    Reference `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
-    After the class is initialized, its member function ``compute_circuit`` is a running function, which can be input as a parameter. 
-    The ``QuantumLayerV2`` class constitutes a layer of the quantum machine learning model.
+    Usa RZ, RY, RZ para criar circuitos quânticos variacionais que codificam dados clássicos em estados quânticos.
+    Referência `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
+    Após a classe ser inicializada, sua função membro ``compute_circuit`` é uma função de execução, que pode ser inserida como parâmetro.
+    A classe ``QuantumLayerV2`` constitui uma camada do modelo de aprendizado de máquina quântico.
 
-    :param num_repetitions_input: number of repeat times to encode input in a submodule.
-    :param depth_input: number of input dimension .
-    :param num_unitary_layers: number of repeat times of variational quantum gates.
-    :param num_repetitions: number of repeat times of submodule.
-    :param initial: parameter initialization value, default is None
-    :param dtype: parameter type, default is None, use float32.
-    :param name: class name
-    :return: A VQC_QuantumEmbedding instance.
+    :param num_repetitions_input: número de repetições para codificar a entrada em um submódulo.
+    :param depth_input: número da dimensão de entrada.
+    :param num_unitary_layers: número de repetições de portas quânticas variacionais.
+    :param num_repetitions: número de repetições do submódulo.
+    :param initial: valor de inicialização do parâmetro, padrão é None
+    :param dtype: tipo do parâmetro, padrão é None, usa float32.
+    :param name: nome da classe
+    :return: Uma instância de VQC_QuantumEmbedding.
 
     Example::
 
@@ -4234,21 +4186,21 @@ VQC_QuantumEmbedding
         #  [ 0.2408579]]
 
 
-Quantum machine learning model interface
-================================================
+Interface do modelo de aprendizado de máquina quântico
+======================================================
 
 Quanvolution
 ---------------------------------------------------------------
 
 .. py:class:: pyvqnet.qnn.qcnn.Quanvolution(params_shape, stride=(1, 1), kernel_initializer=quantum_uniform, machine_type_or_cloud_token: str = "cpu")
 
-    Based on the quantum convolution implemented in "Quanvolutional Neural Networks: Powering Image Recognition with Quantum Circuits" (https://arxiv.org/abs/1904.04767), the classical convolution filter is replaced by a variational quantum circuit to obtain a quantum convolutional neural network with a quantum convolution filter.
+    Baseado na convolução quântica implementada em "Quanvolutional Neural Networks: Powering Image Recognition with Quantum Circuits" (https://arxiv.org/abs/1904.04767), o filtro de convolução clássico é substituído por um circuito quântico variacional para obter uma rede neural convolutional quântica com um filtro de convolução quântico.
 
-    :param params_shape: The shape of the parameters, which should be two-dimensional.
-    :param stride: The step size of the slice window, the default is (1,1).
-    :param kernel_initializer: Convolution kernel initializer parameters.
-    :param machine_type_or_cloud_token: Machine type string or Qcloud token, default is "cpu".
-    :return: A Quanvolution instance.
+    :param params_shape: A forma dos parâmetros, que deve ser bidimensional.
+    :param stride: O tamanho do passo da janela de corte, o padrão é (1,1).
+    :param kernel_initializer: Parâmetros do inicializador do kernel de convolução.
+    :param machine_type_or_cloud_token: String do tipo de máquina ou token Qcloud, padrão é "cpu".
+    :return: Uma instância de Quanvolution.
 
     Examples::
 
@@ -4279,10 +4231,10 @@ QDRL
 
 .. py:class:: pyvqnet.qnn.qdrl_vqc.QDRL(nq)
 
-    The Quantum Data Re-uploading (QDRL) algorithm based on "Data re-uploading for a universal quantum classifier" (https://arxiv.org/abs/1907.02085) is a quantum data re-uploading model that combines quantum circuits with classical neural networks.
+    O algoritmo Quantum Data Re-uploading (QDRL) baseado em "Data re-uploading for a universal quantum classifier" (https://arxiv.org/abs/1907.02085) é um modelo de reenvio de dados quânticos que combina circuitos quânticos com redes neurais clássicas.
 
-    :param nq: The number of quantum bits (qubits) used in the quantum circuit. This determines the scale of the quantum system that the model will handle.
-    :return: A QDRL instance.
+    :param nq: O número de bits quânticos (qubits) usados no circuito quântico. Isso determina a escala do sistema quântico que o modelo irá manipular.
+    :return: Uma instância de QDRL.
 
     Example::
 
@@ -4291,23 +4243,23 @@ QDRL
         from pyvqnet.qnn.qdrl_vqc import QDRL
         import pyvqnet.tensor as tensor
 
-        # Set the number of quantum bits (qubits)
+        # Define o número de bits quânticos (qubits)
         nq = 1
 
-        # Initialize the model
+        # Inicializa o modelo
         model = QDRL(nq)
 
-        # Create an example input (assume the input is a (batch_size, 3) shaped data)
-        # Suppose we have a batch_size of 4 and each input has 3 features
+        # Cria um exemplo de entrada (assume que a entrada são dados de formato (batch_size, 3))
+        # Suponha que temos um batch_size de 4 e cada entrada tem 3 características
         x_input = tensor.QTensor(np.random.randn(4, 3), dtype=kfloat32)
 
-        # Pass the input through the model
+        # Passa a entrada pelo modelo
         output = model(x_input)
 
         output.backward()
 
-        # Output the result
-        print("Model output:")
+        # Saída do resultado
+        print("Saída do modelo:")
         print(output)
 
 
@@ -4316,14 +4268,14 @@ QGRU
 
 .. py:class:: pyvqnet.qnn.qgru.QGRU(para_num, num_of_qubits,input_size,hidden_size,batch_first=True)
 
-    GRU (Gated Recurrent Unit) based on quantum variational circuits, using quantum circuits for state updates and memory retention.
+    GRU (Gated Recurrent Unit) baseado em circuitos quânticos variacionais, usando circuitos quânticos para atualização de estado e retenção de memória.
 
-    :param para_num: The number of parameters in the quantum circuit.
-    :param num_of_qubits: The number of qubits.
-    :param input_size: The feature dimension of the input data.
-    :param hidden_size: The dimension of the hidden unit.
-    :param batch_first: Whether the first dimension of the input is the batch size.
-    :return: A QGRU instance.
+    :param para_num: O número de parâmetros no circuito quântico.
+    :param num_of_qubits: O número de qubits.
+    :param input_size: A dimensão das características dos dados de entrada.
+    :param hidden_size: A dimensão da unidade oculta.
+    :param batch_first: Se a primeira dimensão da entrada é o tamanho do lote.
+    :return: Uma instância de QGRU.
 
     Example::
 
@@ -4331,41 +4283,41 @@ QGRU
         from pyvqnet.tensor import tensor
         from pyvqnet.qnn.qgru import QGRU
         from pyvqnet.dtype import kfloat32
-        # Example usage
+        # Exemplo de uso
  
-        # Set parameters
+        # Define parâmetros
         para_num = 8
         num_of_qubits = 8
         input_size = 4
         hidden_size = 4
         batch_size = 1
         seq_length = 1
-        # Create QGRU model
+        # Cria modelo QGRU
         qgru = QGRU(para_num, num_of_qubits, input_size, hidden_size, batch_first=True)
 
-        # Create input data
+        # Cria dados de entrada
         x = tensor.QTensor(np.random.randn(batch_size, seq_length, input_size), dtype=kfloat32)
 
-        # Call the model
+        # Chama o modelo
         output, h_t = qgru(x)
         output.backward()
 
-        print("Output shape:", output.shape)  # Output shape
-        print("h_t shape:", h_t.shape)  # Final hidden state shape
+        print("Forma da saída:", output.shape)  # Forma da saída
+        print("Forma de h_t:", h_t.shape)  # Forma do estado oculto final
 
 QLSTM
 -------------------------------------------------------------
 
 .. py:class:: pyvqnet.qnn.qlstm.QLSTM(para_num, num_of_qubits,input_size, hidden_size,batch_first=True)
     
-    QLSTM (Quantum Long Short-Term Memory) is a hybrid model that combines quantum computing and classical LSTM, designed to use the parallelism of quantum computing and the memory capacity of classical LSTM to process sequence data.
+    QLSTM (Quantum Long Short-Term Memory) é um modelo híbrido que combina computação quântica e LSTM clássica, projetado para usar o paralelismo da computação quântica e a capacidade de memória da LSTM clássica para processar dados sequenciais.
 
-    :param para_num: The number of parameters in the quantum circuit.
-    :param num_of_qubits: The number of quantum bits.
-    :param input_size: The feature dimension of the input data.
-    :param hidden_size: The dimension of the hidden unit.
-    :param batch_first: Whether the first dimension of the input is the batch size.
-    :return: A QLSTM instance.
+    :param para_num: O número de parâmetros no circuito quântico.
+    :param num_of_qubits: O número de bits quânticos.
+    :param input_size: A dimensão das características dos dados de entrada.
+    :param hidden_size: A dimensão da unidade oculta.
+    :param batch_first: Se a primeira dimensão da entrada é o tamanho do lote.
+    :return: Uma instância de QLSTM.
 
     Example::
 
@@ -4385,30 +4337,28 @@ QLSTM
 
         output, (h_t, c_t) = qlstm(x)
 
-        print("Output shape:", output.shape)
-        print("h_t shape:", h_t.shape)
-        print("c_t shape:", c_t.shape)
-
-
+        print("Forma da saída:", output.shape)
+        print("Forma de h_t:", h_t.shape)
+        print("Forma de c_t:", c_t.shape)
 
 QMLPModel
 --------------------------------------------------------------
 
 .. py:class:: pyvqnet.qnn.qmlp.qmlp.QMLPModel(input_channels: int,output_channels: int,num_qubits: int, kernel: _size_type,stride: _size_type,padding: _padding_type = "valid",weight_initializer: Union[Callable, None] = None,bias_initializer: Union[Callable, None] = None,use_bias: bool = True,dtype: Union[int, None] = None)
     
-    QMLPModel is a quantum-inspired neural network based on QMLP: An Error-Tolerant Nonlinear Quantum MLP Architecture using Parameterized Two-Qubit Gates (https://arxiv.org/abs/2206.01345). QMLPModel combines quantum circuits with classical neural network operations such as pooling and fully connected layers. It is designed to process quantum data and extract relevant features through quantum operations and classical layers.
+    QMLPModel é uma rede neural inspirada em quântica baseada em QMLP: An Error-Tolerant Nonlinear Quantum MLP Architecture using Parameterized Two-Qubit Gates (https://arxiv.org/abs/2206.01345). QMLPModel combina circuitos quânticos com operações clássicas de redes neurais, como pooling e camadas totalmente conectadas. É projetado para processar dados quânticos e extrair características relevantes através de operações quânticas e camadas clássicas.
 
-    :param input_channels: The number of input features.
-    :param output_channels: The number of output features.
-    :param num_qubits: The number of qubits.
-    :param kernel: The size of the average pooling window.
-    :param stride: The step size factor for downsampling.
-    :param padding: The padding method, optional "valid" or "same".
-    :param weight_initializer: Weight initializer, defaults to normal distribution.
-    :param bias_initializer: Bias initializer, defaults to zero initialization.
-    :param use_bias: Whether to use bias, default is True.
-    :param dtype: Defaults to None, use the default data type.
-    :return: A QMLPModel instance.
+    :param input_channels: O número de características de entrada.
+    :param output_channels: O número de características de saída.
+    :param num_qubits: O número de qubits.
+    :param kernel: O tamanho da janela de pooling média.
+    :param stride: O fator de tamanho do passo para redução de amostragem.
+    :param padding: O método de preenchimento, opcional "valid" ou "same".
+    :param weight_initializer: Inicializador de pesos, padrão é distribuição normal.
+    :param bias_initializer: Inicializador de viés, padrão é inicialização zero.
+    :param use_bias: Se deve usar viés, padrão é True.
+    :param dtype: Padrão é None, usa o tipo de dado padrão.
+    :return: Uma instância de QMLPModel.
 
     Example::
 
@@ -4436,7 +4386,7 @@ QMLPModel
 
         output = model(x)
 
-        print("Output shape:", output.shape)
+        print("Forma da saída:", output.shape)
 
 
 
@@ -4445,11 +4395,11 @@ QRLModel
 
 .. py:class:: pyvqnet.qnn.qrl.QRLModel(num_qubits, n_layers)
 
-    Quantum deep reinforcement learning model using variational quantum circuits in :ref:`QDRL_DEMO`.
+    Modelo de aprendizado por reforço quântico profundo usando circuitos quânticos variacionais em :ref:`QDRL_DEMO`.
 
-    :param num_qubits: The number of qubits used in the quantum circuit.
-    :param n_layers: The number of layers in the variational quantum circuit.
-    :return: A QRLModel instance.
+    :param num_qubits: O número de qubits usados no circuito quântico.
+    :param n_layers: O número de camadas no circuito quântico variacional.
+    :return: Uma instância de QRLModel.
 
     Example::
 
@@ -4464,7 +4414,7 @@ QRLModel
         output = model(x)
         output.backward()
 
-        print("Model output:", output)
+        print("Saída do modelo:", output)
 
 
 QRNN
@@ -4472,14 +4422,14 @@ QRNN
 
 .. py:class:: pyvqnet.qnn.qrnn.QRNN(para_num, num_of_qubits=4,input_size=100,hidden_size=100,batch_first=True)
 
-    QRNN (Quantum Recurrent Neural Network) is a quantum recurrent neural network designed to process sequence data and capture long-term dependencies in the sequence.
+    QRNN (Quantum Recurrent Neural Network) é uma rede neural recorrente quântica projetada para processar dados sequenciais e capturar dependências de longo prazo na sequência.
 
-    :param para_num: The number of parameters in the quantum circuit.
-    :param num_of_qubits: The number of quantum bits.
-    :param input_size: The feature dimension of the input data.
-    :param hidden_size: The dimension of the hidden unit.
-    :param batch_first: Whether the first dimension of the input is the batch size, the default is True.
-    :return: A QRNN instance.
+    :param para_num: O número de parâmetros no circuito quântico.
+    :param num_of_qubits: O número de bits quânticos.
+    :param input_size: A dimensão das características dos dados de entrada.
+    :param hidden_size: A dimensão da unidade oculta.
+    :param batch_first: Se a primeira dimensão da entrada é o tamanho do lote, o padrão é True.
+    :return: Uma instância de QRNN.
 
     Example::
 
@@ -4501,8 +4451,8 @@ QRNN
 
         output, h_t = qrnn(x)
 
-        print("Output shape:", output.shape)
-        print("h_t shape:", h_t.shape)
+        print("Forma da saída:", output.shape)
+        print("Forma de h_t:", h_t.shape)
 
 
 TTOLayer
@@ -4510,13 +4460,13 @@ TTOLayer
 
 .. py:class:: pyvqnet.qnn.ttolayer.TTOLayer(inp_modes,out_modes,mat_ranks,biases_initializer=tensor.zeros)
 
-    TTOLayer, based on "Compressing deep neural networks by matrix product operators" (https://arxiv.org/abs/1904.06194), decomposes the input tensor to achieve efficient representation of high-dimensional data. This layer allows learning tensor decomposition under rank constraints, which can reduce computational complexity and memory usage compared to traditional fully connected layers.
+    TTOLayer, baseado em "Compressing deep neural networks by matrix product operators" (https://arxiv.org/abs/1904.06194), decompõe o tensor de entrada para alcançar uma representação eficiente de dados de alta dimensão. Esta camada permite aprender a decomposição tensorial sob restrições de posto, o que pode reduzir a complexidade computacional e o uso de memória em comparação com camadas totalmente conectadas tradicionais.
 
-    :param inp_modes: The dimensions of the input tensor.
-    :param out_modes: The dimensions of the output tensor.
-    :param mat_ranks: The rank of the tensor kernel (decomposition rank) in the tensor decomposition.
-    :param biases_initializer: The initialization function of the bias.
-    :return: A TTOLayer instance.
+    :param inp_modes: As dimensões do tensor de entrada.
+    :param out_modes: As dimensões do tensor de saída.
+    :param mat_ranks: O posto do kernel tensorial (posto de decomposição) na decomposição tensorial.
+    :param biases_initializer: A função de inicialização do viés.
+    :return: Uma instância de TTOLayer.
 
     Example::
 
@@ -4537,11 +4487,11 @@ TTOLayer
 
         output = tto_layer(inp)
 
-        print("Input shape:", inp.shape)
-        print("Output shape:", output.shape)
+        print("Forma da entrada:", inp.shape)
+        print("Forma da saída:", output.shape)
 
 
-Other functions
+Outras funções
 =====================
 
 
@@ -4551,16 +4501,16 @@ QuantumLayerAdjoint
 .. py:class:: pyvqnet.qnn.vqc.QuantumLayerAdjoint(general_module: pyvqnet.nn.Module, use_qpanda=False,name="")
 
 
-    An automatically differentiated QuantumLayer layer that uses adjoint matrix method for gradient calculation, refer to `Efficient calculation of gradients in classical simulations of variational quantum algorithms <https://arxiv.org/abs/2009.02823>`_.
+    Uma camada QuantumLayer diferenciada automaticamente que usa o método de matriz adjunta para cálculo de gradiente, consulte `Efficient calculation of gradients in classical simulations of variational quantum algorithms <https://arxiv.org/abs/2009.02823>`_.
 
-    :param general_module: A `pyvqnet.nn.Module` instance built using only the `pyvqnet.qnn.vqc` lower quantum circuit interface.
-    :param use_qpanda: Whether to use qpanda line for forward transmission, default: False.
-    :param name: The name of this layer, the default is "".
+    :param general_module: Uma instância de `pyvqnet.nn.Module` construída usando apenas a interface de circuito quântico inferior `pyvqnet.qnn.vqc`.
+    :param use_qpanda: Se deve usar a linha qpanda para transmissão direta, padrão: False.
+    :param name: O nome desta camada, o padrão é "".
 
     .. note::
 
-        QMachine for general_module should set grad_method = "adjoint".
-        Currently, the following parametric logic gates are supported: `RX`, `RY`, `RZ`, `PhaseShift`, `RXX`, `RYY`, `RZZ`, `RZX`, `U1`, `U2`, `U3` and other variational circuits without parametric logic gates.
+        QMachine para general_module deve definir grad_method = "adjoint".
+        Atualmente, as seguintes portas lógicas paramétricas são suportadas: `RX`, `RY`, `RZ`, `PhaseShift`, `RXX`, `RYY`, `RZZ`, `RZX`, `U1`, `U2`, `U3` e outros circuitos variacionais sem portas lógicas paramétricas.
 
     Example::
 
@@ -4627,21 +4577,20 @@ QuantumLayerAdjoint
         #  [-0.0778451],
         #  [-0.0778451]]
 
-
 DataParallelVQCAdjointLayer
 ---------------------------------------------------------------
 
 .. py:class:: pyvqnet.distributed.DataParallelVQCAdjointLayer(Comm_OP, vqc_module, name="")
 
-Create vqc with data parallelism for batch size of data using adjoint gradient computation. Where ``vqc_module`` must be a VQC module of type ``QuantumLayerAdjoint``.
+Cria vqc com paralelismo de dados para tamanho de lote de dados usando cálculo de gradiente adjunto. Onde ``vqc_module`` deve ser um módulo VQC do tipo ``QuantumLayerAdjoint``.
 
-If we use N nodes to run this module,
-In each node, `batch_size/N` data are forwarded to run the variational quantum circuit to compute gradients.
+Se usarmos N nós para executar este módulo,
+Em cada nó, os dados `batch_size/N` são encaminhados para executar o circuito quântico variacional para calcular gradientes.
 
-:param Comm_OP: Sets the communication controller for the distributed environment.
-:param vqc_module: A VQC module of type QuantumLayerAdjoint with forward(), make sure qmachine is set up correctly.
-:param name: The name of the module. Default value is an empty string.
-:return: A module that can compute quantum circuits.
+:param Comm_OP: Define o controlador de comunicação para o ambiente distribuído.
+:param vqc_module: Um módulo VQC do tipo QuantumLayerAdjoint com forward(), certifique-se de que qmachine esteja configurado corretamente.
+:param name: O nome do módulo. O valor padrão é uma string vazia.
+:return: Um módulo que pode calcular circuitos quânticos.
 
 Example::
 
@@ -4756,14 +4705,14 @@ DataParallelVQCLayer
 
 .. py:class:: pyvqnet.distributed.DataParallelVQCLayer(Comm_OP, vqc_module, name="")
 
-    Create vqc with data parallelism for batch size of data using automatic differentiation computation.
-    If we use N nodes to run this module,
-    In each node, `batch_size/N` of data are forward run through the variational quantum circuit to compute gradients.
+    Cria vqc com paralelismo de dados para tamanho de lote de dados usando cálculo de diferenciação automática.
+    Se usarmos N nós para executar este módulo,
+    Em cada nó, os dados `batch_size/N` são processados em diante através do circuito quântico variacional para calcular gradientes.
 
-    :param Comm_OP: Sets the communication controller for the distributed environment.
-    :param vqc_module: VQC module with forward(), make sure qmachine is setup correctly.
-    :param name: Name of the module. Default is an empty string.
-    :return: Module that can compute quantum circuits.
+    :param Comm_OP: Define o controlador de comunicação para o ambiente distribuído.
+    :param vqc_module: Módulo VQC com forward(), certifique-se de que qmachine esteja configurado corretamente.
+    :param name: Nome do módulo. O padrão é uma string vazia.
+    :return: Módulo que pode calcular circuitos quânticos.
 
     Example::
 
@@ -4842,197 +4791,29 @@ vqc_to_originir_list
 
 .. py:function:: pyvqnet.qnn.vqc.vqc_to_originir_list(vqc_model: pyvqnet.nn.Module)
 
-    Convert VQNet vqc module to originIR.
+    Converte o módulo vqc do VQNet para originIR.
 
-    vqc_model should run the forward function before this function to get the input data.
-    If the input data is batch data. For each input it will return multiple IR strings.
+    vqc_model deve executar a função forward antes desta função para obter os dados de entrada.
+    Se os dados de entrada forem dados em lote. Para cada entrada, retornará múltiplas strings IR.
 
-    :param vqc_model: VQNet vqc module, which should be run forward first.
+    :param vqc_model: Módulo vqc do VQNet, que deve executar forward primeiro.
 
-    :return: originIR string or originIR string list.
-
-    Example::
-
-        import pyvqnet
-        import pyvqnet.tensor as tensor
-        from pyvqnet.qnn.vqc import *
-        from pyvqnet.nn import Module
-        from pyvqnet.utils import set_random_seed
-        set_random_seed(42)
-        class QModel(Module):
-            def __init__(self, num_wires, dtype,grad_mode=""):
-                super(QModel, self).__init__()
-
-                self._num_wires = num_wires
-                self._dtype = dtype
-                self.qm = QMachine(num_wires, dtype=dtype,grad_mode=grad_mode,save_ir=True)
-                self.rx_layer = RX(has_params=True, trainable=False, wires=0)
-                self.ry_layer = RY(has_params=True, trainable=False, wires=1)
-                self.rz_layer = RZ(has_params=True, trainable=False, wires=1)
-                self.u1 = U1(has_params=True,trainable=True,wires=[2])
-                self.u2 = U2(has_params=True,trainable=True,wires=[3])
-                self.u3 = U3(has_params=True,trainable=True,wires=[1])
-                self.i = I(wires=[3])
-                self.s = S(wires=[3])
-                self.x1 = X1(wires=[3])
-                self.y1 = Y1(wires=[3])
-                self.z1 = Z1(wires=[3])
-                self.x = PauliX(wires=[3])
-                self.y = PauliY(wires=[3])
-                self.z = PauliZ(wires=[3])
-                self.swap = SWAP(wires=[2,3])
-                self.cz = CZ(wires=[2,3])
-                self.cr = CR(has_params=True,trainable=True,wires=[2,3])
-                self.rxx = RXX(has_params=True,trainable=True,wires=[2,3])
-                self.rzz = RYY(has_params=True,trainable=True,wires=[2,3])
-                self.ryy = RZZ(has_params=True,trainable=True,wires=[2,3])
-                self.rzx = RZX(has_params=True,trainable=False, wires=[2,3])
-                self.toffoli = Toffoli(wires=[2,3,4],use_dagger=True)
-                self.h =Hadamard(wires=[1])
-                self.rot = VQC_HardwareEfficientAnsatz(6, ["rx", "RY", "rz"],
-                                                    entangle_gate="cnot",
-                                                    entangle_rules="linear",
-                                                    depth=5)
-
-                self.iSWAP = iSWAP( wires=[0,2])
-                self.tlayer = T(wires=1)
-                self.cnot = CNOT(wires=[0, 1])
-                self.measure = MeasureAll(obs = {
-                    "X1":1
-                })
-
-            def forward(self, x, *args, **kwargs):
-                self.qm.reset_states(x.shape[0])
-                self.i(q_machine=self.qm)
-                self.s(q_machine=self.qm)
-                self.swap(q_machine=self.qm)
-                self.cz(q_machine=self.qm)
-                self.x(q_machine=self.qm)
-                self.x1(q_machine=self.qm)
-                self.y(q_machine=self.qm)
-                self.y1(q_machine=self.qm)
-                self.z(q_machine=self.qm)
-                self.z1(q_machine=self.qm)
-                self.ryy(q_machine=self.qm)
-                self.rxx(q_machine=self.qm)
-                self.rzz(q_machine=self.qm)
-                self.rzx(q_machine=self.qm,params = x[:,[1]])
-                self.cr(q_machine=self.qm)
-                self.u1(q_machine=self.qm)
-                self.u2(q_machine=self.qm)
-                self.u3(q_machine=self.qm)
-                self.rx_layer(params = x[:,[0]], q_machine=self.qm)
-                self.cnot(q_machine=self.qm)
-                self.h(q_machine=self.qm)
-                self.iSWAP(q_machine=self.qm)
-                self.ry_layer(params = x[:,[1]], q_machine=self.qm)
-                self.tlayer(q_machine=self.qm)
-                self.rz_layer(params = x[:,[2]], q_machine=self.qm)
-                self.toffoli(q_machine=self.qm)
-                rlt = self.measure(q_machine=self.qm)
-
-                return rlt
-            
-
-        input_x = tensor.QTensor([[0.1, 0.2, 0.3]])
-
-        input_x = tensor.broadcast_to(input_x,[2,3])
-
-        input_x.requires_grad = True
-
-        qunatum_model = QModel(num_wires=6, dtype=pyvqnet.kcomplex64)
-
-        batch_y = qunatum_model(input_x)
-        batch_y.backward()
-        ll = vqc_to_originir_list(qunatum_model)
-        from pyqpanda import CPUQVM,convert_originir_str_to_qprog,convert_qprog_to_originir
-        for l in ll :
-            print(l)
-
-            machine = CPUQVM()
-            machine.init_qvm()
-            prog, qv, cv = convert_originir_str_to_qprog(l, machine)
-            print(machine.prob_run_dict(prog,qv))
-
-        # QINIT 6
-        # CREG 6
-        # I q[3]
-        # S q[3]
-        # SWAP q[2],q[3]
-        # CZ q[2],q[3]
-        # X q[3]
-        # X1 q[3]
-        # Y q[3]
-        # Y1 q[3]
-        # Z q[3]
-        # Z1 q[3]
-        # RZZ q[2],q[3],(4.484121322631836)
-        # RXX q[2],q[3],(5.302337169647217)
-        # RYY q[2],q[3],(3.470323085784912)
-        # RZX q[2],q[3],(0.20000000298023224)
-        # CR q[2],q[3],(5.467088222503662)
-        # U1 q[2],(6.254805088043213)
-        # U2 q[3],(1.261604905128479,0.9901542067527771)
-        # U3 q[1],(5.290454387664795,6.182775020599365,1.1797741651535034)
-        # RX q[0],(0.10000000149011612)
-        # CNOT q[0],q[1]
-        # H q[1]
-        # ISWAP q[0],q[2]
-        # RY q[1],(0.20000000298023224)
-        # T q[1]
-        # RZ q[1],(0.30000001192092896)
-        # DAGGER
-        # TOFFOLI q[2],q[3],q[4]
-        # ENDDAGGER
-
-        # {'000000': 0.006448949346548678, '000001': 0.004089870964118778, '000010': 0.1660891289303212, '000011': 0.08520414851665635, '000100': 0.0048503036661063, '000101': 8.679196482917438e-05, '000110': 0.14379026566368325, '000111': 0.0005079553597106437, '001000': 0.0023774056959510325, '001001': 0.008241263544544148, '001010': 0.06122877075562884, '001011': 0.1984226195587807, '001100': 0.0, '001101': 0.0, '001110': 0.0, '001111': 0.0, '010000': 0.0, '010001': 0.0, '010010': 0.0, '010011': 0.0, '010100': 0.0, '010101': 0.0, '010110': 0.0, '010111': 0.0, '011000': 0.0, '011001': 0.0, '011010': 0.0, '011011': 0.0, '011100': 0.011362100696548312, '011101': 0.00019143557058348747, '011110': 0.3059886012103368, '011111': 0.0011203885556518832, '100000': 0.0, '100001': 0.0, '100010': 0.0, '100011': 0.0, '100100': 0.0, '100101': 0.0, '100110': 0.0, '100111': 0.0, '101000': 0.0, '101001': 0.0, '101010': 0.0, '101011': 0.0, '101100': 0.0, '101101': 0.0, '101110': 0.0, '101111': 0.0, '110000': 0.0, '110001': 0.0, '110010': 0.0, '110011': 0.0, '110100': 0.0, '110101': 0.0, '110110': 0.0, '110111': 0.0, '111000': 0.0, '111001': 0.0, '111010': 0.0, '111011': 0.0, '111100': 0.0, '111101': 0.0, '111110': 0.0, '111111': 0.0}
-        # QINIT 6
-        # CREG 6
-        # I q[3]
-        # S q[3]
-        # SWAP q[2],q[3]
-        # CZ q[2],q[3]
-        # X q[3]
-        # X1 q[3]
-        # Y q[3]
-        # Y1 q[3]
-        # Z q[3]
-        # Z1 q[3]
-        # RZZ q[2],q[3],(4.484121322631836)
-        # RXX q[2],q[3],(5.302337169647217)
-        # RYY q[2],q[3],(3.470323085784912)
-        # RZX q[2],q[3],(0.20000000298023224)
-        # CR q[2],q[3],(5.467088222503662)
-        # U1 q[2],(6.254805088043213)
-        # U2 q[3],(1.261604905128479,0.9901542067527771)
-        # U3 q[1],(5.290454387664795,6.182775020599365,1.1797741651535034)
-        # RX q[0],(0.10000000149011612)
-        # CNOT q[0],q[1]
-        # H q[1]
-        # ISWAP q[0],q[2]
-        # RY q[1],(0.20000000298023224)
-        # T q[1]
-        # RZ q[1],(0.30000001192092896)
-        # DAGGER
-        # TOFFOLI q[2],q[3],q[4]
-        # ENDDAGGER
-
-        # {'000000': 0.006448949346548678, '000001': 0.004089870964118778, '000010': 0.1660891289303212, '000011': 0.08520414851665635, '000100': 0.0048503036661063, '000101': 8.679196482917438e-05, '000110': 0.14379026566368325, '000111': 0.0005079553597106437, '001000': 0.0023774056959510325, '001001': 0.008241263544544148, '001010': 0.06122877075562884, '001011': 0.1984226195587807, '001100': 0.0, '001101': 0.0, '001110': 0.0, '001111': 0.0, '010000': 0.0, '010001': 0.0, '010010': 0.0, '010011': 0.0, '010100': 0.0, '010101': 0.0, '010110': 0.0, '010111': 0.0, '011000': 0.0, '011001': 0.0, '011010': 0.0, '011011': 0.0, '011100': 0.011362100696548312, '011101': 0.00019143557058348747, '011110': 0.3059886012103368, '011111': 0.0011203885556518832, '100000': 0.0, '100001': 0.0, '100010': 0.0, '100011': 0.0, '100100': 0.0, '100101': 0.0, '100110': 0.0, '100111': 0.0, '101000': 0.0, '101001': 0.0, '101010': 0.0, '101011': 0.0, '101100': 0.0, '101101': 0.0, '101110': 0.0, '101111': 0.0, '110000': 0.0, '110001': 0.0, '110010': 0.0, '110011': 0.0, '110100': 0.0, '110101': 0.0, '110110': 0.0, '110111': 0.0, '111000': 0.0, '111001': 0.0, '111010': 0.0, '111011': 0.0, '111100': 0.0, '111101': 0.0, '111110': 0.0, '111111': 0.0}
+    :return: string originIR ou lista de strings originIR.
 
 originir_to_vqc
 ------------------------------------------
 
 .. py:function:: pyvqnet.qnn.vqc.originir_to_vqc(originir, tmp="code_tmp.py", verbose=False)
 
-    Parse originIR into vqc model code.
-    The code creates a variational quantum circuit `pyvqnet.nn.Module` without `Measure`, and returns the state vector form of the quantum state, such as [b,2,...,2].
-    This function will generate a code file defining the corresponding VQNet model in "./origin_ir_gen_code/" + tmp + ".py".
+    Analisa originIR em código de modelo vqc.
+    O código cria um circuito quântico variacional `pyvqnet.nn.Module` sem `Measure`, e retorna a forma de vetor de estado do estado quântico, como [b,2,...,2].
+    Esta função gerará um arquivo de código definindo o modelo VQNet correspondente em "./origin_ir_gen_code/" + tmp + ".py".
 
-    :param originir: Original IR.
-    :param tmp: code file name, default ``code_tmp.py``.
-    :param verbose: If display generated code, default = False
+    :param originir: IR original.
+    :param tmp: nome do arquivo de código, padrão ``code_tmp.py``.
+    :param verbose: Se deve exibir o código gerado, padrão = False
     :return:
-        Generate runnable code.
+        Gera código executável.
 
     Example::
 
@@ -5071,11 +4852,11 @@ model_summary
 
 .. py:function:: pyvqnet.model_summary(vqc_module)
 
-    Print information about classical layer and quantum gate operators registered in vqc_module.
+    Imprime informações sobre a camada clássica e operadores de porta quântica registrados em vqc_module.
 
-    :param vqc_module: vqc module
+    :param vqc_module: módulo vqc
     :return:
-        summary string
+        string de resumo
 
 
     Example::
@@ -5131,40 +4912,38 @@ QNG
 
 .. py:class:: pyvqnet.qnn.vqc.qng.QNG(qmodel, stepsize=0.01, momentum=0)
 
-    Quantum machine learning models generally use the gradient descent method to optimize parameters in variable quantum logic circuits. The formula of the classic gradient descent method is as follows:
+    Modelos de aprendizado de máquina quântica geralmente usam o método de descida de gradiente para otimizar parâmetros em circuitos lógicos quânticos variacionais. A fórmula do método clássico de descida de gradiente é a seguinte:
 
     .. math:: \theta_{t+1} = \theta_t -\eta \nabla \mathcal{L}(\theta),
 
-    Essentially, at each iteration, we will calculate the direction of the steepest gradient drop in the parameter space as the direction of parameter change.
-    In any direction in space, the speed of descent in the local range is not as fast as that of the negative gradient direction.
-    In different spaces, the derivation of the direction of steepest descent is dependent on the norm of parameter differentiation - the distance metric. The distance metric plays a central role here,
-    Different metrics result in different directions of steepest descent. For the Euclidean space where the parameters in the classical optimization problem are located, the direction of the steepest descent is the direction of the negative gradient.
-    Even so, at each step of parameter optimization, as the loss function changes with parameters, its parameter space is transformed. Make it possible to find another better distance norm.
+    Essencialmente, a cada iteração, calcularemos a direção da descida mais íngreme do gradiente no espaço de parâmetros como a direção da mudança de parâmetro.
+    Em qualquer direção no espaço, a velocidade de descida no intervalo local não é tão rápida quanto a da direção do gradiente negativo.
+    Em espaços diferentes, a derivação da direção de descida mais íngreme depende da norma da diferenciação do parâmetro - a métrica de distância. A métrica de distância desempenha um papel central aqui,
+    Métricas diferentes resultam em direções de descida mais íngreme diferentes. Para o espaço euclidiano onde os parâmetros no problema de otimização clássico estão localizados, a direção da descida mais íngreme é a direção do gradiente negativo.
+    Mesmo assim, a cada passo da otimização de parâmetros, à medida que a função de perda muda com os parâmetros, seu espaço de parâmetros é transformado. Isso possibilita encontrar outra norma de distância melhor.
 
-    `Quantum natural gradient method <https://arxiv.org/abs/1909.02108>`_ draws on concepts from `classical natural gradient method Amari <https://www.mitpressjournals.org/doi/abs/10.1162/089976698300017746>`__ ,
-    We instead view the optimization problem as a probability distribution of possible output values for a given input (i.e., maximum likelihood estimation), a better approach is in the distribution
-    Gradient descent is performed in the space, which is dimensionless and invariant with respect to the parameterization. Therefore, regardless of the parameterization, each optimization step will always choose the optimal step size for each parameter.
-    In quantum machine learning tasks, the quantum state space has a unique invariant metric tensor called the Fubini-Study metric tensor :math:`g_{ij}`.
-    This tensor converts the steepest descent in the quantum circuit parameter space to the steepest descent in the distribution space.
-    The formula for the quantum natural gradient is as follows:
+    `Quantum natural gradient method <https://arxiv.org/abs/1909.02108>`_ se baseia em conceitos do `classical natural gradient method Amari <https://www.mitpressjournals.org/doi/abs/10.1162/089976698300017746>`__,
+    Em vez disso, vemos o problema de otimização como uma distribuição de probabilidade de possíveis valores de saída para uma dada entrada (ou seja, estimativa de máxima verossimilhança), uma abordagem melhor é realizar a descida de gradiente no espaço de distribuição, que é adimensional e invariante em relação à parametrização. Portanto, independentemente da parametrização, cada passo de otimização sempre escolherá o tamanho do passo ideal para cada parâmetro.
+    Em tarefas de aprendizado de máquina quântico, o espaço de estado quântico tem um tensor métrico invariante único chamado tensor métrico de Fubini-Study :math:`g_{ij}`.
+    Este tensor converte a descida mais íngreme no espaço de parâmetros do circuito quântico para a descida mais íngreme no espaço de distribuição.
+    A fórmula para o gradiente natural quântico é a seguinte:
 
     .. math:: \theta_{t+1} = \theta_t + momentum(x^{(t)} - x^{(t-1)}) - \eta g^{+}(\theta_t)\nabla \mathcal{L}(\theta)
 
-    where :math:`g^{+}` is the pseudo-inverse.
+    onde :math:`g^{+}` é a pseudo-inversa.
 
-    `wrapper_calculate_qng` is a decorator that needs to be added to the forward function of the model to be calculated for the quantum natural gradient. Only parameters of type `Parameter` registered with the model are optimized.
+    `wrapper_calculate_qng` é um decorador que precisa ser adicionado à função forward do modelo a ser calculado para o gradiente natural quântico. Apenas parâmetros do tipo `Parameter` registrados no modelo são otimizados.
 
-    :param qmodel: Quantum variational circuit model, you need to use `wrapper_calculate_qng` as the decorator of the forward function.
-    :param stepsize: The step size of the gradient descent method, the default is 0.01.
-    :param momentum: Momentum, default is 0.
+    :param qmodel: Modelo de circuito quântico variacional, você precisa usar `wrapper_calculate_qng` como o decorador da função forward.
+    :param stepsize: O tamanho do passo do método de descida de gradiente, o padrão é 0.01.
+    :param momentum: Momentum, padrão é 0.
 
     .. note::
 
-        Only tested on non-batch data.
-        Only purely variational quantum circuits are supported.
-        step() will update the gradients of the input and parameters.
-        step() only updates the numerical values of the model parameters.
-
+        Testado apenas em dados não agrupados em lote.
+        Apenas circuitos quânticos puramente variacionais são suportados.
+        step() atualizará os gradientes da entrada e dos parâmetros.
+        step() atualiza apenas os valores numéricos dos parâmetros do modelo.
 
     Example::
 
@@ -5238,12 +5017,12 @@ wrapper_single_qubit_op_fuse
 
 .. py:function:: pyvqnet.qnn.vqc.wrapper_single_qubit_op_fuse(f)
 
-    A decorator for fusing single-bit operations into Rot operations.
+    Um decorador para fundir operações de bit único em operações Rot.
 
     .. note::
 
-        f is the forward function of the module, and the forward function of the model needs to be run once to take effect.
-        The model defined here inherits from `pyvqnet.qnn.vqc.QModule`, which is a subclass of `pyvqnet.nn.Module`.
+        f é a função forward do módulo, e a função forward do modelo precisa ser executada uma vez para ter efeito.
+        O modelo definido aqui herda de `pyvqnet.qnn.vqc.QModule`, que é uma subclasse de `pyvqnet.nn.Module`.
 
 
     Example::
@@ -5318,21 +5097,19 @@ wrapper_commute_controlled
 
 .. py:function:: pyvqnet.qnn.vqc.wrapper_commute_controlled(f, direction = "right")
 
-    Decorators for controlled door swapping
-    This is a quantum transformation used to move swappable gates in front of the control and target bits of the controlled operation.
-    The diagonal gates on either side of the control bit do not affect the result of the controlled gate; therefore, we can push all single-bit gates acting on the first bit together to the right (and fuse them if necessary).
-    Similarly, X-gates are interchangeable with the target bits of CNOT and Toffoli (as are PauliY and CRY).
-    We can use this transformation to push single-bit gates as deep into controlled operation as possible.
+    Decoradores para troca de porta controlada
+    Esta é uma transformação quântica usada para mover portas comutáveis para frente dos bits de controle e alvo da operação controlada.
+    As portas diagonais em ambos os lados do bit de controle não afetam o resultado da porta controlada; portanto, podemos empurrar todas as portas de bit único atuando no primeiro bit juntas para a direita (e fundi-las se necessário).
+    Da mesma forma, portas X são intercambiáveis com os bits alvo de CNOT e Toffoli (assim como PauliY e CRY).
+    Podemos usar esta transformação para empurrar portas de bit único o mais fundo possível na operação controlada.
 
     .. note::
 
-        f is the forward function of the module, and the forward function of the model needs to be run once to take effect.
-        The model defined here inherits from `pyvqnet.qnn.vqc.QModule`, which is a subclass of `pyvqnet.nn.Module`.
+        f é a função forward do módulo, e a função forward do modelo precisa ser executada uma vez para ter efeito.
+        O modelo definido aqui herda de `pyvqnet.qnn.vqc.QModule`, que é uma subclasse de `pyvqnet.nn.Module`.
 
-    :param f: forward function.
-    :param direction: The direction to move the single-bit gate, the optional value is "left" or "right", the default is "right".
-
-
+    :param f: função forward.
+    :param direction: A direção para mover a porta de bit único, o valor opcional é "left" ou "right", o padrão é "right".
 
     Example::
 
@@ -5405,34 +5182,20 @@ wrapper_commute_controlled
             p = d["params"]
             print(f"name: {name} wires: {wires}, params = {p}")
 
-
-        # name: s wires: (0,), params = None
-        # name: phaseshift wires: (0,), params = [[4.744782]]
-        # name: t wires: (0,), params = None
-        # name: cz wires: (0, 2), params = None
-        # name: paulix wires: (2,), params = None
-        # name: cnot wires: (0, 1), params = None
-        # name: pauliy wires: (1,), params = None
-        # name: cry wires: (0, 1), params = [[0.5]]
-        # name: rz wires: (1,), params = [[4.7447823]]
-        # name: toffoli wires: (0, 1, 2), params = None
-        # name: MeasureAll wires: [0], params = None
-
-
 wrapper_merge_rotations
 ---------------------------------------------------------------
 
 .. py:function:: pyvqnet.qnn.vqc.wrapper_merge_rotations(f)
 
-    Merge decorators for turnstiles of the same type, including "rx", "ry", "rz", "phaseshift", "crx", "cry", "crz", "controlledphaseshift", "isingxx",
+    Decorador para mesclar rotações do mesmo tipo, incluindo "rx", "ry", "rz", "phaseshift", "crx", "cry", "crz", "controlledphaseshift", "isingxx",
         "isingyy", "isingzz", "rot".
 
     .. note::
 
-        f is the forward function of the module, and the forward function of the model needs to be run once to take effect.
-        The model defined here inherits from `pyvqnet.qnn.vqc.QModule`, which is a subclass of `pyvqnet.nn.Module`.
+        f é a função forward do módulo, e a função forward do modelo precisa ser executada uma vez para ter efeito.
+        O modelo definido aqui herda de `pyvqnet.qnn.vqc.QModule`, que é uma subclasse de `pyvqnet.nn.Module`.
 
-    :param f: forward function.
+    :param f: função forward.
 
 
     Example::
@@ -5511,14 +5274,14 @@ wrapper_compile
 
 .. py:function:: pyvqnet.qnn.vqc.wrapper_compile(f,compile_rules=[commute_controlled_right, merge_rotations, single_qubit_ops_fuse])
 
-    Use compilation rules to optimize QModule's circuits.
+    Usa regras de compilação para otimizar circuitos do QModule.
 
     .. note::
 
-        f is the forward function of the module, and the forward function of the model needs to be run once to take effect.
-        The model defined here inherits from `pyvqnet.qnn.vqc.QModule`, which is a subclass of `pyvqnet.nn.Module`.
+        f é a função forward do módulo, e a função forward do modelo precisa ser executada uma vez para ter efeito.
+        O modelo definido aqui herda de `pyvqnet.qnn.vqc.QModule`, que é uma subclasse de `pyvqnet.nn.Module`.
 
-    :param f: forward function.
+    :param f: função forward.
 
 
     Example::
@@ -5714,48 +5477,47 @@ wrapper_compile
         # #################################################
 
 
-
 QNSPSAOptimizer
 ---------------------------------------------------------------
 
 .. py:class:: pyvqnet.qnn.vqc.qng.QNSPSAOptimizer(stepsize=1e-3,regularization=1e-3,finite_diff_step=1e-2,resamplings=1,blocking=True,history_length=5,seed=None)
 
-    Quantum Natural SPSA (QNSPSA) Optimizer is a second-order stochastic optimizer for quantum circuits that combines gradient descent with Fubini-Study metric tensor information.
-    Gradient estimation using symmetric perturbations (similar to SPSA):
+    Quantum Natural SPSA (QNSPSA) Optimizer é um otimizador estocástico de segunda ordem para circuitos quânticos que combina descida de gradiente com informações do tensor métrico de Fubini-Study.
+    Estimativa de gradiente usando perturbações simétricas (similar ao SPSA):
 
     .. math::
         \widehat{\nabla f}(\mathbf{x}) \approx \frac{f(\mathbf{x}+\epsilon \mathbf{h})-f(\mathbf{x}-\epsilon \mathbf{h})}{2\epsilon}
 
-    Compute the Fubini-Study metric from the state overlap measure:
+    Calcula a métrica de Fubini-Study a partir da medida de sobreposição de estado:
 
     .. math::
         \widehat{\mathbf{g}}(\mathbf{x}) \approx \frac{\delta F}{8\epsilon^2}(\mathbf{h}_1\mathbf{h}_2^\intercal + \mathbf{h}_2\mathbf{h}_1^\intercal)
     .. math::
         \delta F = F(\mathbf{x}+\epsilon\mathbf{h}_1+\epsilon\mathbf{h}_2) - F(\mathbf{x}+\epsilon\mathbf{h}_1) - F(\mathbf{x}-\epsilon\mathbf{h}_1+\epsilon\mathbf{h}_2) + F(\mathbf{x}-\epsilon\mathbf{h}_1)
 
-    where δF measures the overlap difference evaluations of the four circuits.
+    onde δF mede as diferenças de avaliação de sobreposição dos quatro circuitos.
 
-    Update rule:
+    Regra de atualização:
 
     .. math::
         \mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \eta \widehat{\mathbf{g}}^{-1}(\mathbf{x}^{(t)})\widehat{\nabla f}(\mathbf{x}^{(t)})
     
-    :param stepsize: User-defined learning rate hyperparameter :math:`\eta` (default: 1e-3)
-    :param regularization: Regularization term :math:`\beta` used for the Fubini-Study metric tensor, for numerical stability (default: 1e-3)
-    :param finite_diff_step: Step size :math:`\epsilon` used to compute finite difference gradients and the Fubini-Study metric tensor (default: 1e-2)
-    :param resamplings: Average number of samples per parameter update (default: 1)
-    :param blocking: When True, only accept updates that result in a loss no greater than the sum of the previous loss values (to help convergence) (default: True)
-    :param history_length: When ``blocking`` is True, the tolerance is set to the average of the previous ``history_length`` cost values (default: 5)
-    :param seed: seed for random sampling (default: None)
+    :param stepsize: Hiperparâmetro da taxa de aprendizado definida pelo usuário :math:`\eta` (padrão: 1e-3)
+    :param regularization: Termo de regularização :math:`\beta` usado para o tensor métrico de Fubini-Study, para estabilidade numérica (padrão: 1e-3)
+    :param finite_diff_step: Tamanho do passo :math:`\epsilon` usado para calcular gradientes de diferença finita e o tensor métrico de Fubini-Study (padrão: 1e-2)
+    :param resamplings: Número médio de amostras por atualização de parâmetro (padrão: 1)
+    :param blocking: Quando True, apenas aceita atualizações que resultam em uma perda não maior que a soma dos valores de perda anteriores (para ajudar na convergência) (padrão: True)
+    :param history_length: Quando ``blocking`` é True, a tolerância é definida como a média dos valores de custo anteriores ``history_length`` (padrão: 5)
+    :param seed: semente para amostragem aleatória (padrão: None)
 
     .. py:method:: step(qmodel, *args, **kwargs)
-        Updates trainable parameters once using the optimizer.
+        Atualiza parâmetros treináveis uma vez usando o otimizador.
 
-        :param qmodel: Trainable quantum model
-        :param args: Variable-length trainable QTensor for qmodel.
-        :param kwargs: Variable-length keyword arguments for qmodel.
+        :param qmodel: Modelo quântico treinável
+        :param args: QTensor treinável de comprimento variável para qmodel.
+        :param kwargs: Argumentos de palavra-chave de comprimento variável para qmodel.
 
-        :return: Updated parameters.
+        :return: Parâmetros atualizados.
 
         Examples::
 
@@ -5788,24 +5550,21 @@ QNSPSAOptimizer
                 if i % 10 == 0:
                     print(f"Step {i}: cost = {loss}")
 
-
 .. _benchmarks:
 
-Quantum Machine Learning Batch Data Training Benchmarks
+Benchmarks de Treinamento de Dados em Lote de Aprendizado de Máquina Quântico
 ==================================================================================
 
-Test 1: Batch Data Gradient Comparison (VQNet / DeepQuantum / Pennylane)
+Teste 1: Comparação de Gradiente de Dados em Lote (VQNet / DeepQuantum / Pennylane)
 ------------------------------------------------------------------------------------
 
-In quantum machine learning, gradient calculation is a key factor affecting the efficiency of variational quantum circuits. To evaluate the performance of quantum gradient calculation in different frameworks, this paper conducted benchmark tests on VQNet, Deepquantum, and Pennylane under the Linux system using GPU. The tests were carried out under different batch data sizes (batch size 16, 32), circuit depths (layer 2, 4), and the number of qubits (qubit 4, 8, 12, 16). The circuit structure was CNOT + RX + RZ + RX encoding layers. The average running time of each framework over 10 runs was recorded. Deepquantum and Pennylane are implemented based on the GPU backend of Torch, while VQNet uses a self-developed GPU acceleration scheme.
+Em aprendizado de máquina quântico, o cálculo de gradiente é um fator chave que afeta a eficiência dos circuitos quânticos variacionais. Para avaliar o desempenho do cálculo de gradiente quântico em diferentes frameworks, este artigo realizou testes de benchmark no VQNet, Deepquantum e Pennylane no sistema Linux usando GPU. Os testes foram realizados sob diferentes tamanhos de dados em lote (batch size 16, 32), profundidades de circuito (layer 2, 4) e número de qubits (qubit 4, 8, 12, 16). A estrutura do circuito foi CNOT + RX + RZ + RX encoding layers. O tempo médio de execução de cada framework em 10 execuções foi registrado. Deepquantum e Pennylane são implementados com base no backend GPU do Torch, enquanto o VQNet usa um esquema de aceleração GPU desenvolvido internamente.
 
 .. image:: ./images/grad-benchmarks.png
    :width: 600 px
    :align: center
 
 |
-
-
 
 .. code-block::
 
@@ -6031,16 +5790,14 @@ In quantum machine learning, gradient calculation is a key factor affecting the 
 
     test_1()
 
-
-
-Test 2: 10-Qubit VQC Gradient Comparison (with TorchQuantum)
+Teste 2: Comparação de Gradiente VQC de 10 Qubits (com TorchQuantum)
 ------------------------------------------------------------------------------------
 
-This test is based on the 10-qubit, 10-layer VQC circuit used in the Origin Quantum large model paper. It compares the gradient computation performance of five frameworks: VQNet, TorchQuantum (TQ), DeepQuantum (DQ), Pennylane (PL), and MindQuantum (MQ). The circuit structure is:
+Este teste é baseado no circuito VQC de 10 qubits e 10 camadas usado no artigo do modelo grande Origin Quantum. Ele compara o desempenho do cálculo de gradiente de cinco frameworks: VQNet, TorchQuantum (TQ), DeepQuantum (DQ), Pennylane (PL) e MindQuantum (MQ). A estrutura do circuito é:
 
   RY(data) -> [RY(param) -> CRZ(param) -> RY(param) -> CRZ(param)] x L
 
-Each layer contains 40 parameters (4 groups x 10 qubits), for a total of 400 parameters. Batch sizes range from 1 to 1024. Trial counts: VQNet / TQ / DQ run 20 trials each, PL / MQ run 2 trials each (the latter two are slower under batch data and limited to 2 trials to save time).
+Cada camada contém 40 parâmetros (4 grupos x 10 qubits), totalizando 400 parâmetros. Os tamanhos de lote variam de 1 a 1024. Contagens de tentativas: VQNet / TQ / DQ executam 20 tentativas cada, PL / MQ executam 2 tentativas cada (os dois últimos são mais lentos com dados em lote e limitados a 2 tentativas para economizar tempo).
 
 .. image:: ./images/grad_benchmarks_10q_ry_crz.png
    :width: 600 px
