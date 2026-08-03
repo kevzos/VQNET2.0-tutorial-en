@@ -8165,7 +8165,7 @@ CommController
 -------------------------
 
 .. py:class:: pyvqnet.distributed.ControlComm.CommController(backend,rank=None,world_size=None)
-    :no-index:
+    :noindex:
     
     CommController est utilisé pour contrôler le contrôleur de communication de données sous cpu et gpu. Il génère des contrôleurs cpu (gloo) et gpu (nccl) en définissant le paramètre `backend`.
     Cette classe appellera backend, rank, world_size pour initialiser ``torch.distributed.init_process_group(backend, rank, world_size)``.
@@ -8211,7 +8211,7 @@ CommController
  
 
     .. py:method:: getRank()
-        :no-index:
+        :noindex:
 
         Utilisé pour obtenir l'ID du processus actuel.
 
@@ -8252,7 +8252,7 @@ CommController
 
 
     .. py:method:: getSize()
-        :no-index:
+        :noindex:
 
         Utilisé pour obtenir le nombre total de processus démarrés.
 
@@ -8293,7 +8293,7 @@ CommController
 
 
     .. py:method:: getLocalRank()
-        :no-index:
+        :noindex:
 
         Dans chaque processus, obtient le numéro de processus local de chaque machine via ``os.environ['LOCAL_RANK'] = rank``.
 
@@ -8335,7 +8335,7 @@ CommController
 
  
     .. py:method:: split_groups(rankL)
-        :no-index:
+        :noindex:
 
         La liste de numéros de processus définie selon le paramètre d'entrée est utilisée pour diviser plusieurs groupes de communication.
 
@@ -8385,7 +8385,7 @@ CommController
 
  
     .. py:method:: barrier()
-        :no-index:
+        :noindex:
 
         Synchronisation des différents processus.
 
@@ -8423,7 +8423,7 @@ CommController
                     p.join()
 
     .. py:method:: allreduce(tensor, c_op = "avg")
-        :no-index:
+        :noindex:
 
         Supporte la communication allreduce sur les données.
 
@@ -8467,7 +8467,7 @@ CommController
                     p.join()
 
     .. py:method:: reduce(tensor, root = 0, c_op = "avg")
-        :no-index:
+        :noindex:
 
         Supporte la communication reduce sur les données.
 
@@ -8514,7 +8514,7 @@ CommController
  
  
     .. py:method:: broadcast(tensor, root = 0)
-        :no-index:
+        :noindex:
 
         Diffuse les données sur le root de processus spécifié à tous les processus.
 
@@ -8561,7 +8561,7 @@ CommController
 
 
     .. py:method:: allgather(tensor)
-        :no-index:
+        :noindex:
 
         Rassemble toutes les données de tous les processus ensemble. Cette interface supporte uniquement le backend nccl.
 
@@ -8606,7 +8606,7 @@ CommController
 
 
     .. py:method:: send(tensor, dest)
-        :no-index:
+        :noindex:
 
         Interface de communication p2p.
 
@@ -8654,7 +8654,7 @@ CommController
  
  
     .. py:method:: recv(tensor, source)
-        :no-index:
+        :noindex:
 
         p2p communication interface.
 
@@ -8702,7 +8702,7 @@ CommController
             
 
     .. py:method:: allreduce_group(tensor, c_op = "avg", group = None)
-        :no-index:
+        :noindex:
 
         Interface de communication allreduce intra-groupe.
 
@@ -8758,7 +8758,7 @@ CommController
 
 
     .. py:method:: reduce_group(tensor, root = 0, c_op = "avg", group = None)
-        :no-index:
+        :noindex:
 
         Interface de communication reduce intra-groupe.
 
@@ -8810,7 +8810,7 @@ CommController
 
  
     .. py:method:: broadcast_group(tensor, root = 0, group = None)
-        :no-index:
+        :noindex:
 
         Interface de communication broadcast intra-groupe.
 
@@ -8864,7 +8864,7 @@ CommController
 
  
     .. py:method:: allgather_group(tensor, group = None)
-        :no-index:
+        :noindex:
         
         Interface de communication Allgather au sein du groupe.
 
