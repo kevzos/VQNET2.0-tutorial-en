@@ -1,7 +1,7 @@
-Steps of VQNet Installation
+VQNet 安装步骤
 ==================================
 
-VQNet python package Installation
+VQNet Python 包安装
 ----------------------------------
 
 我们在 Linux、Windows、macOS 13+ (arm64) 上提供预编译的 Python 包安装方式，支持 **Python 3.10**\ 。
@@ -25,7 +25,7 @@ VQNet python package Installation
         请注意，由于此包不区分 CPU/GPU 版本，在 Windows 和 Linux 下会依赖 NVIDIA CUDA 运行时库（随包自动安装）。这可能会与依赖不同版本 CUDA 的其他软件产生冲突。
 
 
-Validate VQNet's installation
+验证 VQNet 的安装
 ----------------------------------
 
 .. code-block::
@@ -35,7 +35,7 @@ Validate VQNet's installation
     a = arange(1,25).reshape([2, 3, 4])
     print(a)
 
-Testing GPU Functionality in VQNet
+测试 VQNet 的 GPU 功能
 ----------------------------------
 
 .. code-block::
@@ -45,7 +45,7 @@ Testing GPU Functionality in VQNet
     a = ones([4,5],device = DEV_GPU_0)
     print(a)
 
-A simple case of VQNet
+VQNet 简单示例
 --------------------------
 这里我们介绍一个包含 VQNet 经典神经网络模块和量子模块的案例，以描述量子机器学习的工作流程。
 它参考了 `Data re-uploading for a universal quantum classifier <https://arxiv.org/abs/1907.02085>`_ 。

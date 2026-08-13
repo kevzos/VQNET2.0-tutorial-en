@@ -1,7 +1,7 @@
-Other Utility Functions
+其他工具函数
 ##################################
 
-Seeds for Random Distributions
+随机分布种子
 *******************************************
 
 

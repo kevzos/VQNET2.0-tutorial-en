@@ -1583,7 +1583,7 @@ RowParallelLinear
         print(f'Accuracy of the model on the 10000 Train images: {train_acc}% time cost {time2 - time1}')
 
 
-Bit Reordering
+量子位重排序
 =================================
 
 量子位重排序是比特并行中的一项技术。其核心目标是通过改变量子逻辑门的顺序来减少比特并行所需的比特变换次数。构建基于比特并行的大位量子电路需要以下模块。参考论文 `Lazy Qubit Reordering for Accelerating Parallel State-Vector-based Quantum Circuit Simulation <https://export.arxiv.org/abs/2410.04252>`__。
