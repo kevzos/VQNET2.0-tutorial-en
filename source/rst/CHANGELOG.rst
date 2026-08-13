@@ -1,4 +1,4 @@
-VQNet Changelog
+Registro de alterações do VQNet
 ###############################
 
 
