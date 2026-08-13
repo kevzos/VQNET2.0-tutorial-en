@@ -1,5 +1,5 @@
-VQNet Changelog
-###############################
+Registro delle modifiche di VQNet
+#################################
 
 
 [v2.18.0] - 2026-04-22
