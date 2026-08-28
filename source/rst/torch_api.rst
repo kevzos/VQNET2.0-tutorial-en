@@ -6,7 +6,7 @@
 VQNet uses torch for low-level computation
 =============================================================
 
-Starting from version 2.15.0, this software supports using `torch` as the computing backend for low-level operations and can be integrated with models, codes, and third-party libraries based on `torch` for secondary development.
+Starting from version 2.15.0, this software supports using `PyTorch` as the computing backend for low-level operations and can be integrated with models, codes, and third-party libraries based on `PyTorch` for secondary development.
 
     .. important::
 
@@ -14,8 +14,20 @@ Starting from version 2.15.0, this software supports using `torch` as the comput
 
     .. note::
 
+        Variational quantum computation functions (such as ``rx``, ``ry``, ``rz``, ``cnot``, etc.) based on the torch backend have high-performance CUDA kernel implementations compiled under torch 2.11.0 + CUDA 12.6. When the torch and CUDA versions match, this implementation is automatically enabled; otherwise, it automatically falls back to the native torch implementation.
+
+    .. important::
+
         The variational quantum computation functions (with lowercase naming, such as `rx` , `ry` , `rz` , etc.) in :ref:`vqc_api`, as well as the basic computation functions of QTensor in :ref:`qtensor_api` ,
-        can take a `QTensor` as input after calling ``pyvqnet.backends.set_backend("torch")`` , with the `data` member of `QTensor` changing from pyvqnet's Tensor to ``torch.Tensor`` for computation.
+        can take a ``QTensor`` as input after calling ``pyvqnet.backends.set_backend("torch")`` , with the `data` member of `QTensor` changing from pyvqnet's ``_core.Tensor`` to ``torch.Tensor`` for computation.
+
+        ``to_tensor`` can be used to wrap a ``torch.Tensor`` into a ``QTensor`` .
+
+        When using the ``pytorch`` backend, the neural network modules and pyqpanda quantum neural network modules used must inherit from ``pyvqnet.nn.torch.TorchModule``,
+        and the automatic-differentiation variational quantum modules must inherit from ``pyvqnet.qnn.vqc.sv.torch.QModule`` . Otherwise, their parameters cannot be trained via automatic differentiation or saved.
+
+        In ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.qnn.vqc.sv.torch.QModule`` , the data in ``_buffers`` is of ``torch.Tensor`` type,
+        and the data in ``_parameters`` is of ``torch.nn.Parameter`` type; QTensor interfaces cannot be used on them.
 
         ``pyvqnet.backends.set_backend("torch")`` and ``pyvqnet.backends.set_backend("pyvqnet")`` modify the global computation backend.
         ``QTensor`` objects created under different backend configurations cannot be mixed in computations.
@@ -28,17 +40,16 @@ set_backend
 
 .. py:function:: pyvqnet.backends.set_backend(backend_name)
 
-    Sets the backend for current computations and data storage. The default is "pyvqnet-ad", but it can be set to "torch","torch-native", "pyvqnet-ad".
+    Sets the backend for current computations and data storage. The default is "pyvqnet-ad", which can be set to "torch" (``torch-native`` and ``torch`` have been merged, both have the same effect).
     
-    After calling ``pyvqnet.backends.set_backend("torch")``, the interface remains unchanged. VQNet's ``QTensor`` ``data`` member variable all uses ``torch.Tensor`` to store data.
-    :ref:`qtensor_api` , :ref:`vqc_api` , and ``pyvqnet.nn.torch`` interfaces accept ``QTensor`` as input and ``QTensor`` as output.
+    After calling ``pyvqnet.backends.set_backend("pyvqnet")``, VQNet ``QTensor`` ``data`` member variables use ``pyvqnet._core.Tensor`` to store data, and computations use the pyvqnet C++ library, with automatic differentiation completed in C++.
 
-    After calling ``pyvqnet.backends.set_backend("torch-native")``, the interfaces remain unchanged: :ref:`qtensor_api`, :ref:`vqc_api`, and the `pyvqnet.nn.torch` interface.
-    Inputs can directly accept ``torch.Tensor`` or ``QTensor`` types, and outputs are ``torch.Tensor``, eliminating the need for conversion to ``QTensor``, thus reducing data conversion.
-    
-    After calling ``pyvqnet.backends.set_backend("pyvqnet")``, the ``data`` member of VQNet's ``QTensor`` will store data using ``pyvqnet._core.Tensor`` , and computations will use the pyvqnet C++ library.
+    ``pyvqnet.backends.set_backend("pyvqnet-ad")`` has the same effect as ``pyvqnet.backends.set_backend("pyvqnet")``.
 
-    After calling ``pyvqnet.backends.set_backend("pyvqnet-ad")``, the ``data`` member of VQNet's ``QTensor`` will store data using ``pyvqnet._core.Tensor`` , and computations will use the pyvqnet C++ library with performance boosted.
+    After calling ``pyvqnet.backends.set_backend("torch")``, the interface remains unchanged. VQNet's ``QTensor`` ``data`` member variable uses ``torch.Tensor`` to store data.
+    :ref:`qtensor_api`, :ref:`vqc_api`, and interfaces under `pyvqnet.nn.torch` accept ``QTensor`` or ``torch.Tensor`` as input, and output ``torch.Tensor``.
+
+    ``pyvqnet.backends.set_backend("torch-native")`` has the same effect as ``pyvqnet.backends.set_backend("torch")``.
 
 
     .. note::
@@ -159,7 +170,7 @@ TorchModule
 
         :return: An error message if there is an issue.
 
-        Examples::
+        Example::
 
             from pyvqnet.nn.torch import TorchModule, Conv2D
             import pyvqnet
@@ -195,7 +206,7 @@ TorchModule
         :param device: The device to store the QTensor on. Default: DEV_GPU_0. device = pyvqnet.DEV_GPU_0 stores on the first GPU, device = DEV_GPU_1 stores on the second GPU, and so on.
         :return: The Module moved to the GPU device.
 
-        Examples::
+        Example::
 
             from pyvqnet.nn.torch import ConvT2D
             import pyvqnet
@@ -211,7 +222,7 @@ TorchModule
 
         :return: The Module moved to the CPU device.
 
-        Examples::
+        Example::
 
             from pyvqnet.nn.torch import ConvT2D
             import pyvqnet
@@ -1477,7 +1488,7 @@ SDPA
     :param is_causal: default value: False, if set to true, the attention mask is a lower triangular matrix when the mask is a square matrix. If both attn_mask and is_causal are set, an error is raised.
     :return: An SDPA class
 
-    Examples::
+    Example::
     
         from pyvqnet.nn.torch import SDPA
         from pyvqnet import tensor
@@ -1494,7 +1505,7 @@ SDPA
         :param value: The key input QTensor.
         :return: The QTensor returned by the SDPA calculation.
         
-        Examples::
+        Example::
         
             from pyvqnet.nn.torch import SDPA
             from pyvqnet import tensor
@@ -1515,7 +1526,7 @@ SDPA
 
             out_sdpa = model(query_p, key_p, value_p)
 
-            out_sdpa.backward()
+            out_sdpa.backward(pyvqnet.tensor.ones_like(out_sdpa))
 
 Loss Functions API
 ------------------------
@@ -1552,7 +1563,7 @@ MeanSquaredError
 
     .. note::
 
-        Please note that unlike frameworks such as pytorch, in the forward function of the following MeanSquaredError function, the first parameter is the target value and the second parameter is the predicted value.
+        Please note that unlike frameworks such as PyTorch, in the forward function of the following MeanSquaredError function, the first parameter is the target value and the second parameter is the predicted value.
 
 
     Example::
@@ -1606,7 +1617,7 @@ BinaryCrossEntropy
 
     .. note::
 
-        Please note that unlike frameworks such as pytorch, in the forward function of the BinaryCrossEntropy function, the first parameter is the target value and the second parameter is the predicted value.
+        Please note that unlike frameworks such as PyTorch, in the forward function of the BinaryCrossEntropy function, the first parameter is the target value and the second parameter is the predicted value.
         
     Example::
 
@@ -1619,7 +1630,7 @@ BinaryCrossEntropy
 
         loss_result = BinaryCrossEntropy()
         result = loss_result(y, x)
-        result.backward()
+        result.backward(pyvqnet.tensor.ones_like(result))
         print(result)
 
 
@@ -1647,7 +1658,7 @@ CategoricalCrossEntropy
 
     .. note::
 
-        Please note that unlike pytorch and other frameworks, in the forward function of CategoricalCrossEntropy function, the first parameter is the target value and the second parameter is the predicted value.
+        Please note that unlike PyTorch and other frameworks, in the forward function of CategoricalCrossEntropy function, the first parameter is the target value and the second parameter is the predicted value.
 
         This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
 
@@ -1692,7 +1703,7 @@ SoftmaxCrossEntropy
 
     .. note::
 
-        Please note that unlike pytorch and other frameworks, in the forward function of the SoftmaxCrossEntropy function, the first parameter is the target value and the second parameter is the predicted value.
+        Please note that unlike PyTorch and other frameworks, in the forward function of the SoftmaxCrossEntropy function, the first parameter is the target value and the second parameter is the predicted value.
 
         This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
         
@@ -1711,7 +1722,7 @@ SoftmaxCrossEntropy
                     dtype=kint64)
         loss_result = SoftmaxCrossEntropy()
         result = loss_result(y, x)
-        result.backward()
+        result.backward(pyvqnet.tensor.ones_like(result))
         print(result)
 
 
@@ -1742,7 +1753,7 @@ NLL_Loss
 
     .. note::
 
-        Please note that unlike frameworks such as pytorch, in the forward function of the NLL_Loss function, the first parameter is the target value and the second parameter is the prediction value.
+        Please note that unlike frameworks such as PyTorch, in the forward function of the NLL_Loss function, the first parameter is the target value and the second parameter is the prediction value.
 
         This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
             
@@ -1795,7 +1806,7 @@ CrossEntropyLoss
 
     .. note::
 
-        Please note that unlike frameworks such as pytorch, in the forward function of the CrossEntropyLoss function, the first parameter is the target value and the second parameter is the predicted value.
+        Please note that unlike frameworks such as PyTorch, in the forward function of the CrossEntropyLoss function, the first parameter is the target value and the second parameter is the predicted value.
 
         This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
 
@@ -1841,7 +1852,7 @@ Sigmoid
 
     :return: A Sigmoid activation function layer instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.nn.torch import Sigmoid
         from pyvqnet.tensor import QTensor
@@ -1868,7 +1879,7 @@ Softplus
 
     :return: a Softplus instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.nn.torch import Softplus
         from pyvqnet.tensor import QTensor
@@ -1895,7 +1906,7 @@ Softsign
 
     :return: a SoftSign instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.nn.torch import Softsign
         from pyvqnet.tensor import QTensor
@@ -1909,7 +1920,7 @@ Softsign
 Softmax
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.Softmax(axis:int = -1,name:str="")
+.. py:class:: pyvqnet.nn.torch.Softmax(dim:int = -1,name:str="")
 
     Softmax 
 
@@ -1920,12 +1931,12 @@ Softmax
     This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
-    :param axis: the dimension to calculate (the last axis is -1), default value = -1.
+    :param dim: the dimension to calculate (the last dim is -1), default： -1.
     :param name: The name of the activation function layer, default is "".
 
     :return: a Softmax instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.nn.torch import Softmax
         from pyvqnet.tensor import QTensor
@@ -1957,7 +1968,7 @@ HardSigmoid
 
     :return: HardSigmoid instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.nn.torch import HardSigmoid
         from pyvqnet.tensor import QTensor
@@ -1988,7 +1999,7 @@ ReLu
 
     :return: a ReLu instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.nn.torch import ReLu
         from pyvqnet.tensor import QTensor
@@ -2023,7 +2034,7 @@ LeakyReLu
 
     :return: a LeakyReLu activation instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.nn.torch import LeakyReLu
         from pyvqnet.tensor import QTensor
@@ -2056,7 +2067,7 @@ Gelu
 
     :return: Gelu activation instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.tensor import randu, ones_like
         from pyvqnet.nn.torch import Gelu
@@ -2090,7 +2101,7 @@ ELU
 
     :return: ELU activation instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.nn.torch import ELU
         from pyvqnet.tensor import QTensor
@@ -2119,7 +2130,7 @@ Tanh
 
     :return: Tanh activation instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.nn.torch import Tanh
         from pyvqnet.tensor import QTensor
@@ -2138,118 +2149,9 @@ For classical and quantum circuit modules inherited from `TorchModule`, the para
 
 
 Using pyqpanda to run quantum variational circuit
--------------------------------------------------------------------------
-
-The following is the training variational quantum circuit interface for circuit calculation using pyqpanda and pyqpanda3.
-
-.. warning::
-
-    The quantum computing part of the following TorchQpandaQuantumLayer uses pyqpanda2 https://pyqpanda-toturial.readthedocs.io/zh/latest/.
-
-    Due to the compatibility issues between pyqpanda2 and pyqpanda3, you need to install pyqpnda2 yourself, `pip install pyqpanda`
-
-TorchQpandaQuantumLayer
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-If you are more familiar with pyQPanda2 syntax, you can use the interface TorchQpandaQuantumLayer, add custom quantum bits ``qubits``, classical bits ``cbits``, and backend simulator ``machine`` to the parameter ``qprog_with_measure`` function of TorchQpandaQuantumLayer.
-
-.. py:class:: pyvqnet.qnn.vqc.torch.TorchQpandaQuantumLayer(qprog_with_measure,para_num,diff_method:str = "parameter_shift",delta:float = 0.01,dtype=None,name="")
-
-    Abstract computing module of variational quantum layer. Use pyQPanda2 to simulate a parameterized quantum circuit and get the measurement results. This variational quantum layer inherits the gradient calculation module of the VQNet framework. It can use parameter drift method to calculate the gradient of circuit parameters, train variational quantum circuit models or embed variational quantum circuits into hybrid quantum and classical models.
-
-    :param qprog_with_measure: Quantum circuit operation and measurement functions built with pyQPand.
-    :param para_num: `int` - number of parameters.
-    :param diff_method: Method for solving quantum circuit parameter gradients, "parameter shift" or "finite difference", default parameter shift.
-    :param delta: \delta when calculating gradients by finite difference.
-    :param dtype: Data type of parameter, default: None, use default data type: kfloat32, representing 32-bit floating point numbers.
-    :param name: The name of this module, default is "".
-
-    :return: A module that can calculate quantum circuits.
-
-    .. note::
-
-        qprog_with_measure is a quantum circuit function defined in pyQPanda2: https://pyqpanda-toturial.readthedocs.io/zh/latest/QCircuit.html.
-
-        This function must contain the following parameters as function input (even if a parameter is not actually used), otherwise it will not work properly in this function.
-
-        Compared with QuantumLayer. In the variational circuit running function passed in by this interface, the user should manually create quantum bits and simulators: https://pyqpanda-toturial.readthedocs.io/zh/latest/QuantumMachine.html,
-
-        If qprog_with_measure requires quantum measure, the user also needs to manually create and allocate cbits: https://pyqpanda-toturial.readthedocs.io/zh/latest/Measure.html
-
-        The use of the quantum circuit function qprog_with_measure (input, param, nqubits, ncbits) can refer to the following example.
-
-        `input`: Input one-dimensional classical data. If none, input None.
-
-        `param`: Input one-dimensional variational quantum circuit parameters to be trained.
-
-    Example::
-
-        import pyqpanda as pq
-        from pyvqnet.qnn import ProbsMeasure
-        import numpy as np
-        from pyvqnet.tensor import QTensor
-        import pyvqnet
-        pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.torch import TorchQpandaQuantumLayer
-        def pqctest (input,param):
-            num_of_qubits = 4
-
-            m_machine = pq.CPUQVM()# outside
-            m_machine.init_qvm()# outside
-            qubits = m_machine.qAlloc_many(num_of_qubits)
-
-            circuit = pq.QCircuit()
-            circuit.insert(pq.H(qubits[0]))
-            circuit.insert(pq.H(qubits[1]))
-            circuit.insert(pq.H(qubits[2]))
-            circuit.insert(pq.H(qubits[3]))
-
-            circuit.insert(pq.RZ(qubits[0],input[0]))
-            circuit.insert(pq.RZ(qubits[1],input[1]))
-            circuit.insert(pq.RZ(qubits[2],input[2]))
-            circuit.insert(pq.RZ(qubits[3],input[3]))
-
-            circuit.insert(pq.CNOT(qubits[0],qubits[1]))
-            circuit.insert(pq.RZ(qubits[1],param[0]))
-            circuit.insert(pq.CNOT(qubits[0],qubits[1]))
-
-            circuit.insert(pq.CNOT(qubits[1],qubits[2]))
-            circuit.insert(pq.RZ(qubits[2],param[1]))
-            circuit.insert(pq.CNOT(qubits[1],qubits[2]))
-
-            circuit.insert(pq.CNOT(qubits[2],qubits[3]))
-            circuit.insert(pq.RZ(qubits[3],param[2]))
-            circuit.insert(pq.CNOT(qubits[2],qubits[3]))
-
-            prog = pq.QProg()
-            prog.insert(circuit)
-
-            rlt_prob = ProbsMeasure([0,2],prog,m_machine,qubits)
-            return rlt_prob
-
-        pqc = TorchQpandaQuantumLayer(pqctest,3)
-
-        #classic data as input
-        input = QTensor([[1.0,2,3,4],[4,2,2,3],[3,3,2,2]],requires_grad=True)
-
-        #forward circuits
-        rlt = pqc(input)
-
-        print(rlt)
-
-        grad =  QTensor(np.ones(rlt.data.shape)*1000)
-        #backward circuits
-        rlt.backward(grad)
-
-        print(pqc.m_para.grad)
-        print(input.grad)
-
-
 .. warning::
 
     The quantum computing part of the following TorchQcloud3QuantumLayer and TorchQpanda3QuantumLayer interfaces uses pyqpanda3 https://qcloud.originqc.com.cn/document/qpanda-3/index.html.
-
-    If you use the QCloud function under this module, there will be errors when importing pyqpanda2 in the code or using pyvqnet's pyqpanda2 related package interfaces.
 
 TorchQcloud3QuantumLayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2292,7 +2194,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
     :param dtype: Data type of the parameter. The default value is None, which means using the default data type pyvqnet.kfloat32.
     :param name: The name of the module. The default value is an empty string.
     :param diff_method: Differentiation method for gradient calculation. The default value is "parameter_shift", "random_coordinate_descent".
-    :param submit_kwargs: Additional keyword parameters for submitting quantum circuits, default: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, when test_qcloud_fake is set to True, local CPUQVM simulation.
+    :param submit_kwargs: Additional keyword parameters for submitting quantum circuits, default: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"server_ip_address":"","use_qwc":True}, when test_qcloud_fake is set to True, local CPUQVM simulation.
     :param query_kwargs: Additional keyword parameters for querying quantum results, default: {"timeout":2,"print_query_info":True,"sub_circuits_split_size":1}.
     :return: A module that can calculate quantum circuits.
 
@@ -2325,7 +2227,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
             return m_prog
 
         l = TorchQcloud3QuantumLayer(qfun,
-                        "3047DE8A59764BEDAC9C3282093B16AF1",
+                        ""your_api_token"",
                         2,
                         pauli_str_dict=None,
                         shots = 1000,
@@ -2338,7 +2240,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
         x = pyvqnet.tensor.QTensor([[0.56,1.2],[0.56,1.2],[0.56,1.2],[0.56,1.2],[0.56,1.2]],requires_grad= True)
         y = l(x)
         print(y)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(l.m_para.grad)
         print(x.grad)
 
@@ -2360,7 +2262,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
 
             return m_prog
         l = TorchQcloud3QuantumLayer(qfun2,
-                "3047DE8A59764BEDAC9C3282093B16AF",
+                ""your_api_token"",
                 2,
 
                 pauli_str_dict={'Z0 X1':10,'':-0.5,'Y2':-0.543},
@@ -2374,7 +2276,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
         x = pyvqnet.tensor.QTensor([[0.56,1.2],[0.56,1.2],[0.56,1.2],[0.56,1.2]],requires_grad= True)
         y = l(x)
         print(y)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(l.m_para.grad)
         print(x.grad)
 
@@ -2463,7 +2365,7 @@ If you are more familiar with pyQPanda3 syntax, you can use the interface TorchQ
 
         print(rlt)
 
-        grad =  QTensor(np.ones(rlt.data.shape)*1000)
+        grad = pyvqnet.tensor.ones(rlt.data.shape)*1000
         #backward circuits
         rlt.backward(grad)
 
@@ -3965,7 +3867,7 @@ HermitianExpval
         qunatum_model = QModel(num_wires=2, dtype=pyvqnet.kcomplex64)
 
         batch_y = qunatum_model(input_x)
-        batch_y.backward()
+        batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
 
         print(batch_y)
 
@@ -4029,7 +3931,7 @@ VQC_HardwareEfficientAnsatz
         inputx.requires_grad= True
         qlayer = QM()
         y = qlayer(inputx)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
 
@@ -4084,7 +3986,7 @@ VQC_BasicEntanglerTemplate
         inputx = tensor.arange(1.0, bz * 4 + 1).reshape([bz, 4])
         qlayer = QM()
         y = qlayer(inputx)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
 
@@ -4139,7 +4041,7 @@ VQC_StronglyEntanglingTemplate
         inputx = tensor.arange(1.0, bz * 4 + 1).reshape([bz, 4])
         qlayer = QM()
         y = qlayer(inputx)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
 
@@ -4202,7 +4104,7 @@ VQC_QuantumEmbedding
         inputx = tensor.arange(1.0, bz * depth_input + 1).reshape([bz, depth_input])
         qlayer = QM()
         y = qlayer(inputx)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
 
@@ -4261,7 +4163,7 @@ ExpressiveEntanglingAnsatz
         qunatum_model = QModel(num_wires=3, dtype=pyvqnet.kcomplex64)
 
         batch_y = qunatum_model(input_x)
-        batch_y.backward()
+        batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
         print(batch_y)
 
 
@@ -4334,7 +4236,7 @@ vqc_angle_embedding
 vqc_amplitude_embedding
 """"""""""""""""""""""""""""""""""""""""
 
-.. py:function:: pyvqnet.qnn.vqc.torch.vqc_amplitude_embeddingVQC_AmplitudeEmbeddingCircuit(input_feature, q_machine)
+.. py:function:: pyvqnet.qnn.vqc.torch.vqc_amplitude_embedding(input_feature, q_machine)
 
     Encodes a :math:`2^n` feature into an amplitude vector of :math:`n` qubits. This function is aliased as `VQC_AmplitudeEmbedding`.
 
@@ -4466,7 +4368,7 @@ vqc_controlled_hadamard
     :param wires: quantum bit index list, the first one is the control bit, the list length is 2.
     :param q_machine: quantum virtual machine device.
 
-    Examples::
+    Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4544,7 +4446,7 @@ vqc_fermionic_single_excitation
 
     
 
-    Examples::
+    Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4597,7 +4499,7 @@ vqc_fermionic_double_excitation
 
     
 
-    Examples::
+    Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4644,7 +4546,7 @@ vqc_uccsd
     :param init_state: occupation-number vector of length ``len(wires)`` representing the high-frequency state. ``init_state`` Initialization state of the qubit.
     :param q_machine: Quantum virtual machine device.
 
-    Examples::
+    Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4845,7 +4747,7 @@ vqc_quantumpooling_circuit
     :param params: Input parameters.
     :param q_machine: Quantum virtual machine device.
 
-    Examples:: 
+    Example:: 
 
         import pyvqnet
 
@@ -4938,7 +4840,7 @@ QuantumLayerAdjoint
                             grad_mode="adjoint")
         adjoint_model = QuantumLayerAdjoint(qunatum_model, qunatum_model.qm)
         batch_y = adjoint_model(input_x)
-        batch_y.backward()
+        batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
 
 
 
@@ -4975,7 +4877,7 @@ Writing a  variational quantum circuit model on tensornetwork requires inheritin
 TNQModule
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.TNQModule(use_jit=False, vectorized_argnums=0, name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.TNQModule(use_jit=False, vectorized_argnums=0, name="")
 
     .. note::
 
@@ -4995,8 +4897,8 @@ TNQModule
         import pyvqnet
         from pyvqnet.nn import Parameter
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import TNQModule
-        from pyvqnet.qnn.vqc.tn import TNQMachine, RX, RY, CNOT, PauliX, PauliZ,qmeasure,qcircuit,VQC_RotCircuit
+        from pyvqnet.qnn.vqc.tn.torch import TNQModule
+        from pyvqnet.qnn.vqc.tn.torch import TNQMachine, RX, RY, CNOT, PauliX, PauliZ,qmeasure,qcircuit,VQC_RotCircuit
         class QModel(TNQModule):
             def __init__(self, num_wires, dtype,batch_size=2):
                 super(QModel, self).__init__()
@@ -5046,13 +4948,13 @@ TNQModule
         x= pyvqnet.tensor.QTensor([[1,0,0,1],[1,1,0,1]],dtype=pyvqnet.kfloat32)
         model = QModel(4,pyvqnet.kcomplex64,2)
         y = model(x)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
 
 
 TNQMachine
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.TNQMachine(num_wires, dtype=pyvqnet.kcomplex64, use_mps=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.TNQMachine(num_wires, dtype=pyvqnet.kcomplex64, use_mps=False)
 
     Simulator class for variational quantum computing, including statevectors whose states attribute is quantum circuits.
 
@@ -5081,8 +4983,8 @@ TNQMachine
         import pyvqnet
         from pyvqnet.nn import Parameter
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import TNQModule
-        from pyvqnet.qnn.vqc.tn import TNQMachine, RX, RY, CNOT, PauliX, PauliZ,qmeasure,qcircuit,VQC_RotCircuit
+        from pyvqnet.qnn.vqc.tn.torch import TNQModule
+        from pyvqnet.qnn.vqc.tn.torch import TNQMachine, RX, RY, CNOT, PauliX, PauliZ,qmeasure,qcircuit,VQC_RotCircuit
         class QModel(TNQModule):
             def __init__(self, num_wires, dtype,batch_size=2):
                 super(QModel, self).__init__()
@@ -5132,7 +5034,7 @@ TNQMachine
         x= pyvqnet.tensor.QTensor([[1,0,0,1],[1,1,0,1]],dtype=pyvqnet.kfloat32)
         model = QModel(4,pyvqnet.kcomplex64,2)
         y = model(x)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
 
     .. py:method:: get_states()
 
@@ -5146,7 +5048,7 @@ The following function interfaces in ``pyvqnet.qnn.vqc`` directly support ``QTen
 .. csv-table:: List of supported pyvqnet.qnn.vqc interfaces
     :file: ./images/same_apis_from_tn.csv
 
-The following quantum circuit modules inherit from ``pyvqnet.qnn.vqc.tn.TNQModule``, where calculations are performed using ``torch.Tensor``.
+The following quantum circuit modules inherit from ``pyvqnet.qnn.vqc.tn.torch.TNQModule``, where calculations are performed using ``torch.Tensor``.
 
 .. note::
 
@@ -5158,11 +5060,11 @@ The following quantum circuit modules inherit from ``pyvqnet.qnn.vqc.tn.TNQModul
 I
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.I(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.I(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a I quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5171,11 +5073,11 @@ I
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import I,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import I,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5206,11 +5108,11 @@ I
 Hadamard
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.Hadamard(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.Hadamard(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a Hadamard quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5219,11 +5121,11 @@ Hadamard
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import Hadamard,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import Hadamard,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5253,11 +5155,11 @@ Hadamard
 T
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.T(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.T(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a T quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5266,11 +5168,11 @@ T
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import T,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import T,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5301,11 +5203,11 @@ T
 S
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.S(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.S(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a S quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5314,11 +5216,11 @@ S
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import S,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import S,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5348,11 +5250,11 @@ S
 PauliX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.PauliX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.PauliX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PauliX quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
@@ -5362,11 +5264,11 @@ PauliX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import PauliX,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import PauliX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5397,11 +5299,11 @@ PauliX
 PauliY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.PauliY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.PauliY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PauliY quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
@@ -5411,11 +5313,11 @@ PauliY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import PauliY,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import PauliY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5445,11 +5347,11 @@ PauliY
 PauliZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.PauliZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.PauliZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PauliZ quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
@@ -5459,11 +5361,11 @@ PauliZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import PauliZ,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import PauliZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5495,11 +5397,11 @@ PauliZ
 X1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.X1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.X1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a X1 quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5508,11 +5410,11 @@ X1
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import X1,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import X1,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5543,11 +5445,11 @@ X1
 RX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.RX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RX quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5556,11 +5458,11 @@ RX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import RX,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import RX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5593,11 +5495,11 @@ RX
 RY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.RY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RY quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5606,11 +5508,11 @@ RY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import RY,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import RY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5640,11 +5542,11 @@ RY
 RZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.RZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RZ quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5653,11 +5555,11 @@ RZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import RZ,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import RZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5687,11 +5589,11 @@ RZ
 CRX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.CRX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CRX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CRX quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5700,11 +5602,11 @@ CRX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import CRX,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import CRX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5737,11 +5639,11 @@ CRY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.CRY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CRY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CRY quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5750,11 +5652,11 @@ CRY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import CRY,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import CRY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5785,11 +5687,11 @@ CRZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.CRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CRZ quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5798,11 +5700,11 @@ CRZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import CRZ,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import CRZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5833,11 +5735,11 @@ CRZ
 U1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.U1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.U1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a U1 quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5846,11 +5748,11 @@ U1
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import U1,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import U1,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5881,11 +5783,11 @@ U2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.U2(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.U2(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a U2 quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5894,11 +5796,11 @@ U2
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import U2,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import U2,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5929,11 +5831,11 @@ U3
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.U3(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.U3(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a U3 quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5942,11 +5844,11 @@ U3
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import U3,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import U3,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -5977,11 +5879,11 @@ U3
 CNOT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.CNOT(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CNOT(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CNOT quantum gate , alias `CX` .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -5990,11 +5892,11 @@ CNOT
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import CNOT,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import CNOT,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6023,11 +5925,11 @@ CNOT
 CY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.CY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CY quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6036,11 +5938,11 @@ CY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import CY,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import CY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6070,11 +5972,11 @@ CY
 CZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.CZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CZ quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6083,11 +5985,11 @@ CZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import CZ,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import CZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6120,11 +6022,11 @@ CZ
 CR
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.CR(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CR(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CR quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6133,11 +6035,11 @@ CR
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import CR,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import CR,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6169,11 +6071,11 @@ SWAP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.SWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.SWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SWAP quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6182,11 +6084,11 @@ SWAP
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import SWAP,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import SWAP,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6216,7 +6118,7 @@ SWAP
 CSWAP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.CSWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CSWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SWAP quantum gate .
 
@@ -6231,7 +6133,7 @@ CSWAP
             0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
         \end{bmatrix}.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6240,11 +6142,11 @@ CSWAP
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import CSWAP,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import CSWAP,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6274,11 +6176,11 @@ RXX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.RXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RXX quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6287,11 +6189,11 @@ RXX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import RXX,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import RXX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6320,11 +6222,11 @@ RXX
 RYY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.RYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RYY quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6333,11 +6235,11 @@ RYY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import RYY,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import RYY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6367,11 +6269,11 @@ RYY
 RZZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.RZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RZZ quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6380,11 +6282,11 @@ RZZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import RZZ,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import RZZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6415,11 +6317,11 @@ RZZ
 RZX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.RZX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RZX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RZX quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6428,11 +6330,11 @@ RZX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import RZX,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import RZX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6461,11 +6363,11 @@ RZX
 Toffoli
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.Toffoli(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.Toffoli(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a Toffoli quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6474,11 +6376,11 @@ Toffoli
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import Toffoli,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import Toffoli,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6508,11 +6410,11 @@ IsingXX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.IsingXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingXX quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6521,11 +6423,11 @@ IsingXX
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import IsingXX,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import IsingXX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6556,11 +6458,11 @@ IsingYY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.IsingYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingYY quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6569,11 +6471,11 @@ IsingYY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import IsingYY,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import IsingYY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6603,11 +6505,11 @@ IsingYY
 IsingZZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.IsingZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingZZ quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6616,11 +6518,11 @@ IsingZZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import IsingZZ,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import IsingZZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6651,11 +6553,11 @@ IsingXY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.IsingXY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingXY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingXY quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6664,11 +6566,11 @@ IsingXY
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import IsingXY,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import IsingXY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6699,11 +6601,11 @@ PhaseShift
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.PhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.PhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PhaseShift quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6712,11 +6614,11 @@ PhaseShift
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import PhaseShift,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import PhaseShift,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6746,11 +6648,11 @@ PhaseShift
 MultiRZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.MultiRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.MultiRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a MultiRZ quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6759,11 +6661,11 @@ MultiRZ
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import MultiRZ,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import MultiRZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6795,11 +6697,11 @@ SDG
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.SDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.SDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SDG quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6808,11 +6710,11 @@ SDG
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import SDG,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import SDG,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6844,11 +6746,11 @@ SDG
 TDG
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.TDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.TDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SDG quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6857,11 +6759,11 @@ TDG
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
         
-        from pyvqnet.qnn.vqc.tn import TDG,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import TDG,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6893,11 +6795,11 @@ ControlledPhaseShift
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.ControlledPhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.ControlledPhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a ControlledPhaseShift quantum gate .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
@@ -6906,11 +6808,11 @@ ControlledPhaseShift
     :param wires: Bit index of the line effect, the default is None.
     :param dtype: The data precision of the internal matrix of the logic gate can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float input or double input respectively.
     :param use_dagger: whether to use the transposed conjugate version of the gate, the default is False.
-    :return: a ``pyvqnet.qnn.vqc.tn.QModule`` instance
+    :return: a ``pyvqnet.qnn.vqc.tn.torch.QModule`` instance
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn import ControlledPhaseShift,TNQMachine,TNQModule,MeasureAll, rx
+        from pyvqnet.qnn.vqc.tn.torch import ControlledPhaseShift,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
 
@@ -6944,7 +6846,7 @@ VQC_Purity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.VQC_Purity(state, qubits_idx, num_wires, use_tn=False)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.VQC_Purity(state, qubits_idx, num_wires, use_tn=False)
 
     Calculate the purity on a particular qubit ``qubits_idx`` from the state vector ``state``.
 
@@ -6969,7 +6871,7 @@ VQC_Purity
     Example::
 
         import pyvqnet
-        from pyvqnet.qnn.vqc.tn import TNQMachine, qcircuit, TNQModule,VQC_Purity
+        from pyvqnet.qnn.vqc.tn.torch import TNQMachine, qcircuit, TNQModule,VQC_Purity
         pyvqnet.backends.set_backend("torch")
         from pyvqnet.tensor import QTensor
 
@@ -6992,13 +6894,13 @@ VQC_Purity
         model = QM().toGPU()
         y_tn = model(x)
         x.data.retain_grad()
-        y_tn.backward()
+        y_tn.backward(pyvqnet.tensor.ones_like(y_tn))
         print(y_tn)
 
 VQC_VarMeasure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.VQC_VarMeasure(q_machine, obs)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.VQC_VarMeasure(q_machine, obs)
 
     Return the measurement variance of the provided observable ``obs`` in statevectors in ``q_machine`` .
 
@@ -7010,7 +6912,7 @@ VQC_VarMeasure
     Example::
 
         import pyvqnet
-        from pyvqnet.qnn.vqc.tn import TNQMachine, qcircuit, VQC_VarMeasure, TNQModule,PauliY
+        from pyvqnet.qnn.vqc.tn.torch import TNQMachine, qcircuit, VQC_VarMeasure, TNQModule,PauliY
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat64
         pyvqnet.backends.set_backend("torch")
@@ -7033,7 +6935,7 @@ VQC_VarMeasure
         model = QM().toGPU()
         y = model(x)
         x.data.retain_grad()
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
         # [[0.9370641],
@@ -7044,7 +6946,7 @@ VQC_DensityMatrixFromQstate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.VQC_DensityMatrixFromQstate(state, indices, use_tn=False)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.VQC_DensityMatrixFromQstate(state, indices, use_tn=False)
 
     Computes the density matrix of quantum states ``state`` over a specific set of qubits ``indices`` .
 
@@ -7058,7 +6960,7 @@ VQC_DensityMatrixFromQstate
 
         import pyvqnet
         from pyvqnet.tensor import QTensor
-        from pyvqnet.qnn.vqc.tn import TNQMachine, qcircuit, VQC_DensityMatrixFromQstate,TNQModule
+        from pyvqnet.qnn.vqc.tn.torch import TNQMachine, qcircuit, VQC_DensityMatrixFromQstate,TNQModule
         pyvqnet.backends.set_backend("torch")
         x = QTensor([[0.7,0.4],[1.7,2.4]], requires_grad=True).toGPU()
         class QM(TNQModule):
@@ -7078,7 +6980,7 @@ VQC_DensityMatrixFromQstate
         model = QM().toGPU()
         y = model(x)
         x.data.retain_grad()
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
         # [[[0.8155131+0.j        0.1718155+0.j        0.       +0.0627175j
@@ -7104,11 +7006,11 @@ Probability
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.Probability(wires=None, name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.Probability(wires=None, name="")
 
     Calculate the probability measurement result of the quantum circuit on a specific bit.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
     :param wires: The index of the measurement bit, list, tuple or integer.
@@ -7119,7 +7021,7 @@ Probability
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import Probability,rx,ry,cnot,TNQMachine,rz
+        from pyvqnet.qnn.vqc.tn.torch import Probability,rx,ry,cnot,TNQMachine,rz
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat64
         x = QTensor([[0.56, 0.1],[0.56, 0.1]],requires_grad=True)
@@ -7138,7 +7040,7 @@ Probability
 MeasureAll
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.MeasureAll(obs=None, name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.MeasureAll(obs=None, name="")
 
     Calculate the measurement results of quantum circuits, support input obs as multiple or single Pauli operators or Hamiltonians.
     
@@ -7150,7 +7052,7 @@ MeasureAll
 
     [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] corresponds to the two observed values 4 * X1 @ Z2 + 3 * Z1 @ Z0 and 3.5 * X1 @ Y2 @ Z0.
         
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
 
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
@@ -7162,7 +7064,7 @@ MeasureAll
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import MeasureAll,rx,ry,cnot,TNQMachine,rz
+        from pyvqnet.qnn.vqc.tn.torch import MeasureAll,rx,ry,cnot,TNQMachine,rz
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat64
         x = QTensor([[0.56, 0.1],[0.56, 0.1]],requires_grad=True)
@@ -7188,11 +7090,11 @@ MeasureAll
 Samples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.Samples(wires=None, obs=None, shots = 1,name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.Samples(wires=None, obs=None, shots = 1,name="")
 
     Get sample results with shot on  specific wires.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
@@ -7206,7 +7108,7 @@ Samples
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import Samples,rx,ry,cnot,TNQMachine,rz
+        from pyvqnet.qnn.vqc.tn.torch import Samples,rx,ry,cnot,TNQMachine,rz
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat64
         x = QTensor([[0.56, 0.1],[0.56, 0.1]],requires_grad=True)
@@ -7229,11 +7131,11 @@ Samples
 HermitianExpval
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.HermitianExpval(obs=None, name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.HermitianExpval(obs=None, name="")
 
     Compute the expectation of a Hermitian quantity in a quantum circuit.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
@@ -7245,7 +7147,7 @@ HermitianExpval
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import TNQMachine, rx,ry,\
+        from pyvqnet.qnn.vqc.tn.torch import TNQMachine, rx,ry,\
             RX, RY, CNOT, PauliX, PauliZ, VQC_RotCircuit,HermitianExpval, TNQModule
         from pyvqnet.tensor import QTensor, tensor
         from pyvqnet.nn import Parameter
@@ -7289,7 +7191,7 @@ HermitianExpval
         qunatum_model = QModel(num_wires=2, dtype=pyvqnet.kcomplex64)
 
         batch_y = qunatum_model(input_x)
-        batch_y.backward()
+        batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
 
         print(batch_y)
 
@@ -7300,11 +7202,11 @@ VQC_HardwareEfficientAnsatz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.VQC_HardwareEfficientAnsatz(n_qubits,single_rot_gate_list,entangle_gate="CNOT",entangle_rules='linear',depth=1,initial=None,dtype=None)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.VQC_HardwareEfficientAnsatz(n_qubits,single_rot_gate_list,entangle_gate="CNOT",entangle_rules='linear',depth=1,initial=None,dtype=None)
 
     Implementation of Hardware Efficient Ansatz introduced in the paper: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
 
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
@@ -7321,8 +7223,8 @@ VQC_HardwareEfficientAnsatz
     Example::
 
         from pyvqnet.nn.torch import Linear
-        from pyvqnet.qnn.vqc.tn.qcircuit import VQC_HardwareEfficientAnsatz,RZZ,RZ
-        from pyvqnet.qnn.vqc.tn import Probability,TNQMachine, TNQModule
+        from pyvqnet.qnn.vqc.tn.torch.qcircuit import VQC_HardwareEfficientAnsatz,RZZ,RZ
+        from pyvqnet.qnn.vqc.tn.torch import Probability,TNQMachine, TNQModule
         from pyvqnet import tensor
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7353,7 +7255,7 @@ VQC_HardwareEfficientAnsatz
         inputx.requires_grad= True
         qlayer = QM()
         y = qlayer(inputx)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
 
@@ -7361,13 +7263,13 @@ VQC_HardwareEfficientAnsatz
 VQC_BasicEntanglerTemplate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.VQC_BasicEntanglerTemplate(num_layer=1, num_qubits=1, rotation="RX", initial=None, dtype=None)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.VQC_BasicEntanglerTemplate(num_layer=1, num_qubits=1, rotation="RX", initial=None, dtype=None)
 
     A layer consisting of a single-parameter single-qubit rotation on each qubit, followed by multiple CNOT gates in a closed chain or ring combination.
 
     A ring of CNOT gates connects each qubit to its neighbors, and finally the a qubit is considered to be the neighbor of the a th qubit.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
 
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
@@ -7382,7 +7284,7 @@ VQC_BasicEntanglerTemplate
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import TNQModule,\
+        from pyvqnet.qnn.vqc.tn.torch import TNQModule,\
             VQC_BasicEntanglerTemplate, Probability, TNQMachine
         from pyvqnet import tensor
 
@@ -7408,7 +7310,7 @@ VQC_BasicEntanglerTemplate
         inputx = tensor.arange(1.0, bz * 4 + 1).reshape([bz, 4])
         qlayer = QM()
         y = qlayer(inputx)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
 
@@ -7416,11 +7318,11 @@ VQC_BasicEntanglerTemplate
 VQC_StronglyEntanglingTemplate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.VQC_StronglyEntanglingTemplate(num_layers=1, num_qubits=1, ranges=None,initial=None, dtype=None)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.VQC_StronglyEntanglingTemplate(num_layers=1, num_qubits=1, ranges=None,initial=None, dtype=None)
 
     Layers consisting of single qubit rotations and entanglers, as in `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
@@ -7435,8 +7337,8 @@ VQC_StronglyEntanglingTemplate
     Example::
 
         from pyvqnet.nn.torch import TorchModule,Linear,TorchModuleList
-        from pyvqnet.qnn.vqc.tn.qcircuit import VQC_StronglyEntanglingTemplate
-        from pyvqnet.qnn.vqc.tn import Probability, TNQMachine, TNQModule
+        from pyvqnet.qnn.vqc.tn.torch.qcircuit import VQC_StronglyEntanglingTemplate
+        from pyvqnet.qnn.vqc.tn.torch import Probability, TNQMachine, TNQModule
         from pyvqnet import tensor
         import pyvqnet
 
@@ -7463,7 +7365,7 @@ VQC_StronglyEntanglingTemplate
         inputx = tensor.arange(1.0, bz * 4 + 1).reshape([bz, 4])
         qlayer = QM()
         y = qlayer(inputx)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
 
@@ -7472,12 +7374,12 @@ VQC_QuantumEmbedding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.VQC_QuantumEmbedding(qubits, machine, num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.VQC_QuantumEmbedding(qubits, machine, num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
     
     Use RZ,RY,RZ to create variational quantum circuits to encode classical data into quantum states.
     Reference `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
  
@@ -7492,8 +7394,8 @@ VQC_QuantumEmbedding
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn.qcircuit import VQC_QuantumEmbedding
-        from pyvqnet.qnn.vqc.tn import TNQMachine, MeasureAll, TNQModule
+        from pyvqnet.qnn.vqc.tn.torch.qcircuit import VQC_QuantumEmbedding
+        from pyvqnet.qnn.vqc.tn.torch import TNQMachine, MeasureAll, TNQModule
         from pyvqnet import tensor
         import pyvqnet
 
@@ -7525,18 +7427,18 @@ VQC_QuantumEmbedding
         inputx = tensor.arange(1.0, bz * depth_input + 1).reshape([bz, depth_input])
         qlayer = QM()
         y = qlayer(inputx)
-        y.backward()
+        y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
 
 
 ExpressiveEntanglingAnsatz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.ExpressiveEntanglingAnsatz(type: int, num_wires: int, depth: int, dtype=None, name: str = "")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.ExpressiveEntanglingAnsatz(type: int, num_wires: int, depth: int, dtype=None, name: str = "")
 
     19 different ansatz from the paper `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
 
-    This class inherits from ``pyvqnet.qnn.vqc.tn.QModule`` and ``torch.nn.Module``.
+    This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
 
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
@@ -7551,8 +7453,8 @@ ExpressiveEntanglingAnsatz
 
     Example::
 
-        from pyvqnet.qnn.vqc.tn.qcircuit import ExpressiveEntanglingAnsatz
-        from pyvqnet.qnn.vqc.tn import Probability, TNQMachine, MeasureAll, TNQModule
+        from pyvqnet.qnn.vqc.tn.torch.qcircuit import ExpressiveEntanglingAnsatz
+        from pyvqnet.qnn.vqc.tn.torch import Probability, TNQMachine, MeasureAll, TNQModule
         from pyvqnet import tensor
         import pyvqnet
 
@@ -7583,14 +7485,14 @@ ExpressiveEntanglingAnsatz
         qunatum_model = QModel(num_wires=3, dtype=pyvqnet.kcomplex64)
 
         batch_y = qunatum_model(input_x)
-        batch_y.backward()
+        batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
         print(batch_y)
 
 
 vqc_basis_embedding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_basis_embedding(basis_state,q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_basis_embedding(basis_state,q_machine)
 
     Encode n binary features into the n-qubit basis state of ``q_machine``. This function is aliased as `VQC_BasisEmbedding`.
 
@@ -7604,7 +7506,7 @@ vqc_basis_embedding
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_basis_embedding,TNQMachine
+        from pyvqnet.qnn.vqc.tn.torch import vqc_basis_embedding,TNQMachine
         qm  = TNQMachine(3)
         vqc_basis_embedding(basis_state=[1,1,0],q_machine=qm)
         print(qm.get_states())
@@ -7616,7 +7518,7 @@ vqc_angle_embedding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_angle_embedding(input_feat, wires, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, rotation: str = "X")
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_angle_embedding(input_feat, wires, q_machine: pyvqnet.qnn.vqc.tn.torch.TNQMachine, rotation: str = "X")
 
     Encodes :math:`N` features into the rotation angle of :math:`n` qubits, where :math:`N \leq n`.
     This function is aliased as `VQC_AngleEmbedding` .
@@ -7640,7 +7542,7 @@ vqc_angle_embedding
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_angle_embedding, TNQMachine
+        from pyvqnet.qnn.vqc.tn.torch import vqc_angle_embedding, TNQMachine
         from pyvqnet.tensor import QTensor
         qm  = TNQMachine(2)
         vqc_angle_embedding(QTensor([2.2, 1]), [0, 1], q_machine=qm, rotation='X')
@@ -7655,7 +7557,7 @@ vqc_angle_embedding
 vqc_amplitude_embedding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_amplitude_embedding(input_feature, q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_amplitude_embedding(input_feature, q_machine)
 
     Encodes a :math:`2^n` feature into an amplitude vector of :math:`n` qubits. This function is aliased as `VQC_AmplitudeEmbedding`.
 
@@ -7667,7 +7569,7 @@ vqc_amplitude_embedding
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_amplitude_embedding, TNQMachine
+        from pyvqnet.qnn.vqc.tn.torch import vqc_amplitude_embedding, TNQMachine
         from pyvqnet.tensor import QTensor
         qm  = TNQMachine(3)
         vqc_amplitude_embedding(QTensor([3.2,-2,-2,0.3,12,0.1,2,-1]), q_machine=qm)
@@ -7678,7 +7580,7 @@ vqc_amplitude_embedding
 vqc_iqp_embedding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_iqp_embedding(input_feat, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, rep: int = 1)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_iqp_embedding(input_feat, q_machine: pyvqnet.qnn.vqc.tn.torch.TNQMachine, rep: int = 1)
 
     Encode :math:`n` features into :math:`n` qubits using diagonal gates of an IQP circuit. Alias: ``VQC_IQPEmbedding`` .
 
@@ -7694,7 +7596,7 @@ vqc_iqp_embedding
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_iqp_embedding, TNQMachine
+        from pyvqnet.qnn.vqc.tn.torch import vqc_iqp_embedding, TNQMachine
         from pyvqnet.tensor import QTensor
         qm  = TNQMachine(3)
         vqc_iqp_embedding(QTensor([3.2,-2,-2]), q_machine=qm)
@@ -7705,7 +7607,7 @@ vqc_iqp_embedding
 vqc_rotcircuit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_rotcircuit(q_machine, wire, params)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_rotcircuit(q_machine, wire, params)
 
     Arbitrary single quantum bit rotation quantum logic gate combination. This function alias: ``VQC_RotCircuit`` .
 
@@ -7723,7 +7625,7 @@ vqc_rotcircuit
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_rotcircuit, TNQMachine
+        from pyvqnet.qnn.vqc.tn.torch import vqc_rotcircuit, TNQMachine
         from pyvqnet.tensor import QTensor
         qm  = TNQMachine(3)
         vqc_rotcircuit(q_machine=qm, wire=[1],params=QTensor([2.0,1.5,2.1]))
@@ -7734,7 +7636,7 @@ vqc_crot_circuit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_crot_circuit(para,control_qubits,rot_wire,q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_crot_circuit(para,control_qubits,rot_wire,q_machine)
 
     Quantum logic gate combination of controlled Rot single quantum bit rotation. This function alias: ``VQC_CRotCircuit`` .
 
@@ -7757,7 +7659,7 @@ vqc_crot_circuit
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         from pyvqnet.tensor import QTensor
-        from pyvqnet.qnn.vqc.tn import vqc_crot_circuit,TNQMachine, MeasureAll
+        from pyvqnet.qnn.vqc.tn.torch import vqc_crot_circuit,TNQMachine, MeasureAll
         p = QTensor([2, 3, 4.0])
         qm = TNQMachine(2)
         vqc_crot_circuit(p, 0, 1, qm)
@@ -7772,7 +7674,7 @@ vqc_controlled_hadamard
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_controlled_hadamard(wires, q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_controlled_hadamard(wires, q_machine)
 
     Controlled Hadamard logic gate quantum circuit. This function alias: ``VQC_Controlled_Hadamard`` .
 
@@ -7787,12 +7689,12 @@ vqc_controlled_hadamard
     :param wires: quantum bit index list, the first one is the control bit, the list length is 2.
     :param q_machine: quantum virtual machine device.
 
-    Examples::
+    Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         from pyvqnet.tensor import QTensor
-        from pyvqnet.qnn.vqc.tn import vqc_controlled_hadamard,\
+        from pyvqnet.qnn.vqc.tn.torch import vqc_controlled_hadamard,\
             TNQMachine, MeasureAll
 
         p = QTensor([0.2, 3, 4.0])
@@ -7806,7 +7708,7 @@ vqc_controlled_hadamard
 vqc_ccz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_ccz(wires, q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_ccz(wires, q_machine)
 
     Controlled-controlled-Z logic gate. Alias: ``VQC_CCZ`` .
 
@@ -7833,7 +7735,7 @@ vqc_ccz
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         from pyvqnet.tensor import QTensor
-        from pyvqnet.qnn.vqc.tn import vqc_ccz,TNQMachine, MeasureAll
+        from pyvqnet.qnn.vqc.tn.torch import vqc_ccz,TNQMachine, MeasureAll
         p = QTensor([0.2, 3, 4.0])
 
         qm = TNQMachine(3)
@@ -7848,7 +7750,7 @@ vqc_ccz
 vqc_fermionic_single_excitation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_fermionic_single_excitation(weight, wires, q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_fermionic_single_excitation(weight, wires, q_machine)
 
     Coupled cluster single excitation operator for tensor product of Pauli matrices. Matrix form is given by:
 
@@ -7864,12 +7766,12 @@ vqc_fermionic_single_excitation
 
     
 
-    Examples::
+    Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         from pyvqnet.tensor import QTensor
-        from pyvqnet.qnn.vqc.tn import vqc_fermionic_single_excitation,\
+        from pyvqnet.qnn.vqc.tn.torch import vqc_fermionic_single_excitation,\
             TNQMachine, MeasureAll
         qm = TNQMachine(3)
         p0 = QTensor([0.5])
@@ -7886,7 +7788,7 @@ vqc_fermionic_double_excitation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_fermionic_double_excitation(weight, wires1, wires2, q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_fermionic_double_excitation(weight, wires1, wires2, q_machine)
 
     Coupled clustered biexcitation operator for tensor product of Pauli matrices exponentiated, matrix form given by:
 
@@ -7917,12 +7819,12 @@ vqc_fermionic_double_excitation
 
     
 
-    Examples::
+    Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         from pyvqnet.tensor import QTensor
-        from pyvqnet.qnn.vqc.tn import vqc_fermionic_double_excitation,\
+        from pyvqnet.qnn.vqc.tn.torch import vqc_fermionic_double_excitation,\
             TNQMachine, MeasureAll
         qm = TNQMachine(5)
         p0 = QTensor([0.5])
@@ -7937,7 +7839,7 @@ vqc_uccsd
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_uccsd(weights, wires, s_wires, d_wires, init_state, q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_uccsd(weights, wires, s_wires, d_wires, init_state, q_machine)
 
     Implements the Unitary Coupled Cluster Single and Double Excitations Simulation (UCCSD). UCCSD is a VQE simulation commonly used to run quantum chemistry simulations.
 
@@ -7964,11 +7866,11 @@ vqc_uccsd
     :param init_state: occupation-number vector of length ``len(wires)`` representing the high-frequency state. ``init_state`` Initialization state of the qubit.
     :param q_machine: Quantum virtual machine device.
 
-    Examples::
+    Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_uccsd, TNQMachine, MeasureAll
+        from pyvqnet.qnn.vqc.tn.torch import vqc_uccsd, TNQMachine, MeasureAll
         from pyvqnet.tensor import QTensor
         p0 = QTensor([2, 0.5, -0.2, 0.3, -2, 1, 3, 0])
         s_wires = [[0, 1, 2], [0, 1, 2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5]]
@@ -7987,7 +7889,7 @@ vqc_uccsd
 vqc_zfeaturemap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_zfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, data_map_func=None, rep: int = 2)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_zfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.tn.torch.TNQMachine, data_map_func=None, rep: int = 2)
 
     First-order Pauli Z-evolution circuit.
 
@@ -8014,7 +7916,7 @@ vqc_zfeaturemap
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_zfeaturemap, TNQMachine, hadamard
+        from pyvqnet.qnn.vqc.tn.torch import vqc_zfeaturemap, TNQMachine, hadamard
         from pyvqnet.tensor import QTensor
         qm = TNQMachine(3)
         for i in range(3):
@@ -8026,7 +7928,7 @@ vqc_zfeaturemap
 vqc_zzfeaturemap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_zzfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, data_map_func=None, entanglement: Union[str, List[List[int]],Callable[[int], List[int]]] = "full",rep: int = 2)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_zzfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.tn.torch.TNQMachine, data_map_func=None, entanglement: Union[str, List[List[int]],Callable[[int], List[int]]] = "full",rep: int = 2)
 
     Second-order Pauli-Z evolution circuit.
 
@@ -8061,7 +7963,7 @@ vqc_zzfeaturemap
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_zzfeaturemap, TNQMachine
+        from pyvqnet.qnn.vqc.tn.torch import vqc_zzfeaturemap, TNQMachine
         from pyvqnet.tensor import QTensor
 
         qm = TNQMachine(3)
@@ -8072,7 +7974,7 @@ vqc_zzfeaturemap
 vqc_allsinglesdoubles
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_allsinglesdoubles(weights, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, hf_state, wires, singles=None, doubles=None)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_allsinglesdoubles(weights, q_machine: pyvqnet.qnn.vqc.tn.torch.TNQMachine, hf_state, wires, singles=None, doubles=None)
 
     In this case, we have four single excitations and double excitations to preserve the total spin projection of the Hartree-Fock state.
 
@@ -8097,7 +7999,7 @@ vqc_allsinglesdoubles
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_allsinglesdoubles, TNQMachine
+        from pyvqnet.qnn.vqc.tn.torch import vqc_allsinglesdoubles, TNQMachine
 
         from pyvqnet.tensor import QTensor
         qubits = 4
@@ -8110,7 +8012,7 @@ vqc_allsinglesdoubles
 vqc_basisrotation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.vqc_basisrotation(q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, wires, unitary_matrix: QTensor, check=False)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_basisrotation(q_machine: pyvqnet.qnn.vqc.tn.torch.TNQMachine, wires, unitary_matrix: QTensor, check=False)
 
     Implement a circuit that provides an ensemble that can be used to perform accurate single-unit basis rotations. The circuit is derived from the single-particle fermion-determined unitary transformation :math:`U(u)` given in `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\ 
     
@@ -8129,7 +8031,7 @@ vqc_basisrotation
         import pyvqnet
 
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn import vqc_basisrotation, TNQMachine
+        from pyvqnet.qnn.vqc.tn.torch import vqc_basisrotation, TNQMachine
         from pyvqnet.tensor import QTensor
         import numpy as np
 
@@ -8158,7 +8060,7 @@ Distributed related functions, when using the ``torch`` computing backend, encap
 
 .. note::
 
-    Please refer to `torch distributed <https://pytorch.org/docs/stable/distributed.html>`_ to start the distributed method.
+    Please refer to `torch distributed <https://PyTorch.org/docs/stable/distributed.html>`_ to start the distributed method.
     When using CPU for distribution, please use ``gloo`` instead of ``mpi``.
     When using GPU for distribution, please use ``nccl``.
 
@@ -8168,7 +8070,7 @@ CommController
 -------------------------
 
 .. py:class:: pyvqnet.distributed.ControlComm.CommController(backend,rank=None,world_size=None)
-    :no-index:
+    :noindex:
     
     CommController is used to control the data communication controller under cpu and gpu. It generates cpu (gloo) and gpu (nccl) controllers by setting the parameter `backend`.
     This class will call backend, rank, world_size to initialize ``torch.distributed.init_process_group(backend, rank, world_size)`` .
@@ -8180,7 +8082,7 @@ CommController
     :return:
         CommController instance.
 
-    Examples::
+    Example::
 
         from pyvqnet.distributed import CommController
         import pyvqnet
@@ -8214,13 +8116,13 @@ CommController
  
 
     .. py:method:: getRank()
-        :no-index:
+        :noindex:
 
         Used to get the process ID of the current process.
 
         :return: Returns the process ID of the current process.
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import CommController
             import pyvqnet
@@ -8255,13 +8157,13 @@ CommController
 
 
     .. py:method:: getSize()
-        :no-index:
+        :noindex:
 
         Used to get the total number of processes started.
 
         :return: Returns the total number of processes.
 
-        Examples::
+        Example::
 
                         from pyvqnet.distributed import CommController
             import pyvqnet
@@ -8296,7 +8198,7 @@ CommController
 
 
     .. py:method:: getLocalRank()
-        :no-index:
+        :noindex:
 
         In each process, get the local process number of each machine through ``os.environ['LOCAL_RANK'] = rank``.
 
@@ -8304,7 +8206,7 @@ CommController
 
         :return: The current process number on the current machine.
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import CommController
             import pyvqnet
@@ -8338,14 +8240,14 @@ CommController
 
  
     .. py:method:: split_groups(rankL)
-        :no-index:
+        :noindex:
 
         The process number list set according to the input parameter is used to divide multiple communication groups.
 
         :param rankL: process group list.
         :return: a list containing ``torch.distributed.ProcessGroup``
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import get_local_rank,CommController,init_group
             import pyvqnet
@@ -8388,13 +8290,13 @@ CommController
 
  
     .. py:method:: barrier()
-        :no-index:
+        :noindex:
 
         Synchronization of different processes.
 
         :return: Synchronization operation.
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import CommController
             import pyvqnet
@@ -8426,14 +8328,14 @@ CommController
                     p.join()
 
     .. py:method:: allreduce(tensor, c_op = "avg")
-        :no-index:
+        :noindex:
 
         Supports allreduce communication on data.
 
         :param tensor: Input data.
         :param c_op: Calculation method.
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import get_local_rank,CommController,init_group
             import pyvqnet
@@ -8470,7 +8372,7 @@ CommController
                     p.join()
 
     .. py:method:: reduce(tensor, root = 0, c_op = "avg")
-        :no-index:
+        :noindex:
 
         Supports reduce communication on data.
 
@@ -8478,7 +8380,7 @@ CommController
         :param root: Specifies the node where the data is returned.
         :param c_op: Calculation method.
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import get_local_rank,CommController,init_group
             import pyvqnet
@@ -8517,14 +8419,14 @@ CommController
  
  
     .. py:method:: broadcast(tensor, root = 0)
-        :no-index:
+        :noindex:
 
         Broadcast the data on the specified process root to all processes.
 
         :param tensor: Input data.
         :param root: The specified node.
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import get_local_rank,CommController,init_group
             import pyvqnet
@@ -8564,13 +8466,13 @@ CommController
 
 
     .. py:method:: allgather(tensor)
-        :no-index:
+        :noindex:
 
         Gather all the data from all processes together. This interface only supports the nccl backend.
 
         :param tensor: Input data.
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import get_local_rank,CommController,get_world_size
             import pyvqnet
@@ -8609,14 +8511,14 @@ CommController
 
 
     .. py:method:: send(tensor, dest)
-        :no-index:
+        :noindex:
 
         p2p communication interface.
 
         :param tensor: input data.
         :param dest: destination process.
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import get_rank,CommController,get_world_size
             import pyvqnet
@@ -8657,14 +8559,14 @@ CommController
  
  
     .. py:method:: recv(tensor, source)
-        :no-index:
+        :noindex:
 
         p2p communication interface.
 
         :param tensor: input data.
         :param source: receiving process.
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import get_rank,CommController,get_world_size
             import pyvqnet
@@ -8705,7 +8607,7 @@ CommController
             
 
     .. py:method:: allreduce_group(tensor, c_op = "avg", group = None)
-        :no-index:
+        :noindex:
 
         Intra-group allreduce communication interface.
 
@@ -8713,7 +8615,7 @@ CommController
         :param c_op: Calculation method.
         :param group: Communication group generated from `split_groups` or `init_group` .
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
@@ -8761,7 +8663,7 @@ CommController
 
 
     .. py:method:: reduce_group(tensor, root = 0, c_op = "avg", group = None)
-        :no-index:
+        :noindex:
 
         Intra-group reduce communication interface.
 
@@ -8770,7 +8672,7 @@ CommController
         :param c_op: Calculation method.
         :param group: Communication group generated from `split_groups` or `init_group` .
 
-        Examples::
+        Example::
 
             from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
@@ -8813,7 +8715,7 @@ CommController
 
  
     .. py:method:: broadcast_group(tensor, root = 0, group = None)
-        :no-index:
+        :noindex:
 
         Intra-group broadcast communication interface.
 
@@ -8821,7 +8723,7 @@ CommController
         :param root: Specify the process ID.
         :param group: Communication group generated from `split_groups` or `init_group` .
 
-        Examples::
+        Example::
             
             from pyvqnet.distributed import get_local_rank,CommController,init_group
             import pyvqnet
@@ -8867,14 +8769,14 @@ CommController
 
  
     .. py:method:: allgather_group(tensor, group = None)
-        :no-index:
+        :noindex:
         
         Allgather communication interface within the group.
 
         :param tensor: input data.
         :param group: Communication group generated from `split_groups` or `init_group` .
 
-        Examples::
+        Example::
             
             from pyvqnet.distributed import get_local_rank,CommController,get_world_size
             import pyvqnet
