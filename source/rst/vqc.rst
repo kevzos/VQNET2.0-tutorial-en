@@ -3319,44 +3319,6 @@ VQC_BasisRotation
         #   [[-0.1715559-0.1614315j  0.1624039-0.0598041j]
         #    [ 0.0608986-0.1078906j -0.305845 +0.1773662j]]]]
 
-VQC_QuantumPoolingCircuit
------------------------------------------
-
-.. py:function:: pyvqnet.qnn.vqc.VQC_QuantumPoolingCircuit(ignored_wires, sinks_wires, params, q_machine)
-
-    A quantum circuit that downsamples data.
-
-    To reduce the number of qubits in a circuit, pairs of qubits are first created in the system. After initially pairing all qubits, a generalized 2-qubit unitary is applied to each pair of qubits. 
-    And after applying the two-qubit unitary, one qubit in each pair of qubits is ignored in the rest of the neural network.
-
-    :param sources_wires: The source qubit index that will be ignored.
-    :param sinks_wires: The target qubit index to keep.
-    :param params: Input parameters.
-    :param q_machine: Quantum virtual machine device.
-
-    :return:
-        pyqpanda QCircuit
-
-    Example:: 
-
-        from pyvqnet.qnn.vqc import VQC_QuantumPoolingCircuit, QMachine, MeasureAll
-        import pyqpanda as pq
-        from pyvqnet import tensor
-        machine = pq.CPUQVM()
-        machine.init_qvm()
-        qlists = machine.qAlloc_many(4)
-        p = tensor.full([6], 0.35)
-        qm = QMachine(4)
-        VQC_QuantumPoolingCircuit(q_machine=qm,
-                                ignored_wires=[0, 1],
-                                sinks_wires=[2, 3],
-                                params=p)
-        m = MeasureAll(obs={"Z1": 1})
-        exp = m(q_machine=qm)
-        print(exp)
-
-
-
 ExpressiveEntanglingAnsatz
 ---------------------------------------------------------------
 

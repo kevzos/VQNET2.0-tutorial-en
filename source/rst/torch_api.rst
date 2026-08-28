@@ -4733,39 +4733,6 @@ vqc_basisrotation
 
 
 
-vqc_quantumpooling_circuit
-""""""""""""""""""""""""""""""""""""""""
-
-.. py:function:: pyvqnet.qnn.vqc.sv.torch.vqc_quantumpooling_circuit(ignored_wires, sinks_wires, params, q_machine)
-
-    Quantum circuit that downsamples data.
-
-    To reduce the number of qubits in the circuit, pairs of qubits are first created in the system. After initially pairing all qubits, a generalized 2-qubit unitary is applied to each pair of qubits. And after applying these two qubit unitaries, a qubit in each pair of qubits is ignored for the rest of the neural network.
-
-    :param sources_wires: Source qubit indices that will be ignored.
-    :param sinks_wires: Target qubit indices that will be retained.
-    :param params: Input parameters.
-    :param q_machine: Quantum virtual machine device.
-
-    Example:: 
-
-        import pyvqnet
-
-        pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.sv.torch import vqc_quantumpooling_circuit, QMachine, MeasureAll
-        from pyvqnet import tensor
-        p = tensor.full([6], 0.35)
-        qm = QMachine(4)
-        vqc_quantumpooling_circuit(q_machine=qm,
-                                ignored_wires=[0, 1],
-                                sinks_wires=[2, 3],
-                                params=p)
-        m = MeasureAll(obs={"Z1": 1})
-        exp = m(q_machine=qm)
-        print(exp)
-
-
-
 QuantumLayerAdjoint
 """"""""""""""""""""""""""""""""""""""""
 

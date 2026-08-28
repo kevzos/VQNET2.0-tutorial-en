@@ -1072,38 +1072,6 @@ UCCSD
                                         init_state=[1, 1, 0, 0, 0, 0],
                                         qubits=qlists)
 
-QuantumPoolingCircuit
-============================
-
-.. py:function:: pyvqnet.qnn.pq3.template.QuantumPoolingCircuit(sources_wires, sinks_wires, params,qubits)
-
-    Quantum circuit that downsamples data.
-
-    To reduce the number of qubits in the circuit, first create pairs of qubits in the system. After initially pairing all qubits, apply the generalized 2-qubit unitary to each pair of qubits. And after applying these two qubit unitary, ignore one qubit in each pair of qubits for the rest of the neural network.
-
-    :param sources_wires: Source qubit indices to be ignored.
-    :param sinks_wires: Target qubit indices to be retained.
-    :param params: Input parameters.
-    :param qubits: Qubit indices.
-
-    :return:
-        pyQPanda3 QCircuit
-
-    Example::
-
-        from pyvqnet.qnn.pq3.template import QuantumPoolingCircuit
-        import pyqpanda3.core as pq
-        from pyvqnet import tensor
-
-        qlists = range(4)
-        p = tensor.full([6], 0.35)
-        cir = QuantumPoolingCircuit([0, 1], [2, 3], p, qlists)
-        print(cir)
-
-Commonly used quantum circuit combinations
-***********************************************************
-VQNet provides some quantum circuits commonly used in quantum machine learning research
-
 HardwareEfficientAnsatz
 =============================
 

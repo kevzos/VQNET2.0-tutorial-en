@@ -21,6 +21,7 @@ Changed
 - Renamed QTensor reduce API parameter `axis` to `dim`, and `keepdims` to `keepdim`.
 - Fixed example import paths in ``vqc.rst`` and ``vqc_demo.rst`` to public modules.
 - Merged ``torch-native`` and ``torch`` backends.
+- Removed ``pyvqnet.qnn.vqc.VQC_QuantumPoolingCircuit`` , ``pyvqnet.qnn.vqc.sv.torch.vqc_quantumpooling_circuit`` , and ``pyvqnet.qnn.pq3.template.QuantumPoolingCircuit`` interfaces and their documentation.
 
 Fixed
 ===================
