@@ -2,6 +2,32 @@ VQNet Changelog
 ###############################
 
 
+[v2.18.1] - 2026-07-08
+***************************
+
+Added
+===================
+- Added documentation for tensor network ``torch`` backend (``pyvqnet.qnn.vqc.tn.torch``) and ``pyvqnet`` backend (``pyvqnet.qnn.vqc.tn.native``) variational quantum circuit modules, including ``TNQModule``, ``TNQMachine``, quantum logic gates, measurements, and templates.
+- Added documentation for ``pyvqnet.torch.trl`` large model fine-tuning loss functions (``sft_loss``, ``dpo_loss``, ``ppo_loss``, ``grpo_loss``, ``reward_loss``).
+- Added documentation for ``RMSNorm``, ``RoPE``, ``SwiGLU``, ``fused_moe``, ``scaled_*softmax`` and other ``nn`` modules.
+- Added documentation for ``pq3 torch`` quantum layers (``TorchQpandaQuantumLayer``, ``TorchQcloud3QuantumLayer``, ``TorchQpanda3QuantumLayer``).
+- Added support for ``Python 3.13`` and ``Python 3.14``.
+- High-performance CUDA operator implementations for RX, RY, RZ, CNOT, measurement, etc. using torch extensions under the torch backend.
+
+Changed
+===================
+- ``DistributeQMachine`` renamed to ``DistributedQMachine``, documentation updated accordingly.
+- Unified RST documentation marker ``Examples::`` to ``Example::``.
+- Renamed QTensor reduce API parameter `axis` to `dim`, and `keepdims` to `keepdim`.
+- Fixed example import paths in ``vqc.rst`` and ``vqc_demo.rst`` to public modules.
+- Merged ``torch-native`` and ``torch`` backends.
+
+Fixed
+===================
+- Fixed tensor network backend documentation examples, added ``CCZ`` gate documentation, removed unsupported ``vqc_amplitude_embedding``.
+- Fixed multiple Sphinx build warnings (heading underline length, inconsistent heading levels, duplicate object descriptions).
+
+
 [v2.18.0] - 2026-04-22
 ***************************
 
@@ -39,7 +65,7 @@ Added
 - Added bfloat16 data type.
 - Added asynchronous NCCL communication interfaces: ``nccl_async_all_gather``, ``nccl_async_all_reduce``, ``nccl_async_reduce``, ``nccl_async_broadcast``, ``nccl_async_send``, ``nccl_async_recv``.
 - Added support for the latest Origin Quantum chip with chip ID ``WK_C180``
-- Added ``data_ptr`` and other interfaces, experimentally added support for `triton <https://triton-lang.org/main/index.html>`_.
+- Added ``data_ptr`` and other interfaces, experimentally added support for `Triton <https://triton-lang.org/main/index.html>`_.
 
 Changed
 ===================
