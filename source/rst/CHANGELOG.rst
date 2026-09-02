@@ -7,12 +7,18 @@ VQNet Changelog
 
 Added
 ===================
-- Added documentation for tensor network ``torch`` backend (``pyvqnet.qnn.vqc.tn.torch``) and ``pyvqnet`` backend (``pyvqnet.qnn.vqc.tn.native``) variational quantum circuit modules, including ``TNQModule``, ``TNQMachine``, quantum logic gates, measurements, and templates.
-- Added documentation for ``pyvqnet.torch.trl`` large model fine-tuning loss functions (``sft_loss``, ``dpo_loss``, ``ppo_loss``, ``grpo_loss``, ``reward_loss``).
-- Added documentation for ``RMSNorm``, ``RoPE``, ``SwiGLU``, ``fused_moe``, ``scaled_*softmax`` and other ``nn`` modules.
-- Added documentation for ``pq3 torch`` quantum layers (``TorchQpandaQuantumLayer``, ``TorchQcloud3QuantumLayer``, ``TorchQpanda3QuantumLayer``).
+- Added documentation for the tensor network variational quantum circuit module ``pyvqnet.qnn.vqc.tn``, providing two implementations: the ``torch`` backend (``pyvqnet.qnn.vqc.tn.torch``) and the ``pyvqnet`` backend (``pyvqnet.qnn.vqc.tn.native``), including ``TNQModule``, ``TNQMachine``, quantum logic gates, ``MeasureAll`` measurements, and templates. This module simulates quantum circuits via tensor networks and supports matrix product state (MPS) representation, enabling simulation of larger-scale circuits with lower memory overhead; the ``torch`` backend can be mixed with classical ``torch`` models and participates in automatic differentiation, suitable for large-scale quantum machine learning tasks.
+- Added documentation for the ``pyvqnet.torch.trl`` large model fine-tuning loss library: ``sft_loss``, cross-entropy loss for instruction fine-tuning with ``ignore_index`` masking to skip prompt/padding tokens; ``dpo_loss``, direct preference optimization loss constructed from the probability ratio between the policy model and reference model on the same preference pair, with ``beta`` controlling the constraint strength toward the reference model; ``ppo_loss``, proximal policy optimization loss that stabilizes training via GAE advantage estimation and clipped surrogate objectives; ``grpo_loss``, group relative policy optimization loss that normalizes rewards within each group of generations for the same prompt to compute advantages, requiring no additional value network; ``reward_loss``, preference reward loss based on the Bradley-Terry model.
+- Added documentation for ``nn`` module interfaces for LLM inference and training:
+
+  - ``RoPE`` rotary position embedding class and ``functional.rope`` function, supporting four frequency scaling modes (``standard``, ``ntk``, ``dynamic_ntk``, ``yarn``) for long-context extrapolation scenarios.
+  - ``RMSNorm`` root mean square normalization and ``SwiGLU`` gated activation, common components of current Transformer architectures.
+  - ``fused_moe``, fused MoE computation interface (CUDA-accelerated) that computes each expert's MLP in groups by routing indices and merges outputs weighted by routing probabilities.
+  - ``scaled_softmax``, ``scaled_masked_softmax``, ``scaled_upper_triang_masked_softmax``, a scaled Softmax family that fuses scaling factors and attention masks into a single normalization computation.
+  - ``_sampling`` decoding sampling interfaces (``top_k_sampling_from_probs``, ``top_p_sampling_from_probs``, ``min_p_sampling_from_probs``, ``top_k_top_p_sampling_from_probs``, ``top_k_top_p_sampling_from_logits``), supporting top-k/top-p/min-p sampling strategies from probability distributions or logits, suitable for LLM inference decoding (CUDA-accelerated, inference only).
+- Added documentation for ``pq3 torch`` quantum layers (``TorchQpandaQuantumLayer``, ``TorchQcloud3QuantumLayer``, ``TorchQpanda3QuantumLayer``), connecting to the qpanda simulator, QCloud real quantum chips, and the qpanda3 simulator respectively, and embeddable into hybrid quantum-classical models as ``torch`` layers for training.
 - Added support for ``Python 3.13`` and ``Python 3.14``.
-- High-performance CUDA operator implementations for RX, RY, RZ, CNOT, measurement, etc. using torch extensions under the torch backend.
+- Added high-performance CUDA quantum gate operator implementations (RX, RY, RZ, CNOT, measurement, etc.) based on torch extensions under the ``torch`` backend, providing fused kernel acceleration for batched state vectors and significantly reducing training and simulation time for large-scale parameterized circuits.
 
 Changed
 ===================
