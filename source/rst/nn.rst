@@ -2603,7 +2603,7 @@ AdamW
     .. math::
         lr = lr*\frac{\sqrt{1-\beta2^t}}{1-\beta1^t}
     
-    If the parameter amsgrad is True
+    Si le paramètre amsgrad est True
 
     .. math::
         moment\_2\_max = max(moment\_2\_max,moment\_2)

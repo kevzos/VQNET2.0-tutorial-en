@@ -2963,7 +2963,7 @@ La formule du gradient naturel quantique est la suivante :
 
 .. math:: \theta_{t+1} = \theta_t - \eta g^{+}(\theta_t)\nabla \mathcal{L}(\theta),
 
-where :math:`g^{+}` is the pseudo-inverse.
+où :math:`g^{+}` est la pseudo-inverse.
 
 Ci-dessous, nous implémentons un exemple d'optimisation par gradient naturel quantique d'un paramètre de circuit variationnel quantique basé sur VQNet, où ``wrapper_calculate_qng`` est un décorateur qui doit être ajouté à la fonction forward du modèle pour le calcul du gradient naturel quantique.
 
@@ -3126,7 +3126,7 @@ L'exemple suivant implémente l'algorithme de l'article `Variational Quantum Sin
 La décomposition en valeurs singulières (en abrégé ``SVD``) est une décomposition matricielle importante en algèbre linéaire. En tant que généralisation de la décomposition en valeurs propres sur des matrices de toute dimension, 
 elle est largement utilisée dans le domaine de l'apprentissage automatique et est souvent utilisée dans la compression matricielle, les systèmes de recommandation et le traitement du langage naturel.
 
-Variational Décomposition en valeurs singulières quantique(abbreviation ``QSVD``) convert SVD into an optimization problem and solve it through variational quantum circuits.
+La décomposition en valeurs singulières variationnelle quantique (en abrégé ``QSVD``) convertit la SVD en un problème d'optimisation et le résout à l'aide de circuits quantiques variationnels.
 
 Dans l'article, la décomposition en valeurs singulières matricielle est décomposée en quatre étapes pour être résolue :
 

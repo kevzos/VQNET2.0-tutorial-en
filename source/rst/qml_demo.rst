@@ -3484,7 +3484,7 @@ Nous allons écrire un exemple simple d'intégration de pyQPanda2 avec VQNet.
 Construction de réseaux de neurones classiques quantiques hybrides
 ------------------------------------------------------------------
 
-Requires ``gym`` == 0.23.0 , ``pygame`` == 2.1.2 .
+Nécessite ``gym`` == 0.23.0, ``pygame`` == 2.1.2.
 
 .. code-block::
 
@@ -3691,13 +3691,13 @@ Le circuit quantique inversera :math:`|x\rangle` et :math:`|y\rangle​` . Final
 
     |0_{anc}\rangle |x\rangle |y\rangle \rightarrow \frac{1}{2}|0_{anc}\rangle(|xy\rangle + |yx\rangle) + \frac{1}{2}|1_{anc}\rangle(|xy\rangle - |yx\rangle)
 
-If we measure the auxiliary qubit separately, the probability of the final state of the ground state :math:`|1\rangle` is:
+Si nous mesurons le qubit auxiliaire séparément, la probabilité de l'état final de l'état fondamental :math:`|1\rangle` est :
 
 .. math::
 
     P(|1_{anc}\rangle) = \frac{1}{2} - \frac{1}{2}|\langle x | y \rangle|^2
 
-The Euclidean distance between two quantum states is as follows:
+La distance euclidienne entre deux états quantiques est la suivante :
 
 .. math::
 
@@ -4862,7 +4862,7 @@ and
 
     a_{i,j} = \frac{1}{4}\text{tr}[(\sigma_i\otimes \sigma_j )H], ~~ \sigma = \{I, X, Y, Z\}.
 
-Substituting into the above formula, we can see that
+En substituant dans la formule ci-dessus, nous pouvons voir que
 
 .. math::
 

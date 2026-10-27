@@ -1542,7 +1542,7 @@ cswap
 
 .. py:function:: pyvqnet.qnn.vqc.cswap(q_machine, wires, params=None, use_dagger=False)
 
-    Apply quantum logic gates cswap to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques cswap aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: Dispositif de machine virtuelle quantique.
     :param wires: Indice du qubit.
@@ -1575,7 +1575,7 @@ CSWAP
 
 .. py:class:: pyvqnet.qnn.vqc.CSWAP(has_params: bool = False, trainable: bool = False, init_params=None, wires=None, dtype=pyvqnet.kcomplex64, use_dagger=False)
     
-    Define a SWAP logic gate class.
+    Définit une classe de porte logique SWAP.
 
     .. math:: CSWAP = \begin{bmatrix}
             1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
@@ -1640,7 +1640,7 @@ cz
 
 .. py:function:: pyvqnet.qnn.vqc.cz(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates cz to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques cz aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -1672,7 +1672,7 @@ CZ
 
 .. py:class:: pyvqnet.qnn.vqc.CZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a CZ logic gate class.
+    Définit une classe de porte logique CZ.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -1697,7 +1697,7 @@ rxx
 
 .. py:function:: pyvqnet.qnn.vqc.rxx(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates rxx to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques rxx aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -1731,7 +1731,7 @@ RXX
 
 .. py:class:: pyvqnet.qnn.vqc.RXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RXX logic gate class.
+    Définit une classe de porte logique RXX.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -1756,7 +1756,7 @@ ryy
 
 .. py:function:: pyvqnet.qnn.vqc.ryy(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates ryy to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques ryy aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -1790,7 +1790,7 @@ RYY
 
 .. py:class:: pyvqnet.qnn.vqc.RYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RYY logic gate class.
+    Définit une classe de porte logique RYY.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -1816,7 +1816,7 @@ rzz
 
 .. py:function:: pyvqnet.qnn.vqc.rzz(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates rzz to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques rzz aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -1850,7 +1850,7 @@ RZZ
 
 .. py:class:: pyvqnet.qnn.vqc.RZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RZZ logic gate class.
+    Définit une classe de porte logique RZZ.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -1875,7 +1875,7 @@ rzx
 
 .. py:function:: pyvqnet.qnn.vqc.rzx(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates rzx to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques rzx aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -1909,7 +1909,7 @@ RZX
 
 .. py:class:: pyvqnet.qnn.vqc.RZX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an RZX logic gate class.
+    Définit une classe de porte logique RZX.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -1934,7 +1934,7 @@ toffoli
 
 .. py:function:: pyvqnet.qnn.vqc.toffoli(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates toffoli to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques toffoli aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -1967,7 +1967,7 @@ Toffoli
 
 .. py:class:: pyvqnet.qnn.vqc.Toffoli(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a Toffoli logic gate class.
+    Définit une classe de porte logique Toffoli.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -1993,7 +1993,7 @@ isingxx
 
 .. py:function:: pyvqnet.qnn.vqc.isingxx(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates isingxx to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques isingxx aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2029,7 +2029,7 @@ IsingXX
 
 .. py:class:: pyvqnet.qnn.vqc.IsingXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an IsingXX logic gate class.
+    Définit une classe de porte logique IsingXX.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -2054,7 +2054,7 @@ isingyy
 
 .. py:function:: pyvqnet.qnn.vqc.isingyy(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates isingyy to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques isingyy aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2090,7 +2090,7 @@ IsingYY
 
 .. py:class:: pyvqnet.qnn.vqc.IsingYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an IsingYY logic gate class.
+    Définit une classe de porte logique IsingYY.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -2115,7 +2115,7 @@ isingzz
 
 .. py:function:: pyvqnet.qnn.vqc.isingzz(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates isingzz to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques isingzz aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2152,7 +2152,7 @@ IsingZZ
 
 .. py:class:: pyvqnet.qnn.vqc.IsingZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an IsingZZ logic gate class.
+    Définit une classe de porte logique IsingZZ.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -2177,7 +2177,7 @@ isingxy
 
 .. py:function:: pyvqnet.qnn.vqc.isingxy(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates isingxy to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques isingxy aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2213,7 +2213,7 @@ IsingXY
 
 .. py:class:: pyvqnet.qnn.vqc.IsingXY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an IsingXY logic gate class.
+    Définit une classe de porte logique IsingXY.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -2238,7 +2238,7 @@ phaseshift
 
 .. py:function:: pyvqnet.qnn.vqc.phaseshift(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates phaseshift to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques phaseshift aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2274,7 +2274,7 @@ PhaseShift
 
 .. py:class:: pyvqnet.qnn.vqc.PhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a PhaseShift logic gate class.
+    Définit une classe de porte logique PhaseShift.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -2299,7 +2299,7 @@ multirz
 
 .. py:function:: pyvqnet.qnn.vqc.multirz(q_machine, wires, params=None,  use_dagger=False)
     
-    Acting quantum logic gates on state vectors in q_machine multirz.
+    Applique les portes logiques quantiques multirz aux vecteurs d'état dans q_machine.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2336,7 +2336,7 @@ MultiRZ
 
 .. py:class:: pyvqnet.qnn.vqc.MultiRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a MultiRZ logic gate class.
+    Définit une classe de porte logique MultiRZ.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -2361,7 +2361,7 @@ sdg
 
 .. py:function:: pyvqnet.qnn.vqc.sdg(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates sdg to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques sdg aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2397,7 +2397,7 @@ SDG
 
 .. py:class:: pyvqnet.qnn.vqc.SDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define an SDG logic category.
+    Définit une catégorie de porte logique SDG.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -2422,7 +2422,7 @@ tdg
 
 .. py:function:: pyvqnet.qnn.vqc.tdg(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates tdg to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques tdg aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2457,7 +2457,7 @@ TDG
 
 .. py:class:: pyvqnet.qnn.vqc.TDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a TDG logic gate class.
+    Définit une classe de porte logique TDG.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -2483,7 +2483,7 @@ controlledphaseshift
 
 .. py:function:: pyvqnet.qnn.vqc.controlledphaseshift(q_machine, wires, params=None,  use_dagger=False)
     
-    Apply quantum logic gates controlledphaseshift to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques controlledphaseshift aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2521,7 +2521,7 @@ ControlledPhaseShift
 
 .. py:class:: pyvqnet.qnn.vqc.ControlledPhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a ControlledPhaseShift logic gate class.
+    Définit une classe de porte logique ControlledPhaseShift.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire une matrice de porte logique, définir sur False. Si elle contient des paramètres à entraîner, définir sur True. La valeur par défaut est False.
@@ -2546,7 +2546,7 @@ multicontrolledx
 
 .. py:function:: pyvqnet.qnn.vqc.multicontrolledx(q_machine, wires, params=None, use_dagger=False,control_values=None)
     
-    Apply quantum logic gates multicontrolledx to statevectors in ``q_machine``.
+    Applique les portes logiques quantiques multicontrolledx aux vecteurs d'état dans ``q_machine``.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2590,7 +2590,7 @@ MultiControlledX
 
 .. py:class:: pyvqnet.qnn.vqc.MultiControlledX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False,control_values=None)
     
-    Define a MultiControlledX logic gate class.
+    Définit une classe de porte logique MultiControlledX.
 
     :param has_params: Indique s'il y a des paramètres. Les portes RX, RY, etc. doivent être définies sur True, celles sans paramètres sur False. La valeur par défaut est False.
     :param trainable: Indique si elle contient des paramètres à entraîner. Si la couche utilise des données d'entrée externes pour construire la matrice de porte logique, définir sur False. Si les paramètres à entraîner doivent être initialisés à partir de cette couche, définir sur True. La valeur par défaut est False.
@@ -2659,7 +2659,7 @@ single_excitation
 
 .. py:function:: pyvqnet.qnn.vqc.single_excitation(q_machine, wires, params=None,  use_dagger=False)
     
-    Acting quantum logic gates on state vectors in q_machine single_excitation.
+    Applique les portes logiques quantiques single_excitation aux vecteurs d'état dans q_machine.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2694,7 +2694,7 @@ double_excitation
 
 .. py:function:: pyvqnet.qnn.vqc.double_excitation(q_machine, wires, params=None,  use_dagger=False)
     
-    Acting quantum logic gates on state vectors in q_machine double_excitation.
+    Applique les portes logiques quantiques double_excitation aux vecteurs d'état dans q_machine.
 
     :param q_machine: dispositif de machine virtuelle quantique.
     :param wires: indice du qubit.
@@ -2732,9 +2732,9 @@ VQC_BasisEmbedding
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_BasisEmbedding(basis_state,q_machine)
 
-    Encode binary features ``basis_state`` into the ground state of n qubits in ``q_machine``.
+    Encode les caractéristiques binaires ``basis_state`` dans l'état fondamental de n qubits de ``q_machine``.
 
-    For example, for ``basis_state=([0, 1, 1])``, the ground state of the quantum system is :math:`|011 \rangle`.
+    Par exemple, pour ``basis_state=([0, 1, 1])``, l'état fondamental du système quantique est :math:`|011 \rangle`.
 
     :param basis_state: entrée binaire de taille ``(n)``.
     :param q_machine: dispositif de machine virtuelle quantique.
@@ -2758,17 +2758,17 @@ VQC_AngleEmbedding
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_AngleEmbedding(input_feat, wires, q_machine: pyvqnet.qnn.vqc.QMachine, rotation: str = "X")
 
-    Encodes the :math:`N` feature into the rotation angle of the :math:`n` qubit, where :math:`N \leq n` in ``q_machine`` .
+    Encode la caractéristique :math:`N` dans l'angle de rotation du :math:`n`-ième qubit, où :math:`N \leq n` dans ``q_machine``.
 
-    Rotation can be selected as: 'X' , 'Y' , 'Z', such as the parameter definition of ``rotation`` is:
+    La rotation peut être choisie comme : 'X', 'Y', 'Z', la définition du paramètre ``rotation`` étant :
 
-    * ``rotation='X'`` Use feature as angle for RX rotation.
+    * ``rotation='X'`` Utilise la caractéristique comme angle de rotation RX.
 
-    * ``rotation='Y'`` Use feature as angle for RY rotation.
+    * ``rotation='Y'`` Utilise la caractéristique comme angle de rotation RY.
 
-    * ``rotation='Z'`` Use feature as angle for RZ rotation.
+    * ``rotation='Z'`` Utilise la caractéristique comme angle de rotation RZ.
 
-     ``wires`` denote the idx of rotation gates on the qubits.
+     ``wires`` désigne l'idx des portes de rotation sur les qubits.
 
     :param input_feat: tableau représentant les paramètres.
     :param wires: indice du qubit.
@@ -2804,7 +2804,7 @@ VQC_AmplitudeEmbedding
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_AmplitudeEmbeddingCircuit(input_feature, q_machine)
 
-    Encode a :math:`2^n` feature into an amplitude vector of :math:`n` qubits in ``q_machine`` .
+    Encode une caractéristique :math:`2^n` dans un vecteur d'amplitude de :math:`n` qubits dans ``q_machine``.
 
     :param input_feature: Un tableau numpy représentant les paramètres.
     :param q_machine: Dispositif de machine virtuelle quantique.
@@ -2829,11 +2829,11 @@ VQC_IQPEmbedding
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_IQPEmbedding(input_feat, q_machine: pyvqnet.qnn.vqc.QMachine, rep: int = 1)
 
-    Apply diagonal gates using IQP lines encode :math:`n` features into :math:`n` qubits of ``q_machine`` ..
+    Applique des portes diagonales à l'aide de circuits IQP pour encoder :math:`n` caractéristiques dans :math:`n` qubits de ``q_machine``.
 
-    The encoding was proposed by `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
+    L'encodage a été proposé par `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
 
-    By specifying ``rep``, basic IQP lines can be repeated.
+    En spécifiant ``rep``, les circuits IQP de base peuvent être répétés.
 
     :param input_feat: Un tableau numpy représentant les paramètres.
     :param q_machine: Dispositif de machine virtuelle quantique.
@@ -2860,7 +2860,7 @@ VQC_RotCircuit
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_RotCircuit(q_machine, wire, params)
 
-    Apply Arbitrary single-qubit rotations in statevectors of ``q_machine`` .
+    Applique des rotations arbitraires à un qubit aux vecteurs d'état de ``q_machine``.
 
     .. math::
 
@@ -2894,7 +2894,7 @@ VQC_CRotCircuit
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_CRotCircuit(para,control_qubits,rot_wire,q_machine)
 
-	Controlled Rot circuit.
+	Circuit Rot contrôlé.
 
     .. math:: CR(\phi, \theta, \omega) = \begin{bmatrix}
             1 & 0 & 0 & 0 \\
@@ -2929,7 +2929,7 @@ VQC_Controlled_Hadamard
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_Controlled_Hadamard(wires, q_machine)
 
-    Apply Controlled Hadamard operation in ``q_machine`` .
+    Applique l'opération Hadamard contrôlée dans ``q_machine``.
 
     .. math:: CH = \begin{bmatrix}
             1 & 0 & 0 & 0 \\
@@ -2962,7 +2962,7 @@ VQC_CCZ
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_CCZ(wires, q_machine)
 
-    Apply Controlled-controlled-Z logic in ``q_machine`` .
+    Applique la logique Z contrôlée-contrôlée dans ``q_machine``.
 
     .. math::
 
@@ -2978,7 +2978,7 @@ VQC_CCZ
         0 & 0 & 0 & 0 & 0 & 0 & 0 & -1
         \end{pmatrix}
     
-    :param wires: List of qubit subscripts, the first bit is the control bit. The list length is 3.
+    :param wires: Liste d'indices de qubits, le premier bit est le bit de contrôle. La longueur de la liste est 3.
     :param q_machine: Dispositif de machine virtuelle quantique.
 
     :return:
@@ -3006,16 +3006,16 @@ VQC_FermionicSingleExcitation
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_FermionicSingleExcitation(weight, wires, q_machine)
 
-    A coupled cluster single-excitation operator for exponentiating the tensor product of a Pauli matrix. The matrix form is given by:
+    Opérateur d'excitation simple de cluster couplé pour l'exponentiation du produit tensoriel d'une matrice de Pauli. La forme matricielle est donnée par :
 
     .. math::
 
         \hat{U}_{pr}(\theta) = \mathrm{exp} \{ \theta_{pr} (\hat{c}_p^\dagger \hat{c}_r
         -\mathrm{H.c.}) \},
 
-    :param weight:  The parameter on qubit p has only one element.
-    :param wires: Denotes a subset of qubit indices in the interval [r, p]. Minimum length must be 2. The first index value is interpreted as r and the last index value as p.
-                 The intermediate index is acted on by the CNOT gate to calculate the parity of the qubit set.
+    :param weight: Le paramètre sur le qubit p n'a qu'un seul élément.
+    :param wires: Désigne un sous-ensemble d'indices de qubits dans l'intervalle [r, p]. La longueur minimale doit être 2. La première valeur d'indice est interprétée comme r et la dernière valeur d'indice comme p.
+                 L'indice intermédiaire est soumis à la porte CNOT pour calculer la parité de l'ensemble de qubits.
     :param q_machine: Dispositif de machine virtuelle quantique.
 
     :return:
@@ -3042,16 +3042,16 @@ VQC_FermionicDoubleExcitation
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_FermionicDoubleExcitation(weight, wires1, wires2, q_machine)
 
-    The coupled clustering dual excitation operator that exponentiates the tensor product of the Pauli matrix, the matrix form is given by:
+    Opérateur de double excitation de cluster couplé qui exponentie le produit tensoriel de matrices de Pauli ; la forme matricielle est donnée par :
 
     .. math::
 
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \{ \theta (\hat{c}_p^\dagger \hat{c}_q^\dagger
         \hat{c}_r \hat{c}_s - \mathrm{H.c.}) \},
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are the fermion annihilation and Create operators and indices :math:`r, s` and :math:`p, q` in the occupied and
-    are empty molecular orbitals, respectively. Use the `Jordan-Wigner transformation <https://arxiv.org/abs/1208.5986>`_ The fermion operator defined above can be written as
-    According to the Pauli matrix (for more details, see `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_)
+    où :math:`\hat{c}` et :math:`\hat{c}^\dagger` sont respectivement les opérateurs d'annihilation et de création de fermions, et les indices :math:`r, s` et :math:`p, q` dans les orbitales moléculaires occupées et
+    vides. Utilisez la `transformation de Jordan-Wigner <https://arxiv.org/abs/1208.5986>`_. L'opérateur de fermion défini ci-dessus peut s'écrire
+    en termes de matrices de Pauli (pour plus de détails, voir `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_)
 
     .. math::
 
@@ -3062,10 +3062,10 @@ VQC_FermionicDoubleExcitation
         \hat{X}_s \hat{X}_r \hat{X}_q \hat{Y}_p - \mathrm{H.c.}  ) \Big\}
 
     :param weight: Paramètre variable.
-    :param wires1: The index list of qubits representing the subset of qubits occupied in the interval [s, r]. The first index is interpreted as s, the last as r.
-     CNOT gates operate on intermediate indices to compute the parity of a set of qubits.
-    :param wires2: The index list of qubits representing the subset of qubits occupied in the interval [q, p]. The first index is interpreted as q, the last as p. 
-     CNOT gates operate on intermediate indices to compute the parity of a set of qubits.
+    :param wires1: Liste d'indices de qubits représentant le sous-ensemble de qubits occupés dans l'intervalle [s, r]. Le premier indice est interprété comme s, le dernier comme r.
+     Les portes CNOT opèrent sur les indices intermédiaires pour calculer la parité d'un ensemble de qubits.
+    :param wires2: Liste d'indices de qubits représentant le sous-ensemble de qubits occupés dans l'intervalle [q, p]. Le premier indice est interprété comme q, le dernier comme p.
+     Les portes CNOT opèrent sur les indices intermédiaires pour calculer la parité d'un ensemble de qubits.
     :param q_machine: Dispositif de machine virtuelle quantique.
 
     :return:
@@ -3091,9 +3091,9 @@ VQC_UCCSD
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_UCCSD(weights, wires, s_wires, d_wires, init_state, q_machine)
 
-    Realize the unitary coupled cluster single-excitation and double-excitation design (UCCSD). UCCSD is the proposed VQE design, commonly used to run quantum chemistry simulations.
+    Réalise la conception UCCSD (unitary coupled cluster single-excitation and double-excitation). UCCSD est la conception VQE proposée, couramment utilisée pour exécuter des simulations de chimie quantique.
 
-    Within the first-order Trotter approximation, the UCCSD unitary function is given by:
+    Dans l'approximation de Trotter de premier ordre, la fonction unitaire UCCSD est donnée par :
 
     .. math::
 
@@ -3103,24 +3103,24 @@ VQC_UCCSD
         \prod_{p > q > r > s} \mathrm{exp} \Big\{\theta_{pqrs}
         (\hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r \hat{c}_s-\mathrm{H.c.}) \Big\}
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are the fermion annihilation and
-    Create operators and indices :math:`r, s` and :math:`p, q` in the occupied and
-    are empty molecular orbitals, respectively. (For more details see `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_):
+    où :math:`\hat{c}` et :math:`\hat{c}^\dagger` sont respectivement les opérateurs d'annihilation et
+    de création de fermions, et les indices :math:`r, s` et :math:`p, q` dans les orbitales moléculaires occupées et
+    vides. (Pour plus de détails, voir `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_) :
 
 
     :param weights: Un tenseur ``(len(s_wires)+ len(d_wires))`` contenant les paramètres
-         :math:`\theta_{pr}` and :math:`\theta_{pqrs}` input Z rotation
-         ``FermionicSingleExcitation`` and ``FermionicDoubleExcitation``.
+         :math:`\theta_{pr}` et :math:`\theta_{pqrs}` rotations Z d'entrée
+         ``FermionicSingleExcitation`` et ``FermionicDoubleExcitation``.
     :param wires: Indexation des qubits pour les effets du modèle
-    :param s_wires: A sequence of lists ``[r,...,p]`` containing qubit indices
-         produced by a single excitation
+    :param s_wires: Une séquence de listes ``[r,...,p]`` contenant les indices de qubits
+         générés par une excitation simple
          :math:`\vert r, p \rangle = \hat{c}_p^\dagger \hat{c}_r \vert \mathrm{HF} \rangle`,
-         where :math:`\vert \mathrm{HF} \rangle` represents the Hartree-Fock reference state.
+         où :math:`\vert \mathrm{HF} \rangle` représente l'état de référence Hartree-Fock.
     :param d_wires: séquence de listes, chaque liste contenant deux listes
-         specify indices ``[s, ...,r]`` and ``[q,...,p]``
-         Define double excitation: math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \ vert \mathrm{HF} \rangle`.
+         spécifiant les indices ``[s, ...,r]`` et ``[q,...,p]``
+         Définit la double excitation : :math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \vert \mathrm{HF} \rangle`.
     :param init_state: vecteur de représentation du nombre d'occupation de longueur ``len(wires)``
-         high frequency state. ``init_state`` is the qubit initialization state.
+         état haute fréquence. ``init_state`` est l'état d'initialisation du qubit.
     :param q_machine: Dispositif de machine virtuelle quantique.
 
     Examples::
@@ -3145,9 +3145,9 @@ VQC_ZFeatureMap
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_ZFeatureMap(input_feat, q_machine: pyvqnet.qnn.vqc.QMachine, data_map_func=None, rep: int = 2)
 
-    First-order bubblegum Z-evolution circuit.
+    Circuit d'évolution Pauli Z de premier ordre.
 
-    For 3 quantum bits and 2 repetitions, the circuit is represented as:
+    Pour 3 bits quantiques et 2 répétitions, le circuit est représenté comme suit :
 
     .. parsed-literal::
 
@@ -3159,7 +3159,7 @@ VQC_ZFeatureMap
         ┤ H ├┤ U1(2.0*x[2]) ├┤ H ├┤ U1(2.0*x[2]) ├
         └───┘└──────────────┘└───┘└──────────────┘
     
-    The Pauli string is fixed to ``Z``. Thus, the first order expansion will be a circuit without entanglement gates.
+    La chaîne de Pauli est fixée à ``Z``. Ainsi, l'expansion de premier ordre sera un circuit sans portes d'intrication.
 
     :param input_feat: Un tableau représentant les paramètres d'entrée.
     :param q_machine: Machine quantique.
@@ -3187,9 +3187,9 @@ VQC_ZZFeatureMap
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_ZZFeatureMap(input_feat, q_machine: pyvqnet.qnn.vqc.QMachine, data_map_func=None, entanglement: Union[str, List[List[int]],Callable[[int], List[int]]] = "full",rep: int = 2)
 
-    Second-order Pauli-Z evolution circuits.
+    Circuits d'évolution Pauli-Z de second ordre.
 
-    For 3 quantum bits, 1 repetition and linear entanglement, the circuit is represented as:
+    Pour 3 bits quantiques, 1 répétition et une intrication linéaire, le circuit est représenté comme suit :
 
     .. parsed-literal::
 
@@ -3201,7 +3201,7 @@ VQC_ZZFeatureMap
         ┤ H ├┤ U1(2.0*φ(x[2])) ├──────────────────────────────────┤ X ├┤ U1(2.0*φ(x[1],x[2])) ├┤ X ├
         └───┘└─────────────────┘                                  └───┘└──────────────────────┘└───┘
     
-    where ``φ`` is the classical nonlinear function that defaults to ``φ(x) = x`` if and ``φ(x,y) = (pi - x)(pi - y)``, design as:
+    où ``φ`` est la fonction non linéaire classique qui vaut par défaut ``φ(x) = x`` si une seule valeur est fournie et ``φ(x,y) = (pi - x)(pi - y)``, définie comme :
     
     .. code-block::
         
@@ -3234,7 +3234,7 @@ VQC_AllSinglesDoubles
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_AllSinglesDoubles(weights, q_machine: pyvqnet.qnn.vqc.QMachine, hf_state, wires, singles=None, doubles=None)
 
-    Apply all ``SingleExcitation`` and ``DoubleExcitation`` operations on the ``q_machine`` to the initial Hartree-Fock state, preparing the molecular association state.
+    Applique toutes les opérations ``SingleExcitation`` et ``DoubleExcitation`` sur ``q_machine`` à l'état initial de Hartree-Fock, en préparant l'état d'association moléculaire.
 
     :param weights: QTensor de taille ``(len(singles) + len(doubles),)`` contenant les angles qui entrent dans vqc.qCircuit.single_excitation et vqc.qCircuit.double_excitation operations sequentially
     :param q_machine: Machine quantique.
@@ -3243,7 +3243,7 @@ VQC_AllSinglesDoubles
     :param singles: Séquence de listes avec les deux indices de bits quantiques sur lesquels l'opération single_excitation agit.
     :param doubles: Séquence de listes avec les deux indices de bits quantiques sur lesquels l'opération double_excitation agit.
 
-    For example, the quantum circuit for the case of two electrons and six quantum bits is shown below:
+    Par exemple, le circuit quantique pour le cas de deux électrons et six bits quantiques est illustré ci-dessous :
     
 .. image:: ./images/all_singles_doubles.png
     :width: 600 px
@@ -3273,16 +3273,16 @@ VQC_BasisRotation
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_BasisRotation(q_machine: pyvqnet.qnn.vqc.QMachine, wires, unitary_matrix: QTensor, check=False)
 
-    Implement a circuit that provides a whole that can be used to perform precise monolithic base rotations.
+    Implémente un circuit qui fournit un ensemble pouvant être utilisé pour effectuer des rotations de base monolithiques précises.
 
-    :class:`~.vqc.qCircuit.VQC_BasisRotation` Performs the following you-transform determined by single-particle fermions given in `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\ :math:`U(u)`
+    :class:`~.vqc.qCircuit.VQC_BasisRotation` effectue la transformation unitaire suivante déterminée par des fermions à une particule, donnée dans `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\ :math:`U(u)`
     
     .. math::
 
         U(u) = \exp{\left( \sum_{pq} \left[\log u \right]_{pq} (a_p^\dagger a_q - a_q^\dagger a_p) \right)}.
     
-    :math:`U(u)` by using the scheme given in the paper `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\.
-    The decomposition of the input You matrix is efficiently implemented by a series of :class:`~vqc.qCircuit.phaseshift` and :class:`~vqc.qCircuit.single_exitation` gates.
+    :math:`U(u)` en utilisant le schéma donné dans l'article `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\.
+    La décomposition de la matrice unitaire d'entrée est implémentée efficacement par une série de portes :class:`~vqc.qCircuit.phaseshift` et :class:`~vqc.qCircuit.single_exitation`.
     
 
     :param q_machine: Machine quantique.
@@ -3323,10 +3323,10 @@ VQC_QuantumPoolingCircuit
 
 .. py:function:: pyvqnet.qnn.vqc.VQC_QuantumPoolingCircuit(ignored_wires, sinks_wires, params, q_machine)
 
-    A quantum circuit that downsamples data.
+    Un circuit quantique qui sous-échantillonne les données.
 
-    To reduce the number of qubits in a circuit, pairs of qubits are first created in the system. After initially pairing all qubits, a generalized 2-qubit unitary is applied to each pair of qubits. 
-    And after applying the two-qubit unitary, one qubit in each pair of qubits is ignored in the rest of the neural network.
+    Pour réduire le nombre de qubits d'un circuit, des paires de qubits sont d'abord créées dans le système. Après avoir initialement apparié tous les qubits, une unité généralisée à 2 qubits est appliquée à chaque paire de qubits.
+    Et après l'application de l'unité à deux qubits, un qubit de chaque paire est ignoré dans le reste du réseau de neurones.
 
     :param sources_wires: L'indice du qubit source qui sera ignoré.
     :param sinks_wires: L'indice du qubit cible à conserver.
@@ -3361,7 +3361,7 @@ ExpressiveEntanglingAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.ExpressiveEntanglingAnsatz(type: int, num_wires: int, depth: int, name: str = "")
 
-    19 different ansatz from the paper `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
+    19 ansatz différents issus de l'article `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
 
     :param type: Type de circuit de 1 à 19, un total de 19 fils.
     :param num_wires: Nombre de qubits.
@@ -3369,7 +3369,7 @@ ExpressiveEntanglingAnsatz
     :param name: Nom, par défaut "".
 
     :return:
-        An ExpressiveEntanglingAnsatz instance
+        Une instance ExpressiveEntanglingAnsatz
 
     Example::
 
@@ -3418,27 +3418,27 @@ vqc_qft_add_to_register
 
 .. py:function:: pyvqnet.qnn.vqc.vqc_qft_add_to_register(q_machine, m, k)
 
-    Encode an unsigned integer `m` into a qubit and then add `k` to it.
+    Encode un entier non signé `m` dans un qubit puis lui ajoute `k`.
 
     .. math:: \text{Sum(k)}\vert m \rangle = \vert m + k \rangle.
 
-    This unitary operation is implemented as follows:
+    Cette opération unitaire est implémentée comme suit :
 
-    (1). Convert the state from the computational basis to the Fourier basis by applying the QFT to the :math:`\vert m \rangle` state.
+    (1). Convertit l'état de la base de calcul vers la base de Fourier en appliquant la QFT à l'état :math:`\vert m \rangle`.
 
-    (2). Use the :math:`R_Z` gate to rotate the :math:`j` qubit by the angle :math:`\frac{2k\pi}{2^{j}}`, resulting in the new phase :math:`\frac{2(m + k)\pi}{2^{j}}`.
+    (2). Utilise la porte :math:`R_Z` pour faire pivoter le :math:`j`-ième qubit de l'angle :math:`\frac{2k\pi}{2^{j}}`, ce qui donne la nouvelle phase :math:`\frac{2(m + k)\pi}{2^{j}}`.
 
-    (3). Apply the inverse QFT back to the computational basis and obtain :math:`m+k`.
+    (3). Applique la QFT inverse pour revenir à la base de calcul et obtient :math:`m+k`.
 
     :param q_machine: La machine quantique à simuler.
     :param m: L'entier classique à encoder dans le registre.
     :param k: L'entier classique à ajouter au registre.
 
-    :retrun: Return the binary representation of the target sum.
+    :retrun: Renvoie la représentation binaire de la somme cible.
 
     .. note::
 
-        Please note that the number of bits used by ``q_machine`` needs to be sufficient to encode the binary value of the resulting sum using the X basis state.
+        Veuillez noter que le nombre de bits utilisés par ``q_machine`` doit être suffisant pour encoder la valeur binaire de la somme résultante à l'aide de l'état de base X.
 
     Example::
 
@@ -3457,26 +3457,26 @@ vqc_qft_add_two_register
 
 .. py:function:: vqc_qft_add_two_register(q_machine, m, k, wires_m, wires_k, wires_solution)
 
-    Add the unsigned integers encoded in the two qubits.
+    Additionne les entiers non signés encodés dans les deux qubits.
 
     .. math:: \text{Sum}_2\vert m \rangle \vert k \rangle \vert 0 \rangle = \vert m \rangle \vert k \rangle \vert m+k \rangle
 
-    In this case, we can understand the third register (initially at :math:`0`) as a counter that will count the number of units :math:`m` and :math:`k` add up to. Binary factorization will make this easy. If we have :math:`\vert m \rangle = \vert \overline{q_0q_1q_2} \rangle`, then if :math:`q_2 = 1`, then we must add :math:`1` to the counter, otherwise add nothing. In general, if the :math:`i`-th qubit is in the :math:`\vert 1 \rangle` state, we should add :math:`2^{n-i-1}` units, otherwise add 0.
+    Dans ce cas, nous pouvons comprendre le troisième registre (initialement à :math:`0`) comme un compteur qui comptera le nombre d'unités que :math:`m` et :math:`k` totalisent. La factorisation binaire facilite cela. Si nous avons :math:`\vert m \rangle = \vert \overline{q_0q_1q_2} \rangle`, alors si :math:`q_2 = 1`, nous devons ajouter :math:`1` au compteur, sinon rien. En général, si le :math:`i`-ième qubit est dans l'état :math:`\vert 1 \rangle`, nous devons ajouter :math:`2^{n-i-1}` unités, sinon ajouter 0.
 
     :param q_machine: La machine quantique à simuler.
     :param m: L'entier classique encodé dans le registre comme opérande gauche.
     :param k: L'entier classique encodé dans le registre comme opérande droit.
-    :param wires_m: The index of the qubit to encode m.
-    :param wires_k: The index of the qubit to encode k.
-    :param wires_solution: The index of the qubit to encode the solution.
+    :param wires_m: L'indice du qubit pour encoder m.
+    :param wires_k: L'indice du qubit pour encoder k.
+    :param wires_solution: L'indice du qubit pour encoder la solution.
 
-    :retrun: Return the binary representation of the target sum.
+    :retrun: Renvoie la représentation binaire de la somme cible.
 
     .. note::
 
-        The number of bits used in ``wires_m`` needs to be enough to encode the binary value of `m` using the X basis state.
-        ``wires_k`` uses enough bits to encode the binary value of `k` using the X basis state.
-        ``wires_solution`` uses enough bits to encode the binary value of the result using the X basis state.
+        Le nombre de bits utilisés dans ``wires_m`` doit être suffisant pour encoder la valeur binaire de `m` à l'aide de l'état de base X.
+        ``wires_k`` utilise suffisamment de bits pour encoder la valeur binaire de `k` à l'aide de l'état de base X.
+        ``wires_solution`` utilise suffisamment de bits pour encoder la valeur binaire du résultat à l'aide de l'état de base X.
 
     Example::
 
@@ -3501,24 +3501,24 @@ vqc_qft_mul
 
 .. py:function:: vqc_qft_mul(q_machine, m, k, wires_m, wires_k, wires_solution)
 
-    Add the values ​​encoded in two qubits.
+    Additionne les valeurs encodées dans deux qubits.
 
     .. math:: \text{Mul}\vert m \rangle \vert k \rangle \vert 0 \rangle = \vert m \rangle \vert k \rangle \vert m\cdot k \rangle
 
     :param q_machine: La machine quantique à simuler.
     :param m: L'entier classique encodé dans un registre comme opérande gauche.
     :param k: L'entier classique encodé dans un registre comme opérande droit.
-    :param wires_m: The qubit index to encode m.
-    :param wires_k: The qubit index to encode k.
-    :param wires_solution: The qubit index to encode the solution.
+    :param wires_m: L'indice du qubit pour encoder m.
+    :param wires_k: L'indice du qubit pour encoder k.
+    :param wires_solution: L'indice du qubit pour encoder la solution.
 
-    :retrun: Return the binary representation of the target product.
+    :retrun: Renvoie la représentation binaire du produit cible.
 
     .. note::
 
-        ``wires_m`` needs to use enough bits to encode the binary value of `m` using the X basis state.
-        ``wires_k`` uses enough bits to encode the binary value of `k` using the X basis state.
-        ``wires_solution`` uses enough bits to encode the binary value of the result using the X basis state.
+        ``wires_m`` doit utiliser suffisamment de bits pour encoder la valeur binaire de `m` à l'aide de l'état de base X.
+        ``wires_k`` utilise suffisamment de bits pour encoder la valeur binaire de `k` à l'aide de l'état de base X.
+        ``wires_solution`` utilise suffisamment de bits pour encoder la valeur binaire du résultat à l'aide de l'état de base X.
 
     Example::
 
@@ -3543,7 +3543,7 @@ VQC_FABLE
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_FABLE(wires)
 
-    Constructs a VQC-based QCircuit using a fast approximate block coding method. For matrices of certain structures [`arXiv:2205.00081 <https://arxiv.org/abs/2205.00081>`_], the FABLE method can simplify the block coding circuit without losing accuracy.
+    Construit un QCircuit basé sur VQC à l'aide d'une méthode rapide de codage par blocs approximatif. Pour les matrices de certaines structures [`arXiv:2205.00081 <https://arxiv.org/abs/2205.00081>`_], la méthode FABLE peut simplifier le circuit de codage par blocs sans perte de précision.
 
     :param wires: L'indice qlist sur lequel l'opérateur agit.
 
@@ -3577,11 +3577,11 @@ VQC_LCU
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_LCU(wires)
 
-    Build a VQC-based QCircuit using Linear Combination Unit (LCU), `Hamiltonian Simulation via Qubitization <https://arxiv.org/abs/1610.06546>`_.
-    Input dtype can be kfloat32, kfloat64, kcomplex64, kcomplex128
-    Input should be Hermitian.
+    Construit un QCircuit basé sur VQC à l'aide de l'unité de combinaison linéaire (LCU), `Hamiltonian Simulation via Qubitization <https://arxiv.org/abs/1610.06546>`_.
+    Le type d'entrée peut être kfloat32, kfloat64, kcomplex64, kcomplex128
+    L'entrée doit être hermitienne.
 
-    :param wires: qlist index on which operator to act, may require auxiliary qubits.
+    :param wires: indice qlist sur lequel l'opérateur agit, peut nécessiter des qubits auxiliaires.
     :param check_hermitian: Vérifie si l'entrée est hermitienne, par défaut : True.
 
     Examples::
@@ -3620,12 +3620,12 @@ VQC_QSVT
 
 .. py:class:: pyvqnet.qnn.vqc.VQC_QSVT(A, angles, wires)
 
-    Implements the
-    `quantum singular value transformation <https://arxiv.org/abs/1806.01838>`__ (QSVT) circuit.
+    Implémente le circuit de
+    `quantum singular value transformation <https://arxiv.org/abs/1806.01838>`__ (QSVT).
 
     :param A: La matrice générale :math:`(n \times m)` à encoder.
-    :param angles: The list of angles to shift to get the desired polynomial.
-    :param wires: The qubit indices that A acts on.
+    :param angles: La liste des angles à décaler pour obtenir le polynôme souhaité.
+    :param wires: Les indices de qubits sur lesquels A agit.
 
     Example::
 
@@ -3670,9 +3670,9 @@ VQC_Purity
     .. math::
         \gamma = \text{Tr}(\rho^2)
 
-    where :math:`\rho` is a density matrix. The purity of a normalized quantum state satisfies :math:`\frac{1}{d} \leq \gamma \leq 1` ,
-    where :math:`d` is the dimension of the Hilbert space.
-    The purity of the pure state is 1.
+    où :math:`\rho` est une matrice de densité. La pureté d'un état quantique normalisé satisfait :math:`\frac{1}{d} \leq \gamma \leq 1`,
+    où :math:`d` est la dimension de l'espace de Hilbert.
+    La pureté de l'état pur est 1.
 
     :param state: État quantique obtenu à partir de pyqpanda get_qstate()
     :param qubits_idx: Indice du qubit pour lequel calculer la pureté
@@ -3731,8 +3731,8 @@ VQC_DensityMatrixFromQstate
 
     Calcule la matrice de densité des états quantiques ``state`` sur un ensemble spécifique de qubits ``indices``.
 
-    :param state: A 1D list of state vectors. The size of this list should be ``(2**N,)`` For the number of qubits ``N``, qstate should start from 000 -> 111.
-    :param indices: A list of qubit indices in the considered subsystem.
+    :param state: Une liste 1D de vecteurs d'état. La taille de cette liste doit être ``(2**N,)``. Pour le nombre de qubits ``N``, qstate doit aller de 000 -> 111.
+    :param indices: Une liste d'indices de qubits dans le sous-système considéré.
 
     :return: Une matrice de densité de taille "(b, 2**len(indices), 2**len(indices))".
 
@@ -3791,7 +3791,7 @@ Probability
 
     .. note::
 
-        The résultats de mesure de probabilité calculated using this class are generally [b, len(wires)], where b is the batch number b of q_machine.reset_states(b).
+        Les résultats de mesure de probabilité calculés à l'aide de cette classe sont généralement [b, len(wires)], où b est le numéro de lot b de q_machine.reset_states(b).
 
  
 
@@ -3820,26 +3820,26 @@ MeasureAll
 
 .. py:class:: pyvqnet.qnn.vqc.MeasureAll(obs,name="")
 
-    Calcule les résultats de mesure d'un circuit quantique. Supports input of observables ``obs``. This can be in dictionary format, representing an observable composed of multiple Pauli operators, or in list format, representing a list of observables with multiple expected values.
-    For example:
+    Calcule les résultats de mesure d'un circuit quantique. Prend en charge l'entrée d'observables ``obs``. Cela peut être sous forme de dictionnaire, représentant un observable composé de plusieurs opérateurs de Pauli, ou sous forme de liste, représentant une liste d'observables avec plusieurs valeurs attendues.
+    Par exemple :
 
-        {\'X0\': 0.23} indicates a PauliX effect on qubit 0, with a coefficient of 0.23.
+        {\'X0\': 0.23} indique un effet PauliX sur le qubit 0, avec un coefficient de 0,23.
 
-        {\'X1 Z2\': 2.4,\'Y2\': -0.5} corresponds to the observed value 2.4 * X1 @ Z2 - 0.5 * Y2.
+        {\'X1 Z2\': 2.4,\'Y2\': -0.5} correspond à la valeur observée 2.4 * X1 @ Z2 - 0.5 * Y2.
 
-        [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] corresponds to the two observed values 4 * X1 @ Z2 + 3 * Z1 @ Z0 and 3.5 * X1 @ Y2 @ Z0.
+        [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] correspond aux deux valeurs observées 4 * X1 @ Z2 + 3 * Z1 @ Z0 et 3.5 * X1 @ Y2 @ Z0.
 
     :param obs: dictionnaire de chaînes d'opérateurs de Pauli pour les observables.
 
     .. note::
 
-        If ``obs`` is a list, the measurement result calculated using this class is generally [b, obs list length], where b is the batch number b of q_machine.reset_states(b).
+        Si ``obs`` est une liste, le résultat de mesure calculé à l'aide de cette classe est généralement [b, longueur de la liste obs], où b est le numéro de lot b de q_machine.reset_states(b).
 
-        If ``obs`` is a dictionary, the measurement result calculated using this class is generally [b,1], where b is the batch number b of q_machine.reset_states(b).
+        Si ``obs`` est un dictionnaire, le résultat de mesure calculé à l'aide de cette classe est généralement [b,1], où b est le numéro de lot b de q_machine.reset_states(b).
 
     .. py:method:: forward(q_machine)
 
-        Perform measurement operation
+        Effectue l'opération de mesure
 
         :param q_machine: simulateur de vecteurs d'état quantique
         :return: résultat de mesure, QTensor.
@@ -4018,13 +4018,13 @@ VQC_HardwareEfficientAnsatz
     L'implémentation de l'Ansatz Efficace Matériel introduit dans l'article:`Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__.
 
     :param n_qubits: Nombre de qubits.
-    :param single_rot_gate_list: A single qubit rotation gate list is constructed by one or several rotation gate that act on every qubit.Currently support Rx, Ry, Rz.
-    :param entangle_gate: The non parameterized entanglement gate.CNOT,CZ is supported.default:CNOT.
-    :param entangle_rules: How entanglement gate is used in the circuit. 'linear' means the entanglement gate will be act on every neighboring qubits. 'all' means the entanglment gate will be act on any two qbuits. Default:linear.
+    :param single_rot_gate_list: Une liste de portes de rotation à un qubit est construite par une ou plusieurs portes de rotation agissant sur chaque qubit. Prend actuellement en charge Rx, Ry, Rz.
+    :param entangle_gate: La porte d'intrication non paramétrée. CNOT et CZ sont prises en charge. Par défaut : CNOT.
+    :param entangle_rules: Mode d'utilisation de la porte d'intrication dans le circuit. 'linear' signifie que la porte d'intrication agit sur tous les qubits voisins. 'all' signifie que la porte d'intrication agit sur deux qubits quelconques. Par défaut : linear.
     :param depth: La profondeur de l'ansatz, par défaut : 1.
     :param initial: valeur initiale identique pour tous les paramètres, par défaut None, ce module initialisera les paramètres aléatoirement.
-    :param dtype: data dtype of parameters.
-    :return: a VQC_HardwareEfficientAnsatz instance.
+    :param dtype: type de données des paramètres.
+    :return: une instance de VQC_HardwareEfficientAnsatz.
 
     Example::
 
@@ -4075,9 +4075,9 @@ VQC_BasicEntanglerTemplate
 
     :param num_layers: nombre de couches répétées, par défaut : 1.
     :param num_qubits: nombre de qubits, par défaut : 1.
-    :param rotation: porte à un qubit et un paramètre à utiliser, par défaut : `RX`
+    :param rotation: porte à un qubit et un paramètre à utiliser, par défaut : ``RX``
     :param initial: valeur initiale identique pour tous les paramètres, par défaut None, les paramètres seront initialisés aléatoirement.
-    :param dtype: data type of parameter, default:None,use float32.
+    :param dtype: type de données du paramètre, par défaut : None, utilise float32.
     :return: Une instance VQC_BasicEntanglerTemplate
 
     Example::
@@ -4125,9 +4125,9 @@ VQC_StronglyEntanglingTemplate
     :param num_layers: nombre de couches répétées, par défaut : 1.
     :param num_qubits: nombre de qubits, par défaut : 1.
     :param ranges: séquence déterminant l'hyperparamètre de plage pour chaque couche suivante ; par défaut : None
-                                using :math: `r=l \mod M` for the :math:`l` th layer and :math:`M` qubits.
+                                en utilisant :math:`r=l \mod M` pour la :math:`l`-ième couche et :math:`M` qubits.
     :param initial: valeur initiale pour tous les paramètres, par défaut None, initialisé aléatoirement.
-    :param dtype: data type of parameter, default:None,use float32.
+    :param dtype: type de données du paramètre, par défaut : None, utilise float32.
     :return: Une instance VQC_StronglyEntanglingTemplate.
 
     Example::
@@ -4171,9 +4171,9 @@ VQC_QuantumEmbedding
 .. py:class:: pyvqnet.qnn.vqc.VQC_QuantumEmbedding( num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
 
     Utilise RZ, RY, RZ pour créer des circuits quantiques variationnels qui encodent les données classiques dans des états quantiques.
-    Reference `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
-    After the class is initialized, its member function ``compute_circuit`` is a running function, which can be input as a parameter. 
-    The ``QuantumLayerV2`` class constitutes a layer of the quantum machine learning model.
+    Référence : `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
+    Après l'initialisation de la classe, sa fonction membre ``compute_circuit`` est une fonction d'exécution, qui peut être passée en paramètre.
+    La classe ``QuantumLayerV2`` constitue une couche du modèle d'apprentissage automatique quantique.
 
     :param num_repetitions_input: nombre de répétitions pour encoder l'entrée dans un sous-module.
     :param depth_input: nombre de dimensions d'entrée.
@@ -4278,9 +4278,9 @@ QDRL
 
 .. py:class:: pyvqnet.qnn.qdrl_vqc.QDRL(nq)
 
-    The Quantum Data Re-uploading (QDRL) algorithm based on "Data re-uploading for a universal quantum classifier" (https://arxiv.org/abs/1907.02085) is a quantum data re-uploading model that combines quantum circuits with classical neural networks.
+    L'algorithme Quantum Data Re-uploading (QDRL), fondé sur « Data re-uploading for a universal quantum classifier » (https://arxiv.org/abs/1907.02085), est un modèle de réinjection quantique des données qui combine des circuits quantiques avec des réseaux de neurones classiques.
 
-    :param nq: Le nombre de bits quantiques (qubits) utilisés dans le circuit quantique. This determines the scale of the quantum system that the model will handle.
+    :param nq: Le nombre de bits quantiques (qubits) utilisés dans le circuit quantique. Cela détermine l'échelle du système quantique que le modèle traitera.
     :return: Une instance QDRL.
 
     Example::
@@ -4318,7 +4318,7 @@ QGRU
     GRU (Unité Récurrente à Portes) basée sur des circuits variationnels quantiques, utilisant des circuits quantiques pour les mises à jour d'état et la rétention mémoire.
 
     :param para_num: Le nombre de paramètres dans le circuit quantique.
-    :param num_of_qubits: The nombre de qubits.
+    :param num_of_qubits: Le nombre de qubits.
     :param input_size: La dimension des caractéristiques des données d'entrée.
     :param hidden_size: La dimension de l'unité cachée.
     :param batch_first: Indique si la première dimension de l'entrée est la taille du lot.
@@ -4399,15 +4399,15 @@ QMLPModel
 
     :param input_channels: Le nombre de caractéristiques d'entrée.
     :param output_channels: Le nombre de caractéristiques de sortie.
-    :param num_qubits: The nombre de qubits.
+    :param num_qubits: Le nombre de qubits.
     :param kernel: La taille de la fenêtre de pooling moyenne.
     :param stride: Le facteur de pas pour le sous-échantillonnage.
     :param padding: La méthode de remplissage, optionnelle "valid" ou "same".
     :param weight_initializer: Initialisateur de poids, par défaut distribution normale.
     :param bias_initializer: Initialisateur de biais, par défaut initialisation à zéro.
     :param use_bias: Indique s'il faut utiliser un biais, par défaut True.
-    :param dtype: Defaults to None, use the default data type.
-    :return: A QMLPModel instance.
+    :param dtype: Par défaut None, utilise le type de données par défaut.
+    :return: Une instance QMLPModel.
 
     Example::
 
@@ -4444,11 +4444,11 @@ QRLModel
 
 .. py:class:: pyvqnet.qnn.qrl.QRLModel(num_qubits, n_layers)
 
-    Quantum deep reinforcement learning model using variational quantum circuits in :ref:`QDRL_DEMO`.
+    Modèle d'apprentissage par renforcement profond quantique utilisant des circuits quantiques variationnels dans :ref:`QDRL_DEMO`.
 
-    :param num_qubits: The number of qubits used in the quantum circuit.
+    :param num_qubits: Le nombre de qubits utilisés dans le circuit quantique.
     :param n_layers: Le nombre de couches dans le circuit quantique variationnel.
-    :return: A QRLModel instance.
+    :return: Une instance QRLModel.
 
     Example::
 
@@ -4558,8 +4558,8 @@ QuantumLayerAdjoint
 
     .. note::
 
-        QMachine for general_module should set grad_method = "adjoint".
-        Currently, the following parametric logic gates are supported: `RX`, `RY`, `RZ`, `PhaseShift`, `RXX`, `RYY`, `RZZ`, `RZX`, `U1`, `U2`, `U3` and other variational circuits without parametric logic gates.
+        La QMachine de general_module doit définir grad_method = "adjoint".
+        Actuellement, les portes logiques paramétriques suivantes sont prises en charge : `RX`, `RY`, `RZ`, `PhaseShift`, `RXX`, `RYY`, `RZZ`, `RZX`, `U1`, `U2`, `U3` et d'autres circuits variationnels sans portes logiques paramétriques.
 
     Example::
 
@@ -4632,13 +4632,13 @@ DataParallelVQCAdjointLayer
 
 .. py:class:: pyvqnet.distributed.DataParallelVQCAdjointLayer(Comm_OP, vqc_module, name="")
 
-Create vqc with data parallelism for batch size of data using adjoint gradient computation. Where ``vqc_module`` must be a VQC module of type ``QuantumLayerAdjoint``.
+Crée un vqc avec parallélisme de données pour la taille de lot des données en utilisant le calcul de gradient adjoint. Où ``vqc_module`` doit être un module VQC de type ``QuantumLayerAdjoint``.
 
-If we use N nodes to run this module,
-In each node, `batch_size/N` data are forwarded to run the variational quantum circuit to compute gradients.
+Si nous utilisons N nœuds pour exécuter ce module,
+Dans chaque nœud, `batch_size/N` données sont transmises pour exécuter le circuit quantique variationnel afin de calculer les gradients.
 
 :param Comm_OP: Définit le contrôleur de communication pour l'environnement distribué.
-:param vqc_module: A VQC module of type QuantumLayerAdjoint with forward(), make sure qmachine is set up correctly.
+:param vqc_module: Un module VQC de type QuantumLayerAdjoint avec forward(), assurez-vous que qmachine est correctement configuré.
 :param name: Le nom du module. La valeur par défaut est une chaîne vide.
 :return: Un module qui peut calculer des circuits quantiques.
 
@@ -4756,8 +4756,8 @@ DataParallelVQCLayer
 .. py:class:: pyvqnet.distributed.DataParallelVQCLayer(Comm_OP, vqc_module, name="")
 
     Crée un vqc avec parallélisme de données pour la taille de lot des données en utilisant le calcul par différentiation automatique.
-    If we use N nodes to run this module,
-    In each node, `batch_size/N` of data are forward run through the variational quantum circuit to compute gradients.
+    Si nous utilisons N nœuds pour exécuter ce module,
+    Dans chaque nœud, `batch_size/N` données sont transmises dans le circuit quantique variationnel pour calculer les gradients.
 
     :param Comm_OP: Définit le contrôleur de communication pour l'environnement distribué.
     :param vqc_module: Module VQC avec forward(), assurez-vous que qmachine est correctement configuré.
@@ -4841,10 +4841,10 @@ vqc_to_originir_list
 
 .. py:function:: pyvqnet.qnn.vqc.vqc_to_originir_list(vqc_model: pyvqnet.nn.Module)
 
-    Convert VQNet vqc module to originIR.
+    Convertit un module vqc VQNet en originIR.
 
-    vqc_model should run the forward function before this function to get the input data.
-    If the input data is batch data. For each input it will return multiple IR strings.
+    vqc_model doit exécuter la fonction forward avant cette fonction pour obtenir les données d'entrée.
+    Si les données d'entrée sont des données par lots, plusieurs chaînes IR seront renvoyées pour chaque entrée.
 
     :param vqc_model: Module VQC VQNet, qui doit d'abord exécuter forward.
 
@@ -5023,9 +5023,9 @@ originir_to_vqc
 
 .. py:function:: pyvqnet.qnn.vqc.originir_to_vqc(originir, tmp="code_tmp.py", verbose=False)
 
-    Parse originIR into vqc model code.
-    The code creates a variational quantum circuit `pyvqnet.nn.Module` without `Measure`, and returns the state vector form of the quantum state, such as [b,2,...,2].
-    This function will generate a code file defining the corresponding VQNet model in "./origin_ir_gen_code/" + tmp + ".py".
+    Analyse originIR pour le convertir en code de modèle vqc.
+    Le code crée un circuit quantique variationnel `pyvqnet.nn.Module` sans `Measure`, et renvoie la forme du vecteur d'état du système quantique, telle que [b,2,...,2].
+    Cette fonction générera un fichier de code définissant le modèle VQNet correspondant dans "./origin_ir_gen_code/" + tmp + ".py".
 
     :param originir: Original IR.
     :param tmp: code file name, default ``code_tmp.py``.
@@ -5070,11 +5070,11 @@ model_summary
 
 .. py:function:: pyvqnet.model_summary(vqc_module)
 
-    Print information about classical layer and quantum gate operators registered in vqc_module.
+    Affiche des informations sur la couche classique et les opérateurs de portes quantiques enregistrés dans vqc_module.
 
     :param vqc_module: module vqc
     :return:
-        summary string
+        chaîne de résumé
 
 
     Example::
@@ -5135,23 +5135,23 @@ QNG
     .. math:: \theta_{t+1} = \theta_t -\eta \nabla \mathcal{L}(\theta),
 
     Essentiellement, à chaque itération, nous calculons la direction de la descente de gradient la plus raide dans l'espace des paramètres comme direction de changement de paramètre.
-    In any direction in space, the speed of descent in the local range is not as fast as that of the negative gradient direction.
-    In different spaces, the derivation of the direction of steepest descent is dependent on the norm of parameter differentiation - the distance metric. The distance metric plays a central role here,
-    Different metrics result in different directions of steepest descent. For the Euclidean space where the parameters in the classical optimization problem are located, the direction of the steepest descent is the direction of the negative gradient.
-    Even so, at each step of parameter optimization, as the loss function changes with parameters, its parameter space is transformed. Make it possible to find another better distance norm.
+    Dans toute direction de l'espace, la vitesse de descente dans la plage locale n'est pas aussi rapide que celle de la direction du gradient négatif.
+    Dans différents espaces, la dérivation de la direction de la descente la plus raide dépend de la norme de différenciation des paramètres, c'est-à-dire de la métrique de distance. La métrique de distance joue ici un rôle central ;
+    différentes métriques conduisent à différentes directions de descente la plus raide. Pour l'espace euclidien où se trouvent les paramètres du problème d'optimisation classique, la direction de la descente la plus raide est la direction du gradient négatif.
+    Même ainsi, à chaque étape de l'optimisation des paramètres, à mesure que la fonction de perte varie avec les paramètres, son espace de paramètres est transformé, ce qui permet de trouver une autre norme de distance plus adaptée.
 
-    `Quantum natural gradient method <https://arxiv.org/abs/1909.02108>`_ draws on concepts from `classical natural gradient method Amari <https://www.mitpressjournals.org/doi/abs/10.1162/089976698300017746>`__ ,
+    La `méthode du gradient naturel quantique <https://arxiv.org/abs/1909.02108>`_ s'inspire des concepts de la `méthode du gradient naturel classique d'Amari <https://www.mitpressjournals.org/doi/abs/10.1162/089976698300017746>`__,
     Nous considérons plutôt le problème d'optimisation comme une distribution de probabilité des valeurs de sortie possibles pour une entrée donnée (c'est-à-dire l'estimation du maximum de vraisemblance), une meilleure approche consiste à effectuer
-    Gradient descent is performed in the space, which is dimensionless and invariant with respect to the parameterization. Therefore, regardless of the parameterization, each optimization step will always choose the optimal step size for each parameter.
-    In quantum machine learning tasks, the quantum state space has a unique invariant metric tensor called the Fubini-Study metric tensor :math:`g_{ij}`.
-    This tensor converts the steepest descent in the quantum circuit parameter space to the steepest descent in the distribution space.
-    The formula for the quantum natural gradient is as follows:
+    la descente de gradient est effectuée dans cet espace, qui est sans dimension et invariant par rapport au paramétrage. Par conséquent, quel que soit le paramétrage, chaque étape d'optimisation choisira toujours le pas optimal pour chaque paramètre.
+    Dans les tâches d'apprentissage automatique quantique, l'espace des états quantiques possède un tenseur métrique invariant unique appelé tenseur métrique de Fubini-Study :math:`g_{ij}`.
+    Ce tenseur convertit la descente la plus raide dans l'espace des paramètres du circuit quantique en descente la plus raide dans l'espace des distributions.
+    La formule du gradient naturel quantique est la suivante :
 
     .. math:: \theta_{t+1} = \theta_t + momentum(x^{(t)} - x^{(t-1)}) - \eta g^{+}(\theta_t)\nabla \mathcal{L}(\theta)
 
-    where :math:`g^{+}` is the pseudo-inverse.
+    où :math:`g^{+}` est la pseudo-inverse.
 
-    `wrapper_calculate_qng` is a decorator that needs to be added to the forward function of the model to be calculated for the quantum natural gradient. Only parameters of type `Parameter` registered with the model are optimized.
+    `wrapper_calculate_qng` est un décorateur qui doit être ajouté à la fonction forward du modèle dont on calcule le gradient naturel quantique. Seuls les paramètres de type `Parameter` enregistrés dans le modèle sont optimisés.
 
     :param qmodel: Modèle de circuit variationnel quantique, vous devez utiliser `wrapper_calculate_qng` comme décorateur de la fonction forward.
     :param stepsize: Le pas de la méthode de descente de gradient, la valeur par défaut est 0.01.
@@ -5159,10 +5159,10 @@ QNG
 
     .. note::
 
-        Only tested on non-batch data.
-        Only purely variational quantum circuits are supported.
-        step() will update the gradients of the input and parameters.
-        step() only updates the numerical values of the model parameters.
+        Testé uniquement sur des données non groupées en lots.
+        Seuls les circuits quantiques purement variationnels sont pris en charge.
+        step() mettra à jour les gradients de l'entrée et des paramètres.
+        step() ne met à jour que les valeurs numériques des paramètres du modèle.
 
 
     Example::
@@ -5241,8 +5241,8 @@ wrapper_single_qubit_op_fuse
 
     .. note::
 
-        f is the forward function of the module, and the forward function of the model needs to be run once to take effect.
-        The model defined here inherits from `pyvqnet.qnn.vqc.QModule`, which is a subclass of `pyvqnet.nn.Module`.
+        f est la fonction forward du module, et la fonction forward du modèle doit être exécutée une fois pour prendre effet.
+        Le modèle défini ici hérite de `pyvqnet.qnn.vqc.QModule`, qui est une sous-classe de `pyvqnet.nn.Module`.
 
 
     Example::
@@ -5318,15 +5318,15 @@ wrapper_commute_controlled
 .. py:function:: pyvqnet.qnn.vqc.wrapper_commute_controlled(f, direction = "right")
 
     Décorateurs pour l'échange de portes contrôlées
-    This is a quantum transformation used to move swappable gates in front of the control and target bits of the controlled operation.
-    The diagonal gates on either side of the control bit do not affect the result of the controlled gate; therefore, we can push all single-bit gates acting on the first bit together to the right (and fuse them if necessary).
-    Similarly, X-gates are interchangeable with the target bits of CNOT and Toffoli (as are PauliY and CRY).
-    We can use this transformation to push single-bit gates as deep into controlled operation as possible.
+    Il s'agit d'une transformation quantique utilisée pour déplacer les portes permutables devant les bits de contrôle et cible de l'opération contrôlée.
+    Les portes diagonales de part et d'autre du bit de contrôle n'affectent pas le résultat de la porte contrôlée ; par conséquent, nous pouvons regrouper toutes les portes à un bit agissant sur le premier bit vers la droite (et les fusionner si nécessaire).
+    De même, les portes X sont interchangeables avec les bits cible de CNOT et Toffoli (comme le sont PauliY et CRY).
+    Nous pouvons utiliser cette transformation pour enfoncer autant que possible les portes à un bit dans l'opération contrôlée.
 
     .. note::
 
-        f is the forward function of the module, and the forward function of the model needs to be run once to take effect.
-        The model defined here inherits from `pyvqnet.qnn.vqc.QModule`, which is a subclass of `pyvqnet.nn.Module`.
+        f est la fonction forward du module, et la fonction forward du modèle doit être exécutée une fois pour prendre effet.
+        Le modèle défini ici hérite de `pyvqnet.qnn.vqc.QModule`, qui est une sous-classe de `pyvqnet.nn.Module`.
 
     :param f: fonction forward.
     :param direction: La direction pour déplacer la porte à un bit, la valeur optionnelle est "left" ou "right", la valeur par défaut est "right".
@@ -5428,8 +5428,8 @@ wrapper_merge_rotations
 
     .. note::
 
-        f is the forward function of the module, and the forward function of the model needs to be run once to take effect.
-        The model defined here inherits from `pyvqnet.qnn.vqc.QModule`, which is a subclass of `pyvqnet.nn.Module`.
+        f est la fonction forward du module, et la fonction forward du modèle doit être exécutée une fois pour prendre effet.
+        Le modèle défini ici hérite de `pyvqnet.qnn.vqc.QModule`, qui est une sous-classe de `pyvqnet.nn.Module`.
 
     :param f: fonction forward.
 
@@ -5514,8 +5514,8 @@ wrapper_compile
 
     .. note::
 
-        f is the forward function of the module, and the forward function of the model needs to be run once to take effect.
-        The model defined here inherits from `pyvqnet.qnn.vqc.QModule`, which is a subclass of `pyvqnet.nn.Module`.
+        f est la fonction forward du module, et la fonction forward du modèle doit être exécutée une fois pour prendre effet.
+        Le modèle défini ici hérite de `pyvqnet.qnn.vqc.QModule`, qui est une sous-classe de `pyvqnet.nn.Module`.
 
     :param f: fonction forward.
 
@@ -5725,14 +5725,14 @@ QNSPSAOptimizer
     .. math::
         \widehat{\nabla f}(\mathbf{x}) \approx \frac{f(\mathbf{x}+\epsilon \mathbf{h})-f(\mathbf{x}-\epsilon \mathbf{h})}{2\epsilon}
 
-    Compute the Fubini-Study metric from the state overlap measure:
+    Calcule le tenseur métrique de Fubini-Study à partir de la mesure de recouvrement des états :
 
     .. math::
         \widehat{\mathbf{g}}(\mathbf{x}) \approx \frac{\delta F}{8\epsilon^2}(\mathbf{h}_1\mathbf{h}_2^\intercal + \mathbf{h}_2\mathbf{h}_1^\intercal)
     .. math::
         \delta F = F(\mathbf{x}+\epsilon\mathbf{h}_1+\epsilon\mathbf{h}_2) - F(\mathbf{x}+\epsilon\mathbf{h}_1) - F(\mathbf{x}-\epsilon\mathbf{h}_1+\epsilon\mathbf{h}_2) + F(\mathbf{x}-\epsilon\mathbf{h}_1)
 
-    where δF measures the overlap difference evaluations of the four circuits.
+    où δF mesure les évaluations de différence de recouvrement des quatre circuits.
 
     Règle de mise à jour :
 
@@ -5748,11 +5748,11 @@ QNSPSAOptimizer
     :param seed: graine pour l'échantillonnage aléatoire (par défaut : None)
 
     .. py:method:: step(qmodel, *args, **kwargs)
-        Updates trainable parameters once using the optimizer.
+        Met à jour une fois les paramètres entraînables à l'aide de l'optimiseur.
 
         :param qmodel: Modèle quantique entraînable
-        :param args: Variable-length trainable QTensor for qmodel.
-        :param kwargs: Variable-length keyword arguments for qmodel.
+        :param args: QTensor entraînable de longueur variable pour qmodel.
+        :param kwargs: Arguments nommés de longueur variable pour qmodel.
 
         :return: Paramètres mis à jour.
 
@@ -6664,7 +6664,7 @@ Chaque couche contient 40 paramètres (4 groupes x 10 qubits), pour un total de 
 
 
 +------------------+----------------+
-| Project          | Specification  |
+| Projet           | Spécification  |
 +==================+================+
 | CPU              | i9-9900K       |
 +------------------+----------------+

@@ -1070,7 +1070,7 @@ SVM a noyau quantique
 Dans les tâches d'apprentissage automatique, les donnees ne peuvent souvent pas etre separees par un hyperplan dans l'espace d'origine. Une technique courante pour trouver de tels hyperplans consiste a appliquer une fonction de transformation non lineaire aux donnees.
 Cette fonction est appelee carte de caracteristiques, grace a laquelle nous pouvons calculer la proximite des points de donnees dans ce nouvel espace de caracteristiques pour la tâche de classification de l'apprentissage automatique.
 
-Cet exemple fait reference a l'article : `Supervised learning with quantum enhanced feature spaces <https://arxiv.org/pdf/1804.11326.pdf>`_.
+Cet exemple fait référence à l'article : `Supervised learning with quantum enhanced feature spaces <https://arxiv.org/pdf/1804.11326.pdf>`_.
 La premiere methode construit des circuits variationnels pour les tâches de classification de donnees.
 
 ``gen_vqc_qsvm_data`` genere les donnees necessaires pour cet exemple. ``vqc_qsvm`` est une classe de sous-circuit variable utilisee pour classer les donnees d'entree.

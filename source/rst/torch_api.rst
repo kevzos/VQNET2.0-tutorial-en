@@ -344,7 +344,7 @@ Linear
 .. py:class:: pyvqnet.nn.torch.Linear(input_channels, output_channels, weight_initializer=None, bias_initializer=None, use_bias=True, dtype=None, name: str = "")
 
     Un module linéaire (couche entièrement connectée), :math:`y = x@A.T + b`.
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module`` and can be used as a submodule of a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module`` et peut être utilisée comme sous-module d'un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
@@ -381,13 +381,13 @@ Conv1D
 .. py:class:: pyvqnet.nn.torch.Conv1D(input_channels: int, output_channels: int, kernel_size: int, stride: int = 1, padding = "valid", use_bias: bool = True, kernel_initializer = None, bias_initializer = None, dilation_rate: int = 1, group: int = 1, dtype = None, name = "")
 
     Effectue une convolution 1D sur l'entrée. L'entrée du module Conv1D a la forme (batch_size, input_channels, in_height).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be used as a submodule of a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être utilisée comme sous-module d'un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
     :param input_channels: `int` - Le nombre de canaux d'entrée.
-    :param output_channels: `int` - The number of output channels.
+    :param output_channels: `int` - Le nombre de canaux de sortie.
     :param kernel_size: `int` - La taille du noyau de convolution. La forme du noyau est [output_channels, input_channels/group, kernel_size, 1].
     :param stride: `int` - Le pas, par défaut 1.
     :param padding: `str|int` - Options de padding, peut être une chaîne {'valid', 'same'} ou un entier spécifiant la quantité de padding à appliquer à l'entrée. Par défaut "valid".
@@ -428,29 +428,29 @@ Conv2D
 .. py:class:: pyvqnet.nn.torch.Conv2D(input_channels: int, output_channels: int, kernel_size: tuple, stride: tuple = (1, 1), padding = "valid", use_bias = True, kernel_initializer = None, bias_initializer = None, dilation_rate: int = 1, group: int = 1, dtype = None, name = "")
 
     Effectue une convolution 2D sur l'entrée. L'entrée du module Conv2D a la forme (batch_size, input_channels, height, width).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be used as a submodule of a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être utilisée comme sous-module d'un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
-    :param input_channels: `int` - The number of input channels.
-    :param output_channels: `int` - The number of output channels.
+    :param input_channels: `int` - Le nombre de canaux d'entrée.
+    :param output_channels: `int` - Le nombre de canaux de sortie.
     :param kernel_size: `tuple|list` - La taille du noyau de convolution. La forme du noyau est [output_channels, input_channels/group, kernel_size, kernel_size].
     :param stride: `tuple|list` - Le pas, par défaut (1, 1).
     :param padding: `str|tuple` - Options de padding, peut être une chaîne {'valid', 'same'} ou un tuple spécifiant le padding à appliquer aux deux côtés. Par défaut "valid".
-    :param use_bias: `bool` - Whether to use the bias term, default is True.
-    :param kernel_initializer: `callable` - The convolution kernel initialization method. Default is empty, using kaiming_uniform.
-    :param bias_initializer: `callable` - The bias initialization method. Default is empty, using kaiming_uniform.
-    :param dilation_rate: `int` - The dilation size, default is 1.
-    :param group: `int` - The number of groups in the grouped convolution. Default is 1.
-    :param dtype: Data type for the parameters, defaults to None, uses the default data type `kfloat32`, which represents 32-bit floating point numbers.
-    :param name: The name of the module, default is "".
+    :param use_bias: `bool` - Utiliser ou non le terme de biais, par défaut True.
+    :param kernel_initializer: `callable` - La méthode d'initialisation du noyau de convolution. Par défaut vide, utilise kaiming_uniform.
+    :param bias_initializer: `callable` - La méthode d'initialisation du biais. Par défaut vide, utilise kaiming_uniform.
+    :param dilation_rate: `int` - La taille de dilatation, par défaut 1.
+    :param group: `int` - Le nombre de groupes dans la convolution groupée. Par défaut 1.
+    :param dtype: Type de données pour les paramètres, par défaut None, utilise le type de données par défaut ``kfloat32``, qui représente des nombres à virgule flottante 32 bits.
+    :param name: Le nom du module, par défaut "".
 
     :return: Une instance de la convolution 2D.
 
     .. note::
 
-        ``padding='valid'`` does not apply padding.
+        ``padding='valid'`` n'applique pas de padding.
 
         ``padding='same'`` applique un padding nul à l'entrée, avec la hauteur de sortie égale à ``ceil(in_height / stride)``.
 
@@ -475,30 +475,30 @@ ConvT2D
 .. py:class:: pyvqnet.nn.torch.ConvT2D(input_channels, output_channels, kernel_size, stride=[1, 1], padding=(0, 0), use_bias="True", kernel_initializer=None, bias_initializer=None, dilation_rate: int = 1, out_padding=(0, 0), group=1, dtype=None, name="")
 
     Effectue une convolution transposée 2D sur l'entrée. L'entrée du module ConvT2D a la forme (batch_size, input_channels, height, width).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be used as a submodule of a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être utilisée comme sous-module d'un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
-    :param input_channels: `int` - The number of input channels.
-    :param output_channels: `int` - The number of output channels.
+    :param input_channels: `int` - Le nombre de canaux d'entrée.
+    :param output_channels: `int` - Le nombre de canaux de sortie.
     :param kernel_size: `tuple|list` - La taille du noyau de convolution, avec kernel shape = [input_channels, output_channels/group, kernel_size, kernel_size].
-    :param stride: `tuple|list` - The stride, default is (1, 1).
+    :param stride: `tuple|list` - Le pas, par défaut (1, 1).
     :param padding: `tuple` - Options de padding, un tuple spécifiant le padding à appliquer aux deux côtés. Par défaut (0, 0).
-    :param use_bias: `bool` - Whether to use the bias term, default is True.
-    :param kernel_initializer: `callable` - The convolution kernel initialization method. Default is empty, using kaiming_uniform.
-    :param bias_initializer: `callable` - The bias initialization method. Default is empty, using kaiming_uniform.
-    :param dilation_rate: `int` - The dilation size, default is 1.
+    :param use_bias: `bool` - Utiliser ou non le terme de biais, par défaut True.
+    :param kernel_initializer: `callable` - La méthode d'initialisation du noyau de convolution. Par défaut vide, utilise kaiming_uniform.
+    :param bias_initializer: `callable` - La méthode d'initialisation du biais. Par défaut vide, utilise kaiming_uniform.
+    :param dilation_rate: `int` - La taille de dilatation, par défaut 1.
     :param out_padding: Taille supplémentaire ajoutée à la forme de la sortie pour chaque dimension. Par défaut (0, 0).
-    :param group: `int` - The number of groups in the grouped convolution. Default is 1.
-    :param dtype: Data type for the parameters, defaults to None, uses the default data type `kfloat32`, which represents 32-bit floating point numbers.
-    :param name: The name of the module, default is "".
+    :param group: `int` - Le nombre de groupes dans la convolution groupée. Par défaut 1.
+    :param dtype: Type de données pour les paramètres, par défaut None, utilise le type de données par défaut ``kfloat32``, qui représente des nombres à virgule flottante 32 bits.
+    :param name: Le nom du module, par défaut "".
 
     :return: Une instance de la convolution transposée 2D.
 
     .. note::
 
-        ``padding='valid'`` does not apply padding.
+        ``padding='valid'`` n'applique pas de padding.
 
         ``padding='same'`` applique un padding nul à l'entrée, avec la hauteur de sortie égale à ``ceil(height / stride)``.
 
@@ -520,7 +520,7 @@ AvgPool1D
 .. py:class:: pyvqnet.nn.torch.AvgPool1D(kernel, stride, padding=0, name = "")
 
     Effectue un pooling moyen sur une entrée 1D. L'entrée a la forme (batch_size, input_channels, in_height).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
@@ -528,7 +528,7 @@ AvgPool1D
     :param kernel: La taille de la fenêtre de pooling.
     :param stride: La taille du pas pour le déplacement de la fenêtre.
     :param padding: Option de padding, un entier spécifiant la longueur du padding. Par défaut 0.
-    :param name: The name of the module, default is "".
+    :param name: Le nom du module, par défaut "".
 
     :return: Une instance de la couche de pooling moyen 1D.
 
@@ -553,16 +553,16 @@ MaxPool1D
 
 .. py:class:: pyvqnet.nn.torch.MaxPool1D(kernel, stride, padding=0, name="")
 
-    Effectue un pooling maximal sur une entrée 1D. The input has the shape (batch_size, input_channels, in_height).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Effectue un pooling maximal sur une entrée 1D. L'entrée a la forme (batch_size, input_channels, in_height).
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
-    :param kernel: The size of the pooling window.
-    :param stride: The step size for moving the window.
-    :param padding: Padding option, an integer specifying the padding length. Default is 0.
-    :param name: The name of the module, default is "".
+    :param kernel: La taille de la fenêtre de pooling.
+    :param stride: Le pas de déplacement de la fenêtre.
+    :param padding: Option de padding, un entier spécifiant la longueur du padding. Par défaut 0.
+    :param name: Le nom du module, par défaut "".
 
     :return: Une instance de la couche de pooling maximal 1D.
 
@@ -588,15 +588,15 @@ AvgPool2D
 .. py:class:: pyvqnet.nn.torch.AvgPool2D(kernel, stride, padding=(0,0), name="")
 
     Effectue un pooling moyen sur une entrée 2D. L'entrée a la forme (batch_size, input_channels, height, width).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
-    :param kernel: The size of the pooling window.
-    :param stride: The step size for moving the window.
+    :param kernel: La taille de la fenêtre de pooling.
+    :param stride: Le pas de déplacement de la fenêtre.
     :param padding: Option de padding, un tuple contenant deux entiers spécifiant le padding pour les deux dimensions. Par défaut (0,0).
-    :param name: The name of the module, default is "".
+    :param name: Le nom du module, par défaut "".
 
     :return: Une instance de la couche de pooling moyen 2D.
 
@@ -621,16 +621,16 @@ MaxPool2D
 
 .. py:class:: pyvqnet.nn.torch.MaxPool2D(kernel, stride, padding=(0,0), name="")
 
-    Effectue un pooling maximal sur une entrée 2D. The input has the shape (batch_size, input_channels, height, width).
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Effectue un pooling maximal sur une entrée 2D. L'entrée a la forme (batch_size, input_channels, height, width).
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
-    :param kernel: The size of the pooling window.
-    :param stride: The step size for moving the window.
-    :param padding: Padding option, a tuple containing two integers specifying padding for both dimensions. Default is (0,0).
-    :param name: The name of the module, default is "".
+    :param kernel: La taille de la fenêtre de pooling.
+    :param stride: Le pas de déplacement de la fenêtre.
+    :param padding: Option de padding, un tuple contenant deux entiers spécifiant le padding pour les deux dimensions. Par défaut (0,0).
+    :param name: Le nom du module, par défaut "".
 
     :return: Une instance de la couche de pooling maximal 2D.
 
@@ -657,7 +657,7 @@ Embedding
 
     Ce module est généralement utilisé pour stocker des plongements de mots et les récupérer à l'aide d'indices. L'entrée du module est une liste d'indices, et la sortie correspond aux plongements de mots correspondants.
     L'entrée de cette couche doit être de type ``kint64``. 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
@@ -691,7 +691,7 @@ BatchNorm2d
     `Batch Normalization: Accelerating Deep Network Training by Reducing
     Internal Covariate Shift <https://arxiv.org/abs/1502.03167>`__.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
@@ -701,7 +701,7 @@ BatchNorm2d
 
     où :math:`\gamma` et :math:`\beta` sont des paramètres entraînables. De plus, par défaut, pendant l'entraînement, la couche continue d'estimer la moyenne et la variance, qui sont ensuite utilisées pour la normalisation lors de l'évaluation. La valeur du momentum pour les moyennes mobiles est définie par défaut sur 0.1.
 
-    :param channel_num: `int` - The number of input channels.
+    :param channel_num: `int` - Le nombre de canaux d'entrée.
     :param momentum: `float` - Momentum pour le calcul de la moyenne mobile, par défaut 0.1.
     :param epsilon: `float` - Une petite constante pour la stabilité numérique, par défaut 1e-5.
     :param affine: `bool` - Si True, inclut des paramètres affines entraînables pour chaque canal. Par défaut ``True``, initialise les paramètres à 1 pour les poids et 0 pour les biais.
@@ -738,21 +738,21 @@ BatchNorm1d
     .. math::
         y = \frac{x - \mathrm{E}[x]}{\sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    where :math:`\gamma` and :math:`\beta` are trainable parameters. Additionally, by default, during training, the layer continues to estimate the mean and variance, which are then used for normalization during evaluation. The momentum for the moving averages is set to the default value of 0.1.
+    où :math:`\gamma` et :math:`\beta` sont des paramètres entraînables. De plus, par défaut, pendant l'entraînement, la couche continue d'estimer la moyenne et la variance, qui sont ensuite utilisées pour la normalisation lors de l'évaluation. Le momentum des moyennes mobiles est fixé à la valeur par défaut de 0,1.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
-    :param channel_num: `int` - The number of input channels.
-    :param momentum: `float` - Momentum for the moving average calculation, default is 0.1.
-    :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
-    :param affine: `bool` - Whether to include learnable affine parameters for each channel. Default is `True`, which initializes the parameters as 1 for weights and 0 for biases.
-    :param beta_initializer: `callable` - The initialization method for beta, default is zero initialization.
-    :param gamma_initializer: `callable` - The initialization method for gamma, default is one initialization.
-    :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the batch normalization layer, default is "".
+    :param channel_num: `int` - Le nombre de canaux d'entrée.
+    :param momentum: `float` - Momentum pour le calcul de la moyenne mobile, par défaut 0,1.
+    :param epsilon: `float` - Une petite constante pour la stabilité numérique, par défaut 1e-5.
+    :param affine: `bool` - Indique s'il faut inclure des paramètres affines entraînables pour chaque canal. Par défaut ``True``, ce qui initialise les paramètres à 1 pour les poids et à 0 pour les biais.
+    :param beta_initializer: `callable` - La méthode d'initialisation de beta, par défaut l'initialisation à zéro.
+    :param gamma_initializer: `callable` - La méthode d'initialisation de gamma, par défaut l'initialisation à un.
+    :param dtype: Type de données pour les paramètres, par défaut None, utilise ``kfloat32`` (virgule flottante 32 bits).
+    :param name: Le nom de la couche de normalisation par lot, par défaut "".
 
     :return: Une instance de la couche de normalisation par lot 1D.
 
@@ -781,16 +781,16 @@ LayerNormNd
 
     Pour des entrées comme (B, C, H, W, D), le ``norm_shape`` peut être [C, H, W, D], [H, W, D], [W, D] ou [D].
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
     :param norm_shape: `list` - La forme à normaliser.
-    :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
+    :param epsilon: `float` - Une petite constante pour la stabilité numérique, par défaut 1e-5.
     :param affine: `bool` - Si ``True``, ce module a des paramètres affines entraînables pour chaque canal, initialisés à 1 (pour les poids) et 0 (pour les biais). Par défaut ``True``.
-    :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the module, default is "".
+    :param dtype: Type de données pour les paramètres, par défaut None, utilise ``kfloat32`` (virgule flottante 32 bits).
+    :param name: Le nom du module, par défaut "".
 
     :return: Une instance de la classe LayerNormNd.
 
@@ -813,7 +813,7 @@ LayerNorm2d
 
 .. py:class:: pyvqnet.nn.torch.LayerNorm2d(norm_size:int, epsilon:float = 1e-5, affine=True, dtype=None, name="")
 
-    Applique la normalisation de couche sur des entrées 4D. The specific method is described in the paper:
+    Applique la normalisation de couche sur des entrées 4D. La méthode spécifique est décrite dans l'article :
     `Layer Normalization <https://arxiv.org/abs/1607.06450>`__.
 
     .. math::
@@ -821,16 +821,16 @@ LayerNorm2d
 
     La moyenne et l'écart type sont calculés sur les dimensions restantes, excluant la première. Pour des entrées comme (B, C, H, W), ``norm_size`` doit être égal à C * H * W.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
     :param norm_size: `int` - La taille de la normalisation, doit être égale à C * H * W.
-    :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
-    :param affine: `bool` - If `True`, this module has learnable affine parameters for each channel, initialized to 1 (for weights) and 0 (for biases). Default is `True`.
-    :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the module, default is "".
+    :param epsilon: `float` - Une petite constante pour la stabilité numérique, par défaut 1e-5.
+    :param affine: `bool` - Si ``True``, ce module a des paramètres affines entraînables pour chaque canal, initialisés à 1 (pour les poids) et 0 (pour les biais). Par défaut ``True``.
+    :param dtype: Type de données pour les paramètres, par défaut None, utilise ``kfloat32`` (virgule flottante 32 bits).
+    :param name: Le nom du module, par défaut "".
 
     :return: Une instance de la normalisation de couche 2D.
 
@@ -853,7 +853,7 @@ LayerNorm1d
 
 .. py:class:: pyvqnet.nn.torch.LayerNorm1d(norm_size:int, epsilon:float = 1e-5, affine=True, dtype=None, name="")
 
-    Applique la normalisation de couche sur des entrées 2D. The specific method is described in the paper:
+    Applique la normalisation de couche sur des entrées 2D. La méthode spécifique est décrite dans l'article :
     `Layer Normalization <https://arxiv.org/abs/1607.06450>`__.
 
     .. math::
@@ -861,16 +861,16 @@ LayerNorm1d
 
     La moyenne et l'écart type sont calculés sur la taille de la dernière dimension, où ``norm_size`` est la valeur de la dernière dimension.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
 
     :param norm_size: `int` - La taille de la normalisation, doit être égale à la taille de la dernière dimension.
-    :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
-    :param affine: `bool` - If `True`, this module has learnable affine parameters for each channel, initialized to 1 (for weights) and 0 (for biases). Default is `True`.
-    :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the module, default is "".
+    :param epsilon: `float` - Une petite constante pour la stabilité numérique, par défaut 1e-5.
+    :param affine: `bool` - Si ``True``, ce module a des paramètres affines entraînables pour chaque canal, initialisés à 1 (pour les poids) et 0 (pour les biais). Par défaut ``True``.
+    :param dtype: Type de données pour les paramètres, par défaut None, utilise ``kfloat32`` (virgule flottante 32 bits).
+    :param name: Le nom du module, par défaut "".
 
     :return: Une instance de la normalisation de couche 1D.
 
@@ -901,7 +901,7 @@ GroupNorm
 
     Les canaux d'entrée sont divisés en :attr:`num_groups` groupes, chacun contenant ``num_channels / num_groups`` canaux. :attr:`num_channels` doit être divisible par :attr:`num_groups`. La moyenne et l'écart type sont calculés séparément dans chaque groupe. Si :attr:`affine` est ``True``, alors :math:`\gamma` et :math:`\beta` sont entraînables. Les paramètres de transformation affine pour chaque canal sont des vecteurs de taille :attr:`num_channels`.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les données dans les ``_buffers`` de la classe sont de type ``torch.Tensor``.
     Les données dans les ``_parameters`` de la classe sont de type ``torch.nn.Parameter``.
@@ -910,10 +910,10 @@ GroupNorm
     :param num_channels (int): Le nombre de canaux d'entrée attendus.
     :param epsilon: Une petite valeur ajoutée au dénominateur pour la stabilité numérique. Par défaut 1e-5.
     :param affine: Une valeur booléenne. Si ``True``, ce module a des paramètres affines entraînables pour chaque canal, initialisés à 1 (pour les poids) et 0 (pour les biais). Par défaut ``True``.
-    :param dtype: The data type for the parameters. Defaults to None, using `kfloat32` (32-bit floating point).
-    :param name: The name of the module. Default is "".
+    :param dtype: Type de données pour les paramètres. Par défaut None, utilise ``kfloat32`` (virgule flottante 32 bits).
+    :param name: Le nom du module. Par défaut "".
 
-    :return: An instance of the GroupNorm class.
+    :return: Une instance de la classe GroupNorm.
 
     Example::
 
@@ -934,10 +934,10 @@ Dropout
 
     Module Dropout. Le module Dropout met aléatoirement à zéro la sortie de certaines unités, tout en mettant à l'échelle les unités restantes selon la probabilité dropout_rate donnée.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     :param dropout_rate: `float` - La probabilité de mettre les neurones à zéro.
-    :param name: The name of the module. Default is "".
+    :param name: Le nom du module. Par défaut "".
 
     :return: Une instance de la classe Dropout.
 
@@ -963,10 +963,10 @@ DropPath
 
     Le module DropPath applique un dropout aléatoire de chemin (profondeur aléatoire).
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
-    :param dropout_rate: `float` - The probability of setting neurons to zero.
-    :param name: The name of the module. Default is "".
+    :param dropout_rate: `float` - La probabilité de mettre les neurones à zéro.
+    :param name: Le nom du module. Par défaut "".
 
     :return: Une instance de la classe DropPath.
 
@@ -987,10 +987,10 @@ Pixel_Shuffle
 
     Réorganise un tenseur de forme : (*, C * r^2, H, W) en un tenseur de forme (*, C, H * r, W * r), où r est le facteur d'échelle.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     :param upscale_factors: Le facteur d'échelle pour la transformation.
-    :param name: The name of the module. Default is "".
+    :param name: Le nom du module. Par défaut "".
 
     :return: Une instance du module Pixel_Shuffle.
 
@@ -1012,10 +1012,10 @@ Pixel_Unshuffle
 
     Inverse l'opération Pixel_Shuffle en réorganisant les éléments. Transforme un tenseur de forme (*, C, H * r, W * r) en (*, C * r^2, H, W), où r est le facteur de réduction.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     :param downscale_factors: Le facteur de réduction pour la transformation.
-    :param name: The name of the module. Default is "".
+    :param name: Le nom du module. Par défaut "".
 
     :return: Une instance du module Pixel_Unshuffle.
 
@@ -1045,7 +1045,7 @@ GRU
             h_t = (1 - z_t) * n_t + z_t * h_{(t-1)}
         \end{array}
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les ``_buffers`` de la classe contiennent des données ``torch.Tensor``, et les ``_parameters`` de la classe contiennent des données ``torch.nn.Parameter``.
 
@@ -1088,18 +1088,18 @@ RNN
 
     Si :attr:`nonlinearity` est ``'relu'``, alors :math:`\text{ReLU}` remplacera :math:`\tanh`.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les ``_buffers`` de la classe contiennent des données ``torch.Tensor``, et les ``_parameters`` de la classe contiennent des données ``torch.nn.Parameter``.
 
-    :param input_size: The input feature dimension.
-    :param hidden_size: The hidden feature dimension.
+    :param input_size: La dimension des caractéristiques d'entrée.
+    :param hidden_size: La dimension des caractéristiques cachées.
     :param num_layers: Le nombre de couches RNN empilées, par défaut : 1.
     :param nonlinearity: La fonction d'activation non linéaire, par défaut : ``'tanh'``.
-    :param batch_first: If True, the input shape is [batch_size, seq_len, feature_dim], if False, the shape is [seq_len, batch_size, feature_dim], default: True.
-    :param use_bias: If False, the module does not use bias terms, default: True.
+    :param batch_first: Si True, la forme d'entrée est [taille du lot, longueur de la séquence, dimension des caractéristiques], si False, la forme d'entrée est [longueur de la séquence, taille du lot, dimension des caractéristiques], par défaut True.
+    :param use_bias: Si False, le module n'utilise pas de terme de biais, par défaut : True.
     :param bidirectional: Si True, rend le RNN bidirectionnel, par défaut : False.
-    :param dtype: The data type of the parameters, defaults to None, using the default data type: kfloat32 (32-bit float).
+    :param dtype: Type de données des paramètres, par défaut None, utilise le type de données par défaut : kfloat32 (virgule flottante 32 bits).
     :param name: Le nom du module, par défaut : "".
 
     :return: Une instance du module RNN.
@@ -1134,18 +1134,18 @@ LSTM
             h_t = o_t \odot \tanh(c_t) \\
         \end{array}
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée comme sous-module à un modèle torch.
 
     Les ``_buffers`` de la classe contiennent des données ``torch.Tensor``, et les ``_parameters`` de la classe contiennent des données ``torch.nn.Parameter``.
 
-    :param input_size: The input feature dimension.
-    :param hidden_size: The hidden feature dimension.
+    :param input_size: La dimension des caractéristiques d'entrée.
+    :param hidden_size: La dimension des caractéristiques cachées.
     :param num_layers: Le nombre de couches LSTM empilées, par défaut : 1.
-    :param batch_first: If True, the input shape is [batch_size, seq_len, feature_dim], if False, the shape is [seq_len, batch_size, feature_dim], default: True.
-    :param use_bias: If False, the module does not use bias terms, default: True.
+    :param batch_first: Si True, la forme d'entrée est [taille du lot, longueur de la séquence, dimension des caractéristiques], si False, la forme d'entrée est [longueur de la séquence, taille du lot, dimension des caractéristiques], par défaut True.
+    :param use_bias: Si False, le module n'utilise pas de terme de biais, par défaut : True.
     :param bidirectional: Si True, rend le LSTM bidirectionnel, par défaut : False.
-    :param dtype: The data type of the parameters, defaults to None, using the default data type: kfloat32 (32-bit float).
-    :param name: The name of the module, default: "".
+    :param dtype: Type de données des paramètres, par défaut None, utilise le type de données par défaut : kfloat32 (virgule flottante 32 bits).
+    :param name: Le nom du module, par défaut : "".
 
     :return: Une instance du module LSTM.
 
@@ -1268,7 +1268,7 @@ Dynamic_RNN
     .. math::
         h_t = \tanh(W_{ih} x_t + b_{ih} + W_{hh} h_{(t-1)} + b_{hh})
 
-    If :attr:`nonlinearity` is ``'relu'``, then :math:`\text{ReLU}` will replace :math:`\tanh`.
+    Si :attr:`nonlinearity` vaut ``'relu'``, alors :math:`\text{ReLU}` remplace :math:`\tanh`.
 
     Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
@@ -1276,14 +1276,14 @@ Dynamic_RNN
 
     Les données dans ``_parmeters`` de cette classe sont de type ``torch.nn.Parameter``.
 
-    :param input_size: Input feature dimension.
-    :param hidden_size: Hidden feature dimension.
+    :param input_size: Dimension des caractéristiques d'entrée.
+    :param hidden_size: Dimension des caractéristiques cachées.
     :param num_layers: Nombre de couches RNN empilées, par défaut : 1.
     :param nonlinearity: Fonction d'activation non linéaire, par défaut ``'tanh'``.
     :param batch_first: Si True, la forme d'entrée est [taille du lot, longueur de la séquence, dimension des caractéristiques], si False, la forme d'entrée est [longueur de la séquence, taille du lot, dimension des caractéristiques], par défaut True.
     :param use_bias: Si False, ce module n'applique pas de biais, par défaut : True.
     :param bidirectional: Si True, devient un RNN bidirectionnel, par défaut : False.
-    :param dtype: The data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
+    :param dtype: Type de données du paramètre, par défaut : None, utilise le type de données par défaut : kfloat32, représentant des nombres à virgule flottante 32 bits.
     :param name: Le nom de ce module, par défaut "".
 
     :return: Instance Dynamic_RNN
@@ -1361,19 +1361,19 @@ Dynamic_LSTM
             h_t = o_t \odot \tanh(c_t) \\
         \end{array}
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     Les données dans ``_buffers`` de cette classe sont de type ``torch.Tensor``.
 
     Les données dans ``_parmeters`` de cette classe sont de type ``torch.nn.Parameter``.
 
-    :param input_size: Input feature dimension.
-    :param hidden_size: Hidden feature dimension.
+    :param input_size: Dimension des caractéristiques d'entrée.
+    :param hidden_size: Dimension des caractéristiques cachées.
     :param num_layers: Nombre de couches LSTM empilées, par défaut : 1.
     :param batch_first: Si True, la forme d'entrée est [taille du lot, longueur de la séquence, dimension des caractéristiques], si False, la forme d'entrée est [longueur de la séquence, taille du lot, dimension des caractéristiques], par défaut True.
-    :param use_bias: If False, this module does not apply bias, default: True.
+    :param use_bias: Si False, ce module n'applique pas de biais, par défaut : True.
     :param bidirectional: Si True, devient un LSTM bidirectionnel, par défaut : False.
-    :param dtype: The data type of the parameter, default: None, use the default data type: kfloat32, representing 32-bit floating point numbers.
+    :param dtype: Type de données du paramètre, par défaut : None, utilise le type de données par défaut : kfloat32, représentant des nombres à virgule flottante 32 bits.
     :param name: Le nom de ce module, par défaut "".
 
     :return: Instance Dynamic_LSTM
@@ -1436,13 +1436,13 @@ Interpolate
 
     Les options `mode` disponibles sont ``nearest``, ``bilinear``, ``bicubic``.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module`` and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module`` et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param size: Taille de sortie, par défaut None.
     :param scale_factor: Facteur d'échelle, par défaut None.
     :param mode: Algorithme utilisé pour le sur-échantillonnage ``nearest`` | ``bilinear`` | ``bicubic``.
-    :param align_corners: From a geometric point of view, we treat the pixels of the input and output as squares instead of points. The pixels of the input and output are treated as squares instead of points.If set to `true`, the input and output tensors will be aligned by the center points of their corner pixels. Corner pixel center points are aligned, and the values ​​of the corner pixels are preserved.If set to `false`, the input and output tensors will be aligned by the corner points of their corner pixels, and the values ​​of the corner pixels are preserved. Corner pixel corner points are aligned, and interpolation will use edge values ​​for padding.Values ​​outside the boundaries are padded, making this operation independent of the input size.When ``scale_factor`` remains unchanged. This only works when ``mode`` is ``bilinear``.
-    :param recompute_scale_factor: Recompute the scale factor for use in the interpolation calculation. When ``scale_factor`` is passed as an argument, it will be used to calculate the output size.
+    :param align_corners: D'un point de vue géométrique, nous traitons les pixels de l'entrée et de la sortie comme des carrés plutôt que des points. Les pixels de l'entrée et de la sortie sont traités comme des carrés plutôt que des points. S'il est défini sur `true`, les tenseurs d'entrée et de sortie seront alignés sur les points centraux de leurs pixels d'angle. Les points centraux des pixels d'angle sont alignés, et les valeurs des pixels d'angle sont préservées. S'il est défini sur `false`, les tenseurs d'entrée et de sortie seront alignés sur les coins de leurs pixels d'angle, et les valeurs des pixels d'angle sont préservées. Les coins des pixels d'angle sont alignés, et l'interpolation utilisera les valeurs de bord pour le padding. Les valeurs en dehors des limites sont complétées par du padding, ce qui rend cette opération indépendante de la taille de l'entrée. Lorsque ``scale_factor`` reste inchangé. Cela ne fonctionne que lorsque ``mode`` vaut ``bilinear``.
+    :param recompute_scale_factor: Recalcule le facteur d'échelle à utiliser dans le calcul d'interpolation. Lorsque ``scale_factor`` est passé en argument, il est utilisé pour calculer la taille de sortie.
     :param name: Nom du module.
 
     Example::
@@ -1469,7 +1469,7 @@ SDPA
 
     Construit une classe qui calcule l'attention produit scalaire pondérée pour les tenseurs de requête, clé et valeur.
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param attn_mask: Masque d'attention ; valeur par défaut : None. La forme doit pouvoir être diffusée à la forme des poids d'attention.
     :param dropout_p: Probabilité de dropout ; valeur par défaut : 0, si supérieure à 0.0, un dropout est appliqué.
@@ -1539,9 +1539,9 @@ MeanSquaredError
         \ell(x, y) =
         \operatorname{mean}(L)
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
-    :param name: The name of this module, defaults to "".
+    :param name: Le nom de ce module, par défaut "".
     :return: Une instance d'erreur quadratique moyenne.
 
     Paramètres requis pour la fonction de calcul forward de l'erreur quadratique moyenne :
@@ -1588,21 +1588,21 @@ BinaryCrossEntropy
         \ell(x, y) = L = \{l_1,\dots,l_N\}^\top, \quad
         l_n = - w_n \left[ y_n \cdot \log x_n + (1 - y_n) \cdot \log (1 - x_n) \right],
 
-    where :math:`N` is the batch size.
+    où :math:`N` est la taille du lot.
 
     .. math::
         \ell(x, y) = \operatorname{mean}(L)
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module`` and can be added to torch models as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module`` et peut être ajoutée aux modèles torch comme sous-module de ``torch.nn.Module``.
 
-    :param name: The name of this module, defaults to "".
+    :param name: Le nom de ce module, par défaut "".
     :return: Une instance d'entropie croisée binaire moyenne.
 
     Paramètres requis pour la fonction de calcul forward de l'erreur d'entropie croisée binaire moyenne :
 
-        x: :math:`(N, *)` predicted value, where :math:`*` represents any dimension.
+        x : :math:`(N, *)` valeur prédite, où :math:`*` représente une dimension quelconque.
 
-        y: :math:`(N, *)`, target value, a QTensor of the same dimension as the input.
+        y : :math:`(N, *)`, valeur cible, un QTensor de même dimension que l'entrée.
 
     .. note::
 
@@ -1636,7 +1636,7 @@ CategoricalCrossEntropy
         \text{loss}(x, y) = -\log\left(\frac{\exp(x[class])}{\sum_j \exp(x[j])}\right)
         = -x[class] + \log\left(\sum_j \exp(x[j])\right)
 
-    :param name: The name of this module, defaults to "".
+    :param name: Le nom de ce module, par défaut "".
     :return: L'instance d'entropie croisée catégorielle moyenne.
 
     Paramètres requis pour la fonction de calcul forward de l'erreur :
@@ -1649,7 +1649,7 @@ CategoricalCrossEntropy
 
         Veuillez noter que contrairement à pytorch et autres frameworks, dans la fonction forward de la fonction CategoricalCrossEntropy, le premier paramètre est la valeur cible et le second paramètre est la valeur prédite.
 
-        This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+        Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     Example::
 
@@ -1681,20 +1681,20 @@ SoftmaxCrossEntropy
         \text{loss}(x, y) = -\log\left(\frac{\exp(x[class])}{\sum_j \exp(x[j])}\right)
         = -x[class] + \log\left(\sum_j \exp(x[j])\right)
 
-    :param name: The name of this module, defaults to "".
+    :param name: Le nom de ce module, par défaut "".
     :return: Une instance de fonction de perte d'entropie croisée softmax
 
-    Required parameters for the error forward calculation function:
+    Paramètres requis pour la fonction de calcul de la passe avant de l'erreur :
 
         x: :math:`(N, *)` valeur prédite, où :math:`*` indique n'importe quelle dimension.
 
-        y: :math:`(N, *)`, target value, a QTensor of the same dimension as the input. Must be a 64-bit integer, kint64.
+        y : :math:`(N, *)`, valeur cible, un QTensor de même dimension que l'entrée. Doit être un entier 64 bits, kint64.
 
     .. note::
 
         Veuillez noter que contrairement à pytorch et autres frameworks, dans la fonction forward de la fonction SoftmaxCrossEntropy, le premier paramètre est la valeur cible et le second paramètre est la valeur prédite.
 
-        This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+        Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
         
     Example::
 
@@ -1731,10 +1731,10 @@ NLL_Loss
         l_n = -
         \sum_{n=1}^N \frac{1}{N}x_{n,y_n} \quad
 
-    :param name: The name of this module, defaults to "".
+    :param name: Le nom de ce module, par défaut "".
     :return: Une instance de fonction de perte NLL_Loss
 
-    Required parameters for the error forward calculation function:
+    Paramètres requis pour la fonction de calcul de la passe avant de l'erreur :
 
         x: :math:`(N, *)`, la valeur de prédiction de sortie de la fonction de perte, qui peut être une variable multidimensionnelle.
 
@@ -1744,7 +1744,7 @@ NLL_Loss
 
         Veuillez noter que contrairement à des frameworks comme pytorch, dans la fonction forward de la fonction NLL_Loss, le premier paramètre est la valeur cible et le second paramètre est la valeur prédite.
 
-        This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+        Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
             
     Example::
 
@@ -1784,10 +1784,10 @@ CrossEntropyLoss
         \text{loss}(x, y) = -\log\left(\frac{\exp(x[class])}{\sum_j \exp(x[j])}\right)
         = -x[class] + \log\left(\sum_j \exp(x[j])\right)
 
-    :param name: The name of this module, default is "".
+    :param name: Le nom de ce module, par défaut "".
     :return: Une instance de fonction de perte CrossEntropyLoss
 
-    Required parameters for the error forward calculation function:
+    Paramètres requis pour la fonction de calcul de la passe avant de l'erreur :
 
         x: :math:`(N, *)`, la sortie de la fonction de perte, qui peut être une variable multidimensionnelle.
 
@@ -1797,7 +1797,7 @@ CrossEntropyLoss
 
         Veuillez noter que contrairement à des frameworks comme pytorch, dans la fonction forward de la fonction CrossEntropyLoss, le premier paramètre est la valeur cible et le second paramètre est la valeur prédite.
 
-        This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+        Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     Example::
 
@@ -1835,7 +1835,7 @@ Sigmoid
     .. math::
         \text{Sigmoid}(x) = \frac{1}{1 + \exp(-x)}
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
@@ -1862,9 +1862,9 @@ Softplus
     .. math::
         \text{Softplus}(x) = \log(1 + \exp(x))
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
     :return: Une instance Softplus.
 
@@ -1888,10 +1888,10 @@ Softsign
         \text{SoftSign}(x) = \frac{x}{ 1 + |x|}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
     :return: Une instance SoftSign.
 
@@ -1917,11 +1917,11 @@ Softmax
         \text{Softmax}(x_{i}) = \frac{\exp(x_i)}{\sum_j \exp(x_j)}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
     :param axis: la dimension sur laquelle calculer (le dernier axe est -1), valeur par défaut = -1.
-    :param name: The name of the activation function layer, default is "".
+    :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
     :return: Une instance Softmax.
 
@@ -1950,10 +1950,10 @@ HardSigmoid
         \end{cases}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
     :return: Instance HardSigmoid.
 
@@ -1981,10 +1981,10 @@ ReLu
         \end{cases}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
     :return: Une instance ReLu.
 
@@ -2015,11 +2015,11 @@ LeakyReLu
         \end{cases}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
     :param alpha: Coefficient LeakyRelu, par défaut : 0.01.
-    :param name: The name of the activation function layer, default is "".
+    :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
     :return: Une instance d'activation LeakyReLu.
 
@@ -2048,11 +2048,11 @@ Gelu
     .. math:: \text{GELU}(x) = 0.5 * x * (1 + \text{Tanh}(\sqrt{2 / \pi} * (x + 0.044715 * x^3)))
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
     :param approximate: Méthode de calcul approximatif, par défaut "tanh".
-    :param name: The name of the activation function layer, default is "".
+    :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
     :return: Instance d'activation Gelu.
 
@@ -2081,12 +2081,12 @@ ELU
         \end{cases}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
 
     :param alpha: Coefficient ELU, par défaut : 1.
-    :param name: The name of the activation function layer, default is "".
+    :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
     :return: Instance d'activation ELU.
 
@@ -2111,11 +2111,11 @@ Tanh
         \text{Tanh}(x) = \frac{\exp(x) - \exp(-x)} {\exp(x) + \exp(-x)}
 
 
-    This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.nn.Module`` et ``torch.nn.Module``, et peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
 
-    :param name: The name of the activation function layer, default is "".
+    :param name: Le nom de la couche de fonction d'activation, par défaut "".
 
     :return: Instance d'activation Tanh.
 
@@ -2162,7 +2162,7 @@ Si vous êtes plus familier avec la syntaxe pyQPanda2, vous pouvez utiliser l'in
     :param diff_method: Méthode pour résoudre les gradients des paramètres du circuit quantique, "parameter shift" ou "finite difference", par défaut parameter shift.
     :param delta: \delta lors du calcul des gradients par différences finies.
     :param dtype: Type de données du paramètre, par défaut : None, utilise le type de données par défaut : ``kfloat32``, représentant des nombres à virgule flottante 32 bits.
-    :param name: The name of this module, default is "".
+    :param name: Le nom de ce module, par défaut "".
 
     :return: Un module qui peut calculer des circuits quantiques.
 
@@ -2294,7 +2294,7 @@ Lorsque vous installez la dernière version de pyqpanda3, vous pouvez utiliser c
     :param diff_method: Méthode de différenciation pour le calcul du gradient. La valeur par défaut est "parameter_shift", "random_coordinate_descent".
     :param submit_kwargs: Paramètres supplémentaires pour la soumission de circuits quantiques, par défaut : {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, lorsque test_qcloud_fake est défini sur True, simulation CPUQVM locale.
     :param query_kwargs: Paramètres supplémentaires pour interroger les résultats quantiques, par défaut : {"timeout":2,"print_query_info":True,"sub_circuits_split_size":1}.
-    :return: A module that can calculate quantum circuits.
+    :return: Un module qui peut calculer des circuits quantiques.
 
 
     Example::
@@ -2387,10 +2387,10 @@ Si vous êtes plus familier avec la syntaxe pyQPanda3, vous pouvez utiliser l'in
 
     Module de calcul abstrait de la couche quantique variationnelle. Utilise pyQPanda3 pour simuler un circuit quantique paramétré et obtenir les résultats de mesure. Cette couche quantique variationnelle hérite du module de calcul de gradient du framework VQNet. Vous pouvez utiliser la méthode de dérive des paramètres pour calculer le gradient des paramètres du circuit, entraîner le modèle de circuit quantique variationnel ou intégrer le circuit quantique variationnel dans un modèle hybride quantique et classique.
 
-    :param qprog_with_measure: Quantum circuit operation and measurement functions built with pyQPand.
-    :param para_num: `int` - number of parameters.
+    :param qprog_with_measure: Fonctions d'exploitation et de mesure de circuits quantiques construites avec pyQPand.
+    :param para_num: `int` - nombre de paramètres.
     :param diff_method: méthode pour résoudre les gradients des paramètres du circuit quantique, "parameter shift" ou "finite difference", par défaut parameter shift.
-    :param delta: \delta when calculating gradients by finite difference.
+    :param delta: \delta lors du calcul des gradients par différences finies.
     :param dtype: type de données du paramètre, par défaut : None, utilise le type de données par défaut : ``kfloat32``, représentant des nombres à virgule flottante 32 bits.
     :param name: le nom de ce module, par défaut "".
 
@@ -2557,7 +2557,7 @@ I
     
     définit une porte quantique I.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2588,7 +2588,7 @@ Hadamard
     
     définit une porte quantique Hadamard.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2619,7 +2619,7 @@ T
     
     définit une porte quantique T.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2651,7 +2651,7 @@ S
     
     définit une porte quantique S.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2682,7 +2682,7 @@ PauliX
     
     définit une porte quantique PauliX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
@@ -2714,7 +2714,7 @@ PauliY
     
     définit une porte quantique PauliY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
@@ -2747,7 +2747,7 @@ PauliZ
     
     définit une porte quantique PauliZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
@@ -2780,7 +2780,7 @@ X1
     
     définit une porte quantique X1.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2811,7 +2811,7 @@ RX
     
     définit une porte quantique RX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2843,7 +2843,7 @@ RY
     
     définit une porte quantique RY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2874,7 +2874,7 @@ RZ
     
     définit une porte quantique RZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2905,7 +2905,7 @@ CRX
     
     définit une porte quantique CRX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2937,7 +2937,7 @@ CRY
     
     définit une porte quantique CRY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -2969,7 +2969,7 @@ CRZ
     
     définit une porte quantique CRZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3001,7 +3001,7 @@ U1
     
     définit une porte quantique U1.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3032,7 +3032,7 @@ U2
     
     définit une porte quantique U2.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3064,7 +3064,7 @@ U3
     
     définit une porte quantique U3.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3096,7 +3096,7 @@ CNOT
     
     définit une porte quantique CNOT, alias `CX`.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3126,7 +3126,7 @@ CY
     
     définit une porte quantique CY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3157,7 +3157,7 @@ CZ
     
     définit une porte quantique CZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3190,7 +3190,7 @@ CR
     
     définit une porte quantique CR.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3224,7 +3224,7 @@ SWAP
     
     définit une porte quantique CSWAP.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3266,7 +3266,7 @@ CSWAP
             0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
         \end{bmatrix}.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3297,7 +3297,7 @@ RXX
     
     définit une porte quantique RXX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3327,7 +3327,7 @@ RYY
     
     définit une porte quantique RYY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3358,7 +3358,7 @@ RZZ
     
     définit une porte quantique RZZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3390,7 +3390,7 @@ RZX
     
     définit une porte quantique RZX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3420,7 +3420,7 @@ Toffoli
     
     définit une porte quantique Toffoli.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3451,7 +3451,7 @@ IsingXX
     
     définit une porte quantique IsingXX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3483,7 +3483,7 @@ IsingYY
     
     définit une porte quantique IsingYY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3514,7 +3514,7 @@ IsingZZ
     
     définit une porte quantique IsingZZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3546,7 +3546,7 @@ IsingXY
     
     définit une porte quantique IsingXY.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3578,7 +3578,7 @@ PhaseShift
     
     définit une porte quantique PhaseShift.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3609,7 +3609,7 @@ MultiRZ
     
     définit une porte quantique MultiRZ.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3642,7 +3642,7 @@ SDG
     
     définit une porte quantique TDG.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3675,7 +3675,7 @@ TDG
     
     définit une porte quantique TDG.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3708,7 +3708,7 @@ ControlledPhaseShift
     
     définit une porte quantique ControlledPhaseShift.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3740,7 +3740,7 @@ MultiControlledX
     
     définit une porte quantique MultiControlledX.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
     
     :param has_params: indique s'il a des paramètres, comme les portes RX, RY, etc. qui doivent être définies sur True, et celles sans paramètres doivent être définies sur False, la valeur par défaut est False.
@@ -3749,7 +3749,7 @@ MultiControlledX
     :param wires: Index du bit de l'effet de ligne, la valeur par défaut est None.
     :param dtype: La précision des données de la matrice interne de la porte logique peut être définie sur pyvqnet.kcomplex64 ou pyvqnet.kcomplex128, correspondant respectivement à une entrée float ou double.
     :param use_dagger: indique s'il faut utiliser la version conjuguée transposée de la porte, la valeur par défaut est False.
-    :param control_values: Control value, the default is None, when the bit is 1, it is controlled.
+    :param control_values: Valeur de contrôle, par défaut None ; lorsque le bit vaut 1, il est contrôlé.
 
     :return: une instance ``pyvqnet.qnn.vqc.torch.QModule``
 
@@ -3781,11 +3781,11 @@ Probability
 
     Calcule le résultat de mesure de probabilité du circuit quantique sur un bit spécifique.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param wires: L'indice du bit de mesure, liste, tuple ou entier.
-    :param name: The name of the module, default: "".
+    :param name: Le nom du module, par défaut : "".
     :return: Le résultat de la mesure, QTensor.
 
     Example::
@@ -3814,7 +3814,7 @@ MeasureAll
 .. py:class:: pyvqnet.qnn.vqc.torch.MeasureAll(obs=None, name="")
 
     Calcule les résultats de mesure des circuits quantiques, supporte l'entrée obs comme plusieurs ou un seul opérateur de Pauli ou Hamiltonien.
-    For example:
+    Par exemple :
 
     {\'X0\': 0.23} indique un effet PauliX sur le qubit 0, avec un coefficient de 0.23.
 
@@ -3823,7 +3823,7 @@ MeasureAll
     [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] correspond aux deux valeurs observées 4 * X1 @ Z2 + 3 * Z1 @ Z0 et 3.5 * X1 @ Y2 @ Z0.
         
         
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
 
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
@@ -3865,7 +3865,7 @@ Samples
 
     Obtient les résultats d'échantillonnage avec des tirs sur des fils spécifiques.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
@@ -3906,12 +3906,12 @@ HermitianExpval
 
     Calcule l'espérance d'une quantité hermitienne dans un circuit quantique.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
     :param obs: Quantité hermitienne.
-    :param name: module name, default: "".
+    :param name: nom du module, par défaut : "".
     :return: résultat attendu, QTensor.
 
     Example::
@@ -3978,7 +3978,7 @@ VQC_HardwareEfficientAnsatz
 
     Implémentation de Hardware Efficient Ansatz introduit dans l'article : `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
 
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
@@ -4041,7 +4041,7 @@ VQC_BasicEntanglerTemplate
 
     Un anneau de portes CNOT connecte chaque qubit à ses voisins, et finalement le a-ème qubit est considéré comme le voisin du a-ème qubit.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
 
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
@@ -4094,7 +4094,7 @@ VQC_StronglyEntanglingTemplate
 
     Couches constituées de rotations à un qubit et d'intrications, comme dans `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
@@ -4151,7 +4151,7 @@ VQC_QuantumEmbedding
     Utilise RZ, RY, RZ pour créer des circuits quantiques variationnels afin d'encoder des données classiques dans des états quantiques.
     Référence `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
  
@@ -4211,14 +4211,14 @@ ExpressiveEntanglingAnsatz
 
     19 ansatz différents de l'article `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
 
-    This class inherits from ``pyvqnet.qnn.vqc.torch.QModule`` and ``torch.nn.Module``.
+    Cette classe hérite de ``pyvqnet.qnn.vqc.torch.QModule`` et ``torch.nn.Module``.
 
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param type: Type de circuit de 1 à 19, un total de 19 types.
     :param num_wires: Number of qubits.
     :param depth: Profondeur du circuit.
-    :param dtype: data type of parameter, default:None,use float32.
+    :param dtype: type de données du paramètre, par défaut : None, utilise float32.
     :param name: Nom, défaut "".
 
     :return:
@@ -4271,7 +4271,7 @@ vqc_basis_embedding
 
     Encode n caractéristiques binaires dans l'état de base à n qubits de ``q_machine``. Cette fonction est aliasée sous `VQC_BasisEmbedding`.
 
-    For example, for ``basis_state=([0, 1, 1])``, the basis state in the quantum system is :math:`|011 \rangle`.
+    Par exemple, pour ``basis_state=([0, 1, 1])``, l'état de base dans le système quantique est :math:`|011 \rangle`.
 
     :param basis_state: Entrée binaire de taille ``(n)``.
     :param q_machine: périphérique de machine quantique.
@@ -4310,7 +4310,7 @@ vqc_angle_embedding
 
     :param input_feat: Tableau représentant les paramètres.
     :param wires: Idx du qubit.
-    :param q_machine: Quantum machine device.
+    :param q_machine: Périphérique de machine quantique.
     :param rotation: Porte de rotation, défaut est "X".
 
     Example::
@@ -4337,7 +4337,7 @@ vqc_amplitude_embedding
     Encode une caractéristique de :math:`2^n` dans un vecteur d'amplitude de :math:`n` qubits. Cette fonction est aliasée sous `VQC_AmplitudeEmbedding`.
 
     :param input_feature: tableau numpy représentant le paramètre.
-    :param q_machine: quantum machine device.
+    :param q_machine: périphérique de machine quantique.
     
 
     Example::
@@ -4426,7 +4426,7 @@ vqc_crot_circuit
     :param para: représente le tableau de paramètres.
     :param control_qubits: Indice du qubit de contrôle.
     :param rot_wire: Indice du qubit de rotation.
-    :param q_machine: Quantum machine device.
+    :param q_machine: Périphérique de machine quantique.
     
 
     Example::
@@ -4462,7 +4462,7 @@ vqc_controlled_hadamard
         \end{bmatrix}.
 
     :param wires: liste d'indices de bits quantiques, le premier est le bit de contrôle, la longueur de la liste est 2.
-    :param q_machine: quantum virtual machine device.
+    :param q_machine: périphérique de machine virtuelle quantique.
 
     Examples::
 
@@ -4504,7 +4504,7 @@ vqc_ccz
         \end{pmatrix}
 
     :param wires: liste d'indices de bits quantiques, le premier est le bit de contrôle. La longueur de la liste est 3.
-    :param q_machine: quantum virtual machine device.
+    :param q_machine: périphérique de machine virtuelle quantique.
 
     Example::
 
@@ -4534,7 +4534,7 @@ vqc_fermionic_single_excitation
         \hat{U}_{pr}(\theta) = \mathrm{exp} \{ \theta_{pr} (\hat{c}_p^\dagger \hat{c}_r
         -\mathrm{H.c.}) \},
 
-    Alias: ``VQC_FermionicSingleExcitation`` .
+    Alias : ``VQC_FermionicSingleExcitation``.
 
     :param weight: Paramètre sur le qubit p, seulement a éléments.
     :param wires: Un sous-ensemble d'indices de qubits dans l'intervalle [r, p]. La longueur minimale doit être 2. La première valeur d'indice est interprétée comme r, et la dernière valeur d'indice est interprétée comme p. Les indices intermédiaires sont soumis à des portes CNOT pour calculer la parité de l'ensemble de qubits.
@@ -4572,12 +4572,12 @@ vqc_fermionic_double_excitation
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \{ \theta (\hat{c}_p^\dagger \hat{c}_q^\dagger
         \hat{c}_r \hat{c}_s - \mathrm{H.c.}) \},
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are fermion annihilation and
-    operators are created and indexed :math:`r, s` and :math:`p, q` on occupied and
-    empty molecular orbitals respectively. Use `Jordan-Wigner transformation
-    <https://arxiv.org/abs/1208.5986>`_ The fermion operator defined above can be written as
-    in terms of the Pauli matrix (see
-    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ for more details)
+    où :math:`\hat{c}` et :math:`\hat{c}^\dagger` sont respectivement les opérateurs d'annihilation et
+    de création de fermions, indexés par :math:`r, s` et :math:`p, q` sur les orbitales moléculaires occupées et
+    vides. Utilisez la `transformation de Jordan-Wigner
+    <https://arxiv.org/abs/1208.5986>`_ L'opérateur de fermion défini ci-dessus peut s'écrire
+    en termes de matrices de Pauli (voir
+    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ pour plus de détails)
 
     .. math::
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \Big\{
@@ -4586,7 +4586,7 @@ vqc_fermionic_double_excitation
         \hat{Y}_s \hat{X}_r \hat{Y}_q \hat{Y}_p +\\ \hat{X}_s \hat{Y}_r \hat{Y}_q \hat{Y}_p +
         \hat{X}_s \hat{X}_r \hat{X}_q \hat{Y}_p - \mathrm{H.c.} ) \Big\}
 
-    This function is aliased as: ``VQC_FermionicDoubleExcitation`` .
+    Cette fonction est aliasée sous : ``VQC_FermionicDoubleExcitation``.
 
     :param weight: paramètre variable
     :param wires1: représente le sous-ensemble de qubits dans l'intervalle de liste d'indices [s, r]. Le a-ème indice est interprété comme s et le dernier indice est interprété comme r. La porte CNOT opère sur les index du milieu pour calculer la parité d'un groupe de qubits.
@@ -4628,12 +4628,12 @@ vqc_uccsd
         \prod_{p > q > r > s} \mathrm{exp} \Big\{\theta_{pqrs}
         (\hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r \hat{c}_s-\mathrm{H.c.}) \Big\}
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are fermion annihilation and
-    creation operators and index :math:`r, s` and :math:`p, q` on occupied and
-    empty molecular orbitals respectively. (For more details see
-    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_):
+    où :math:`\hat{c}` et :math:`\hat{c}^\dagger` sont respectivement les opérateurs d'annihilation et
+    de création de fermions, indexés par :math:`r, s` et :math:`p, q` sur les orbitales moléculaires occupées et
+    vides. (Pour plus de détails, voir
+    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_) :
 
-    This function is aliased as: ``VQC_UCCSD`` .
+    Cette fonction est aliasée sous : ``VQC_UCCSD``.
 
     :param weights: tenseur de taille ``(len(s_wires)+ len(d_wires))`` contenant les paramètres :math:`\theta_{pr}` et :math:`\theta_{pqrs}` rotations Z d'entrée ``FermionicSingleExcitation`` et ``FermionicDoubleExcitation``.
     :param wires: indices de qubits pour l'action du gabarit
@@ -4669,7 +4669,7 @@ vqc_zfeaturemap
 
     Circuit d'évolution Pauli Z de premier ordre.
 
-    For 3 qubits and 2 repetitions, the circuit is represented as:
+    Pour 3 qubits et 2 répétitions, le circuit est représenté comme suit :
 
     .. parsed-literal::
 
@@ -4708,7 +4708,7 @@ vqc_zzfeaturemap
 
     Circuit d'évolution Pauli-Z de second ordre.
 
-    For 3 qubits, 1 repeat, and linear entanglement, the circuit is represented as:
+    Pour 3 qubits, 1 répétition et une intrication linéaire, le circuit est représenté comme suit :
 
     .. parsed-literal::
 
@@ -4721,7 +4721,7 @@ vqc_zzfeaturemap
         ┤ H ├┤ U1(2.0*φ(x[2])) ├──────────────────────────────────┤ X ├┤ U1(2.0*φ(x[1],x[2])) ├┤ X ├
         └───┘└─────────────────┘                                  └───┘└──────────────────────┘└───┘
     
-    Where ``φ`` is a classic nonlinear function. If two values ​​are input, ``φ(x,y) = (pi - x)(pi - y)``, and if a is input, ``φ(x) = x``. It is expressed as follows using ``data_map_func``:
+    Où ``φ`` est une fonction non linéaire classique. Si deux valeurs sont fournies en entrée, ``φ(x,y) = (pi - x)(pi - y)``, et si a est fourni en entrée, ``φ(x) = x``. Elle s'exprime comme suit à l'aide de ``data_map_func`` :
 
     .. code-block::
 
@@ -4757,13 +4757,13 @@ vqc_allsinglesdoubles
     La matrice unitaire résultante préserve la population de particules et prépare le système à n qubits dans une superposition de l'état initial de Hartree-Fock et d'autres états encodant la configuration multi-excitation.
 
     :param weights: Un QTensor de taille ``(len(singles) + len(doubles),)`` contenant les angles qui entrent dans les opérations vqc.qCircuit.single_excitation et vqc.qCircuit.double_excitation en séquence
-    :param q_machine: The quantum machine.
+    :param q_machine: La machine quantique.
     :param hf_state: Un vecteur de nombres d'occupation de longueur ``len(wires)`` représentant l'état de Hartree-Fock, ``hf_state`` utilisé pour initialiser les fils.
     :param wires: Les qubits sur lesquels agir.
     :param singles: Une séquence de listes avec les indices des deux qubits sur lesquels agit l'opération single_exitation.
     :param doubles: Séquence de listes avec les indices des deux qubits sur lesquels agit l'opération double_exitation.
 
-    For example, the quantum circuit for two electrons and six qubits is shown below:
+    Par exemple, le circuit quantique pour deux électrons et six qubits est illustré ci-dessous :
 
     .. image:: ./images/all_singles_doubles.png
         :width: 600 px
@@ -4790,15 +4790,15 @@ vqc_basisrotation
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_basisrotation(q_machine: pyvqnet.qnn.vqc.torch.QMachine, wires, unitary_matrix: QTensor, check=False)
 
-    Implémente un circuit qui fournit un ensemble pouvant être utilisé pour effectuer des rotations de base à unité unique précises. Le circuit est dérivé de la transformation unitaire déterminée par un fermion à une particule :math:`U(u)` donnée dans `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\ 
+    Implémente un circuit qui fournit un ensemble pouvant être utilisé pour effectuer des rotations de base à unité unique précises. Le circuit est dérivé de la transformation unitaire déterminée par un fermion à une particule :math:`U(u)` donnée dans `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\
     
     .. math::
         U(u) = \exp{\left( \sum_{pq} \left[\log u \right]_{pq} (a_p^\dagger a_q - a_q^\dagger a_p) \right)}.
 
-    :math:`U(u)` is obtained by using the scheme given in the paper `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\ .
+    :math:`U(u)` est obtenu en utilisant le schéma donné dans l'article `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\ .
 
-    :param q_machine: quantum machine.
-    :param wires: qubits to act on.
+    :param q_machine: machine quantique.
+    :param wires: qubits sur lesquels agir.
     :param unitary_matrix: matrice spécifiant la base pour la transformation.
     :param check: vérifie si `unitary_matrix` est une matrice unitaire.
 
@@ -5052,9 +5052,9 @@ TNQMachine
 
 .. py:class:: pyvqnet.qnn.vqc.tn.TNQMachine(num_wires, dtype=pyvqnet.kcomplex64, use_mps=False)
 
-    Simulator class for variational quantum computing, including statevectors whose states attribute is quantum circuits.
+    Classe de simulateur pour le calcul quantique variationnel, incluant les vecteurs d'état dont l'attribut states représente les circuits quantiques.
 
-    This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.qnn.QMachine``.
+    Cette classe hérite de ``pyvqnet.nn.torch.TorchModule`` et ``pyvqnet.qnn.QMachine``.
 
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
@@ -5135,8 +5135,8 @@ TNQMachine
 
         obtient les états qmachine du réseau de tenseurs.
 
-Variational quantum logic gate module
-------------------------------------------------
+Module de portes logiques quantiques variationnelles
+----------------------------------------------------
 
 Les interfaces de fonctions suivantes dans ``pyvqnet.qnn.vqc`` supportent directement le ``QTensor`` du backend ``torch`` pour le calcul, chemin d'import ``pyvqnet.qnn.vqc.tn``.
 
@@ -5147,10 +5147,10 @@ Les modules de circuit quantique suivants héritent de ``pyvqnet.qnn.vqc.tn.TNQM
 
 .. note::
 
-    This class and its derived classes are only applicable to ``pyvqnet.backends.set_backend("torch")``, do not mix with ``Module`` under the default ``pyvqnet.nn``.
+    Cette classe et ses classes dérivées ne sont applicables qu'à ``pyvqnet.backends.set_backend("torch")`` ; ne pas les mélanger avec ``Module`` sous le ``pyvqnet.nn`` par défaut.
 
-    If these classes have non-parameter member variables ``_buffers``, the data in them is of type ``torch.Tensor``.
-    If these classes have parameter member variables ``_parmeters``, the data in them is of type ``torch.nn.Parameter``.
+    Si ces classes ont des variables membres non paramétrées ``_buffers``, les données qu'elles contiennent sont de type ``torch.Tensor``.
+    Si ces classes ont des variables membres paramétrées ``_parmeters``, les données qu'elles contiennent sont de type ``torch.nn.Parameter``.
 
 I
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -6948,8 +6948,8 @@ VQC_Purity
     .. math::
         \gamma = \text{Tr}(\rho^2)
 
-    where :math:`\rho` is a density matrix. The pureté of a normalized quantum state satisfies :math:`\frac{1}{d} \leq \gamma \leq 1` ,
-    where :math:`d` is the dimension of the Hilbert space.
+    où :math:`\rho` est une matrice de densité. La pureté d'un état quantique normalisé satisfait :math:`\frac{1}{d} \leq \gamma \leq 1` ,
+    où :math:`d` est la dimension de l'espace de Hilbert.
     La pureté de l'état pur est 1.
 
     :param state: État quantique obtenu à partir de TNQMachine.get_states()
@@ -7103,14 +7103,14 @@ Probability
 
 .. py:class:: pyvqnet.qnn.vqc.tn.Probability(wires=None, name="")
 
-    Calculate the probability measurement result of the quantum circuit on a specific bit.
+    Calcule le résultat de mesure de probabilité du circuit quantique sur un bit spécifique.
 
     Cette classe hérite de ``pyvqnet.qnn.vqc.tn.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
-    :param wires: The index of the measurement bit, list, tuple or integer.
-    :param name: The name of the module, default: "".
-    :return: The measurement result, QTensor.
+    :param wires: L'indice du bit de mesure, liste, tuple ou entier.
+    :param name: Le nom du module, par défaut : "".
+    :return: Le résultat de mesure, QTensor.
 
     Example::
 
@@ -7137,22 +7137,22 @@ MeasureAll
 
 .. py:class:: pyvqnet.qnn.vqc.tn.MeasureAll(obs=None, name="")
 
-    Calculate the measurement results of quantum circuits, support input obs as multiple or single Pauli operators or Hamiltonians.
+    Calcule les résultats de mesure des circuits quantiques ; prend en charge l'entrée obs sous forme d'opérateurs de Pauli ou d'hamiltoniens multiples ou uniques.
     
-    For example:
+    Par exemple :
 
-    {\'X0\': 0.23} indicates a PauliX effect on qubit 0, with a coefficient of 0.23.
+    {\'X0\': 0.23} indique un effet PauliX sur le qubit 0, avec un coefficient de 0,23.
 
-    {\'X1 Z2\': 2.4,\'Y2\': -0.5} corresponds to the observed value 2.4 * X1 @ Z2 - 0.5 * Y2.
+    {\'X1 Z2\': 2.4,\'Y2\': -0.5} correspond à la valeur observée 2.4 * X1 @ Z2 - 0.5 * Y2.
 
-    [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] corresponds to the two observed values 4 * X1 @ Z2 + 3 * Z1 @ Z0 and 3.5 * X1 @ Y2 @ Z0.
+    [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] correspond aux deux valeurs observées 4 * X1 @ Z2 + 3 * Z1 @ Z0 et 3.5 * X1 @ Y2 @ Z0.
         
     Cette classe hérite de ``pyvqnet.qnn.vqc.tn.QModule`` et ``torch.nn.Module``.
 
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
     :param obs: observable.
-    :param name: module name, default: "".
+    :param name: nom du module, par défaut : "".
     :return: measurement result, QTensor.
 
     Example::
@@ -7187,17 +7187,17 @@ Samples
 
 .. py:class:: pyvqnet.qnn.vqc.tn.Samples(wires=None, obs=None, shots = 1,name="")
 
-    Get sample results with shot on  specific wires.
+    Obtient des résultats d'échantillonnage avec un nombre de shots sur des fils spécifiques.
 
     Cette classe hérite de ``pyvqnet.qnn.vqc.tn.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
-    :param wires: Sample qubit index. Default value: None, use all bits of the simulator at runtime.
-    :param obs: This value can only be None.
-    :param shots: Sample repetition count, default value: 1.
-    :param name: The name of this module, default value: "".
-    :return: a measurement method class
+    :param wires: Indice des qubits à échantillonner. Valeur par défaut : None, utilise tous les bits du simulateur à l'exécution.
+    :param obs: Cette valeur ne peut être que None.
+    :param shots: Nombre de répétitions de l'échantillonnage, valeur par défaut : 1.
+    :param name: Le nom de ce module, valeur par défaut : "".
+    :return: une classe de méthode de mesure
 
     Example::
 
@@ -7228,14 +7228,14 @@ HermitianExpval
 
 .. py:class:: pyvqnet.qnn.vqc.tn.HermitianExpval(obs=None, name="")
 
-    Compute the expectation of a Hermitian quantity in a quantum circuit.
+    Calcule l'espérance d'une quantité hermitienne dans un circuit quantique.
 
     Cette classe hérite de ``pyvqnet.qnn.vqc.tn.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
     :param obs: Hermitian quantity.
-    :param name: module name, default: "".
+    :param name: nom du module, par défaut : "".
     :return: expected result, QTensor.
 
     Example::
@@ -7299,21 +7299,21 @@ VQC_HardwareEfficientAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_HardwareEfficientAnsatz(n_qubits,single_rot_gate_list,entangle_gate="CNOT",entangle_rules='linear',depth=1,initial=None,dtype=None)
 
-    Implementation of Hardware Efficient Ansatz introduced in the paper: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
+    Implémentation de l'Ansatz efficace en matériel introduit dans l'article : `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
 
     Cette classe hérite de ``pyvqnet.qnn.vqc.tn.QModule`` et ``torch.nn.Module``.
 
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
 
-    :param n_qubits: Number of qubits.
-    :param single_rot_gate_list: A single qubit rotation gate list is constructed by one or several rotation gate that act on every qubit.Currently support Rx, Ry, Rz.
-    :param entangle_gate: The non parameterized entanglement gate.CNOT,CZ is supported.default:CNOT.
-    :param entangle_rules: How entanglement gate is used in the circuit. 'linear' means the entanglement gate will be act on every neighboring qubits. 'all' means the entanglment gate will be act on any two qbuits. Default:linear.
-    :param depth: The depth of ansatz, default:1.
-    :param initial: initial one same value for paramaters,default:None,this module will initialize parameters randomly.
-    :param dtype: data dtype of parameters.
-    :return: a VQC_HardwareEfficientAnsatz instance.
+    :param n_qubits: Nombre de qubits.
+    :param single_rot_gate_list: Une liste de portes de rotation à un qubit est construite par une ou plusieurs portes de rotation agissant sur chaque qubit. Prend actuellement en charge Rx, Ry, Rz.
+    :param entangle_gate: La porte d'intrication non paramétrée. CNOT et CZ sont prises en charge. Par défaut : CNOT.
+    :param entangle_rules: Mode d'utilisation de la porte d'intrication dans le circuit. 'linear' signifie que la porte d'intrication agit sur tous les qubits voisins. 'all' signifie que la porte d'intrication agit sur deux qubits quelconques. Par défaut : linear.
+    :param depth: La profondeur de l'ansatz, par défaut : 1.
+    :param initial: valeur initiale identique pour tous les paramètres, par défaut : None ; ce module initialisera les paramètres aléatoirement.
+    :param dtype: type de données des paramètres.
+    :return: une instance de VQC_HardwareEfficientAnsatz.
 
     Example::
 
@@ -7360,9 +7360,9 @@ VQC_BasicEntanglerTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_BasicEntanglerTemplate(num_layer=1, num_qubits=1, rotation="RX", initial=None, dtype=None)
 
-    A layer consisting of a single-parameter single-qubit rotation on each qubit, followed by multiple CNOT gates in a closed chain or ring combination.
+    Une couche constituée d'une rotation à un paramètre et à un qubit sur chaque qubit, suivie de plusieurs portes CNOT dans une combinaison en chaîne fermée ou en anneau.
 
-    A ring of CNOT gates connects each qubit to its neighbors, and finally the a qubit is considered to be the neighbor of the a th qubit.
+    Un anneau de portes CNOT connecte chaque qubit à ses voisins, et finalement le a-ème qubit est considéré comme le voisin du a-ème qubit.
 
     Cette classe hérite de ``pyvqnet.qnn.vqc.tn.QModule`` et ``torch.nn.Module``.
 
@@ -7370,10 +7370,10 @@ VQC_BasicEntanglerTemplate
 
     :param num_layers: number of repeat layers, default: 1.
     :param num_qubits: number of qubits, default: 1.
-    :param rotation: one-parameter single-qubit gate to use, default: `RX`
-    :param initial: initialized same value for all paramters. default:None,parameters will be initialized randomly.
-    :param dtype: data type of parameter, default:None,use float32.
-    :return: A VQC_BasicEntanglerTemplate instance
+    :param rotation: porte à un qubit et un paramètre à utiliser, par défaut : ``RX``
+    :param initial: valeur initialisée identique pour tous les paramètres. Par défaut : None, les paramètres seront initialisés aléatoirement.
+    :param dtype: type de données du paramètre, par défaut : None, utilise float32.
+    :return: Une instance de VQC_BasicEntanglerTemplate
 
     Example::
 
@@ -7415,7 +7415,7 @@ VQC_StronglyEntanglingTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_StronglyEntanglingTemplate(num_layers=1, num_qubits=1, ranges=None,initial=None, dtype=None)
 
-    Layers consisting of single qubit rotations and entanglers, as in `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
+    Couches constituées de rotations à un qubit et d'opérateurs d'intrication, comme dans `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
 
     Cette classe hérite de ``pyvqnet.qnn.vqc.tn.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
@@ -7423,11 +7423,11 @@ VQC_StronglyEntanglingTemplate
 
     :param num_layers: number of repeat layers, default: 1.
     :param num_qubits: number of qubits, default: 1.
-    :param ranges: sequence determining the range hyperparameter for each subsequent layer; default: None
-                                using :math: `r=l \mod M` for the :math:`l` th layer and :math:`M` qubits.
-    :param initial: initial value for all parameters.default: None,initialized randomly.
-    :param dtype: data type of parameter, default:None,use float32.
-    :return: A VQC_StronglyEntanglingTemplate instance.
+    :param ranges: séquence déterminant l'hyperparamètre de plage pour chaque couche suivante ; par défaut : None
+                                en utilisant :math:`r=l \mod M` pour la :math:`l`-ième couche et :math:`M` qubits.
+    :param initial: valeur initiale pour tous les paramètres. Par défaut : None, initialisés aléatoirement.
+    :param dtype: type de données du paramètre, par défaut : None, utilise float32.
+    :return: Une instance de VQC_StronglyEntanglingTemplate.
 
     Example::
 
@@ -7471,21 +7471,21 @@ VQC_QuantumEmbedding
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_QuantumEmbedding(qubits, machine, num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
     
-    Use RZ,RY,RZ to create variational quantum circuits to encode classical data into quantum states.
-    Reference `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
+    Utilise RZ, RY, RZ pour créer des circuits quantiques variationnels afin d'encoder des données classiques dans des états quantiques.
+    Référence : `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
 
     Cette classe hérite de ``pyvqnet.qnn.vqc.tn.QModule`` et ``torch.nn.Module``.
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
  
-    :param num_repetitions_input: number of repeat times to encode input in a submodule.
-    :param depth_input: number of input dimension .
-    :param num_unitary_layers: number of repeat times of variational quantum gates.
-    :param num_repetitions: number of repeat times of submodule.
-    :param initial: parameter initialization value, default is None
-    :param dtype: parameter type, default is None, use float32.
-    :param name: class name
-    :return: A VQC_QuantumEmbedding instance.
+    :param num_repetitions_input: nombre de répétitions pour encoder l'entrée dans un sous-module.
+    :param depth_input: nombre de dimensions d'entrée.
+    :param num_unitary_layers: nombre de répétitions des portes quantiques variationnelles.
+    :param num_repetitions: nombre de répétitions du sous-module.
+    :param initial: valeur d'initialisation des paramètres, par défaut None
+    :param dtype: type des paramètres, par défaut None, utilise float32.
+    :param name: nom de la classe
+    :return: Une instance de VQC_QuantumEmbedding.
 
     Example::
 
@@ -7531,20 +7531,20 @@ ExpressiveEntanglingAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.tn.ExpressiveEntanglingAnsatz(type: int, num_wires: int, depth: int, dtype=None, name: str = "")
 
-    19 different ansatz from the paper `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
+    19 ansatz différents issus de l'article `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
 
     Cette classe hérite de ``pyvqnet.qnn.vqc.tn.QModule`` et ``torch.nn.Module``.
 
     Cette classe peut être ajoutée au modèle torch comme sous-module de ``torch.nn.Module``.
 
-    :param type: Circuit type from 1 to 19, a total of 19 lines.
+    :param type: Type de circuit de 1 à 19, soit 19 types au total.
     :param num_wires: Number of qubits.
-    :param depth: Circuit depth.
-    :param dtype: data type of parameter, default:None,use float32.
-    :param name: Name, default "".
+    :param depth: Profondeur du circuit.
+    :param dtype: type de données du paramètre, par défaut : None, utilise float32.
+    :param name: Nom, par défaut "".
 
     :return:
-        a ExpressiveEntanglingAnsatz instance
+        une instance ExpressiveEntanglingAnsatz
 
     Example::
 
@@ -7589,12 +7589,12 @@ vqc_basis_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_basis_embedding(basis_state,q_machine)
 
-    Encode n binary features into the n-qubit basis state of ``q_machine``. This function is aliased as `VQC_BasisEmbedding`.
+    Encode n caractéristiques binaires dans l'état de base à n qubits de ``q_machine``. Cette fonction est aliasée sous `VQC_BasisEmbedding`.
 
-    For example, for ``basis_state=([0, 1, 1])``, the basis state in the quantum system is :math:`|011 \rangle`.
+    Par exemple, pour ``basis_state=([0, 1, 1])``, l'état de base dans le système quantique est :math:`|011 \rangle`.
 
     :param basis_state: ``(n)`` size binary input.
-    :param q_machine: quantum machine device.
+    :param q_machine: périphérique de machine quantique.
     
 
     Example::
@@ -7615,22 +7615,22 @@ vqc_angle_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_angle_embedding(input_feat, wires, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, rotation: str = "X")
 
-    Encodes :math:`N` features into the rotation angle of :math:`n` qubits, where :math:`N \leq n`.
-    This function is aliased as `VQC_AngleEmbedding` .
+    Encode :math:`N` caractéristiques dans l'angle de rotation de :math:`n` qubits, où :math:`N \leq n`.
+    Cette fonction est aliasée sous `VQC_AngleEmbedding`.
 
     La rotation peut être sélectionnée comme : 'X', 'Y', 'Z', comme défini par le paramètre ``rotation`` :
 
-    * ``rotation='X'`` Use the feature as the angle of RX rotation.
+    * ``rotation='X'`` Utilise la caractéristique comme angle de rotation RX.
 
-    * ``rotation='Y'`` Use the feature as the angle of RY rotation.
+    * ``rotation='Y'`` Utilise la caractéristique comme angle de rotation RY.
 
-    * ``rotation='Z'`` Use the feature as the angle of RZ rotation.
+    * ``rotation='Z'`` Utilise la caractéristique comme angle de rotation RZ.
 
-    ``wires`` represents the idx of the rotation gate on the qubit.
+    ``wires`` représente l'idx de la porte de rotation sur le qubit.
 
     :param input_feat: Array representing parameters.
     :param wires: Qubit idx.
-    :param q_machine: Quantum machine device.
+    :param q_machine: Périphérique de machine quantique.
     :param rotation: Rotation gate, default is "X".
 
     Example::
@@ -7654,10 +7654,10 @@ vqc_amplitude_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_amplitude_embedding(input_feature, q_machine)
 
-    Encodes a :math:`2^n` feature into an amplitude vector of :math:`n` qubits. This function is aliased as `VQC_AmplitudeEmbedding`.
+    Encode une caractéristique :math:`2^n` dans un vecteur d'amplitude de :math:`n` qubits. Cette fonction est aliasée sous `VQC_AmplitudeEmbedding`.
 
-    :param input_feature: numpy array representing the parameter.
-    :param q_machine: quantum machine device.
+    :param input_feature: tableau numpy représentant le paramètre.
+    :param q_machine: périphérique de machine quantique.
     
 
     Example::
@@ -7677,15 +7677,15 @@ vqc_iqp_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_iqp_embedding(input_feat, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, rep: int = 1)
 
-    Encode :math:`n` features into :math:`n` qubits using diagonal gates of an IQP circuit. Alias: ``VQC_IQPEmbedding`` .
+    Encode :math:`n` caractéristiques dans :math:`n` qubits à l'aide de portes diagonales d'un circuit IQP. Alias : ``VQC_IQPEmbedding``.
 
     L'encodage est proposé par `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
 
-    By specifying ``rep`` , the basic IQP circuit can be repeated.
+    En spécifiant ``rep``, le circuit IQP de base peut être répété.
 
-    :param input_feat: Array of parameters.
-    :param q_machine: Quantum machine machine.
-    :param rep: Number of times to repeat the quantum circuit block, default is 1.
+    :param input_feat: Tableau de paramètres.
+    :param q_machine: Machine quantique.
+    :param rep: Nombre de répétitions du bloc de circuit quantique, par défaut 1.
 
     Example::
 
@@ -7704,7 +7704,7 @@ vqc_rotcircuit
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_rotcircuit(q_machine, wire, params)
 
-    Arbitrary single quantum bit rotation quantum logic gate combination. This function alias: ``VQC_RotCircuit`` .
+    Combinaison de portes logiques quantiques de rotation à un seul bit quantique arbitraire. Alias de cette fonction : ``VQC_RotCircuit``.
 
     .. math::
         R(\phi,\theta,\omega) = RZ(\omega)RY(\theta)RZ(\phi)= \begin{bmatrix}
@@ -7712,9 +7712,9 @@ vqc_rotcircuit
         e^{-i(\phi-\omega)/2}\sin(\theta/2) & e^{i(\phi+\omega)/2}\cos(\theta/2)
         \end{bmatrix}.
 
-    :param q_machine: quantum virtual machine device.
-    :param wire: quantum bit index.
-    :param params: represents parameters :math:`[\phi, \theta, \omega]`.
+    :param q_machine: périphérique de machine virtuelle quantique.
+    :param wire: indice de bit quantique.
+    :param params: représente les paramètres :math:`[\phi, \theta, \omega]`.
 
     Example::
 
@@ -7733,7 +7733,7 @@ vqc_crot_circuit
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_crot_circuit(para,control_qubits,rot_wire,q_machine)
 
-    Quantum logic gate combination of controlled Rot single quantum bit rotation. This function alias: ``VQC_CRotCircuit`` .
+    Combinaison de portes logiques quantiques de rotation Rot contrôlée à un seul bit quantique. Alias de cette fonction : ``VQC_CRotCircuit``.
 
     .. math:: 
         CR(\phi, \theta, \omega) = \begin{bmatrix}
@@ -7743,10 +7743,10 @@ vqc_crot_circuit
         0 & 0 & e^{-i(\phi-\omega)/2}\sin(\theta/2) & e^{i(\phi+\omega)/2}\cos(\theta/2)
         \end{bmatrix}.
 
-    :param para: represents the array of parameters.
-    :param control_qubits: Control qubit index.
-    :param rot_wire: Rot qubit index.
-    :param q_machine: Quantum machine device.
+    :param para: représente le tableau de paramètres.
+    :param control_qubits: Indice du qubit de contrôle.
+    :param rot_wire: Indice du qubit de rotation.
+    :param q_machine: Périphérique de machine quantique.
     
 
     Example::
@@ -7771,7 +7771,7 @@ vqc_controlled_hadamard
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_controlled_hadamard(wires, q_machine)
 
-    Controlled Hadamard logic gate quantum circuit. This function alias: ``VQC_Controlled_Hadamard`` .
+    Circuit quantique de porte logique Hadamard contrôlée. Alias de cette fonction : ``VQC_Controlled_Hadamard``.
 
     .. math:: 
         CH = \begin{bmatrix}
@@ -7781,8 +7781,8 @@ vqc_controlled_hadamard
         0 & 0 & \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}
         \end{bmatrix}.
 
-    :param wires: quantum bit index list, the first one is the control bit, the list length is 2.
-    :param q_machine: quantum virtual machine device.
+    :param wires: liste d'indices de bits quantiques, le premier est le bit de contrôle, la longueur de la liste est 2.
+    :param q_machine: périphérique de machine virtuelle quantique.
 
     Examples::
 
@@ -7805,7 +7805,7 @@ vqc_ccz
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_ccz(wires, q_machine)
 
-    Controlled-controlled-Z logic gate. Alias: ``VQC_CCZ`` .
+    Porte logique Z contrôlée-contrôlée. Alias : ``VQC_CCZ``.
 
     .. math::
         CCZ =
@@ -7822,8 +7822,8 @@ vqc_ccz
         0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & -1
         \end{pmatrix}
 
-    :param wires: quantum bit index list, the first one is the control bit. The list length is 3.
-    :param q_machine: quantum virtual machine device.
+    :param wires: liste d'indices de bits quantiques, le premier est le bit de contrôle. La longueur de la liste est 3.
+    :param q_machine: périphérique de machine virtuelle quantique.
 
     Example::
 
@@ -7847,16 +7847,16 @@ vqc_fermionic_single_excitation
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_fermionic_single_excitation(weight, wires, q_machine)
 
-    Coupled cluster single excitation operator for tensor product of Pauli matrices. Matrix form is given by:
+    Opérateur d'excitation simple de cluster couplé pour le produit tensoriel de matrices de Pauli. La forme matricielle est donnée par :
 
     .. math::
         \hat{U}_{pr}(\theta) = \mathrm{exp} \{ \theta_{pr} (\hat{c}_p^\dagger \hat{c}_r
         -\mathrm{H.c.}) \},
 
-    Alias: ``VQC_FermionicSingleExcitation`` .
+    Alias : ``VQC_FermionicSingleExcitation``.
 
-    :param weight: Parameter on qubit p, only a elements.
-    :param wires: A subset of qubit indices in the interval [r, p]. Minimum length must be 2. The first index value is interpreted as r, and the last a index value is interpreted as p.The intermediate indices are acted upon by CNOT gates to compute the parity of the qubit set.
+    :param weight: Paramètre sur le qubit p, avec seulement a éléments.
+    :param wires: Un sous-ensemble d'indices de qubits dans l'intervalle [r, p]. La longueur minimale doit être 2. La première valeur d'indice est interprétée comme r, et la dernière valeur d'indice comme p. Les indices intermédiaires sont soumis à des portes CNOT pour calculer la parité de l'ensemble de qubits.
     :param q_machine: Quantum virtual machine device.
 
     
@@ -7885,18 +7885,18 @@ vqc_fermionic_double_excitation
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_fermionic_double_excitation(weight, wires1, wires2, q_machine)
 
-    Coupled clustered biexcitation operator for tensor product of Pauli matrices exponentiated, matrix form given by:
+    Opérateur de biexcitation de cluster couplé pour le produit tensoriel de matrices de Pauli exponentiel, la forme matricielle est donnée par :
 
     .. math::
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \{ \theta (\hat{c}_p^\dagger \hat{c}_q^\dagger
         \hat{c}_r \hat{c}_s - \mathrm{H.c.}) \},
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are fermion annihilation and
-    operators are created and indexed :math:`r, s` and :math:`p, q` on occupied and
-    empty molecular orbitals respectively. Use `Jordan-Wigner transformation
-    <https://arxiv.org/abs/1208.5986>`_ The fermion operator defined above can be written as
-    in terms of the Pauli matrix (see
-    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ for more details)
+    où :math:`\hat{c}` et :math:`\hat{c}^\dagger` sont respectivement les opérateurs d'annihilation et
+    de création de fermions, indexés par :math:`r, s` et :math:`p, q` sur les orbitales moléculaires occupées et
+    vides. Utilisez la `transformation de Jordan-Wigner
+    <https://arxiv.org/abs/1208.5986>`_ L'opérateur de fermion défini ci-dessus peut s'écrire
+    en termes de matrices de Pauli (voir
+    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ pour plus de détails)
 
     .. math::
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \Big\{
@@ -7905,11 +7905,11 @@ vqc_fermionic_double_excitation
         \hat{Y}_s \hat{X}_r \hat{Y}_q \hat{Y}_p +\\ \hat{X}_s \hat{Y}_r \hat{Y}_q \hat{Y}_p +
         \hat{X}_s \hat{X}_r \hat{X}_q \hat{Y}_p - \mathrm{H.c.} ) \Big\}
 
-    This function is aliased as: ``VQC_FermionicDoubleExcitation`` .
+    Cette fonction est aliasée sous : ``VQC_FermionicDoubleExcitation``.
 
-    :param weight: variable parameter
-    :param wires1: represents the subset of qubits in the index list interval [s, r]. The ath index is interpreted as s and the last index is interpreted as r. The CNOT gate operates on the middle indexes to calculate the parity of a group of qubits.
-    :param wires2: represents the subset of qubits in the index list interval [q, p]. The first root index is interpreted as q and the last index is interpreted as p. The CNOT gate operates on the middle indexes to calculate the parity of a group of qubits.
+    :param weight: paramètre variable
+    :param wires1: représente le sous-ensemble de qubits dans l'intervalle de liste d'indices [s, r]. Le a-ème indice est interprété comme s et le dernier indice est interprété comme r. La porte CNOT opère sur les index du milieu pour calculer la parité d'un groupe de qubits.
+    :param wires2: représente le sous-ensemble de qubits dans l'intervalle de liste d'indices [q, p]. Le premier indice racine est interprété comme q et le dernier indice est interprété comme p. La porte CNOT opère sur les index du milieu pour calculer la parité d'un groupe de qubits.
     :param q_machine: Quantum virtual machine device.
 
     
@@ -7936,9 +7936,9 @@ vqc_uccsd
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_uccsd(weights, wires, s_wires, d_wires, init_state, q_machine)
 
-    Implements the Unitary Coupled Cluster Single and Double Excitations Simulation (UCCSD). UCCSD is a VQE simulation commonly used to run quantum chemistry simulations.
+    Implémente la simulation UCCSD (Unitary Coupled Cluster Single and Double Excitations). UCCSD est une simulation VQE couramment utilisée pour exécuter des simulations de chimie quantique.
 
-    Within the first-order Trotter approximation, the UCCSD unitary function is given by:
+    Dans l'approximation de Trotter de premier ordre, la fonction unitaire UCCSD est donnée par :
 
     .. math::
         \hat{U}(\vec{\theta}) =
@@ -7947,18 +7947,18 @@ vqc_uccsd
         \prod_{p > q > r > s} \mathrm{exp} \Big\{\theta_{pqrs}
         (\hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r \hat{c}_s-\mathrm{H.c.}) \Big\}
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are fermion annihilation and
-    creation operators and index :math:`r, s` and :math:`p, q` on occupied and
-    empty molecular orbitals respectively. (For more details see
-    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_):
+    où :math:`\hat{c}` et :math:`\hat{c}^\dagger` sont respectivement les opérateurs d'annihilation et
+    de création de fermions, indexés par :math:`r, s` et :math:`p, q` sur les orbitales moléculaires occupées et
+    vides. (Pour plus de détails, voir
+    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_) :
 
-    This function is aliased as: ``VQC_UCCSD`` .
+    Cette fonction est aliasée sous : ``VQC_UCCSD``.
 
-    :param weights: tensor of size ``(len(s_wires)+ len(d_wires))`` containing the parameters :math:`\theta_{pr}` and :math:`\theta_{pqrs}` input Z rotations ``FermionicSingleExcitation`` and ``FermionicDoubleExcitation`` .
-    :param wires: qubit indices for template action
-    :param s_wires: sequence of lists containing qubit indices ``[r,...,p]`` generated by a single excitation :math:`\vert r, p \rangle = \hat{c}_p^\dagger \hat{c}_r \vert \mathrm{HF} \rangle`,where :math:`\vert \mathrm{HF} \rangle` denotes the Hartee-Fock reference state.
-    :param d_wires: sequence of lists, each containing two lists specifying indices ``[s, ...,r]`` and ``[q,..., p]`` defining double excitation :math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \vert \mathrm{HF} \rangle` .
-    :param init_state: occupation-number vector of length ``len(wires)`` representing the high-frequency state. ``init_state`` Initialization state of the qubit.
+    :param weights: tenseur de taille ``(len(s_wires)+ len(d_wires))`` contenant les paramètres :math:`\theta_{pr}` et :math:`\theta_{pqrs}` rotations Z d'entrée ``FermionicSingleExcitation`` et ``FermionicDoubleExcitation``.
+    :param wires: indices de qubits pour l'action du gabarit
+    :param s_wires: séquence de listes contenant les indices de qubits ``[r,...,p]`` générés par une excitation simple :math:`\vert r, p \rangle = \hat{c}_p^\dagger \hat{c}_r \vert \mathrm{HF} \rangle`, où :math:`\vert \mathrm{HF} \rangle` désigne l'état de référence Hartree-Fock.
+    :param d_wires: séquence de listes, chacune contenant deux listes spécifiant les indices ``[s, ...,r]`` et ``[q,..., p]`` définissant la double excitation :math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \vert \mathrm{HF} \rangle`.
+    :param init_state: vecteur de nombre d'occupation de longueur ``len(wires)`` représentant l'état haute-fréquence. ``init_state`` État d'initialisation du qubit.
     :param q_machine: Quantum virtual machine device.
 
     Examples::
@@ -7986,9 +7986,9 @@ vqc_zfeaturemap
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_zfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, data_map_func=None, rep: int = 2)
 
-    First-order Pauli Z-evolution circuit.
+    Circuit d'évolution Pauli Z de premier ordre.
 
-    For 3 qubits and 2 repetitions, the circuit is represented as:
+    Pour 3 qubits et 2 répétitions, le circuit est représenté comme suit :
 
     .. parsed-literal::
 
@@ -8004,8 +8004,8 @@ vqc_zfeaturemap
 
     :param input_feat: Array representing input parameters.
     :param q_machine: Quantum virtual machine.
-    :param data_map_func: Parameter mapping matrix, a callable function, designed as: ``data_map_func = lambda x: x``.
-    :param rep: Number of times the module is repeated.
+    :param data_map_func: Matrice de mappage de paramètres, une fonction appelable, conçue comme : ``data_map_func = lambda x: x``.
+    :param rep: Nombre de répétitions du module.
 
     Example::
 
@@ -8025,9 +8025,9 @@ vqc_zzfeaturemap
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_zzfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, data_map_func=None, entanglement: Union[str, List[List[int]],Callable[[int], List[int]]] = "full",rep: int = 2)
 
-    Second-order Pauli-Z evolution circuit.
+    Circuit d'évolution Pauli-Z de second ordre.
 
-    For 3 qubits, 1 repeat, and linear entanglement, the circuit is represented as:
+    Pour 3 qubits, 1 répétition et une intrication linéaire, le circuit est représenté comme suit :
 
     .. parsed-literal::
 
@@ -8040,7 +8040,7 @@ vqc_zzfeaturemap
         ┤ H ├┤ U1(2.0*φ(x[2])) ├──────────────────────────────────┤ X ├┤ U1(2.0*φ(x[1],x[2])) ├┤ X ├
         └───┘└─────────────────┘                                  └───┘└──────────────────────┘└───┘
     
-    Where ``φ`` is a classic nonlinear function. If two values ​​are input, ``φ(x,y) = (pi - x)(pi - y)``, and if a is input, ``φ(x) = x``. It is expressed as follows using ``data_map_func``:
+    Où ``φ`` est une fonction non linéaire classique. Si deux valeurs sont fournies en entrée, ``φ(x,y) = (pi - x)(pi - y)``, et si a est fourni en entrée, ``φ(x) = x``. Elle s'exprime comme suit à l'aide de ``data_map_func`` :
 
     .. code-block::
 
@@ -8050,9 +8050,9 @@ vqc_zzfeaturemap
 
     :param input_feat: Array representing input parameters.
     :param q_machine: Quantum virtual machine.
-    :param data_map_func: parameter mapping matrix, a callable function.
-    :param entanglement: specified entanglement structure.
-    :param rep: module repetition times.
+    :param data_map_func: matrice de mappage de paramètres, une fonction appelable.
+    :param entanglement: structure d'intrication spécifiée.
+    :param rep: nombre de répétitions du module.
     
     Example::
 
@@ -8071,18 +8071,18 @@ vqc_allsinglesdoubles
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_allsinglesdoubles(weights, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, hf_state, wires, singles=None, doubles=None)
 
-    In this case, we have four single excitations and double excitations to preserve the total spin projection of the Hartree-Fock state.
+    Dans ce cas, nous avons quatre excitations simples et doubles pour préserver la projection de spin totale de l'état de Hartree-Fock.
 
     La matrice unitaire résultante préserve la population de particules et prépare le système à n qubits dans une superposition de l'état initial de Hartree-Fock et d'autres états encodant la configuration multi-excitation.
 
-    :param weights: A QTensor of size ``(len(singles) + len(doubles),)`` containing the angles that enter the vqc.qCircuit.single_excitation and vqc.qCircuit.double_excitation operations in sequence
-    :param q_machine: The quantum machine.
-    :param hf_state: A vector of length ``len(wires)`` occupancy numbers representing the Hartree-Fock state, ``hf_state`` used to initialize the wires.
-    :param wires: The qubits to act on.
-    :param singles: A sequence of lists with the indices of the two qubits acted on by the single_exitation operation.
-    :param doubles: List sequence with the indices of the two qubits acted on by the double_exitation operation.
+    :param weights: Un QTensor de taille ``(len(singles) + len(doubles),)`` contenant les angles qui entrent dans les opérations vqc.qCircuit.single_excitation et vqc.qCircuit.double_excitation en séquence
+    :param q_machine: La machine quantique.
+    :param hf_state: Un vecteur de nombres d'occupation de longueur ``len(wires)`` représentant l'état de Hartree-Fock, ``hf_state`` utilisé pour initialiser les fils.
+    :param wires: Les qubits sur lesquels agir.
+    :param singles: Une séquence de listes avec les indices des deux qubits sur lesquels agit l'opération single_exitation.
+    :param doubles: Séquence de listes avec les indices des deux qubits sur lesquels agit l'opération double_exitation.
 
-    For example, the quantum circuit for two electrons and six qubits is shown below:
+    Par exemple, le circuit quantique pour deux électrons et six qubits est illustré ci-dessous :
 
     .. image:: ./images/all_singles_doubles.png
         :width: 600 px
@@ -8109,17 +8109,17 @@ vqc_basisrotation
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_basisrotation(q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, wires, unitary_matrix: QTensor, check=False)
 
-    Implement a circuit that provides an ensemble that can be used to perform accurate single-unit basis rotations. The circuit is derived from the single-particle fermion-determined unitary transformation :math:`U(u)` given in `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\ 
+    Implémente un circuit qui fournit un ensemble pouvant être utilisé pour effectuer des rotations de base à unité unique précises. Le circuit est dérivé de la transformation unitaire déterminée par un fermion à une particule :math:`U(u)` donnée dans `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\
     
     .. math::
         U(u) = \exp{\left( \sum_{pq} \left[\log u \right]_{pq} (a_p^\dagger a_q - a_q^\dagger a_p) \right)}.
 
-    :math:`U(u)` is obtained by using the scheme given in the paper `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\ .
+    :math:`U(u)` est obtenu en utilisant le schéma donné dans l'article `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\ .
 
-    :param q_machine: quantum machine.
-    :param wires: qubits to act on.
-    :param unitary_matrix: matrix specifying the basis for the transformation.
-    :param check: check if `unitary_matrix` is a unitary matrix.
+    :param q_machine: machine quantique.
+    :param wires: qubits sur lesquels agir.
+    :param unitary_matrix: matrice spécifiant la base de la transformation.
+    :param check: vérifie si `unitary_matrix` est une matrice unitaire.
 
     Example::
 
@@ -8471,9 +8471,9 @@ CommController
 
         Supporte la communication reduce sur les données.
 
-        :param tensor: Input data.
+        :param tensor: Données d'entrée.
         :param root: Spécifie le nœud où les données sont retournées.
-        :param c_op: Calculation method.
+        :param c_op: Méthode de calcul.
 
         Examples::
 
@@ -8518,7 +8518,7 @@ CommController
 
         Diffuse les données sur le root de processus spécifié à tous les processus.
 
-        :param tensor: Input data.
+        :param tensor: Données d'entrée.
         :param root: Le nœud spécifié.
 
         Examples::
@@ -8565,7 +8565,7 @@ CommController
 
         Rassemble toutes les données de tous les processus ensemble. Cette interface supporte uniquement le backend nccl.
 
-        :param tensor: Input data.
+        :param tensor: Données d'entrée.
 
         Examples::
 
@@ -8610,7 +8610,7 @@ CommController
 
         Interface de communication p2p.
 
-        :param tensor: input data.
+        :param tensor: données d'entrée.
         :param dest: processus de destination.
 
         Examples::
@@ -8656,9 +8656,9 @@ CommController
     .. py:method:: recv(tensor, source)
         :noindex:
 
-        p2p communication interface.
+        Interface de communication pair à pair.
 
-        :param tensor: input data.
+        :param tensor: données d'entrée.
         :param source: processus de réception.
 
         Examples::
@@ -8706,8 +8706,8 @@ CommController
 
         Interface de communication allreduce intra-groupe.
 
-        :param tensor: Input data.
-        :param c_op: Calculation method.
+        :param tensor: Données d'entrée.
+        :param c_op: Méthode de calcul.
         :param group: Groupe de communication généré à partir de `split_groups` ou `init_groups`.
 
         Examples::
@@ -8762,10 +8762,10 @@ CommController
 
         Interface de communication reduce intra-groupe.
 
-        :param tensor: Input data.
+        :param tensor: Données d'entrée.
         :param root: Spécifie le numéro de processus.
-        :param c_op: Calculation method.
-        :param group: Communication group generated from `split_groups` or `init_groups` .
+        :param c_op: Méthode de calcul.
+        :param group: Groupe de communication généré à partir de `split_groups` ou `init_groups`.
 
         Examples::
 
@@ -8814,9 +8814,9 @@ CommController
 
         Interface de communication broadcast intra-groupe.
 
-        :param tensor: Input data.
+        :param tensor: Données d'entrée.
         :param root: Spécifie l'ID du processus.
-        :param group: Communication group generated from `split_groups` or `init_groups` .
+        :param group: Groupe de communication généré à partir de `split_groups` ou `init_groups`.
 
         Examples::
             
@@ -8868,8 +8868,8 @@ CommController
         
         Interface de communication Allgather au sein du groupe.
 
-        :param tensor: input data.
-        :param group: Communication group generated from `split_groups` or `init_groups` .
+        :param tensor: données d'entrée.
+        :param group: Groupe de communication généré à partir de `split_groups` ou `init_groups`.
 
         Examples::
             
