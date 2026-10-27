@@ -123,7 +123,7 @@ QMachine
 
     :return: Output QMachine.
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import QMachine
         qm  = QMachine(4)
@@ -169,7 +169,7 @@ i
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import i,QMachine
         qm  = QMachine(4)
@@ -203,7 +203,7 @@ I
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import I,QMachine
         device = QMachine(4)
@@ -226,7 +226,7 @@ hadamard
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import hadamard,QMachine
         qm  = QMachine(4)
@@ -260,7 +260,7 @@ Hadamard
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import Hadamard,QMachine
         device = QMachine(4)
@@ -283,7 +283,7 @@ t
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import t,QMachine
         qm  = QMachine(4)
@@ -317,7 +317,7 @@ T
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import T,QMachine
         device = QMachine(4)
@@ -340,7 +340,7 @@ s
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import s,QMachine
         qm  = QMachine(4)
@@ -374,7 +374,7 @@ S
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import S,QMachine
         device = QMachine(4)
@@ -397,7 +397,7 @@ paulix
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import paulix,QMachine
         qm  = QMachine(4)
@@ -431,7 +431,7 @@ PauliX
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import PauliX,QMachine
         device = QMachine(4)
@@ -454,7 +454,7 @@ pauliy
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import pauliy,QMachine
         qm  = QMachine(4)
@@ -488,7 +488,7 @@ PauliY
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import PauliY,QMachine
         device = QMachine(4)
@@ -512,7 +512,7 @@ pauliz
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import pauliz,QMachine
         qm  = QMachine(4)
@@ -546,7 +546,7 @@ PauliZ
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import PauliZ,QMachine
         device = QMachine(4)
@@ -569,7 +569,7 @@ x1
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import x1,QMachine
         qm  = QMachine(4)
@@ -603,7 +603,7 @@ X1
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import X1,QMachine
         device = QMachine(4)
@@ -627,7 +627,7 @@ y1
 
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import y1,QMachine
         qm  = QMachine(4)
@@ -661,7 +661,7 @@ Y1
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import Y1,QMachine
         device = QMachine(4)
@@ -684,7 +684,7 @@ z1
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import z1,QMachine
         qm  = QMachine(4)
@@ -718,7 +718,7 @@ Z1
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import Z1,QMachine
         device = QMachine(4)
@@ -741,7 +741,7 @@ rx
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import rx,QMachine
         from pyvqnet.tensor import QTensor
@@ -777,7 +777,7 @@ RX
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import RX,QMachine
         device = QMachine(4)
@@ -800,7 +800,7 @@ ry
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import ry,QMachine
         from pyvqnet.tensor import QTensor
@@ -836,7 +836,7 @@ RY
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import RY,QMachine
         device = QMachine(4)
@@ -859,7 +859,7 @@ rz
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import rz,QMachine
         from pyvqnet.tensor import QTensor
@@ -896,7 +896,7 @@ RZ
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import RZ,QMachine
         device = QMachine(4)
@@ -920,7 +920,7 @@ crx
 
 
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -959,7 +959,7 @@ CRX
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import CRX,QMachine
         device = QMachine(4)
@@ -982,7 +982,7 @@ cry
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -1020,7 +1020,7 @@ CRY
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import CRY,QMachine
         device = QMachine(4)
@@ -1043,7 +1043,7 @@ crz
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -1081,7 +1081,7 @@ CRZ
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import CRZ,QMachine
         device = QMachine(4)
@@ -1105,7 +1105,7 @@ u1
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import u1,QMachine
         from pyvqnet.tensor import QTensor
@@ -1141,7 +1141,7 @@ U1
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import U1,QMachine
         device = QMachine(4)
@@ -1164,7 +1164,7 @@ u2
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import u2,QMachine
         from pyvqnet.tensor import QTensor
@@ -1200,7 +1200,7 @@ U2
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import U2,QMachine
         device = QMachine(4)
@@ -1223,7 +1223,7 @@ u3
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import u3,QMachine
         from pyvqnet.tensor import QTensor
@@ -1259,7 +1259,7 @@ U3
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import U3,QMachine
         device = QMachine(4)
@@ -1281,7 +1281,7 @@ cy
     :param params: Matrice dei parametri, default None.
     :param use_dagger: Se utilizzare la trasposta coniugata, default False.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import cy,QMachine
         qm = QMachine(4)
@@ -1316,7 +1316,7 @@ CY
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
             from pyvqnet.qnn.vqc import CY,QMachine
             device = QMachine(4)
@@ -1340,7 +1340,7 @@ cnot
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import cnot,QMachine
         qm  = QMachine(4)
@@ -1376,7 +1376,7 @@ CNOT
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import CNOT,QMachine
         device = QMachine(4)
@@ -1399,7 +1399,7 @@ cr
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import cr,QMachine
         from pyvqnet.tensor import QTensor
@@ -1435,7 +1435,7 @@ CR
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import CR,QMachine
         device = QMachine(4)
@@ -1458,7 +1458,7 @@ iswap
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import iswap,QMachine
         from pyvqnet.tensor import QTensor
@@ -1492,7 +1492,7 @@ swap
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import swap,QMachine
         qm  = QMachine(4)
@@ -1517,7 +1517,7 @@ SWAP
 
 .. py:class:: pyvqnet.qnn.vqc.SWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
-    Define a SWAP logic gate class.
+    Definisce una classe di gate logico SWAP.
 
     :param has_params: Indica se ci sono parametri. Gate come RX, RY e altri devono essere impostati a True, quelli senza parametri devono essere impostati a False, default False.
     :param trainable: Indica se contiene parametri da addestrare. Se il layer usa dati di input esterni per costruire una matrice di gate logico, impostare a False. Se contiene parametri da addestrare, e True. Default False.
@@ -1527,7 +1527,7 @@ SWAP
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import SWAP,QMachine
         device = QMachine(4)
@@ -1551,7 +1551,7 @@ cswap
     :param use_dagger: Se utilizzare la trasposta coniugata, default False.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import cswap,QMachine
         qm = QMachine(4)
@@ -1597,7 +1597,7 @@ CSWAP
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import CSWAP,QMachine
         device = QMachine(4)
@@ -1649,7 +1649,7 @@ cz
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import cz,QMachine
         qm  = QMachine(4)
@@ -1683,7 +1683,7 @@ CZ
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import CZ,QMachine
         device = QMachine(4)
@@ -1706,7 +1706,7 @@ rxx
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import rxx,QMachine
         from pyvqnet.tensor import QTensor
@@ -1742,7 +1742,7 @@ RXX
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import RXX,QMachine
         device = QMachine(4)
@@ -1765,7 +1765,7 @@ ryy
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import ryy,QMachine
         from pyvqnet.tensor import QTensor
@@ -1801,7 +1801,7 @@ RYY
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import RYY,QMachine
         device = QMachine(4)
@@ -1825,7 +1825,7 @@ rzz
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import rzz,QMachine
         from pyvqnet.tensor import QTensor
@@ -1861,7 +1861,7 @@ RZZ
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import RZZ,QMachine
         device = QMachine(4)
@@ -1884,7 +1884,7 @@ rzx
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import rzx,QMachine
         from pyvqnet.tensor import QTensor
@@ -1920,7 +1920,7 @@ RZX
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import RZX,QMachine
         device = QMachine(4)
@@ -1943,7 +1943,7 @@ toffoli
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import toffoli,QMachine
         qm  = QMachine(4)
@@ -1978,7 +1978,7 @@ Toffoli
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import Toffoli,QMachine
         device = QMachine(4)
@@ -2002,7 +2002,7 @@ isingxx
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2040,7 +2040,7 @@ IsingXX
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import IsingXX,QMachine
         device = QMachine(4)
@@ -2063,7 +2063,7 @@ isingyy
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2101,7 +2101,7 @@ IsingYY
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import IsingYY,QMachine
         device = QMachine(4)
@@ -2124,7 +2124,7 @@ isingzz
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2163,7 +2163,7 @@ IsingZZ
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import IsingZZ,QMachine
         device = QMachine(4)
@@ -2186,7 +2186,7 @@ isingxy
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2224,7 +2224,7 @@ IsingXY
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-     Example::
+     Esempio::
 
          from pyvqnet.qnn.vqc import IsingXY,QMachine
          device = QMachine(4)
@@ -2247,7 +2247,7 @@ phaseshift
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2285,7 +2285,7 @@ PhaseShift
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import PhaseShift,QMachine
         device = QMachine(4)
@@ -2308,7 +2308,7 @@ multirz
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2347,7 +2347,7 @@ MultiRZ
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import MultiRZ,QMachine
         device = QMachine(4)
@@ -2370,7 +2370,7 @@ sdg
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2408,7 +2408,7 @@ SDG
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import SDG,QMachine
         device = QMachine(4)
@@ -2431,7 +2431,7 @@ tdg
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2468,7 +2468,7 @@ TDG
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import TDG,QMachine
         device = QMachine(4)
@@ -2492,7 +2492,7 @@ controlledphaseshift
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2532,7 +2532,7 @@ ControlledPhaseShift
     :param use_dagger: Se utilizzare la versione trasposta coniugata di questo gate, default False.
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import ControlledPhaseShift,QMachine
         device = QMachine(4)
@@ -2550,13 +2550,13 @@ multicontrolledx
     Applica il gate logico quantistico multicontrolledx ai vettori di stato in ``q_machine``.
 
     :param q_machine: dispositivo macchina virtuale quantistica.
-    :param wires: qubit index.
-    :param params: parameter matrix, default is None.
-    :param use_dagger: whether to conjugate transpose, default is False.
+    :param wires: indice del qubit.
+    :param params: matrice dei parametri, default None.
+    :param use_dagger: se coniugare e trasporre, default False.
     :param control_values: valore di controllo, default None, controlla quando il bit e 1.
 
 
-    Example::
+    Esempio::
  
 
 
@@ -2596,14 +2596,14 @@ MultiControlledX
     :param has_params: Indica se ha parametri. Gate come RX, RY e altri devono essere impostati a True, quelli senza parametri devono essere impostati a False, default False.
     :param trainable: Indica se ha parametri da addestrare. Se il layer usa dati di input esterni per costruire la matrice del gate logico, impostare a False. Se i parametri da addestrare devono essere inizializzati da questo layer, e True, default False.
     :param init_params: Parametri di inizializzazione usati per codificare dati classici QTensor, default None.
-    :param wires: Bit index of the wire action, the default is None.
+    :param wires: Indice del bit su cui agisce il gate, default None.
     :param dtype: La precisione dei dati della matrice interna del gate logico, puo essere impostata a pyvqnet.kcomplex64 o pyvqnet.kcomplex128, corrispondenti rispettivamente a parametri di input float o double.
-    :param use_dagger: Whether to use the transposed conjugate version of the gate, the default is False.
+    :param use_dagger: Se utilizzare la versione trasposta coniugata del gate, default False.
     :param control_values: valore di controllo, default None, controlla quando il bit e 1.
 
     :return: Un Module che puo essere usato per addestrare il modello.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2668,7 +2668,7 @@ single_excitation
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2703,7 +2703,7 @@ double_excitation
     :param use_dagger: se utilizzare la trasposta coniugata, default False.
 
 
-    Example::
+    Esempio::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2741,7 +2741,7 @@ VQC_BasisEmbedding
     :param q_machine: dispositivo macchina virtuale quantistica.
 
 
-    Example::
+    Esempio::
         
         from pyvqnet.qnn.vqc import VQC_BasisEmbedding,QMachine
         qm  = QMachine(3)
@@ -2777,7 +2777,7 @@ VQC_AngleEmbedding
     :param rotation: Gate di rotazione, default "X".
 
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_AngleEmbedding, QMachine
         from pyvqnet.tensor import QTensor
@@ -2811,7 +2811,7 @@ VQC_AmplitudeEmbedding
     :param q_machine: Dispositivo macchina virtuale quantistica.
 
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_AmplitudeEmbedding, QMachine
         from pyvqnet.tensor import QTensor
@@ -2841,7 +2841,7 @@ VQC_IQPEmbedding
     :param rep: Numero di ripetizioni del blocco di circuito quantistico, il valore predefinito e 1.
 
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_IQPEmbedding, QMachine
         from pyvqnet.tensor import QTensor
@@ -2876,7 +2876,7 @@ VQC_RotCircuit
     :param params: Parametri :math:`[\phi, \theta, \omega]`.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_RotCircuit, QMachine
         from pyvqnet.tensor import QTensor
@@ -2910,7 +2910,7 @@ VQC_CRotCircuit
     :param q_machine: Dispositivo macchina virtuale quantistica.
     :return: Output QTensor.
 
-    Example::
+    Esempio::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_CRotCircuit
@@ -2942,7 +2942,7 @@ VQC_Controlled_Hadamard
     :param wires: Indice del qubit, il primo e il bit di controllo, la lunghezza della lista e 2.
     :param q_machine: Dispositivo macchina virtuale quantistica.
 
-    Examples::
+    Esempi::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_Controlled_Hadamard
@@ -2985,7 +2985,7 @@ VQC_CCZ
     :return:
             pyqpanda QCircuit 
 
-    Example::
+    Esempio::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_CCZ
@@ -3022,7 +3022,7 @@ VQC_FermionicSingleExcitation
     :return:
             pyqpanda QCircuit
 
-    Examples::
+    Esempi::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_FermionicSingleExcitation
@@ -3072,7 +3072,7 @@ VQC_FermionicDoubleExcitation
     :return:
         pyqpanda QCircuit
 
-    Examples::
+    Esempi::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_FermionicDoubleExcitation
@@ -3124,7 +3124,7 @@ VQC_UCCSD
          stato ad alta frequenza. ``init_state`` e lo stato di inizializzazione del qubit.
     :param q_machine: Dispositivo macchina virtuale quantistica.
 
-    Examples::
+    Esempi::
 
         from pyvqnet.qnn.vqc import VQC_UCCSD, QMachine, MeasureAll
         from pyvqnet.tensor import QTensor
@@ -3148,7 +3148,7 @@ VQC_ZFeatureMap
 
     Circuito di evoluzione Z del primo ordine.
 
-    For 3 quantum bits and 2 repetitions, the circuit is represented as:
+    Per 3 qubit e 2 ripetizioni, il circuito e rappresentato come:
 
     .. parsed-literal::
 
@@ -3167,7 +3167,7 @@ VQC_ZFeatureMap
     :param data_map_func: Matrice di mappatura dei parametri, progettata come ``data_map = lambda x: x``.
     :param rep: Numero di ripetizioni del modulo.
     
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_ZFeatureMap, QMachine, hadamard
         from pyvqnet.tensor import QTensor
@@ -3190,7 +3190,7 @@ VQC_ZZFeatureMap
 
     Circuiti di evoluzione Pauli-Z del secondo ordine.
 
-    For 3 quantum bits, 1 repetition and linear entanglement, the circuit is represented as:
+    Per 3 qubit, 1 ripetizione e entanglement lineare, il circuito e rappresentato come:
 
     .. parsed-literal::
 
@@ -3216,7 +3216,7 @@ VQC_ZZFeatureMap
     :param entanglement: Struttura di entanglement specificata.
     :param rep: Numero di ripetizioni del modulo.
     
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_ZZFeatureMap, QMachine
         from pyvqnet.tensor import QTensor
@@ -3252,7 +3252,7 @@ VQC_AllSinglesDoubles
 
 |
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_AllSinglesDoubles, QMachine
         from pyvqnet.tensor import QTensor
@@ -3291,7 +3291,7 @@ VQC_BasisRotation
     :param unitary_matrix: Specifica la matrice della trasformazione di base.
     :param check: Verifica se `unitary_matrix` e una matrice You.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_BasisRotation, QMachine, hadamard, isingzz
         from pyvqnet.tensor import QTensor
@@ -3337,7 +3337,7 @@ VQC_QuantumPoolingCircuit
     :return:
         pyqpanda QCircuit
 
-    Examples:: 
+    Esempi::
 
         from pyvqnet.qnn.vqc import VQC_QuantumPoolingCircuit, QMachine, MeasureAll
         import pyqpanda as pq
@@ -3372,7 +3372,7 @@ ExpressiveEntanglingAnsatz
     :return:
         Un'istanza di ExpressiveEntanglingAnsatz
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc  import *
         import pyvqnet
@@ -3441,7 +3441,7 @@ vqc_qft_add_to_register
 
         Si noti che il numero di bit usati da ``q_machine`` deve essere sufficiente per codificare il valore binario della somma risultante usando lo stato base X.
 
-    Example::
+    Esempio::
 
         import numpy as np
         from pyvqnet.qnn.vqc import QMachine,Samples, vqc_qft_add_to_register
@@ -3479,7 +3479,7 @@ vqc_qft_add_two_register
         ``wires_k`` usa abbastanza bit per codificare il valore binario di `k` usando lo stato base X.
         ``wires_solution`` usa abbastanza bit per codificare il valore binario del risultato usando lo stato base X.
 
-    Example::
+    Esempio::
 
         import numpy as np
         from pyvqnet.qnn.vqc import QMachine,Samples, vqc_qft_add_two_register
@@ -3521,7 +3521,7 @@ vqc_qft_mul
         ``wires_k`` usa abbastanza bit per codificare il valore binario di `k` usando lo stato base X.
         ``wires_solution`` usa abbastanza bit per codificare il valore binario del risultato usando lo stato base X.
 
-    Example::
+    Esempio::
 
         import numpy as np
         from pyvqnet.qnn.vqc import QMachine,Samples, vqc_qft_mul
@@ -3550,7 +3550,7 @@ VQC_FABLE
 
     :return: Restituisce un'istanza della classe FABLE basata su VQC.
 
-    Examples::
+    Esempi::
 
         from pyvqnet.qnn.vqc import VQC_FABLE
         from pyvqnet.qnn.vqc import QMachine
@@ -3585,7 +3585,7 @@ VQC_LCU
     :param wires: Indice qlist su cui agisce l'operatore, puo richiedere qubit ausiliari.
     :param check_hermitian: Verifica se l'input e Hermitiano, default: True.
 
-    Examples::
+    Esempi::
 
         from pyvqnet.qnn.vqc import VQC_LCU
         from pyvqnet.qnn.vqc import QMachine
@@ -3628,7 +3628,7 @@ VQC_QSVT
     :param angles: La lista di angoli da spostare per ottenere il polinomio desiderato.
     :param wires: Gli indici dei qubit su cui agisce A.
 
-    Example::
+    Esempio::
 
         from pyvqnet import DEV_GPU
         from pyvqnet.qnn.vqc import QMachine,VQC_QSVT
@@ -3681,7 +3681,7 @@ VQC_Purity
 
     :return: purezza
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_Purity, rx, ry, cnot, QMachine
         from pyvqnet.tensor import QTensor
@@ -3712,7 +3712,7 @@ VQC_VarMeasure
 
     :return: valore di varianza
 
-    Example::
+    Esempio::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc import VQC_VarMeasure, rx, cnot, hadamard, QMachine,PauliY
@@ -3737,7 +3737,7 @@ VQC_DensityMatrixFromQstate
 
     :return: Una matrice densita di dimensione "(b, 2**len(indices), 2**len(indices))".
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import VQC_DensityMatrixFromQstate,rx,ry,cnot,QMachine
         from pyvqnet.tensor import QTensor
@@ -3796,7 +3796,7 @@ Probability
 
  
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import Probability,rx,ry,cnot,QMachine,rz
         from pyvqnet.tensor import QTensor
@@ -3847,7 +3847,7 @@ MeasureAll
 
 
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import MeasureAll,rx,ry,cnot,QMachine,rz
         from pyvqnet.tensor import QTensor
@@ -3895,7 +3895,7 @@ Samples
     :param name: Nome di questo modulo, valore predefinito: "".
     :return: Una classe di metodo di misura
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import Samples,rx,ry,cnot,QMachine,rz
         from pyvqnet.tensor import QTensor
@@ -3950,7 +3950,7 @@ HermitianExpval
 
         Il risultato della misura calcolato usando questa classe e generalmente [b,1], dove b e il numero di batch di q_machine.reset_states(b).
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import qcircuit
         from pyvqnet.qnn.vqc import QMachine, RX, RY, CNOT, PauliX, qmatrix, PauliZ, VQC_RotCircuit,HermitianExpval
@@ -4027,7 +4027,7 @@ VQC_HardwareEfficientAnsatz
     :param dtype: Tipo di dato dei parametri.
     :return: Un'istanza di VQC_HardwareEfficientAnsatz.
 
-    Example::
+    Esempio::
 
         from pyvqnet.nn import Module,Linear,ModuleList
         from pyvqnet.qnn.vqc.qcircuit import VQC_HardwareEfficientAnsatz,RZZ,RZ
@@ -4081,7 +4081,7 @@ VQC_BasicEntanglerTemplate
     :param dtype: tipo di dato del parametro, default: None, usa float32.
     :return: Un'istanza di VQC_BasicEntanglerTemplate
 
-    Example::
+    Esempio::
 
         from pyvqnet.nn import Module, Linear, ModuleList
         from pyvqnet.qnn.vqc.qcircuit import VQC_BasicEntanglerTemplate, RZZ, RZ
@@ -4131,7 +4131,7 @@ VQC_StronglyEntanglingTemplate
     :param dtype: tipo di dato del parametro, default: None, usa float32.
     :return: Un'istanza di VQC_StronglyEntanglingTemplate.
 
-    Example::
+    Esempio::
 
         from pyvqnet.nn import Module
         from pyvqnet.qnn.vqc.qcircuit import VQC_StronglyEntanglingTemplate
@@ -4185,7 +4185,7 @@ VQC_QuantumEmbedding
     :param name: nome della classe
     :return: Un'istanza di VQC_QuantumEmbedding.
 
-    Example::
+    Esempio::
 
         from pyvqnet.nn import Module
         from pyvqnet.qnn.vqc.qcircuit import VQC_QuantumEmbedding
@@ -4250,7 +4250,7 @@ Quanvolution
     :param machine_type_or_cloud_token: Stringa del tipo di macchina o token Qcloud, default "cpu".
     :return: Un'istanza di Quanvolution.
 
-    Examples::
+    Esempi::
 
         from pyvqnet.qnn.qcnn import Quanvolution
         import pyvqnet.tensor as tensor
@@ -4284,7 +4284,7 @@ QDRL
     :param nq: Il numero di bit quantistici (qubit) usati nel circuito quantistico. Questo determina la scala del sistema quantistico che il modello gestira.
     :return: Un'istanza di QDRL.
 
-    Example::
+    Esempio::
 
         import numpy as np
         from pyvqnet.dtype import kfloat32
@@ -4325,7 +4325,7 @@ QGRU
     :param batch_first: Se la prima dimensione dell'input e la dimensione del batch.
     :return: Un'istanza di QGRU.
 
-    Example::
+    Esempio::
 
         import numpy as np
         from pyvqnet.tensor import tensor
@@ -4367,7 +4367,7 @@ QLSTM
     :param batch_first: Se la prima dimensione dell'input e la dimensione del batch.
     :return: Un'istanza di QLSTM.
 
-    Example::
+    Esempio::
 
         import numpy as np
         from pyvqnet.tensor import tensor
@@ -4410,7 +4410,7 @@ QMLPModel
     :param dtype: Default None, usa il tipo di dato predefinito.
     :return: Un'istanza di QMLPModel.
 
-    Example::
+    Esempio::
 
         import numpy as np
         from pyvqnet.tensor import tensor
@@ -4451,7 +4451,7 @@ QRLModel
     :param n_layers: Il numero di layer nel circuito quantistico variazionale.
     :return: Un'istanza di QRLModel.
 
-    Example::
+    Esempio::
 
         from pyvqnet.tensor import tensor, QTensor
         from pyvqnet.qnn.qrl import QRLModel
@@ -4481,7 +4481,7 @@ QRNN
     :param batch_first: Se la prima dimensione dell'input e la dimensione del batch, default True.
     :return: Un'istanza di QRNN.
 
-    Example::
+    Esempio::
 
         from pyvqnet.dtype import kfloat32
         from pyvqnet.qnn.qrnn import QRNN
@@ -4518,7 +4518,7 @@ TTOLayer
     :param biases_initializer: La funzione di inizializzazione del bias.
     :return: Un'istanza di TTOLayer.
 
-    Example::
+    Esempio::
 
         from pyvqnet.tensor import tensor
         import numpy as np
@@ -4562,7 +4562,7 @@ QuantumLayerAdjoint
         QMachine per general_module deve impostare grad_method = "adjoint".
         Attualmente, sono supportati i seguenti gate logici parametrici: `RX`, `RY`, `RZ`, `PhaseShift`, `RXX`, `RYY`, `RZZ`, `RZX`, `U1`, `U2`, `U3` e altri circuiti variazionali senza gate logici parametrici.
 
-    Example::
+    Esempio::
 
         from pyvqnet import tensor
         from pyvqnet.qnn.vqc import QuantumLayerAdjoint, QMachine, RX, RY, CNOT, PauliX, qmatrix, PauliZ, T, MeasureAll, RZ, VQC_RotCircuit, VQC_HardwareEfficientAnsatz
@@ -4643,7 +4643,7 @@ In ogni nodo, i dati `batch_size/N` vengono elaborati in forward per eseguire il
 :param name: Il nome del modulo. Il valore predefinito e una stringa vuota.
 :return: Un modulo che puo calcolare circuiti quantistici.
 
-Example::
+Esempio::
 
     #mpirun -n 2 python test.py
 
@@ -4765,7 +4765,7 @@ DataParallelVQCLayer
     :param name: Nome del modulo. Il valore predefinito e una stringa vuota.
     :return: Modulo che puo calcolare circuiti quantistici.
 
-    Example::
+    Esempio::
 
         #mpirun -n 2 python xxx.py
 
@@ -4851,7 +4851,7 @@ vqc_to_originir_list
 
     :return: stringa originIR o lista di stringhe originIR.
 
-    Example::
+    Esempio::
 
         import pyvqnet
         import pyvqnet.tensor as tensor
@@ -5034,7 +5034,7 @@ originir_to_vqc
     :return:
         Genera codice eseguibile.
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import originir_to_vqc
         ss = "QINIT 3\nCREG 3\nH q[1]"
@@ -5078,7 +5078,7 @@ model_summary
         stringa di riepilogo
 
 
-    Example::
+    Esempio::
 
         import pyvqnet
         from pyvqnet.qnn.vqc import QMachine, RX, RY, CNOT, PauliX, qmatrix, PauliZ,MeasureAll
@@ -5166,7 +5166,7 @@ QNG
         step() aggiorna solo i valori numerici dei parametri del modello.
 
 
-    Example::
+    Esempio::
 
         from pyvqnet.qnn.vqc import QMachine, RX, RY, RZ, CNOT, rz, PauliX, qmatrix, PauliZ, Probability, rx, ry, MeasureAll, U2
         from pyvqnet.tensor import QTensor, tensor
@@ -5246,7 +5246,7 @@ wrapper_single_qubit_op_fuse
         Il modello definito qui eredita da `pyvqnet.qnn.vqc.QModule`, che e una sottoclasse di `pyvqnet.nn.Module`.
 
 
-    Example::
+    Esempio::
 
         from pyvqnet import tensor
         from pyvqnet import kcomplex128
@@ -5334,7 +5334,7 @@ wrapper_commute_controlled
 
 
 
-    Example::
+    Esempio::
 
         from pyvqnet import tensor
         from pyvqnet.qnn.vqc import QMachine
@@ -5435,7 +5435,7 @@ wrapper_merge_rotations
     :param f: funzione forward.
 
 
-    Example::
+    Esempio::
 
         import pyvqnet
         from pyvqnet.tensor import tensor
@@ -5521,7 +5521,7 @@ wrapper_compile
     :param f: funzione forward.
 
 
-    Example::
+    Esempio::
 
         from functools import partial
 
@@ -5757,7 +5757,7 @@ QNSPSAOptimizer
 
         :return: Parametri aggiornati.
 
-        Examples::
+        Esempi::
 
             from pyvqnet.tensor import QTensor,ones,randu
             from pyvqnet.qnn.vqc import rx,cry,QMachine,MeasureAll,QModule

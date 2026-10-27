@@ -1015,7 +1015,7 @@ GroupNorm
 
 .. py:class:: pyvqnet.nn.group_norm.GroupNorm(num_groups: int, num_channels: int, epsilon = 1e-5, affine = True, dtype = None, name = "")
 
-    Applica la normalizzazione di gruppo a un mini-batch di input. Input: :math:`(N, C, *)` dove :math:`C=\mathrm{num\_channels}` , Output: :math:`(N, C, *)` .
+    Applica la normalizzazione di gruppo a un mini-batch di input. Ingresso: :math:`(N, C, *)` dove :math:`C=\mathrm{num\_channels}` , Uscita: :math:`(N, C, *)` .
 
     Questo layer implementa l'operazione descritta nell'articolo `Group Normalization <https://arxiv.org/abs/1803.08494>`__
 

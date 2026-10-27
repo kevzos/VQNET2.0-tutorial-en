@@ -37,7 +37,7 @@ Se l'utente personalizza un circuito variazionale quantistico, si prega di utili
 
 Se l'utente desidera utilizzare un elenco contenente più moduli come sottomodulo in `Module`, non utilizzare l'elenco Python integrato. Utilizzare invece pyvqnet.nn.module.ModuleList. In questo modo, i parametri di addestramento dei sottomoduli possono essere registrati nell'intero modello, consentendo l'addestramento con differenziazione automatica. Ecco un esempio:
 
-     Example::
+     Esempio::
 
          from pyvqnet. tensor import *
          from pyvqnet.nn import Module,Linear,ModuleList

@@ -1,5 +1,5 @@
-Quantum Machine Learning API con QPanda2
-####################################################
+API di apprendimento automatico quantistico con QPanda2
+############################################################
 
 
 .. warning::
@@ -83,7 +83,7 @@ Per il metodo ``parameter-shift`` utilizziamo la funzione obiettivo, ad esempio:
 
         La classe ha un alias: `QpandaQCircuitVQCLayer` .
 
-    Example::
+    Esempio::
 
         import pyqpanda as pq
         from pyvqnet.qnn.measure import ProbsMeasure
@@ -175,7 +175,7 @@ Se si ha maggiore familiarità con la sintassi di pyQPanda2, si può utilizzare 
 
         La classe ha un alias: `QpandaQCircuitVQCLayerLite` .
 
-    Example::
+    Esempio::
 
         import pyqpanda as pq
         from pyvqnet.qnn.measure import ProbsMeasure
@@ -286,7 +286,7 @@ Il modello di rumore quantistico attualmente supportato è definito in ``NoiseQV
 
         `m_machine`: simulatore creato da NoiseQuantumLayer
 
-    Example::
+    Esempio::
 
         import pyqpanda as pq
         from pyvqnet.qnn.measure import ProbsMeasure
@@ -402,7 +402,7 @@ QiskitLayer
     :param para_num: ``int`` - Il numero di parametri.
     :return: Una classe in grado di eseguire modelli di circuiti quantistici qiskit.
 
-    Example::
+    Esempio::
 
 
         """
@@ -693,7 +693,7 @@ CirqLayer
 
         Il codice di esempio seguente richiede ``cirq==1.5.0, numpy <2``.
 
-    Example::
+    Esempio::
 
         import numpy as np
         import random
@@ -933,7 +933,7 @@ AmplitudeEmbeddingCircuit
     :param qubits: qubit allocati da pyQPanda
     :return: circuiti quantistici
 
-    Example::
+    Esempio::
 
         import numpy as np
         import pyqpanda as pq
@@ -956,7 +956,7 @@ AmplitudeEmbeddingCircuit
 
 
 
-Quantum Machine Learning APIs con pyQPanda2
+API di apprendimento automatico quantistico con pyQPanda2
 ***************************************************************************
 
 Reti Generative Avversarie Quantistiche per l'apprendimento e il caricamento di distribuzioni casuali
@@ -1185,7 +1185,7 @@ Ottimizzatori Simultaneous Perturbation Stochastic Approximation
 
         SPSA supporta solo parametri 1-dim.
 
-    Example::
+    Esempio::
 
         import numpy as np
         import pyqpanda as pq
@@ -1247,7 +1247,7 @@ Ottimizzatori Simultaneous Perturbation Stochastic Approximation
 
         theta_best: La media dei parametri dopo le ultime ``last_avg`` iterazioni.
 
-    Example::
+    Esempio::
 
         import numpy as np
         import pyqpanda as pq
@@ -1333,7 +1333,7 @@ Matrice di calcolo dell'informazione quantistica di Fisher
     :param qcir_lists: La lista dei circuiti quantistici prima della porta parametrizzata target per calcolare il tensore metrico, vedere l'esempio seguente.
     :param wires: Indice totale dei bit quantistici per i circuiti quantistici.
 
-    Example::
+    Esempio::
     
         import pyqpanda as pq
 

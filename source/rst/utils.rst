@@ -19,7 +19,7 @@ set_random_seed
             Quando viene specificato un seme di numero casuale fisso, la distribuzione casuale genererà una distribuzione pseudo-casuale fissa basata su quel seme.
             Le funzioni interessate includono: `tensor.randu` , `tensor.randn` , inizializzazione dei parametri per reti neurali classiche parametriche e strati di calcolo quantistico.
 
-    Example::
+    Esempio::
 
         import pyvqnet.tensor as tensor
         from pyvqnet.utils import get_random_seed, set_random_seed
@@ -98,7 +98,7 @@ get_random_seed
     
     Recupera il seme casuale corrente.
 
-    Example::
+    Esempio::
 
         import pyvqnet.tensor as tensor
         from pyvqnet.utils import get_random_seed, set_random_seed
