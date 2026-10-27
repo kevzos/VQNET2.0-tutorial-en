@@ -29,7 +29,7 @@ QTensor
     :return: 输出 QTensor
 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.dtype import *
@@ -53,7 +53,7 @@ QTensor
 
         :return: 张量的维度数量。
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import QTensor
 
@@ -68,7 +68,7 @@ QTensor
 
         :return: 张量各维度大小的列表。
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import QTensor
 
@@ -83,7 +83,7 @@ QTensor
 
         :return: 张量中元素的数量。
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import QTensor
 
@@ -98,7 +98,7 @@ QTensor
 
         :return: 张量中的元素数量。
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import QTensor
 
@@ -131,7 +131,7 @@ QTensor
 
         :return: 张量的数据类型。
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import QTensor
 
@@ -146,7 +146,7 @@ QTensor
 
         :return: None
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -164,7 +164,7 @@ QTensor
 
         :return: None
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -187,7 +187,7 @@ QTensor
 
             numpy 不支持 bfloat16 类型，您需要先转换为其他 numpy 支持的数据类型（如 float32）再调用此接口。
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -204,7 +204,7 @@ QTensor
 
             :return: 此对象的唯一数据
 
-            Example::
+            示例::
 
                 from pyvqnet.tensor import tensor
 
@@ -220,11 +220,11 @@ QTensor
         返回 QTensor 在指定维度上最大值的索引。
 
         :param dim: dim (int) – 要缩减的维度，仅接受单个轴。如果 dim == None，则返回输入张量中所有元素最大值的索引。有效的 dim 范围为 [-R, R)，其中 R 是输入的 ndim。当 dim < 0 时，其工作方式与 dim + R 相同。
-        :param keepdims:  whether the 输出 QTensor has dim retained or not.
+        :param keepdims: 是否保留输出 QTensor 的维度。
 
         :return: 输入 QTensor 中最大值的索引。
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -260,12 +260,12 @@ QTensor
         返回输入 QTensor 中所有元素最小值的索引，或者
         返回 QTensor 在指定维度上最小值的索引。
 
-        :param dim: dim (int) – the dimension to reduce,only accepts single axis. if dim == None, returns the indices of the 最小值 of all elements in the 输入张量.The valid dim range is [-R, R), where R is input's ndim. when dim < 0, it works the same way as dim + R.
-        :param keepdims:  whether the 输出 QTensor has dim retained or not.
+        :param dim: dim (int) – 要缩减的维度，仅接受单个轴。如果 dim == None，则返回输入张量中所有元素最小值的索引。有效的 dim 范围为 [-R, R)，其中 R 是输入的 ndim。当 dim < 0 时，其工作方式与 dim + R 相同。
+        :param keepdims: 是否保留输出 QTensor 的维度。
 
         :return: 输入 QTensor 中最小值的索引。
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -299,7 +299,7 @@ QTensor
             :param v: 标量值
             :return: None
 
-            Example::
+            示例::
 
                 from pyvqnet.tensor import tensor
                 from pyvqnet.tensor import QTensor
@@ -321,7 +321,7 @@ QTensor
 
             :return: 如果所有 QTensor 值均为非零，则返回 True。
 
-            Example::
+            示例::
 
                 from pyvqnet.tensor import tensor
                 from pyvqnet.tensor import QTensor
@@ -340,7 +340,7 @@ QTensor
 
             :return: 如果任意 QTensor 值为非零，则返回 True。
 
-            Example::
+            示例::
 
                 from pyvqnet.tensor import tensor
                 from pyvqnet.tensor import QTensor
@@ -363,7 +363,7 @@ QTensor
         :param v: 二值化阈值
         :return: None
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -388,7 +388,7 @@ QTensor
         :param v: 标量值
         :return: None
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -415,7 +415,7 @@ QTensor
         :param v: 标量值
         :return: None
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -444,7 +444,7 @@ QTensor
         :param fast_math: 是否使用快速数学模式
         :return: None
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -468,7 +468,7 @@ QTensor
         :param new_dims: 维度的新顺序（整数列表）。
         :return:  结果 QTensor。
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -496,7 +496,7 @@ QTensor
         :param new_shape: 新形状（整数列表）
         :return: 一个新的 QTensor
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -524,7 +524,7 @@ QTensor
         :param new_shape: 新形状（整数列表）
         :return: None
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -549,7 +549,7 @@ QTensor
 
             :return: 一个 NumPy 数组
 
-            Example::
+            示例::
 
 
                 from pyvqnet.tensor import tensor
@@ -587,7 +587,7 @@ QTensor
 
             :return: 一个新的 QTensor。
 
-            Example::
+            示例::
 
                 from pyvqnet.tensor import tensor, QTensor
                 aaa = tensor.arange(1, 61)
@@ -679,7 +679,7 @@ QTensor
         :return: None
 
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             aaa = tensor.arange(1, 61)
@@ -827,7 +827,7 @@ QTensor
 
         :return: 克隆到 GPU 设备的 QTensor。
 
-        Examples::
+        示例::
 
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -843,7 +843,7 @@ QTensor
 
         :return: 克隆到 CPU 设备的 QTensor。
 
-        Examples::
+        示例::
 
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -856,18 +856,18 @@ QTensor
 
         将 QTensor 移动到指定的 GPU 设备。
 
-        device specifies the device whose internal data is stored. When device >= DEV_GPU, the data is stored on the GPU.
-        If your computer has multiple GPUs, you can designate different devices to store data on.
+        device 指定存储内部数据的设备。当 device >= DEV_GPU 时，数据存储在 GPU 上。
+        如果您的计算机有多个 GPU，可以指定不同的设备来存储数据。
         例如，device = DEV_GPU_1, DEV_GPU_2, DEV_GPU_3, ... 表示存储在不同编号的 GPU 上。
 
         .. note::
 
             QTensor 不能在不同的 GPU 上执行计算。 如果您尝试在 ID 超过已验证 GPU 最大数量的 GPU 上创建 QTensor，将引发 Cuda 错误。
 
-        :param device: The device currently saving QTensor, default=DEV_GPU_0. device = pyvqnet.DEV_GPU_0，存储在第一个 GPU 中，device = DEV_GPU_1， 存储在第二个 GPU 中，以此类推。
+        :param device: 当前保存 QTensor 的设备，默认值为 DEV_GPU_0。 device = pyvqnet.DEV_GPU_0，存储在第一个 GPU 中，device = DEV_GPU_1， 存储在第二个 GPU 中，以此类推。
         :return: 移动到 GPU 设备的 QTensor。
 
-        Examples::
+        示例::
 
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -883,7 +883,7 @@ QTensor
 
         :return: 移动到 CPU 设备的 QTensor。
 
-        Examples::
+        示例::
 
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -898,7 +898,7 @@ QTensor
 
         :return: 此 QTensor 的数据是否存储在 GPU 主机内存中。
 
-        Examples::
+        示例::
         
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -912,7 +912,7 @@ QTensor
 
         :return: 此 QTensor 的数据是否存储在 CPU 主机内存中。
 
-        Examples::
+        示例::
         
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -936,9 +936,9 @@ ones
     :param device: 存储在哪个设备中，默认为 0，即 CPU。
     :param dtype: 参数的数据类型，默认为 None，使用默认数据类型：kfloat32，表示 32 位浮点数。
     
-    :return: 输出 QTensor with the 输入形状.
+    :return: 具有输入形状的输出 QTensor。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -964,7 +964,7 @@ ones_like
     :return:  输出 QTensor
 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -988,7 +988,7 @@ full
     
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1015,7 +1015,7 @@ full_like
     
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1042,7 +1042,7 @@ zeros
     
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1071,7 +1071,7 @@ zeros_like
     
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1093,10 +1093,10 @@ arange
     :param step: 值之间的间距
     :param device: 使用的设备，默认为 0，使用 CPU 设备。
     :param dtype: 参数的数据类型，默认为 None，使用默认数据类型：kfloat32，表示 32 位浮点数。
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
+    :param requires_grad: 是否追踪张量的梯度，默认值为 False。
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1117,10 +1117,10 @@ linspace
     :param nums: 生成的样本数量
     :param device: 使用的设备，默认为 0，使用 CPU 设备。
     :param dtype: 参数的数据类型，默认为 None，使用默认数据类型：kfloat32，表示 32 位浮点数。
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
+    :param requires_grad: 是否追踪张量的梯度，默认值为 False。
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1136,16 +1136,16 @@ logspace
 
     在对数刻度上创建一个包含等间距值的一维 QTensor。
 
-    :param start: ``base ** start`` is the 起始值
+    :param start: ``base ** start`` 是起始值
     :param end: ``base ** end`` 是序列的最终值
     :param nums: 生成的样本数量
     :param base: 对数空间的底数
     :param device: 使用的设备，默认为 0，使用 CPU 设备。
     :param dtype: 参数的数据类型，默认为 None，使用默认数据类型：kfloat32，表示 32 位浮点数。
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
+    :param requires_grad: 是否追踪张量的梯度，默认值为 False。
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1169,7 +1169,7 @@ eye
     
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1194,11 +1194,11 @@ diagonal
     :attr:`offset` 是主对角线的偏移量。
 
     :param t: 输入张量
-    :param offset: offset (0 means main diagonal, positive values ​​mean the nth diagonal above the main diagonal, negative values ​​mean the nth diagonal below the main diagonal)
+    :param offset: 偏移量（0 表示主对角线，正值表示主对角线上方的第 n 条对角线，负值表示主对角线下方的第 n 条对角线）
     :param dim1: 取对角线的第一个维度。默认值：0。
     :param dim2: 取对角线的第二个维度。默认值：1。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import randn,diagonal
 
@@ -1222,12 +1222,10 @@ diag
     输入一个二维 QTensor，返回一个包含所选对角线元素的新一维张量。输入一个一维 QTensor，返回一个新的二维张量，其选定对角线元素为输入值，其余为 0。
 
     :param t: 输入 QTensor
-    :param k: offset (0 for the main diagonal, positive for the nth
-        diagonal above the main one, negative for the nth diagonal below the
-        main one)
+    :param k: 偏移量（0 表示主对角线，正值表示主对角线上方的第 n 条对角线，负值表示主对角线下方的第 n 条对角线）
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1270,11 +1268,11 @@ randu
     :param max: 均匀分布的最大值，默认值：1。
     :param device: 使用的设备，默认为 0，使用 CPU 设备。
     :param dtype: 参数的数据类型，默认为 None，使用默认数据类型：kfloat32，表示 32 位浮点数。
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
+    :param requires_grad: 是否追踪张量的梯度，默认值为 False。
     :return: 输出 QTensor
 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1299,10 +1297,10 @@ randn
     :param std: 正态分布的标准差，默认值：1。
     :param device: 使用的设备，默认为 0，使用 CPU 设备。
     :param dtype: 参数的数据类型，默认为 None，使用默认数据类型：kfloat32，表示 32 位浮点数。
-    :param requires_grad: should tensor’s gradient be tracked, defaults to False
+    :param requires_grad: 是否追踪张量的梯度，默认值为 False。
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1327,7 +1325,7 @@ binomial
     :return:
         二项分布的 QTensor。
 
-    Example::
+    示例::
 
         import pyvqnet.tensor as tensor
 
@@ -1355,7 +1353,7 @@ multinomial
     :return:
         输出样本索引
 
-    Examples::
+    示例::
 
         from pyvqnet import tensor
         weights = tensor.QTensor([0.1,10, 3, 1]) 
@@ -1382,7 +1380,7 @@ triu
 
     :return: 输出 QTensor
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import tensor
         a = tensor.arange(1.0, 2 * 6 * 5 + 1.0).reshape([2, 6, 5])
@@ -1415,7 +1413,7 @@ tril
 
     :return: 输出 QTensor
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import tensor
         a = tensor.arange(1.0, 2 * 6 * 5 + 1.0).reshape([12, 5])
@@ -1451,7 +1449,7 @@ floor
     :param t: 输入 QTensor
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
 
@@ -1471,7 +1469,7 @@ ceil
     :param t: 输入 QTensor
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
 
@@ -1491,7 +1489,7 @@ round
     :param t: 输入 QTensor
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
 
@@ -1514,7 +1512,7 @@ sort
     :param stable:  是否使用稳定排序
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1543,7 +1541,7 @@ argsort
     :param stable:  是否使用稳定排序
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1575,7 +1573,7 @@ topK
 
     :return: 一个新的 QTensor
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import tensor, QTensor
         x = QTensor([
@@ -1611,7 +1609,7 @@ argtopK
 
     :return: 一个新的 QTensor
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import tensor, QTensor
         x = QTensor([
@@ -1644,7 +1642,7 @@ add
     :param t2: 第二个 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1667,7 +1665,7 @@ sub
     :param t2: 第二个 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1690,7 +1688,7 @@ mul
     :return:  输出 QTensor
 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1714,7 +1712,7 @@ divide
     :return:  输出 QTensor
 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1738,7 +1736,7 @@ sums
     :return:  输出 QTensor
 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1757,12 +1755,12 @@ cumsum
 
     返回输入元素在指定维度轴上的累积和。
 
-    :param t:  the 输入 QTensor
+    :param t: 输入 QTensor
     :param axis:  计算的轴，默认为 -1，使用最后一个轴。
 
     :return:  输出 QTensor.
 
-    Example::
+    示例::
 
        from pyvqnet.tensor import tensor, QTensor
        t = QTensor(([1, 2, 3], [4, 5, 6]))
@@ -1781,12 +1779,12 @@ mean
 
     获取 QTensor 沿指定轴的均值。
 
-    :param t:  the 输入 QTensor.
+    :param t: 输入 QTensor。
     :param axis: 要缩减的维度。
-    :param keepdims:  whether the 输出 QTensor has dim retained or not, defaults to False.
-    :return: returns the mean value of the 输入 QTensor.
+    :param keepdims: 是否保留输出 QTensor 的维度，默认值为 False。
+    :return: 返回输入 QTensor 的均值。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1803,13 +1801,13 @@ median
 
     获取 QTensor 中的中位数。
 
-    :param t: the 输入 QTensor
+    :param t: 输入 QTensor
     :param axis:  用于平均的轴，默认为 None
-    :param keepdims:  whether the 输出 QTensor has dim retained or not, defaults to False
+    :param keepdims: 是否保留输出 QTensor 的维度，默认值为 False。
 
     :return: 返回输入或 QTensor 中值的中位数。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1837,13 +1835,13 @@ std
     获取 QTensor 中的标准差。
 
 
-    :param t:  the 输入 QTensor
+    :param t: 输入 QTensor
     :param axis:  用于计算标准差的轴，默认为 None
-    :param keepdims:  whether the 输出 QTensor has dim retained or not, defaults to False
-    :param unbiased:  whether to use Bessel’s correction,default true
+    :param keepdims: 是否保留输出 QTensor 的维度，默认值为 False。
+    :param unbiased: 是否使用贝塞尔校正，默认值为 True。
     :return: 返回输入或 QTensor 中值的标准差。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1871,15 +1869,15 @@ var
     获取 QTensor 中的方差。
 
 
-    :param t:  the 输入 QTensor.
+    :param t: 输入 QTensor。
     :param axis:  用于计算方差的轴，默认为 None。
-    :param keepdims:  whether the 输出 QTensor has dim retained or not, defaults to False.
-    :param unbiased:  whether to use Bessel’s correction,default true.
+    :param keepdims: 是否保留输出 QTensor 的维度，默认值为 False。
+    :param unbiased: 是否使用贝塞尔校正，默认值为 True。
 
 
     :return: 获取 QTensor 中的方差。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1901,7 +1899,7 @@ matmul
     :param t2: 第二个 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1937,15 +1935,15 @@ kron
           (\text{input} \otimes \text{other})_{k_0, k_1, \dots, k_n} =
               \text{input}_{i_0, i_1, \dots, i_n} * \text{other}_{j_0, j_1, \dots, j_n},
 
-    where :math:`k_t = i_t * b_t + j_t` is :math:`0 \leq t \leq n`.
+    其中 :math:`k_t = i_t * b_t + j_t` 满足 :math:`0 \leq t \leq n`。
     如果一个张量的维度少于另一个，它将被展开直至具有相同的维度数。
 
-    :param t1: The 第一个 QTensor.
-    :param t2: The 第二个 QTensor.
+    :param t1: 第一个 QTensor。
+    :param t2: 第二个 QTensor。
     
     :return: 输出 QTensor。
 
-    Example::
+    示例::
 
         from pyvqnet import tensor
         a = tensor.arange(1,1+ 24).reshape([2,1,2,3,2])
@@ -2054,7 +2052,7 @@ einsum
 
         QTensor 结果。
 
-    Example::
+    示例::
 
         from pyvqnet import tensor
 
@@ -2079,7 +2077,7 @@ reciprocal
     :param t: 输入 QTensor
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2101,7 +2099,7 @@ sign
     :return: 输出 QTensor
 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2123,7 +2121,7 @@ neg
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2141,12 +2139,10 @@ trace
     返回输入的二维矩阵对角线元素之和。
 
     :param t: 输入二维 QTensor
-    :param k: offset (0 for the main diagonal, positive for the nth
-        diagonal above the main one, negative for the nth diagonal below the
-        main one)
+    :param k: 偏移量（0 表示主对角线，正值表示主对角线上方的第 n 条对角线，负值表示主对角线下方的第 n 条对角线）
     :return: 输入的二维矩阵对角线元素之和。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2174,7 +2170,7 @@ exp
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2194,7 +2190,7 @@ acos
     :param t: 输入 QTensor
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2230,7 +2226,7 @@ asin
     :param t: 输入 QTensor
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2251,7 +2247,7 @@ atan
     :param t: 输入 QTensor
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2273,7 +2269,7 @@ sin
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2294,7 +2290,7 @@ cos
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2315,7 +2311,7 @@ tan
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2335,7 +2331,7 @@ tanh
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2356,7 +2352,7 @@ sinh
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2377,7 +2373,7 @@ cosh
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2392,13 +2388,13 @@ power
 
 .. py:function:: pyvqnet.tensor.power(t1: pyvqnet.tensor.QTensor, t2: pyvqnet.tensor.QTensor)
 
-    Raises 第一个 QTensor to the power of 第二个 QTensor.
+    将第一个 QTensor 提升到第二个 QTensor 的幂。
 
     :param t1: 第一个 QTensor
     :param t2: 第二个 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2419,7 +2415,7 @@ abs
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2439,7 +2435,7 @@ log
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2461,7 +2457,7 @@ log_softmax
 
     :return: 输出 QTensor。
 
-    Example::
+    示例::
 
         from pyvqnet import tensor
         output = tensor.arange(1,13).reshape([3,2,2])
@@ -2487,7 +2483,7 @@ sqrt
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2508,7 +2504,7 @@ square
     :param t: 输入 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2535,7 +2531,7 @@ eigh
 
         返回特征值和特征向量。
 
-    Examples::
+    示例::
 
         import numpy as np
         import pyvqnet
@@ -2575,7 +2571,7 @@ frobenius_norm
     :return: 输出 QTensor 或 F-范数值。
 
 
-    Example::
+    示例::
 
         from pyvqnet import tensor,QTensor
         t = QTensor([[[1., 2., 3.], [4., 5., 6.]], [[7., 8., 9.], [10., 11., 12.]],
@@ -2606,7 +2602,7 @@ maximum
     :param t2: 第二个 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2629,7 +2625,7 @@ minimum
     :param t2: 第二个 QTensor
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2653,7 +2649,7 @@ min
     :param keepdims:  输出张量是否保留维度，默认为 False
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2679,7 +2675,7 @@ max
     :param keepdims:  输出张量是否保留维度，默认为 False
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2695,14 +2691,14 @@ clip
 
 .. py:function:: pyvqnet.tensor.clip(t: pyvqnet.tensor.QTensor, min_val, max_val)
 
-    Clips 输入 QTensor to minimum and 最大值.
+    将输入 QTensor 裁剪到最小值和最大值之间。
 
     :param t: 输入 QTensor
     :param min_val:  最小值
     :param max_val:  最大值
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2724,7 +2720,7 @@ where
     :param t2: 条件不满足时从中取元素的 QTensor，默认为 None
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2743,9 +2739,9 @@ nonzero
     返回包含非零元素索引的 QTensor。
 
     :param t: 输入 QTensor
-    :return: 输出 QTensor contains indices of nonzero elements.
+    :return: 包含非零元素索引的输出 QTensor。
 
-    Example::
+    示例::
     
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2772,7 +2768,7 @@ isfinite
     :param t: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2793,7 +2789,7 @@ isinf
     :param t: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
     
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2814,7 +2810,7 @@ isnan
     :param t: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
     
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2835,7 +2831,7 @@ isneginf
     :param t: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
     
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2856,7 +2852,7 @@ isposinf
     :param t: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
     
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2878,7 +2874,7 @@ logical_and
     :param t2: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
     
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2901,7 +2897,7 @@ logical_or
     :param t2: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2923,7 +2919,7 @@ logical_not
     :param t: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2946,7 +2942,7 @@ logical_xor
 
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2970,7 +2966,7 @@ greater
     :param t2: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2994,7 +2990,7 @@ greater_equal
     :param t2: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3018,7 +3014,7 @@ less
     :param t2: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3042,7 +3038,7 @@ less_equal
     :param t2: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3066,7 +3062,7 @@ equal
     :param t2: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
     
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3090,7 +3086,7 @@ not_equal
     :param t2: 输入 QTensor
     :return: 输出 QTensor，当对应位置元素满足条件时返回 True，否则返回 False。
     
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3117,7 +3113,7 @@ bitwise_and
     :return:
         结果 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import *
         import numpy as np
@@ -3144,7 +3140,7 @@ select
     :param index: 包含输出维度的字符串
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3177,7 +3173,7 @@ broadcast
     :return t11: 具有新广播形状的 t1。
     :return t22: 具有新广播形状的 t2。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         t1 = tensor.ones([5, 4])
@@ -3217,13 +3213,13 @@ concatenate
 
 .. py:function:: pyvqnet.tensor.concatenate(args: list, axis=1)
 
-    Concatenate the 输入 QTensor along the axis and return 一个新的 QTensor.
+    沿指定轴连接输入 QTensor，并返回一个新的 QTensor。
 
-    :param args: list consist of 输入 QTensors
+    :param args: 由输入 QTensor 组成的列表
     :param axis: 要连接的维度。必须在 0 和连接张量的维度数之间。
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3242,13 +3238,13 @@ stack
 
 .. py:function:: pyvqnet.tensor.stack(QTensors: list, axis) 
 
-    Join a sequence of arrays along a new axis,return 一个新的 QTensor.
+    沿新轴连接数组序列，返回一个新的 QTensor。
 
     :param QTensors: 包含 QTensor 的列表
     :param axis: 要插入的维度。必须在 0 和堆叠张量的维度数之间。
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3287,7 +3283,7 @@ permute
     :param dim: 维度的新顺序（整数列表）
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3318,7 +3314,7 @@ transpose
     :param dim: 维度的新顺序（整数列表）
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3358,7 +3354,7 @@ tile
     :param reps: 每个维度的重复次数。
     :return: 一个新的 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3388,7 +3384,7 @@ squeeze
     :param axis: 挤压轴，如果 axis = -1，则挤压所有大小为 1 的维度。
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3412,13 +3408,13 @@ unsqueeze
 
 .. py:function:: pyvqnet.tensor.unsqueeze(t: pyvqnet.tensor.QTensor, axis: int = 0)
 
-    Return 一个新的 QTensor with a dimension of size one inserted at the specified position.
+    返回一个新的 QTensor，在指定位置插入一个大小为 1 的维度。
 
     :param t: 输入 QTensor
     :param axis: 要插入维度的轴。
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3457,7 +3453,7 @@ moveaxis
         新的 QTensor
 
 
-    Example::
+    示例::
 
         from pyvqnet import QTensor,tensor
         a = tensor.arange(0,24).reshape((2,3,4))
@@ -3477,7 +3473,7 @@ swapaxis
     :param axis2:  原始轴的目标位置。这些也必须唯一。
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3503,14 +3499,14 @@ masked_fill
 
 .. py:function:: pyvqnet.tensor.masked_fill(t, mask, value)
 
-    If mask == 1, fill with the 指定值. The shape of the mask must be broadcastable from the shape of the 输入 QTensor.
+    如果 mask == 1，则用指定值填充。mask 的形状必须能够从输入 QTensor 的形状广播。
 
     :param t: 输入 QTensor
     :param mask: 一个 QTensor
     :param value: 指定值
     :return:  一个 QTensor
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import tensor
         import numpy as np
@@ -3543,7 +3539,7 @@ flatten
     :param end: 结束维度，默认为 -1，到最后一个维度结束。
     :return:  输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3564,9 +3560,9 @@ reshape
     :param t: 输入 QTensor.
     :param new_shape: 新形状。
 
-    :return: a 新形状。 QTensor.
+    :return: 一个具有新形状的 QTensor。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3595,7 +3591,7 @@ flip
 
     :return: 输出 QTensor。
 
-    Example::
+    示例::
 
         from pyvqnet import tensor
         t = tensor.arange(1, 3 * 2 *2 * 2 + 1).reshape([3, 2, 2, 2])
@@ -3641,7 +3637,7 @@ gather
 
     :return: 聚合结果。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import gather,QTensor,tensor
         import numpy as np
@@ -3683,7 +3679,7 @@ scatter
     :param indices: 索引 QTensor，应与输入具有相同的维度大小。
     :param src: 要散射的源张量。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import scatter, QTensor
         import numpy as np
@@ -3744,7 +3740,7 @@ broadcast_to
     
     :return: 新广播后的 t 的 QTensor。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor.tensor import QTensor
         from pyvqnet.tensor import *
@@ -3770,7 +3766,7 @@ to_tensor
     :param x: 整数、浮点数或 numpy.array
     :return: 输出 QTensor
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         t = tensor.to_tensor(10.0)
@@ -3794,7 +3790,7 @@ pad_sequence
          如果 batch_first 为 ``False``，张量大小为 ``batch size x longest sequence length x *``。
          否则张量大小为 ``longest sequence length x batch size x *``。
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import tensor
         a = tensor.ones([4, 2,3])
@@ -3850,7 +3846,7 @@ pad_packed_sequence
     :return:
         包含填充序列的张量元组，以及批次中每个序列的长度列表。批次元素将按其原始顺序重新排列。
     
-    Examples::
+    示例::
 
         from pyvqnet.tensor import tensor
         a = tensor.ones([4, 2,3])
@@ -3919,16 +3915,13 @@ pack_pad_sequence
     对于未排序的序列，使用 ``enforce_sorted`` 为 False。如果 :attr:`enforce_sorted` 为 ``True``，序列应按长度降序排列。
     
     :param input: 'QTensor' - 用于填充的变长序列批次。
-    :param lengths: 'list' - list of sequence lengths for each batch
-         element.
-    :param batch_first: 'bool' - if ``True``, the input is expected to be ``B x T x *``
-         format, default: False.
-    :param enforce_sorted: 'bool' - if ``True``, the input should be
-         Contains sequences in descending order of length. If ``False``, the input will be sorted unconditionally. Default: True.
+    :param lengths: 'list' - 每个批次元素的序列长度列表。
+    :param batch_first: 'bool' - 如果为 ``True``，输入应为 ``B x T x *`` 格式，默认值：False。
+    :param enforce_sorted: 'bool' - 如果为 ``True``，输入应包含按长度降序排列的序列。如果为 ``False``，输入将被无条件排序。默认值：True。
 
     :return: 一个 :class:`PackedSequence` 对象。
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import tensor
         a = tensor.ones([4, 2,3])
@@ -3987,7 +3980,7 @@ functional_conv2d
     :return: qtensor 
 
 
-    Examples:: 
+    示例::
 
         from pyvqnet.nn.functional import functional_conv2d 
         from pyvqnet.tensor import arange,ones 
@@ -4021,7 +4014,7 @@ no_grad
 
     在前向计算禁用时记录反向传播节点。
 
-    Example::
+    示例::
 
         import pyvqnet.tensor as tensor
         from pyvqnet import no_grad

@@ -48,7 +48,7 @@ QuantumLayer
 
         该类有别名 `QuantumLayerV2`、`QpandaQCircuitVQCLayerLite`。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3.measure import ProbsMeasure
         from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
@@ -141,7 +141,7 @@ QpandaQProgVQCLayer
 
         该类有别名 `QuantumLayerV3`。
 
-    Example::
+    示例::
 
         import pyqpanda3.core as pq
         import pyvqnet
@@ -235,7 +235,7 @@ QuantumBatchAsyncQcloudLayer
     :param query_kwargs: 查询量子结果的附加关键字参数，默认值：{"timeout":1,"total_timeout":60,"print_query_info":True,"sub_circuits_split_size":1}。
     :return: 一个能够计算量子电路的模块。
 
-    Example::
+    示例::
 
         import pyqpanda3.core as pq
         import pyvqnet
@@ -344,7 +344,7 @@ QuantumLayerAdjoint
     :return: 返回一个 QuantumLayerAdjoint 实例
 
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3 import QuantumLayerAdjoint
         from pyvqnet import tensor
@@ -498,7 +498,7 @@ VQCQCloudLayer
     :param submit_kwargs: 提交量子电路的附加关键字参数，默认值：{"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}，当 test_qcloud_fake 设置为 True 时，使用本地 CPUQVM 模拟。
     :param query_kwargs: 查询量子结果的附加关键字参数。默认值：{"timeout":1,"total_timeout":60, "print_query_info":True,"sub_circuits_split_size":1}。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import *
         from pyvqnet.qnn.pq3 import VQCQCloudLayer
@@ -552,7 +552,7 @@ grad
         参数的梯度
 
 
-    Examples::
+    示例::
 
         from pyvqnet.qnn.pq3 import grad, ProbsMeasure
         import pyqpanda3.core as pq
@@ -604,7 +604,7 @@ QLinear 实现了一种量子全连接算法。首先将数据编码为量子态
     :param machine: `str` - 使用的虚拟机，默认使用 CPU 模拟。
     :return: 量子全连接层。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.qlinear import QLinear
@@ -659,7 +659,7 @@ Qconv
         :return: 量子卷积层。
 
 
-        Example::
+        示例::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.qnn.qcnn.qconv import QConv
@@ -702,7 +702,7 @@ BasicEmbeddingCircuit
     :return: 量子电路。
 
 
-    Example::
+    示例::
 
             from pyvqnet.qnn.pq3.template import BasicEmbeddingCircuit
             import pyqpanda3.core as pq
@@ -736,7 +736,7 @@ AngleEmbeddingCircuit
     :param rotation: 使用的旋转方式，默认为 "X"。
     :return: 量子电路。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3.template import AngleEmbeddingCircuit
         import numpy as np 
@@ -766,7 +766,7 @@ IQPEmbeddingCircuits
     :param rep: 量子电路块的重复次数，默认次数为 1。
     :return: 量子电路。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.qnn.pq3.template import IQPEmbeddingCircuits
@@ -794,7 +794,7 @@ RotCircuit
     :param qubits: 量子比特索引，仅接受单量子比特。
     :return: 量子电路。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3.template import RotCircuit
         import pyqpanda3.core as pq
@@ -827,7 +827,7 @@ CRotCircuit
     :param rot_qubits: 旋转量子比特索引，数量应为 1。
     :return: 量子电路。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3.template import CRotCircuit
         import pyqpanda3.core as pq
@@ -867,7 +867,7 @@ CSWAPcircuit
     :param qubits: 量子比特索引列表。第一个量子比特为控制量子比特。qlist 的长度必须为 3。
     :return: 量子电路。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3 import CSWAPcircuit
         import pyqpanda3.core as pq
@@ -896,7 +896,7 @@ Controlled_Hadamard
 
     :param qubits: 量子比特索引。
 
-    Examples::
+    示例::
 
         import pyqpanda3.core as pq
 
@@ -934,7 +934,7 @@ CCZ
     :return:
         pyQPanda3 QCircuit
 
-    Example::
+    示例::
 
         import pyqpanda3.core as pq
 
@@ -967,7 +967,7 @@ FermionicSingleExcitation
     :return:
         pyQPanda3 QCircuit
 
-    Examples::
+    示例::
 
         from pyvqnet.qnn.pq3 import FermionicSingleExcitation, expval
 
@@ -1015,7 +1015,7 @@ FermionicDoubleExcitation
     :return:
         pyQPanda3 QCircuit
 
-    Examples::
+    示例::
 
         import pyqpanda3.core as pq
         from pyvqnet.qnn.pq3 import FermionicDoubleExcitation, expval
@@ -1059,7 +1059,7 @@ UCCSD
     :param init_state: 长度为 ``len(wires)`` 的占据数向量，表示高频状态。``init_state`` 初始化量子比特状态。
     :param qubits: 量子比特索引。
 
-    Examples::
+    示例::
         
         import pyqpanda3.core as pq
         from pyvqnet.tensor import tensor
@@ -1091,7 +1091,7 @@ QuantumPoolingCircuit
     :return:
         pyQPanda3 QCircuit
 
-    Examples::
+    示例::
 
         from pyvqnet.qnn.pq3.template import QuantumPoolingCircuit
         import pyqpanda3.core as pq
@@ -1122,7 +1122,7 @@ HardwareEfficientAnsatz
     :return:
         一个 HardwareEfficientAnsatz 实例
 
-    Example::
+    示例::
 
         import pyqpanda3.core as pq
         from pyvqnet.tensor import QTensor,tensor
@@ -1154,7 +1154,7 @@ BasicEntanglerTemplate
     :return:
         一个 BasicEntanglerTemplate 实例
 
-    Example::
+    示例::
 
         import pyqpanda3.core as pq
         import numpy as np
@@ -1188,7 +1188,7 @@ StronglyEntanglingTemplate
     :return:
         一个 StronglyEntanglingTemplate 实例
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3 import StronglyEntanglingTemplate
         import pyqpanda3.core as pq
@@ -1223,7 +1223,7 @@ ComplexEntanglingTemplate
     :return:
         一个 ComplexEntanglingTemplate 实例
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3 import ComplexEntanglingTemplate
         import pyqpanda3.core as pq
@@ -1261,7 +1261,7 @@ Quantum_Embedding
     :return:
         一个 Quantum_Embedding 实例
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3 import QuantumLayerV2,Quantum_Embedding
         from pyvqnet.tensor import tensor
@@ -1314,7 +1314,7 @@ expval
 
     :return: 期望值。
 
-    Example::
+    示例::
 
         import pyqpanda3.core as pq
         from pyvqnet.qnn.pq3.measure import expval
@@ -1354,7 +1354,7 @@ QuantumMeasure
     :param noise_model: 应用的噪声模型，默认为 None（理想模拟）。
     :return: 返回通过蒙特卡洛方法获得的测量结果。
 
-    Example::
+    示例::
 
         from pyqpanda3.core import *
         circuit = QCircuit(3)
@@ -1398,7 +1398,7 @@ ProbsMeasure
     :return: 按字典序排列的测量量子比特。
 
 
-    Example::
+    示例::
 
         from pyqpanda3.core import *
         from pyvqnet.qnn.pq3.measure import probs_measure
@@ -1436,7 +1436,7 @@ DensityMatrixFromQstate
     :return: 
         大小为 ``(2**len(indices), 2**len(indices))`` 的密度矩阵。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3.measure import DensityMatrixFromQstate
         qstate = [(0.9306699299765968+0j), (0.18865613455240968+0j), (0.1886561345524097+0j), (0.03824249173404786+0j), -0.048171819846746615j, -0.00976491131165138j, -0.23763904794287155j, -0.048171819846746615j]
@@ -1463,7 +1463,7 @@ VN_Entropy
 
     :return: 冯·诺依曼熵的浮点值。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3.measure import VN_Entropy
         qstate = [(0.9022961387408862 + 0j), -0.06676534788028633j,
@@ -1495,7 +1495,7 @@ Mutal_Info
 
     :return: 子系统之间的互信息
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.pq3.measure import Mutal_Info
         qstate = [(0.9022961387408862 + 0j), -0.06676534788028633j,
@@ -1526,7 +1526,7 @@ Purity
     :return:
         纯度
 
-    Examples::
+    示例::
 
         from pyvqnet.qnn.pq3.measure import Purity
         qstate = [(0.9306699299765968 + 0j), (0.18865613455240968 + 0j),

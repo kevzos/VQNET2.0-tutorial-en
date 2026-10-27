@@ -2963,7 +2963,7 @@ QMLP模型示例
 
 .. math:: \theta_{t+1} = \theta_t - \eta g^{+}(\theta_t)\nabla \mathcal{L}(\theta),
 
-where :math:`g^{+}` is the pseudo-inverse.
+其中 :math:`g^{+}` 是伪逆。
 
 下面我们实现一个基于VQNet的量子变分电路参数量子自然梯度优化示例，其中 ``wrapper_calculate_qng`` 是一个装饰器，需要添加到需要进行量子自然梯度计算的模型的forward函数上。
 
@@ -3121,11 +3121,11 @@ where :math:`g^{+}` is the pseudo-inverse.
 量子奇异值分解
 ===============================================================================
 
-The following example implements the algorithm in the paper  `Variational 量子奇异值分解 <https://arxiv.org/abs/2006.02336>`_. 
+以下示例实现了论文 `Variational 量子奇异值分解 <https://arxiv.org/abs/2006.02336>`_ 中的算法。
 
 奇异值分解（简称 ``SVD``）是线性代数中一种重要的矩阵分解。作为任意维度矩阵上特征分解的推广，它在机器学习领域被广泛应用，常用于矩阵压缩、推荐系统和自然语言处理。
 
-Variational 量子奇异值分解(abbreviation ``QSVD``) convert SVD into an optimization problem and solve it through variational quantum circuits.
+变分量子奇异值分解（缩写为 ``QSVD``）将 SVD 转化为一个优化问题，并通过变分量子电路进行求解。
 
 在论文中，矩阵奇异值分解被分解为四个步骤来求解：
 
@@ -3875,7 +3875,7 @@ Dropout是经典深度神经网络中常用的技术，用于防止计算单元�
 ===================================
 
 
-量子电路玻尔兹曼机 Boltzmann machines have shown promise in unsupervised generative modeling, aiming to learn and represent probability distributions over classical datasets using purely quantum states. They have gained popularity due to their high expressive power. Boltzmann machines exploit the probabilistic interpretation of quantum wave functions, representing probability distributions using purely quantum states rather than thermal distributions (as in Boltzmann machines). This enables Boltzmann machines to directly generate samples by projecting measurements on qubits, offering a faster alternative to Gibbs sampling.
+量子电路玻尔兹曼机在无监督生成建模中展现出潜力，旨在使用纯量子态学习并表示经典数据集上的概率分布。由于其强大的表达能力，这类模型广受欢迎。玻尔兹曼机利用量子波函数的概率解释，使用纯量子态而非热分布（如玻尔兹曼机中那样）来表示概率分布。这使得玻尔兹曼机能够通过投影量子比特上的测量结果直接生成样本，为吉布斯采样提供了一种更快的替代方案。
 给定一个包含来自未知目标分布 :math:`\pi(x)` 的独立同分布样本的数据集 :math:`\mathcal{D} = \{x\}`，QCBM用于生成与目标分布高度相似的样本。QCBM将输入乘积态 :math:`|\textbf{0} \rangle` 转换为参数化量子态 :math:`|\psi_{\boldsymbol{\theta}}\rangle`。在计算基下测量该输出态产生比特样本 :math:`x \sim p_\theta(x)`。
 
 .. math::

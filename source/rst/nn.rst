@@ -92,7 +92,7 @@
     :param \*\*kwargs: 关键字可变参数
     :return: 模块输出
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -139,7 +139,7 @@
 
     :return: 包含模块完整状态的字典
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Conv2D
         test_conv = Conv2D(2,3,(3,3),(2,2),"same")
@@ -163,7 +163,7 @@
     :param device: 当前保存QTensor的设备，默认=DEV_GPU_0。device = pyvqnet.DEV_GPU_0，存储在第一块GPU上，device = DEV_GPU_1，存储在第二块GPU上，以此类推。
     :return: 已移动到GPU设备的模块。
 
-    Examples::
+    示例::
 
         from pyvqnet.nn.conv import ConvT2D 
         test_conv = ConvT2D(3, 2, [4,4], [2, 2], "same")
@@ -181,7 +181,7 @@
 
     :return: 已移动到CPU设备的模块。
 
-    Examples::
+    示例::
 
         from pyvqnet.nn.conv import ConvT2D 
         test_conv = ConvT2D(3, 2, [4,4], [2, 2], "same")
@@ -202,7 +202,7 @@
     :param f: 包含文件名的字符串或os.PathLike对象
     :return: None
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Module,Conv2D
         import pyvqnet
@@ -229,7 +229,7 @@
     :param f: 包含文件名的字符串或os.PathLike对象
     :return: 用于 ``load_state_dict()`` 的已保存OrderedDict
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Module,Conv2D
         import pyvqnet
@@ -262,7 +262,7 @@
 
     :return: 模块列表
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import *
         from pyvqnet.nn import Module,Linear,ModuleList
@@ -327,7 +327,7 @@
 
     :return: 参数列表。
 
-    Example::
+    示例::
 
         from pyvqnet import nn
         class MyModule(nn.Module):
@@ -356,7 +356,7 @@ Sequential
 
     :return: Sequential。
 
-    Example::
+    示例::
         
         from pyvqnet import nn
         from collections import OrderedDict
@@ -410,7 +410,7 @@ Sequential
 
         ``padding='same'`` 对输入进行填充，使输出与输入具有相同的形状。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -458,7 +458,7 @@ Sequential
 
         ``padding='same'`` 对输入进行填充，使输出与输入具有相同的形状。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -516,7 +516,7 @@ Sequential
         ``padding='same'`` 对输入进行填充，使输出与输入具有相同的形状。
 
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -565,7 +565,7 @@ Sequential
 
 
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -608,7 +608,7 @@ Sequential
         ``padding='same'`` 对输入进行填充，使输出与输入具有相同的形状。
 
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -647,7 +647,7 @@ Sequential
         ``padding='same'`` 对输入进行填充，使输出与输入具有相同的形状。
 
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -683,7 +683,7 @@ Sequential
         ``padding='same'`` 对输入进行填充，使输出与输入具有相同的形状。
 
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -717,7 +717,7 @@ Sequential
 
     :return: 一个Embedding类
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -782,7 +782,7 @@ Sequential
     :param name: 输出层名称
     :return: 一个BatchNorm2d类
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -845,7 +845,7 @@ Sequential
     :param name: 输出层名称
     :return: 一个BatchNorm1d类
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -890,7 +890,7 @@ N维层归一化
 
     :return: 一个LayerNormNd类。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -936,7 +936,7 @@ N维层归一化
     
     :return: 一个LayerNorm2d类
 
-    Example::
+    示例::
 
         import numpy as np
         import pyvqnet
@@ -989,7 +989,7 @@ N维层归一化
 
     :return: 一个LayerNorm1d类
 
-    Example::
+    示例::
 
         import numpy as np
         import pyvqnet
@@ -1032,7 +1032,7 @@ N维层归一化
 
     :return: GroupNorm类
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -1062,7 +1062,7 @@ N维层归一化
 
     :return: 一个Linear类
 
-    Example::
+    示例::
 
         import numpy as np
         import pyvqnet
@@ -1097,7 +1097,7 @@ N维层归一化
     :param dropout_rate: `float` - 神经元被置零的概率
     :return: 一个Dropout类
 
-    Example::
+    示例::
 
         from pyvqnet.nn.dropout import Dropout
         import numpy as np
@@ -1134,7 +1134,7 @@ N维层归一化
 
     :return: DropPath实例。
 
-    Example::
+    示例::
 
         import pyvqnet.nn as nn
         import pyvqnet.tensor as tensor
@@ -1157,7 +1157,7 @@ N维层归一化
     :return:
             Pixel_Shuffle模块
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Pixel_Shuffle
         from pyvqnet.tensor import tensor
@@ -1180,7 +1180,7 @@ N维层归一化
     :return:
             Pixel_Unshuffle模块
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Pixel_Unshuffle
         from pyvqnet.tensor import tensor
@@ -1221,7 +1221,7 @@ N维层归一化
 
     :return: 一个GRU模块实例。
 
-    Example::
+    示例::
 
         from pyvqnet.nn import GRU
         from pyvqnet.tensor import tensor
@@ -1294,7 +1294,7 @@ N维层归一化
 
     :return: 一个RNN模块实例。
 
-    Example::
+    示例::
 
         from pyvqnet.nn import RNN
         from pyvqnet.tensor import tensor
@@ -1368,7 +1368,7 @@ N维层归一化
 
     :return: 一个LSTM模块实例。
 
-    Example::
+    示例::
 
         from pyvqnet.nn import LSTM
         from pyvqnet.tensor import tensor
@@ -1437,8 +1437,6 @@ N维层归一化
 
     第一个输入应是通过 ``tensor.PackedSequence`` 类定义的变长批序列输入。
     ``tensor.PackedSequence`` 类可以通过依次调用以下函数来构造：``pad_sequence``、``pack_pad_sequence``。
-    The ``tensor.PackedSequence`` class can be constructed as
-    Call the next function in succession: ``pad_sequence``, ``pack_pad_sequence``.
 
     Dynamic_GRU的第一个输出也是一个 ``tensor.PackedSequence`` 类，
     可以使用 ``tensor.pad_pack_sequence`` 解包为常规的QTensor。
@@ -1464,7 +1462,7 @@ N维层归一化
 
     :return: 一个Dynamic_GRU类
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Dynamic_GRU
         from pyvqnet.tensor import tensor
@@ -1526,8 +1524,6 @@ N维层归一化
 
     第一个输入应是通过 ``tensor.PackedSequence`` 类定义的变长批序列输入。
     ``tensor.PackedSequence`` 类可以通过依次调用以下函数来构造：``pad_sequence``、``pack_pad_sequence``。
-    The ``tensor.PackedSequence`` class can be constructed as
-    Call the next function in succession: ``pad_sequence``, ``pack_pad_sequence``.
 
     Dynamic_RNN的第一个输出也是一个 ``tensor.PackedSequence`` 类，
     可以使用 ``tensor.pad_pack_sequence`` 解包为常规的QTensor。
@@ -1553,7 +1549,7 @@ N维层归一化
 
     :return: Dynamic_RNN实例
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Dynamic_RNN
         from pyvqnet.tensor import tensor
@@ -1619,8 +1615,6 @@ N维层归一化
 
     第一个输入应是通过 ``tensor.PackedSequence`` 类定义的变长批序列输入。
     ``tensor.PackedSequence`` 类可以通过依次调用以下函数来构造：``pad_sequence``、``pack_pad_sequence``。
-    The ``tensor.PackedSequence`` class can be constructed as
-    Call the next function in succession: ``pad_sequence``, ``pack_pad_sequence``.
 
     Dynamic_LSTM的第一个输出也是一个 ``tensor.PackedSequence`` 类，
     可以使用 ``tensor.pad_pack_sequence`` 解包为常规的QTensor。
@@ -1650,7 +1644,7 @@ N维层归一化
 
     :return: Dynamic_LSTM实例
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Dynamic_LSTM
         from pyvqnet.tensor import tensor
@@ -1728,15 +1722,10 @@ N维层归一化
             如果设置为 ``True``，输入和输出张量通过它们角像素的中心点对齐，保留角像素处的值。
             如果设置为 ``False``，输入和输出张量通过它们角像素的角点对齐，并且插值对超出边界的值使用边缘值填充，
             使此操作在保持 :attr:`scale_factor` 不变时 *独立于* 输入大小。仅在 :attr:`mode` 为 ``bilinear``、``bicubic`` 时有效。
-            If set to ``False``, the input and output tensors are aligned by the corner
-            points of their corner pixels, and the interpolation uses edge value padding
-            for out-of-boundary values, making this operation *independent* of input size
-            when :attr:`scale_factor` is kept the same. This only has an effect when :attr:`mode`
-            is ``bilinear``, ``bicubic``.
     :param recompute_scale_factor: 重新计算用于插值计算的scale_factor。
     :param name: 模块名称。
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Interpolate
         from pyvqnet.tensor import tensor
@@ -1790,7 +1779,7 @@ N维层归一化
     :param input: 包含融合模块的模型。
     :return: 融合后的模型。
 
-    Examples::
+    示例::
     
         from pyvqnet import tensor,kfloat32
         from pyvqnet.nn import Linear
@@ -1906,7 +1895,7 @@ N维层归一化
     :param scale: softmax之前应用的缩放因子。
     :param is_causal: 如果为true，假定为左上因果注意力掩码，如果同时设置了attn_mask和is_causal则会报错。
     
-    Examples::
+    示例::
     
         from pyvqnet.transformer import SDPA
         from pyvqnet import tensor
@@ -1975,7 +1964,7 @@ N维层归一化
 
         y: :math:`(N, *)`，与输入形状相同
 
-    Example::
+    示例::
     
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat64
@@ -2020,7 +2009,7 @@ N维层归一化
 
         y: :math:`(N, *)`，与输入形状相同
 
-    Example::
+    示例::
 
         import pyvqnet
         from pyvqnet.tensor import QTensor
@@ -2055,7 +2044,7 @@ N维层归一化
 
         y: :math:`(N, *)`，与输入形状相同，数据类型应为64位整数。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32,kint64
@@ -2091,7 +2080,7 @@ Softmax交叉熵
 
         y: :math:`(N, *)`，与输入形状相同，数据类型应为64位整数。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32, kint64
@@ -2135,7 +2124,7 @@ Softmax交叉熵
         y: :math:`(N, *)`，损失函数期望的真实值，数据类型应为64位整数。
 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32,kint64
@@ -2182,7 +2171,7 @@ Softmax交叉熵
         y: :math:`(N, *)`，损失函数期望的真实值，数据类型应为64位整数。
 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32,kint64
@@ -2228,7 +2217,7 @@ Sigmoid激活函数
         :param name: 输出层名称
         :return: sigmoid激活层
 
-        Examples::
+        示例::
 
             from pyvqnet.nn import Sigmoid
             from pyvqnet.tensor import QTensor
@@ -2250,7 +2239,7 @@ Softplus激活函数
         :param name: 输出层名称
         :return: softplus激活层
 
-    Examples::
+    示例::
 
         from pyvqnet.nn import Softplus
         from pyvqnet.tensor import QTensor
@@ -2272,7 +2261,7 @@ Softsign激活函数
         :param name: 输出层名称
         :return: softsign激活层
 
-        Examples::
+        示例::
 
             from pyvqnet.nn import Softsign
             from pyvqnet.tensor import QTensor
@@ -2296,7 +2285,7 @@ Softmax激活函数
     :param name: 输出层名称
     :return: softmax激活层
 
-    Examples::
+    示例::
 
         from pyvqnet.nn import Softmax
         from pyvqnet.tensor import QTensor
@@ -2323,7 +2312,7 @@ HardSigmoid激活函数
     :param name: 输出层名称
     :return: hard sigmoid激活层
 
-    Examples::
+    示例::
 
         from pyvqnet.nn import HardSigmoid
         from pyvqnet.tensor import QTensor
@@ -2349,7 +2338,7 @@ ReLu激活函数
     :param name: 输出层名称
     :return: ReLu激活层
 
-    Examples::
+    示例::
 
         from pyvqnet.nn import ReLu
         from pyvqnet.tensor import QTensor
@@ -2377,7 +2366,7 @@ LeakyReLu激活函数
     :param name: 输出层名称
     :return: leaky ReLu激活层
 
-    Examples::
+    示例::
 
         from pyvqnet.nn import LeakyReLu
         from pyvqnet.tensor import QTensor
@@ -2404,7 +2393,7 @@ Gelu激活函数
 
     :return: Gelu激活函数层实例。
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import randu, ones_like
         from pyvqnet.nn import Gelu
@@ -2433,7 +2422,7 @@ ELU激活函数
     :param name: 输出层名称
     :return: Elu激活层
 
-    Examples::
+    示例::
 
         from pyvqnet.nn import ELU
         from pyvqnet.tensor import QTensor
@@ -2455,7 +2444,7 @@ Tanh激活函数
     :param name: 输出层名称
     :return: 双曲正切激活层
 
-    Examples::
+    示例::
 
         from pyvqnet.nn import Tanh
         from pyvqnet.tensor import QTensor
@@ -2500,7 +2489,7 @@ Adadelta优化器
     :param epsilon: 添加到分母以改善数值稳定性的项（默认为1e-8）
     :return: 一个Adadelta优化器
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.optim import adadelta
@@ -2550,7 +2539,7 @@ Adagrad优化器
     :param epsilon: 添加到分母以改善数值稳定性的项（默认为1e-8）
     :return: 一个Adagrad优化器
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.optim import adagrad
@@ -2622,7 +2611,7 @@ AdamW优化器
     :param amsgrad: 是否使用此算法的AMSGrad变体（默认为False）。
     :return: 一个AdamW优化器。
 
-    Example::
+    示例::
 
         from pyvqnet.optim import adam
         import numpy as np
@@ -2683,7 +2672,7 @@ Adam优化器
     :param amsgrad: 是否使用此算法的AMSGrad变体（默认为False）
     :return: 一个Adam优化器
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.optim import adam
@@ -2740,7 +2729,7 @@ Adamax优化器
     :param epsilon: 添加到分母以改善数值稳定性的项（默认为1e-8）
     :return: 一个Adamax优化器
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.optim import adamax
@@ -2791,7 +2780,7 @@ RMSProp优化器
     :param epsilon: 添加到分母以改善数值稳定性的项（默认为1e-8）
     :return: 一个RMSProp优化器
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.optim import rmsprop
@@ -2840,7 +2829,7 @@ SGD优化器
     :param nesterov: 启用Nesterov动量（默认为False）
     :return: 一个SGD优化器
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.optim import sgd
@@ -2889,7 +2878,7 @@ MSE（均方误差）
     :param y_pred_Qtensor: 形状如 (n_samples,) 或 (n_samples, n_outputs) 的QTensor，估计目标值。
     :return: 返回float类型结果。
 
-    Example::
+    示例::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -2921,7 +2910,7 @@ RMSE（均方根误差）
     :param y_pred_Qtensor: 形状如 (n_samples,) 或 (n_samples, n_outputs) 的QTensor，估计目标值。
     :return: 返回float类型结果。
 
-    Example::
+    示例::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -2954,7 +2943,7 @@ MAE（平均绝对误差）
     :param y_pred_Qtensor: 形状如 (n_samples,) 或 (n_samples, n_outputs) 的QTensor，估计目标值。
     :return: 返回float类型结果。
 
-    Example::
+    示例::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -2991,7 +2980,7 @@ R²决定系数
     :param sample_weight: 形状如 (n_samples,) 的数组，可选的样本权重，默认为None。
     :return: 返回float类型结果。
 
-    Example::
+    示例::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -3027,7 +3016,7 @@ R²决定系数
         - recall - 召回率结果
         - f1 - F1分数
 
-    Example::
+    示例::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -3068,7 +3057,7 @@ R²决定系数
         - recall - 召回率结果
         - f1 - F1分数
 
-    Example::
+    示例::
 
                 import numpy as np
                 from pyvqnet.tensor import tensor
@@ -3122,7 +3111,7 @@ R²决定系数
         - recall - 召回率结果
         - f1 - F1分数
 
-    Example::
+    示例::
 
 
                     import numpy as np
@@ -3190,7 +3179,7 @@ AUC计算
                      是否丢弃一些不在绘制的ROC曲线上出现的次优阈值。
     :return: 输出float类型结果。
 
-    Example::
+    示例::
 
                 import numpy as np
                 from pyvqnet.tensor import tensor

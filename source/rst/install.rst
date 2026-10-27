@@ -265,7 +265,7 @@ VQNet 遵循通用的机器学习工作流程：迭代加载数据、前向传�
 
         print(f"test_accuracy:{test_accuracy/count}")
 
-Training and testing results
+训练与测试结果
 
 .. code-block::
 

@@ -37,7 +37,7 @@ VQNet 可以使用梯度下降法来训练这类量子机器学习模型。一�
 
 如果用户想在 `Module` 中使用包含多个模块的列表作为子模块，请不要使用 Python 内置列表，而应使用 pyvqnet.nn.module.ModuleList。这样子模块的训练参数才能注册到整个模型，实现自动微分训练。示例如下：
 
-     Example::
+     示例::
 
          from pyvqnet. tensor import *
          from pyvqnet.nn import Module,Linear,ModuleList

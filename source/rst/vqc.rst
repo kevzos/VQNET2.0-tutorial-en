@@ -123,7 +123,7 @@ QMachine
 
     :return: 输出 QMachine。
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import QMachine
         qm  = QMachine(4)
@@ -169,7 +169,7 @@ i
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import i,QMachine
         qm  = QMachine(4)
@@ -203,7 +203,7 @@ I
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import I,QMachine
         device = QMachine(4)
@@ -226,7 +226,7 @@ hadamard
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import hadamard,QMachine
         qm  = QMachine(4)
@@ -260,7 +260,7 @@ Hadamard
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import Hadamard,QMachine
         device = QMachine(4)
@@ -283,7 +283,7 @@ t
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import t,QMachine
         qm  = QMachine(4)
@@ -317,7 +317,7 @@ T
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import T,QMachine
         device = QMachine(4)
@@ -340,7 +340,7 @@ s
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import s,QMachine
         qm  = QMachine(4)
@@ -374,7 +374,7 @@ S
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import S,QMachine
         device = QMachine(4)
@@ -397,7 +397,7 @@ paulix
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import paulix,QMachine
         qm  = QMachine(4)
@@ -431,7 +431,7 @@ PauliX
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import PauliX,QMachine
         device = QMachine(4)
@@ -454,7 +454,7 @@ pauliy
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import pauliy,QMachine
         qm  = QMachine(4)
@@ -488,7 +488,7 @@ PauliY
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import PauliY,QMachine
         device = QMachine(4)
@@ -511,7 +511,7 @@ pauliz
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import pauliz,QMachine
         qm  = QMachine(4)
@@ -545,7 +545,7 @@ PauliZ
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import PauliZ,QMachine
         device = QMachine(4)
@@ -568,7 +568,7 @@ x1
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import x1,QMachine
         qm  = QMachine(4)
@@ -602,7 +602,7 @@ X1
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import X1,QMachine
         device = QMachine(4)
@@ -626,7 +626,7 @@ y1
 
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import y1,QMachine
         qm  = QMachine(4)
@@ -660,7 +660,7 @@ Y1
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import Y1,QMachine
         device = QMachine(4)
@@ -683,7 +683,7 @@ z1
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import z1,QMachine
         qm  = QMachine(4)
@@ -717,7 +717,7 @@ Z1
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import Z1,QMachine
         device = QMachine(4)
@@ -740,7 +740,7 @@ rx
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import rx,QMachine
         from pyvqnet.tensor import QTensor
@@ -776,7 +776,7 @@ RX
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import RX,QMachine
         device = QMachine(4)
@@ -799,7 +799,7 @@ ry
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import ry,QMachine
         from pyvqnet.tensor import QTensor
@@ -835,7 +835,7 @@ RY
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import RY,QMachine
         device = QMachine(4)
@@ -858,7 +858,7 @@ rz
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import rz,QMachine
         from pyvqnet.tensor import QTensor
@@ -895,7 +895,7 @@ RZ
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import RZ,QMachine
         device = QMachine(4)
@@ -919,7 +919,7 @@ crx
 
 
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -958,7 +958,7 @@ CRX
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import CRX,QMachine
         device = QMachine(4)
@@ -981,7 +981,7 @@ cry
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -1019,7 +1019,7 @@ CRY
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import CRY,QMachine
         device = QMachine(4)
@@ -1042,7 +1042,7 @@ crz
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -1080,7 +1080,7 @@ CRZ
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import CRZ,QMachine
         device = QMachine(4)
@@ -1104,7 +1104,7 @@ u1
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import u1,QMachine
         from pyvqnet.tensor import QTensor
@@ -1140,7 +1140,7 @@ U1
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import U1,QMachine
         device = QMachine(4)
@@ -1163,7 +1163,7 @@ u2
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import u2,QMachine
         from pyvqnet.tensor import QTensor
@@ -1199,7 +1199,7 @@ U2
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import U2,QMachine
         device = QMachine(4)
@@ -1222,7 +1222,7 @@ u3
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import u3,QMachine
         from pyvqnet.tensor import QTensor
@@ -1258,7 +1258,7 @@ U3
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import U3,QMachine
         device = QMachine(4)
@@ -1280,7 +1280,7 @@ cy
     :param params: 参数矩阵，默认为None。
     :param use_dagger: 是否使用共轭转置，默认为False。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import cy,QMachine
         qm = QMachine(4)
@@ -1315,7 +1315,7 @@ CY
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
             from pyvqnet.qnn.vqc import CY,QMachine
             device = QMachine(4)
@@ -1339,7 +1339,7 @@ cnot
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import cnot,QMachine
         qm  = QMachine(4)
@@ -1374,7 +1374,7 @@ CNOT
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import CNOT,QMachine
         device = QMachine(4)
@@ -1397,7 +1397,7 @@ cr
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import cr,QMachine
         from pyvqnet.tensor import QTensor
@@ -1433,7 +1433,7 @@ CR
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import CR,QMachine
         device = QMachine(4)
@@ -1456,7 +1456,7 @@ iswap
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import iswap,QMachine
         from pyvqnet.tensor import QTensor
@@ -1492,7 +1492,7 @@ iSWAP
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import iSWAP,QMachine
         device = QMachine(4)
@@ -1515,7 +1515,7 @@ swap
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import swap,QMachine
         qm  = QMachine(4)
@@ -1550,7 +1550,7 @@ SWAP
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import SWAP,QMachine
         device = QMachine(4)
@@ -1574,7 +1574,7 @@ cswap
     :param use_dagger: 是否使用共轭转置，默认为False。
     :return: 输出QTensor。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import cswap,QMachine
         qm = QMachine(4)
@@ -1620,7 +1620,7 @@ CSWAP
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import CSWAP,QMachine
         device = QMachine(4)
@@ -1672,7 +1672,7 @@ cz
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import cz,QMachine
         qm  = QMachine(4)
@@ -1706,7 +1706,7 @@ CZ
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import CZ,QMachine
         device = QMachine(4)
@@ -1729,7 +1729,7 @@ rxx
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import rxx,QMachine
         from pyvqnet.tensor import QTensor
@@ -1765,7 +1765,7 @@ RXX
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import RXX,QMachine
         device = QMachine(4)
@@ -1788,7 +1788,7 @@ ryy
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import ryy,QMachine
         from pyvqnet.tensor import QTensor
@@ -1824,7 +1824,7 @@ RYY
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import RYY,QMachine
         device = QMachine(4)
@@ -1848,7 +1848,7 @@ rzz
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import rzz,QMachine
         from pyvqnet.tensor import QTensor
@@ -1884,7 +1884,7 @@ RZZ
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import RZZ,QMachine
         device = QMachine(4)
@@ -1907,7 +1907,7 @@ rzx
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import rzx,QMachine
         from pyvqnet.tensor import QTensor
@@ -1943,7 +1943,7 @@ RZX
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import RZX,QMachine
         device = QMachine(4)
@@ -1966,7 +1966,7 @@ toffoli
     :param use_dagger: 是否进行共轭转置，默认为False。
     :return: 输出QTensor。
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import toffoli,QMachine
         qm  = QMachine(4)
@@ -2001,7 +2001,7 @@ Toffoli
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import Toffoli,QMachine
         device = QMachine(4)
@@ -2025,7 +2025,7 @@ isingxx
     :param use_dagger: 是否进行共轭转置，默认为False。
     :return: 输出QTensor。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2063,7 +2063,7 @@ IsingXX
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import IsingXX,QMachine
         device = QMachine(4)
@@ -2086,7 +2086,7 @@ isingyy
     :param use_dagger: 是否进行共轭转置，默认为False。
     :return: 输出QTensor。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2124,7 +2124,7 @@ IsingYY
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import IsingYY,QMachine
         device = QMachine(4)
@@ -2147,7 +2147,7 @@ isingzz
     :param use_dagger: 是否进行共轭转置，默认为False。
     :return: 输出QTensor。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2186,7 +2186,7 @@ IsingZZ
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import IsingZZ,QMachine
         device = QMachine(4)
@@ -2209,7 +2209,7 @@ isingxy
     :param use_dagger: 是否进行共轭转置，默认为False。
     :return: 输出QTensor。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2247,7 +2247,7 @@ IsingXY
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-     Example::
+     示例::
 
          from pyvqnet.qnn.vqc import IsingXY,QMachine
          device = QMachine(4)
@@ -2270,7 +2270,7 @@ phaseshift
     :param use_dagger: 是否进行共轭转置，默认为False。
     :return: 输出QTensor。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2308,7 +2308,7 @@ PhaseShift
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import PhaseShift,QMachine
         device = QMachine(4)
@@ -2331,7 +2331,7 @@ multirz
     :param use_dagger: 是否进行共轭转置，默认为False。
     :return: 输出QTensor。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2370,7 +2370,7 @@ MultiRZ
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import MultiRZ,QMachine
         device = QMachine(4)
@@ -2393,7 +2393,7 @@ sdg
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2431,7 +2431,7 @@ SDG
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import SDG,QMachine
         device = QMachine(4)
@@ -2454,7 +2454,7 @@ tdg
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2492,7 +2492,7 @@ TDG
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import TDG,QMachine
         device = QMachine(4)
@@ -2516,7 +2516,7 @@ controlledphaseshift
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2556,7 +2556,7 @@ ControlledPhaseShift
     :param use_dagger: 是否使用该门的转置共轭版本，默认为False。
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import ControlledPhaseShift,QMachine
         device = QMachine(4)
@@ -2580,7 +2580,7 @@ multicontrolledx
     :param control_values: 控制值，默认为None，控制比特为1时生效。
 
 
-    Example::
+    示例::
  
 
         from pyvqnet.qnn.vqc import QMachine
@@ -2626,7 +2626,7 @@ MultiControlledX
 
     :return: 可用于训练模型的Module。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2691,7 +2691,7 @@ single_excitation
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2726,7 +2726,7 @@ double_excitation
     :param use_dagger: 是否进行共轭转置，默认为False。
 
 
-    Example::
+    示例::
     
         from pyvqnet.qnn.vqc import QMachine
         import pyvqnet.qnn.vqc as vqc
@@ -2764,7 +2764,7 @@ VQC_BasisEmbedding
     :param q_machine: 量子虚拟机设备。
 
 
-    Example::
+    示例::
         
         from pyvqnet.qnn.vqc import VQC_BasisEmbedding,QMachine
         qm  = QMachine(3)
@@ -2800,7 +2800,7 @@ VQC_AngleEmbedding
     :param rotation: 旋转门，默认为"X"。
 
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_AngleEmbedding, QMachine
         from pyvqnet.tensor import QTensor
@@ -2834,7 +2834,7 @@ VQC_AmplitudeEmbedding
     :param q_machine: 量子虚拟机设备。
 
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_AmplitudeEmbedding, QMachine
         from pyvqnet.tensor import QTensor
@@ -2864,7 +2864,7 @@ VQC_IQPEmbedding
     :param rep: 量子电路块的重复次数，默认为1。
 
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_IQPEmbedding, QMachine
         from pyvqnet.tensor import QTensor
@@ -2899,7 +2899,7 @@ VQC_RotCircuit
     :param params: 参数 :math:`[\phi, \theta, \omega]`\ 。
     :return: 输出QTensor。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_RotCircuit, QMachine
         from pyvqnet.tensor import QTensor
@@ -2933,7 +2933,7 @@ VQC_CRotCircuit
     :param q_machine: 量子虚拟机设备。
     :return: 输出QTensor。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_CRotCircuit
@@ -2965,7 +2965,7 @@ VQC_Controlled_Hadamard
     :param wires: 量子比特索引，第一个为控制比特，列表长度为2。
     :param q_machine: 量子虚拟机设备。
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_Controlled_Hadamard
@@ -3008,7 +3008,7 @@ VQC_CCZ
     :return:
             pyqpanda QCircuit 
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_CCZ
@@ -3045,7 +3045,7 @@ VQC_FermionicSingleExcitation
     :return:
             pyqpanda QCircuit
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_FermionicSingleExcitation
@@ -3095,7 +3095,7 @@ VQC_FermionicDoubleExcitation
     :return:
         pyqpanda QCircuit
 
-    Examples::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc.qcircuit import VQC_FermionicDoubleExcitation
@@ -3147,7 +3147,7 @@ VQC_UCCSD
          高频态。``init_state``\ 是量子比特初始化状态。
     :param q_machine: 量子虚拟机设备。
 
-    Examples::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_UCCSD, QMachine, MeasureAll
         from pyvqnet.tensor import QTensor
@@ -3190,7 +3190,7 @@ VQC_ZFeatureMap
     :param data_map_func: 参数映射矩阵，设计为``data_map = lambda x: x``\ 。
     :param rep: 模块重复次数。
     
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_ZFeatureMap, QMachine, hadamard
         from pyvqnet.tensor import QTensor
@@ -3239,7 +3239,7 @@ VQC_ZZFeatureMap
     :param entanglement: 指定的纠缠结构。
     :param rep: 模块重复次数。
     
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_ZZFeatureMap, QMachine
         from pyvqnet.tensor import QTensor
@@ -3275,7 +3275,7 @@ VQC_AllSinglesDoubles
 
 |
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_AllSinglesDoubles, QMachine
         from pyvqnet.tensor import QTensor
@@ -3314,7 +3314,7 @@ VQC_BasisRotation
     :param unitary_matrix: 指定基变换的矩阵。
     :param check: 测试`unitary_matrix`\ 是否为酉矩阵。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_BasisRotation, QMachine, hadamard, isingzz
         from pyvqnet.tensor import QTensor
@@ -3360,7 +3360,7 @@ VQC_QuantumPoolingCircuit
     :return:
         pyqpanda QCircuit
 
-    Examples:: 
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_QuantumPoolingCircuit, QMachine, MeasureAll
         import pyqpanda as pq
@@ -3395,7 +3395,7 @@ ExpressiveEntanglingAnsatz
     :return:
         一个ExpressiveEntanglingAnsatz实例。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc  import *
         import pyvqnet
@@ -3464,7 +3464,7 @@ vqc_qft_add_to_register
 
         请注意，``q_machine``\ 使用的比特数需要足够，以使用X基态编码结果和的二进制值。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.qnn.vqc import QMachine,Samples, vqc_qft_add_to_register
@@ -3502,7 +3502,7 @@ vqc_qft_add_two_register
         ``wires_k``\ 使用足够的比特数，以使用X基态编码`k`\ 的二进制值。
         ``wires_solution``\ 使用足够的比特数，以使用X基态编码结果的二进制值。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.qnn.vqc import QMachine,Samples, vqc_qft_add_two_register
@@ -3545,7 +3545,7 @@ vqc_qft_mul
         ``wires_k``\ 使用足够的比特数，以使用X基态编码`k`\ 的二进制值。
         ``wires_solution``\ 使用足够的比特数，以使用X基态编码结果的二进制值。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.qnn.vqc import QMachine,Samples, vqc_qft_mul
@@ -3574,7 +3574,7 @@ VQC_FABLE
 
     :return: 返回基于VQC的FABLE类实例。
 
-    Examples::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_FABLE
         from pyvqnet.qnn.vqc import QMachine
@@ -3609,7 +3609,7 @@ VQC_LCU
     :param wires: 算符作用的qlist索引，可能需要辅助量子比特。
     :param check_hermitian: 检查输入是否为厄米矩阵，默认为：True。
 
-    Examples::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_LCU
         from pyvqnet.qnn.vqc import QMachine
@@ -3651,7 +3651,7 @@ VQC_QSVT
     :param angles: 用于获得所需多项式的角度列表。
     :param wires: A作用的量子比特索引。
 
-    Example::
+    示例::
 
         from pyvqnet import DEV_GPU
         from pyvqnet.qnn.vqc import QMachine,VQC_QSVT
@@ -3704,7 +3704,7 @@ VQC_Purity
 
     :return: 纯度。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_Purity, rx, ry, cnot, QMachine
         from pyvqnet.tensor import QTensor
@@ -3735,7 +3735,7 @@ VQC_VarMeasure
 
     :return: 方差值。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.vqc import VQC_VarMeasure, rx, cnot, hadamard, QMachine,PauliY
@@ -3760,7 +3760,7 @@ VQC_DensityMatrixFromQstate
 
     :return: 大小为"(b, 2**len(indices), 2**len(indices))"的密度矩阵。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import VQC_DensityMatrixFromQstate,rx,ry,cnot,QMachine
         from pyvqnet.tensor import QTensor
@@ -3819,7 +3819,7 @@ Probability
 
  
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import Probability,rx,ry,cnot,QMachine,rz
         from pyvqnet.tensor import QTensor
@@ -3870,7 +3870,7 @@ MeasureAll
 
 
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import MeasureAll,rx,ry,cnot,QMachine,rz
         from pyvqnet.tensor import QTensor
@@ -3918,7 +3918,7 @@ Samples
     :param name: 此模块的名称，默认值：""。
     :return: 一个测量方法类。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import Samples,rx,ry,cnot,QMachine,rz
         from pyvqnet.tensor import QTensor
@@ -3973,7 +3973,7 @@ HermitianExpval
 
         使用该类计算的测量结果通常为[b,1]，其中b是q_machine.reset_states(b)的批次数b。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import qcircuit
         from pyvqnet.qnn.vqc import QMachine, RX, RY, CNOT, PauliX, qmatrix, PauliZ, VQC_RotCircuit,HermitianExpval
@@ -4050,7 +4050,7 @@ VQC_HardwareEfficientAnsatz
     :param dtype: 参数的数据类型。
     :return: 一个VQC_HardwareEfficientAnsatz实例。
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Module,Linear,ModuleList
         from pyvqnet.qnn.vqc.qcircuit import VQC_HardwareEfficientAnsatz,RZZ,RZ
@@ -4104,7 +4104,7 @@ VQC_BasicEntanglerTemplate
     :param dtype: 参数数据类型，默认为None，使用float32。
     :return: 一个VQC_BasicEntanglerTemplate实例。
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Module, Linear, ModuleList
         from pyvqnet.qnn.vqc.qcircuit import VQC_BasicEntanglerTemplate, RZZ, RZ
@@ -4154,7 +4154,7 @@ VQC_StronglyEntanglingTemplate
     :param dtype: 参数数据类型，默认为None，使用float32。
     :return: 一个VQC_StronglyEntanglingTemplate实例。
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Module
         from pyvqnet.qnn.vqc.qcircuit import VQC_StronglyEntanglingTemplate
@@ -4208,7 +4208,7 @@ VQC_QuantumEmbedding
     :param name: 类名称。
     :return: 一个VQC_QuantumEmbedding实例。
 
-    Example::
+    示例::
 
         from pyvqnet.nn import Module
         from pyvqnet.qnn.vqc.qcircuit import VQC_QuantumEmbedding
@@ -4273,7 +4273,7 @@ Quanvolution
     :param machine_type_or_cloud_token: 机器类型字符串或Qcloud令牌，默认为"cpu"。
     :return: 一个Quanvolution实例。
 
-    Examples::
+    示例::
 
         from pyvqnet.qnn.qcnn import Quanvolution
         import pyvqnet.tensor as tensor
@@ -4307,7 +4307,7 @@ QDRL
     :param nq: 量子电路中使用的量子比特数。这决定了模型将处理的量子系统的规模。
     :return: 一个QDRL实例。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.dtype import kfloat32
@@ -4348,7 +4348,7 @@ QGRU
     :param batch_first: 输入的第一维是否为批量大小。
     :return: 一个QGRU实例。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import tensor
@@ -4390,7 +4390,7 @@ QLSTM
     :param batch_first: 输入的第一维是否为批量大小。
     :return: 一个QLSTM实例。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import tensor
@@ -4433,7 +4433,7 @@ QMLPModel
     :param dtype: 默认为None，使用默认数据类型。
     :return: 一个QMLPModel实例。
 
-    Example::
+    示例::
 
         import numpy as np
         from pyvqnet.tensor import tensor
@@ -4474,7 +4474,7 @@ QRLModel
     :param n_layers: 变分量子电路的层数。
     :return: 一个QRLModel实例。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor, QTensor
         from pyvqnet.qnn.qrl import QRLModel
@@ -4504,7 +4504,7 @@ QRNN
     :param batch_first: 输入的第一维是否为批量大小，默认为True。
     :return: 一个QRNN实例。
 
-    Example::
+    示例::
 
         from pyvqnet.dtype import kfloat32
         from pyvqnet.qnn.qrnn import QRNN
@@ -4541,7 +4541,7 @@ TTOLayer
     :param biases_initializer: 偏置的初始化函数。
     :return: 一个TTOLayer实例。
 
-    Example::
+    示例::
 
         from pyvqnet.tensor import tensor
         import numpy as np
@@ -4585,7 +4585,7 @@ QuantumLayerAdjoint
         general_module的QMachine应设置grad_method = "adjoint"。
         目前支持以下参数化逻辑门：`RX`\ 、`RY`\ 、`RZ`\ 、`PhaseShift`\ 、`RXX`\ 、`RYY`\ 、`RZZ`\ 、`RZX`\ 、`U1`\ 、`U2`\ 、`U3`\ 等不含参数化逻辑门的变分电路。
 
-    Example::
+    示例::
 
         from pyvqnet import tensor
         from pyvqnet.qnn.vqc import QuantumLayerAdjoint, QMachine, RX, RY, CNOT, PauliX, qmatrix, PauliZ, T, MeasureAll, RZ, VQC_RotCircuit, VQC_HardwareEfficientAnsatz
@@ -4666,7 +4666,7 @@ DataParallelVQCAdjointLayer
 :param name: 模块名称。默认值为空字符串。
 :return: 一个可以计算量子电路的模块。
 
-Example::
+示例::
 
     #mpirun -n 2 python test.py
 
@@ -4788,7 +4788,7 @@ DataParallelVQCLayer
     :param name: 模块名称。默认为空字符串。
     :return: 可以计算量子电路的模块。
 
-    Example::
+    示例::
 
         #mpirun -n 2 python xxx.py
 
@@ -4874,7 +4874,7 @@ vqc_to_originir_list
 
     :return: originIR字符串或originIR字符串列表。
 
-    Example::
+    示例::
 
         import pyvqnet
         import pyvqnet.tensor as tensor
@@ -5057,7 +5057,7 @@ originir_to_vqc
     :return:
         生成可运行代码。
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import originir_to_vqc
         ss = "QINIT 3\nCREG 3\nH q[1]"
@@ -5101,7 +5101,7 @@ model_summary
         摘要字符串。
 
 
-    Example::
+    示例::
 
         import pyvqnet
         from pyvqnet.qnn.vqc import QMachine, RX, RY, CNOT, PauliX, qmatrix, PauliZ,MeasureAll
@@ -5189,7 +5189,7 @@ QNG
         step()仅更新模型参数的数值。
 
 
-    Example::
+    示例::
 
         from pyvqnet.qnn.vqc import QMachine, RX, RY, RZ, CNOT, rz, PauliX, qmatrix, PauliZ, Probability, rx, ry, MeasureAll, U2
         from pyvqnet.tensor import QTensor, tensor
@@ -5269,7 +5269,7 @@ wrapper_single_qubit_op_fuse
         这里定义的模型继承自`pyvqnet.qnn.vqc.QModule`\ ，它是`pyvqnet.nn.Module`\ 的子类。
 
 
-    Example::
+    示例::
 
         from pyvqnet import tensor
         from pyvqnet import kcomplex128
@@ -5357,7 +5357,7 @@ wrapper_commute_controlled
 
 
 
-    Example::
+    示例::
 
         from pyvqnet import tensor
         from pyvqnet.qnn.vqc import QMachine
@@ -5458,7 +5458,7 @@ wrapper_merge_rotations
     :param f: forward函数。
 
 
-    Example::
+    示例::
 
         import pyvqnet
         from pyvqnet.tensor import tensor
@@ -5544,7 +5544,7 @@ wrapper_compile
     :param f: forward函数。
 
 
-    Example::
+    示例::
 
         from functools import partial
 
@@ -5780,7 +5780,7 @@ QNSPSAOptimizer
 
         :return: 更新后的参数。
 
-        Examples::
+        示例::
 
             from pyvqnet.tensor import QTensor,ones,randu
             from pyvqnet.qnn.vqc import rx,cry,QMachine,MeasureAll,QModule

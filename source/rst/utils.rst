@@ -18,7 +18,7 @@ set_random_seed
 
             当指定固定的随机数种子时，随机分布将基于该种子生成固定的伪随机分布。影响的函数包括：`tensor.randu`\ 、`tensor.randn`\ 、参数化经典神经网络和量子计算层的参数初始化。
 
-    Example::
+    示例::
 
         import pyvqnet.tensor as tensor
         from pyvqnet.utils import get_random_seed, set_random_seed
@@ -97,7 +97,7 @@ get_random_seed
     
     获取当前随机种子。
 
-    Example::
+    示例::
 
         import pyvqnet.tensor as tensor
         from pyvqnet.utils import get_random_seed, set_random_seed
