@@ -1157,7 +1157,7 @@ Pixel_Shuffle
     :param upscale_factors: fator para aumentar a transformação de escala
 
     :return:
-            Pixel_Shuffle module
+            módulo Pixel_Shuffle
 
     Exemplo::
 
@@ -1180,7 +1180,7 @@ Pixel_Unshuffle
     :param downscale_factors: fator para aumentar a transformação de escala
 
     :return:
-            Pixel_Unshuffle module
+            módulo Pixel_Unshuffle
 
     Exemplo::
 
@@ -2055,7 +2055,7 @@ CategoricalCrossEntropy
 
         x: :math:`(N, *)` onde :math:`*` significa qualquer número de dimensões adicionais
 
-        y: :math:`(N, *)`, mesma forma que a entrada, should have data type of the 64-bit integer.
+        y: :math:`(N, *)`, mesma forma que a entrada, deve ter tipo de dado de inteiro de 64 bits.
 
     Exemplo::
 
@@ -2091,7 +2091,7 @@ SoftmaxCrossEntropy
 
         x: :math:`(N, *)` onde :math:`*` significa qualquer número de dimensões adicionais
 
-        y: :math:`(N, *)`, mesma forma que a entrada, should have data type of the 64-bit integer.
+        y: :math:`(N, *)`, mesma forma que a entrada, deve ter tipo de dado de inteiro de 64 bits.
 
     Exemplo::
 
@@ -2603,7 +2603,7 @@ AdamW
     .. math::
         lr = lr*\frac{\sqrt{1-\beta2^t}}{1-\beta1^t}
     
-    If the parameter amsgrad is True
+    Se o parâmetro amsgrad for True
 
     .. math::
         moment\_2\_max = max(moment\_2\_max,moment\_2)

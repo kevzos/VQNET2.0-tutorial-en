@@ -3885,7 +3885,7 @@ Dado um conjunto de dados :math:`\mathcal{D} = \{x\}` contendo amostras independ
 .. math::
    p_{\boldsymbol{\theta}}(x) = |\langle x | \psi_{\boldsymbol{\theta}} \rangle|^2.
 
-The goal is to align the model probability distribution :math:`p_{\boldsymbol{\theta}}` with the target distribution :math:`\pi`.
+O objetivo é alinhar a distribuição de probabilidade do modelo :math:`p_{\boldsymbol{\theta}}` com a distribuição alvo :math:`\pi`.
 
 Neste exemplo, implementaremos um algoritmo QCBM baseado em gradiente usando VQNet. Descreveremos o modelo e o algoritmo de aprendizado, depois o aplicaremos a um conjunto de dados de listras e grades 3x3, bem como a um pico Gaussiano duplo.
 
