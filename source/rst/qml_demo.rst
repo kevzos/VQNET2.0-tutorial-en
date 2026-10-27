@@ -3691,7 +3691,7 @@ El circuito cuántico intercambiará :math:`|x\rangle` y :math:`|y\rangle` . Fin
 
     |0_{anc}\rangle |x\rangle |y\rangle \rightarrow \frac{1}{2}|0_{anc}\rangle(|xy\rangle + |yx\rangle) + \frac{1}{2}|1_{anc}\rangle(|xy\rangle - |yx\rangle)
 
-If we measure the auxiliary qubit separately, the probability of the final state of the ground state :math:`|1\rangle` is:
+Si medimos el qubit auxiliar por separado, la probabilidad del estado final del estado fundamental :math:`|1\rangle` es:
 
 .. math::
 

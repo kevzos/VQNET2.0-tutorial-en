@@ -204,7 +204,7 @@ VQNet sigue el flujo de trabajo general del aprendizaje automático: carga itera
     # using cross-entropy to define a loss function
     Closs = CategoricalCrossEntropy()
 
-A function to train the model
+Una función para entrenar el modelo
 
 .. code-block::
 
@@ -243,7 +243,7 @@ A function to train the model
             print(f"epoch:{i}, train_accuracy:{accuracy/count}")
             print(f"epoch:{i}, train_loss:{loss/count}\n")
             
-A function to validate the model
+Una función para validar el modelo
 
 .. code-block::
 
@@ -266,7 +266,7 @@ A function to validate the model
 
         print(f"test_accuracy:{test_accuracy/count}")
 
-Training and testing results
+Resultados de entrenamiento y prueba
 
 .. code-block::
 

@@ -47,7 +47,7 @@ set_backend
 
     :param backend_name: Nombre del motor, puede ser "pyvqnet" o "torch".
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -65,7 +65,7 @@ get_backend
     :param t: El tensor actual (valor predeterminado: None).
     :return: El motor. Por defecto, devuelve "pyvqnet".
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -115,7 +115,7 @@ TorchModule
 
         :return: QTensor de salida, con el `data` interno siendo un ``torch.Tensor``.
 
-        Example::
+        Ejemplo::
 
             import numpy as np
             from pyvqnet.tensor import QTensor
@@ -142,7 +142,7 @@ TorchModule
 
         :return: Un diccionario que contiene el estado completo del módulo.
 
-        Example::
+        Ejemplo::
 
             from pyvqnet.nn.torch import Conv2D
             import pyvqnet
@@ -159,7 +159,7 @@ TorchModule
 
         :return: Un mensaje de error si hay algún problema.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.nn.torch import TorchModule, Conv2D
             import pyvqnet
@@ -195,7 +195,7 @@ TorchModule
         :param device: El dispositivo donde almacenar el QTensor. Valor predeterminado: DEV_GPU_0. device = pyvqnet.DEV_GPU_0 almacena en la primera GPU, device = DEV_GPU_1 almacena en la segunda GPU, y así sucesivamente.
         :return: El módulo movido al dispositivo GPU.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.nn.torch import ConvT2D
             import pyvqnet
@@ -211,7 +211,7 @@ TorchModule
 
         :return: El módulo movido al dispositivo CPU.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.nn.torch import ConvT2D
             import pyvqnet
@@ -235,7 +235,7 @@ TorchModuleList
 
     :return: Una clase TorchModuleList
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.tensor import *
         from pyvqnet.nn.torch import TorchModule, Linear, TorchModuleList
@@ -267,7 +267,7 @@ TorchParameterList
 
     :return: Una clase TorchParameterList
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.tensor import *
         from pyvqnet.nn.torch import TorchModule, Linear, TorchParameterList
@@ -303,7 +303,7 @@ TorchSequential
 
     :return: Una clase TorchSequential
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         from collections import OrderedDict
@@ -359,7 +359,7 @@ Linear
 
     :return: Una instancia de la capa Linear.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -407,7 +407,7 @@ Conv1D
 
         ``padding='same'`` aplica relleno con ceros a la entrada, con el `out_height` de salida igual a `ceil(in_height / stride)`, y no soporta `stride > 1`.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -454,7 +454,7 @@ Conv2D
 
         ``padding='same'`` aplica relleno con ceros a la entrada, con la altura de salida igual a `ceil(in_height / stride)`.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -502,7 +502,7 @@ ConvT2D
 
         ``padding='same'`` aplica relleno con ceros a la entrada, con la altura de salida igual a `ceil(height / stride)`.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -532,7 +532,7 @@ AvgPool1D
 
     :return: Una instancia de la capa de pooling promedio 1D.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -566,7 +566,7 @@ MaxPool1D
 
     :return: Una instancia de la capa de pooling máximo 1D.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -600,7 +600,7 @@ AvgPool2D
 
     :return: Una instancia de la capa de pooling promedio 2D.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -634,7 +634,7 @@ MaxPool2D
 
     :return: Una instancia de la capa de pooling máximo 2D.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -670,7 +670,7 @@ Embedding
 
     :return: Una instancia de la capa Embedding.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -712,7 +712,7 @@ BatchNorm2d
 
     :return: Una instancia de la capa de normalización por lotes 2D.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -756,7 +756,7 @@ BatchNorm1d
 
     :return: Una instancia de la capa de normalización por lotes 1D.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -794,7 +794,7 @@ LayerNormNd
 
     :return: Una instancia de la clase LayerNormNd.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -834,7 +834,7 @@ LayerNorm2d
 
     :return: Una instancia de la normalización de capa 2D.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyvqnet
@@ -874,7 +874,7 @@ LayerNorm1d
 
     :return: Una instancia de la normalización de capa 1D.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -915,7 +915,7 @@ GroupNorm
 
     :return: Una instancia de la clase GroupNorm.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         from pyvqnet.tensor import QTensor, kfloat32
@@ -941,7 +941,7 @@ Dropout
 
     :return: Una instancia de la clase Dropout.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         from pyvqnet.nn.torch import Dropout
@@ -970,7 +970,7 @@ DropPath
 
     :return: Una instancia de la clase DropPath.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet.nn.torch as nn
         import pyvqnet.tensor as tensor
@@ -994,7 +994,7 @@ Pixel_Shuffle
 
     :return: Una instancia del módulo Pixel_Shuffle.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.nn.torch import Pixel_Shuffle
         from pyvqnet.tensor import tensor
@@ -1019,7 +1019,7 @@ Pixel_Unshuffle
 
     :return: Una instancia del módulo Pixel_Unshuffle.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.nn.torch import Pixel_Unshuffle
         from pyvqnet.tensor import tensor
@@ -1060,7 +1060,7 @@ GRU
 
     :return: Una instancia del módulo GRU.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -1104,7 +1104,7 @@ RNN
 
     :return: Una instancia del módulo RNN.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -1149,7 +1149,7 @@ LSTM
 
     :return: Una instancia del módulo LSTM.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -1207,7 +1207,7 @@ Dynamic_GRU
 
     :return: Una clase Dynamic_GRU
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -1288,7 +1288,7 @@ Dynamic_RNN
 
     :return: Instancia de Dynamic_RNN
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -1378,7 +1378,7 @@ Dynamic_LSTM
 
     :return: Instancia de Dynamic_LSTM
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -1445,7 +1445,7 @@ Interpolate
     :param recompute_scale_factor: Recalcular el factor de escala para usar en el cálculo de interpolación. Cuando se pasa ``scale_factor`` como argumento, se usará para calcular el tamaño de salida.
     :param name: Nombre del módulo.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.nn.torch import Interpolate
         from pyvqnet.tensor import tensor
@@ -1477,7 +1477,7 @@ SDPA
     :param is_causal: valor predeterminado: False, si se establece en true, la máscara de atención es una matriz triangular inferior cuando la máscara es una matriz cuadrada. Si tanto attn_mask como is_causal están configurados, se genera un error.
     :return: Una clase SDPA
 
-    Examples::
+    Ejemplos::
     
         from pyvqnet.nn.torch import SDPA
         from pyvqnet import tensor
@@ -1494,7 +1494,7 @@ SDPA
         :param value: El QTensor de entrada key.
         :return: El QTensor devuelto por el cálculo SDPA.
         
-        Examples::
+        Ejemplos::
         
             from pyvqnet.nn.torch import SDPA
             from pyvqnet import tensor
@@ -1517,8 +1517,8 @@ SDPA
 
             out_sdpa.backward()
 
-Loss Functions API
-------------------------
+API de funciones de pérdida
+------------------------------
 
 MeanSquaredError
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1555,7 +1555,7 @@ MeanSquaredError
         Tenga en cuenta que, a diferencia de frameworks como pytorch, en la función forward de la siguiente función MeanSquaredError, el primer parámetro es el valor objetivo y el segundo parámetro es el valor predicho.
 
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat64
@@ -1608,7 +1608,7 @@ BinaryCrossEntropy
 
         Tenga en cuenta que, a diferencia de frameworks como pytorch, en la función forward de la función BinaryCrossEntropy, el primer parámetro es el valor objetivo y el segundo parámetro es el valor predicho.
         
-    Example::
+    Ejemplo::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.nn.torch import BinaryCrossEntropy
@@ -1651,7 +1651,7 @@ CategoricalCrossEntropy
 
         Esta clase hereda de ``pyvqnet.nn.Module`` y ``torch.nn.Module``, y se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32,kint64
@@ -1696,7 +1696,7 @@ SoftmaxCrossEntropy
 
         Esta clase hereda de ``pyvqnet.nn.Module`` y ``torch.nn.Module``, y se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
         
-    Example::
+    Ejemplo::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32, kint64
@@ -1746,7 +1746,7 @@ NLL_Loss
 
         Esta clase hereda de ``pyvqnet.nn.Module`` y ``torch.nn.Module``, y se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
             
-    Example::
+    Ejemplo::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kint64
@@ -1799,7 +1799,7 @@ CrossEntropyLoss
 
         Esta clase hereda de ``pyvqnet.nn.Module`` y ``torch.nn.Module``, y se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kint64
@@ -1841,7 +1841,7 @@ Sigmoid
 
     :return: Una instancia de capa de función de activación Sigmoide.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.nn.torch import Sigmoid
         from pyvqnet.tensor import QTensor
@@ -1868,7 +1868,7 @@ Softplus
 
     :return: Una instancia de Softplus.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.nn.torch import Softplus
         from pyvqnet.tensor import QTensor
@@ -1895,7 +1895,7 @@ Softsign
 
     :return: Una instancia de SoftSign.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.nn.torch import Softsign
         from pyvqnet.tensor import QTensor
@@ -1925,7 +1925,7 @@ Softmax
 
     :return: Una instancia de Softmax.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.nn.torch import Softmax
         from pyvqnet.tensor import QTensor
@@ -1957,7 +1957,7 @@ HardSigmoid
 
     :return: Instancia de HardSigmoid.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.nn.torch import HardSigmoid
         from pyvqnet.tensor import QTensor
@@ -1988,7 +1988,7 @@ ReLu
 
     :return: Una instancia de ReLu.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.nn.torch import ReLu
         from pyvqnet.tensor import QTensor
@@ -2023,7 +2023,7 @@ LeakyReLu
 
     :return: Una instancia de activación LeakyReLu.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.nn.torch import LeakyReLu
         from pyvqnet.tensor import QTensor
@@ -2056,7 +2056,7 @@ Gelu
 
     :return: Instancia de activación Gelu.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.tensor import randu, ones_like
         from pyvqnet.nn.torch import Gelu
@@ -2090,7 +2090,7 @@ ELU
 
     :return: Instancia de activación ELU.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.nn.torch import ELU
         from pyvqnet.tensor import QTensor
@@ -2119,7 +2119,7 @@ Tanh
 
     :return: Instancia de activación Tanh.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.nn.torch import Tanh
         from pyvqnet.tensor import QTensor
@@ -2182,7 +2182,7 @@ Si está más familiarizado con la sintaxis de pyQPanda2, puede usar la interfaz
 
         `param`: Parámetros del circuito cuántico variacional unidimensional a entrenar.
 
-    Example::
+    Ejemplo::
 
         import pyqpanda as pq
         from pyvqnet.qnn import ProbsMeasure
@@ -2297,7 +2297,7 @@ Cuando instale la versión más reciente de pyqpanda3, puede usar esta interfaz 
     :return: Un módulo que puede calcular circuitos cuánticos.
 
 
-    Example::
+    Ejemplo::
 
         import pyqpanda3.core as pq
         import pyvqnet
@@ -2408,7 +2408,7 @@ Si está más familiarizado con la sintaxis de pyQPanda3, puede usar la interfaz
 
         `param`: Parámetros a entrenar para el circuito cuántico variacional unidimensional.
 
-    Example::
+    Ejemplo::
 
         import pyqpanda3.core as pq
         from pyvqnet.qnn.pq3 import ProbsMeasure
@@ -2519,7 +2519,7 @@ QMachine
 
     :return: Produce un objeto QMachine.
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import QMachine
         import pyvqnet
@@ -2538,12 +2538,12 @@ QMachine
 Módulo de compuerta lógica cuántica variacional
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following function interfaces in ``pyvqnet.qnn.vqc`` directly support ``QTensor`` of ``torch`` backend for calculation.
+Las siguientes interfaces de funciones en ``pyvqnet.qnn.vqc`` admiten directamente ``QTensor`` del backend ``torch`` para su cálculo.
 
 .. csv-table:: Lista de interfaces pyvqnet.qnn.vqc soportadas
     :file: ./images/same_apis_from_vqc.csv
 
-The following quantum circuit modules inherit from ``pyvqnet.qnn.vqc.torch.QModule``, where calculations are performed using ``torch.Tensor``.
+Los siguientes módulos de circuitos cuánticos heredan de ``pyvqnet.qnn.vqc.torch.QModule``, donde los cálculos se realizan usando ``torch.Tensor``.
 
 .. note::
 
@@ -2570,7 +2570,7 @@ I
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import I,QMachine
         import pyvqnet
@@ -2601,7 +2601,7 @@ Hadamard
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import Hadamard,QMachine
         import pyvqnet
@@ -2632,7 +2632,7 @@ T
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import T,QMachine
         import pyvqnet
@@ -2664,7 +2664,7 @@ S
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import S,QMachine
         import pyvqnet
@@ -2696,7 +2696,7 @@ PauliX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import PauliX,QMachine
         import pyvqnet
@@ -2728,7 +2728,7 @@ PauliY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import PauliY,QMachine
         import pyvqnet
@@ -2761,7 +2761,7 @@ PauliZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import PauliZ,QMachine
         import pyvqnet
@@ -2793,7 +2793,7 @@ X1
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import X1,QMachine
         import pyvqnet
@@ -2824,7 +2824,7 @@ RX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import RX,QMachine
         import pyvqnet
@@ -2856,7 +2856,7 @@ RY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import RY,QMachine
         import pyvqnet
@@ -2887,7 +2887,7 @@ RZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import RZ,QMachine
         import pyvqnet
@@ -2918,7 +2918,7 @@ CRX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import CRX,QMachine
         import pyvqnet
@@ -2950,7 +2950,7 @@ CRY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import CRY,QMachine
         import pyvqnet
@@ -2982,7 +2982,7 @@ CRZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import CRZ,QMachine
         import pyvqnet
@@ -3014,7 +3014,7 @@ U1
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import U1,QMachine
         import pyvqnet
@@ -3045,7 +3045,7 @@ U2
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import U2,QMachine
         import pyvqnet
@@ -3077,7 +3077,7 @@ U3
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import U3,QMachine
         import pyvqnet
@@ -3109,7 +3109,7 @@ CNOT
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import CNOT,QMachine
         import pyvqnet
@@ -3139,7 +3139,7 @@ CY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import CY,QMachine
         import pyvqnet
@@ -3170,7 +3170,7 @@ CZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import CZ,QMachine
         import pyvqnet
@@ -3203,7 +3203,7 @@ CR
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import CR,QMachine
         import pyvqnet
@@ -3237,7 +3237,7 @@ SWAP
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import SWAP,QMachine
         import pyvqnet
@@ -3279,7 +3279,7 @@ CSWAP
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import CSWAP,QMachine
         import pyvqnet
@@ -3310,7 +3310,7 @@ RXX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import RXX,QMachine
         import pyvqnet
@@ -3340,7 +3340,7 @@ RYY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import RYY,QMachine
         import pyvqnet
@@ -3371,7 +3371,7 @@ RZZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import RZZ,QMachine
         import pyvqnet
@@ -3403,7 +3403,7 @@ RZX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import RZX,QMachine
         import pyvqnet
@@ -3433,7 +3433,7 @@ Toffoli
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import Toffoli,QMachine
         import pyvqnet
@@ -3464,7 +3464,7 @@ IsingXX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import IsingXX,QMachine
         import pyvqnet
@@ -3496,7 +3496,7 @@ IsingYY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import IsingYY,QMachine
         import pyvqnet
@@ -3527,7 +3527,7 @@ IsingZZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import IsingZZ,QMachine
         import pyvqnet
@@ -3559,7 +3559,7 @@ IsingXY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import IsingXY,QMachine
         import pyvqnet
@@ -3591,7 +3591,7 @@ PhaseShift
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import PhaseShift,QMachine
         import pyvqnet
@@ -3622,7 +3622,7 @@ MultiRZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import MultiRZ,QMachine
         import pyvqnet
@@ -3655,7 +3655,7 @@ SDG
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import SDG,QMachine
         import pyvqnet
@@ -3688,7 +3688,7 @@ TDG
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.torch import TDG,QMachine
         import pyvqnet
@@ -3721,7 +3721,7 @@ ControlledPhaseShift
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.torch import ControlledPhaseShift,QMachine
         import pyvqnet
@@ -3751,11 +3751,11 @@ MultiControlledX
     :param wires: Índice de bit del efecto de línea, el valor predeterminado es None.
     :param dtype: La precisión de datos de la matriz interna de la compuerta lógica puede establecerse en pyvqnet.kcomplex64 o pyvqnet.kcomplex128, correspondiendo a entrada float o double respectivamente.
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
-    :param control_values: Valor de control, el valor predeterminado es None, cuando el bit es 1, est00e1 controlado.
+    :param control_values: Valor de control, el valor predeterminado es None, cuando el bit es 1, está controlado.
 
     :return: una instancia de ``pyvqnet.qnn.vqc.torch.QModule``
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -3772,10 +3772,10 @@ MultiControlledX
         print(qm.states)
 
 
-Measurements API
+API de mediciones
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Probability
+Probabilidad
 """""""""""""""""""""""""""""
 
 
@@ -3790,7 +3790,7 @@ Probability
     :param name: El nombre del módulo, valor predeterminado: "".
     :return: El resultado de la medición, QTensor.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -3833,7 +3833,7 @@ MeasureAll
     :param name: nombre del módulo, valor predeterminado: "".
     :return: resultado de la medición, QTensor.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -3860,7 +3860,7 @@ MeasureAll
 
 
 
-Samples
+Muestras
 """""""""""""""""""""""""""""
 
 .. py:class:: pyvqnet.qnn.vqc.torch.Samples(wires=None, obs=None, shots = 1,name="")
@@ -3877,7 +3877,7 @@ Samples
     :param name: El nombre de este módulo, valor predeterminado: "".
     :return: una clase de método de medición
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -3916,7 +3916,7 @@ HermitianExpval
     :param name: nombre del módulo, valor predeterminado: "".
     :return: resultado esperado, QTensor.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -3969,7 +3969,7 @@ HermitianExpval
 
         print(batch_y)
 
-Plantillas comunes para circuitos cu00e1nticos
+Plantillas comunes para circuitos cuánticos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 VQC_HardwareEfficientAnsatz
@@ -3994,7 +3994,7 @@ VQC_HardwareEfficientAnsatz
     :param dtype: tipo de datos de los parámetros.
     :return: una instancia de VQC_HardwareEfficientAnsatz.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.nn.torch import TorchModule,Linear,TorchModuleList
         from pyvqnet.qnn.vqc.torch.qcircuit import VQC_HardwareEfficientAnsatz,RZZ,RZ
@@ -4054,7 +4054,7 @@ VQC_BasicEntanglerTemplate
     :param dtype: tipo de datos del parámetro, valor predeterminado: None, usa float32.
     :return: Una instancia de VQC_BasicEntanglerTemplate
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4108,7 +4108,7 @@ VQC_StronglyEntanglingTemplate
     :param dtype: tipo de datos del parámetro, valor predeterminado: None, usa float32.
     :return: Una instancia de VQC_StronglyEntanglingTemplate.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.nn.torch import TorchModule,Linear,TorchModuleList
         from pyvqnet.qnn.vqc.torch.qcircuit import VQC_StronglyEntanglingTemplate
@@ -4166,7 +4166,7 @@ VQC_QuantumEmbedding
     :param name: nombre de la clase.
     :return: Una instancia de VQC_QuantumEmbedding.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.nn.torch import TorchModule
         from pyvqnet.qnn.vqc.torch.qcircuit import VQC_QuantumEmbedding
@@ -4226,7 +4226,7 @@ ExpressiveEntanglingAnsatz
     :return:
         una instancia de ExpressiveEntanglingAnsatz
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.nn.torch import TorchModule
         from pyvqnet.qnn.vqc.torch.qcircuit import ExpressiveEntanglingAnsatz
@@ -4279,7 +4279,7 @@ vqc_basis_embedding
     :param q_machine: dispositivo de máquina cuántica.
     
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4297,25 +4297,25 @@ vqc_angle_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_angle_embedding(input_feat, wires, q_machine: pyvqnet.qnn.vqc.torch.QMachine, rotation: str = "X")
 
-    Codifica :math:`N` características en el ángulo de rotación de :math:`n` qubits, where :math:`N \leq n`.
+    Codifica :math:`N` características en el ángulo de rotación de :math:`n` qubits, donde :math:`N \leq n`.
     Esta función tiene el alias `VQC_AngleEmbedding` .
 
-    La rotación se puede seleccionar como: 'X' , 'Y' , 'Z', as defined by the ``rotation`` parameter:
+    La rotación se puede seleccionar como: 'X' , 'Y' , 'Z', como se define mediante el parámetro ``rotation``:
 
-    * ``rotation='X'`` Usa la caracter00edstica como el 00e1ngulo de rotaci00f3n RX.
+    * ``rotation='X'`` Usa la característica como el ángulo de rotación RX.
 
-    * ``rotation='Y'`` Usa la caracter00edstica como el 00e1ngulo de rotaci00f3n RY.
+    * ``rotation='Y'`` Usa la característica como el ángulo de rotación RY.
 
-    * ``rotation='Z'`` Usa la caracter00edstica como el 00e1ngulo de rotaci00f3n RZ.
+    * ``rotation='Z'`` Usa la característica como el ángulo de rotación RZ.
 
-    ``wires`` representa el 00edndice de la compuerta de rotaci00f3n en el qubit.
+    ``wires`` representa el índice de la compuerta de rotación en el qubit.
 
     :param input_feat: Arreglo que representa los parámetros.
     :param wires: Índice del qubit.
     :param q_machine: Dispositivo de máquina cuántica.
     :param rotation: Compuerta de rotación, valor predeterminado "X".
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4336,13 +4336,13 @@ vqc_amplitude_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_amplitude_embeddingVQC_AmplitudeEmbeddingCircuit(input_feature, q_machine)
 
-    Codifica una caracter00edstica de :math:`2^n` en un vector de amplitudes de :math:`n` qubits. Esta funci00f3n tiene el alias `VQC_AmplitudeEmbedding`.
+    Codifica una característica de :math:`2^n` en un vector de amplitudes de :math:`n` qubits. Esta función tiene el alias `VQC_AmplitudeEmbedding`.
 
-    :param input_feature: arreglo numpy que representa el par00e1metro.
-    :param q_machine: dispositivo de m00e1quina cu00e1ntica.
+    :param input_feature: arreglo numpy que representa el parámetro.
+    :param q_machine: dispositivo de máquina cuántica.
     
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4359,17 +4359,17 @@ vqc_iqp_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.vqc_iqp_embedding(input_feat, q_machine: pyvqnet.qnn.vqc.torch.QMachine, rep: int = 1)
 
-    Codifica :math:`n` caracter00edsticas en :math:`n` qubits usando compuertas diagonales de un circuito IQP. Alias: ``VQC_IQPEmbedding`` .
+    Codifica :math:`n` características en :math:`n` qubits usando compuertas diagonales de un circuito IQP. Alias: ``VQC_IQPEmbedding`` .
 
-    The encoding is proposed by `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
+    La codificación fue propuesta por `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
 
-    By specifying ``rep`` , the basic IQP circuit can be repeated.
+    Al especificar ``rep``, se puede repetir el circuito IQP básico.
 
-    :param input_feat: Array of parameters.
-    :param q_machine: M00e1quina cu00e1ntica.
-    :param rep: N00famero de veces para repetir el bloque de circuito cu00e1ntico, valor predeterminado 1.
+    :param input_feat: Arreglo de parámetros.
+    :param q_machine: Máquina cuántica.
+    :param rep: Número de veces para repetir el bloque de circuito cuántico, valor predeterminado 1.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4386,7 +4386,7 @@ vqc_rotcircuit
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_rotcircuit(q_machine, wire, params)
 
-    Combinaci00f3n arbitraria de compuertas l00f3gicas de rotaci00f3n de un solo bit cu00e1ntico. Esta funci00f3n tiene el alias: ``VQC_RotCircuit`` .
+    Combinación arbitraria de compuertas lógicas de rotación de un solo bit cuántico. Esta función tiene el alias: ``VQC_RotCircuit`` .
 
     .. math::
         R(\phi,\theta,\omega) = RZ(\omega)RY(\theta)RZ(\phi)= \begin{bmatrix}
@@ -4394,11 +4394,11 @@ vqc_rotcircuit
         e^{-i(\phi-\omega)/2}\sin(\theta/2) & e^{i(\phi+\omega)/2}\cos(\theta/2)
         \end{bmatrix}.
 
-    :param q_machine: dispositivo de m00e1quina virtual cu00e1ntica.
-    :param wire: quantum bit index.
+    :param q_machine: dispositivo de máquina virtual cuántica.
+    :param wire: índice del qubit.
     :param params: represents parameters :math:`[\phi, \theta, \omega]`.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4415,7 +4415,7 @@ vqc_crot_circuit
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_crot_circuit(para,control_qubits,rot_wire,q_machine)
 
-    Combinaci00f3n de compuertas l00f3gicas de rotaci00f3n controlada de un solo bit cu00e1ntico. Esta funci00f3n tiene el alias: ``VQC_CRotCircuit`` .
+    Combinación de compuertas lógicas de rotación controlada de un solo bit cuántico. Esta función tiene el alias: ``VQC_CRotCircuit`` .
 
     .. math:: 
         CR(\phi, \theta, \omega) = \begin{bmatrix}
@@ -4425,13 +4425,13 @@ vqc_crot_circuit
         0 & 0 & e^{-i(\phi-\omega)/2}\sin(\theta/2) & e^{i(\phi+\omega)/2}\cos(\theta/2)
         \end{bmatrix}.
 
-    :param para: represents the array of parameters.
-    :param control_qubits: Control qubit index.
-    :param rot_wire: Rot qubit index.
+    :param para: representa el arreglo de parámetros.
+    :param control_qubits: Índice del qubit de control.
+    :param rot_wire: Índice del qubit de rotación.
     :param q_machine: Dispositivo de máquina cuántica.
     
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4453,7 +4453,7 @@ vqc_controlled_hadamard
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_controlled_hadamard(wires, q_machine)
 
-    Circuito cu00e1ntico de compuerta l00f3gica Hadamard controlada. Esta funci00f3n tiene el alias: ``VQC_Controlled_Hadamard`` .
+    Circuito cuántico de compuerta lógica Hadamard controlada. Esta función tiene el alias: ``VQC_Controlled_Hadamard`` .
 
     .. math:: 
         CH = \begin{bmatrix}
@@ -4463,10 +4463,10 @@ vqc_controlled_hadamard
         0 & 0 & \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}
         \end{bmatrix}.
 
-    :param wires: lista de 00edndices de bits cu00e1nticos, el primero es el bit de control, la longitud de la lista es 2.
-    :param q_machine: dispositivo de m00e1quina virtual cu00e1ntica.
+    :param wires: lista de índices de bits cuánticos, el primero es el bit de control, la longitud de la lista es 2.
+    :param q_machine: dispositivo de máquina virtual cuántica.
 
-    Examples::
+    Ejemplos::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4488,7 +4488,7 @@ vqc_ccz
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_ccz(wires, q_machine)
 
-    Controlled-controlled-Z logic gate. Alias: ``VQC_CCZ`` .
+    Compuerta lógica Z controlada-controlada. Alias: ``VQC_CCZ`` .
 
     .. math::
         CCZ =
@@ -4505,10 +4505,10 @@ vqc_ccz
         0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & -1
         \end{pmatrix}
 
-    :param wires: lista de 00edndices de bits cu00e1nticos, el primero es el bit de control. La longitud de la lista es 3.
-    :param q_machine: dispositivo de m00e1quina virtual cu00e1ntica.
+    :param wires: lista de índices de bits cuánticos, el primero es el bit de control. La longitud de la lista es 3.
+    :param q_machine: dispositivo de máquina virtual cuántica.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4530,7 +4530,7 @@ vqc_fermionic_single_excitation
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_fermionic_single_excitation(weight, wires, q_machine)
 
-    Operador de excitaci00f3n 00fanica de cluster acoplado para producto tensorial de matrices Pauli. La forma matricial est00e1 dada por:
+    Operador de excitación única de cluster acoplado para producto tensorial de matrices Pauli. La forma matricial está dada por:
 
     .. math::
         \hat{U}_{pr}(\theta) = \mathrm{exp} \{ \theta_{pr} (\hat{c}_p^\dagger \hat{c}_r
@@ -4538,13 +4538,13 @@ vqc_fermionic_single_excitation
 
     Alias: ``VQC_FermionicSingleExcitation`` .
 
-    :param weight: Par00e1metro en el qubit p, solo un elemento.
-    :param wires: Un subconjunto de 00edndices de qubits en el intervalo [r, p]. La longitud m00ednima debe ser 2. El primer valor de 00edndice se interpreta como r, y el 00faltimo valor de 00edndice se interpreta como p. Los 00edndices intermedios son afectados por compuertas CNOT para calcular la paridad del conjunto de qubits.
-    :param q_machine: Dispositivo de m00e1quina virtual cu00e1ntica.
+    :param weight: Parámetro en el qubit p, solo un elemento.
+    :param wires: Un subconjunto de índices de qubits en el intervalo [r, p]. La longitud mínima debe ser 2. El primer valor de índice se interpreta como r, y el último valor de índice se interpreta como p. Los índices intermedios son afectados por compuertas CNOT para calcular la paridad del conjunto de qubits.
+    :param q_machine: Dispositivo de máquina virtual cuántica.
 
     
 
-    Examples::
+    Ejemplos::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4568,18 +4568,18 @@ vqc_fermionic_double_excitation
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_fermionic_double_excitation(weight, wires1, wires2, q_machine)
 
-    Operador de bi-excitaci00f3n de cluster acoplado para producto tensorial de matrices Pauli exponenciado, forma matricial dada por:
+    Operador de bi-excitación de cluster acoplado para producto tensorial de matrices Pauli exponenciado, forma matricial dada por:
 
     .. math::
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \{ \theta (\hat{c}_p^\dagger \hat{c}_q^\dagger
         \hat{c}_r \hat{c}_s - \mathrm{H.c.}) \},
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are fermion annihilation and
-    operators are created and indexed :math:`r, s` and :math:`p, q` on occupied and
-    empty molecular orbitals respectively. Use `Jordan-Wigner transformation
-    <https://arxiv.org/abs/1208.5986>`_ The fermion operator defined above can be written as
-    in terms of the Pauli matrix (see
-    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ for more details)
+    donde :math:`\hat{c}` y :math:`\hat{c}^\dagger` son los operadores de aniquilación y
+    creación de fermiones, indexados :math:`r, s` y :math:`p, q` en orbitales moleculares
+    ocupados y vacíos respectivamente. Use la `transformación de Jordan-Wigner
+    <https://arxiv.org/abs/1208.5986>`_; el operador fermiónico definido anteriormente puede escribirse
+    en términos de la matriz de Pauli (consulte
+    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ para más detalles)
 
     .. math::
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \Big\{
@@ -4588,16 +4588,16 @@ vqc_fermionic_double_excitation
         \hat{Y}_s \hat{X}_r \hat{Y}_q \hat{Y}_p +\\ \hat{X}_s \hat{Y}_r \hat{Y}_q \hat{Y}_p +
         \hat{X}_s \hat{X}_r \hat{X}_q \hat{Y}_p - \mathrm{H.c.} ) \Big\}
 
-    Esta funci00f3n tiene el alias: ``VQC_FermionicDoubleExcitation`` .
+    Esta función tiene el alias: ``VQC_FermionicDoubleExcitation`` .
 
-    :param weight: par00e1metro variable
-    :param wires1: representa el subconjunto de qubits en el intervalo de lista de 00edndices [s, r]. El 00edndice a-th se interpreta como s y el 00faltimo 00edndice se interpreta como r. La compuerta CNOT opera en los 00edndices intermedios para calcular la paridad de un grupo de qubits.
-    :param wires2: representa el subconjunto de qubits en el intervalo de lista de 00edndices [q, p]. El primer 00edndice ra00edz se interpreta como q y el 00faltimo 00edndice se interpreta como p. La compuerta CNOT opera en los 00edndices intermedios para calcular la paridad de un grupo de qubits.
-    :param q_machine: Dispositivo de m00e1quina virtual cu00e1ntica.
+    :param weight: parámetro variable
+    :param wires1: representa el subconjunto de qubits en el intervalo de lista de índices [s, r]. El índice a-th se interpreta como s y el último índice se interpreta como r. La compuerta CNOT opera en los índices intermedios para calcular la paridad de un grupo de qubits.
+    :param wires2: representa el subconjunto de qubits en el intervalo de lista de índices [q, p]. El primer índice raíz se interpreta como q y el último índice se interpreta como p. La compuerta CNOT opera en los índices intermedios para calcular la paridad de un grupo de qubits.
+    :param q_machine: Dispositivo de máquina virtual cuántica.
 
     
 
-    Examples::
+    Ejemplos::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4619,9 +4619,9 @@ vqc_uccsd
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_uccsd(weights, wires, s_wires, d_wires, init_state, q_machine)
 
-    Implementa la Simulaci00f3n de Excitaciones 00danicas y Dobles del Cluster Acoplado Unitario (UCCSD). UCCSD es una simulaci00f3n VQE com00fanmente usada para ejecutar simulaciones de qu00edmica cu00e1ntica.
+    Implementa la Simulación de Excitaciones Únicas y Dobles del Cluster Acoplado Unitario (UCCSD). UCCSD es una simulación VQE comúnmente usada para ejecutar simulaciones de química cuántica.
 
-    Within the first-order Trotter approximation, the UCCSD unitary function is given by:
+    Dentro de la aproximación de Trotter de primer orden, la función unitaria UCCSD viene dada por:
 
     .. math::
         \hat{U}(\vec{\theta}) =
@@ -4630,21 +4630,21 @@ vqc_uccsd
         \prod_{p > q > r > s} \mathrm{exp} \Big\{\theta_{pqrs}
         (\hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r \hat{c}_s-\mathrm{H.c.}) \Big\}
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are fermion annihilation and
-    creation operators and index :math:`r, s` and :math:`p, q` on occupied and
-    empty molecular orbitals respectively. (For more details see
+    donde :math:`\hat{c}` y :math:`\hat{c}^\dagger` son los operadores de aniquilación y
+    creación de fermiones, e indexan :math:`r, s` y :math:`p, q` en orbitales moleculares
+    ocupados y vacíos respectivamente. (Para más detalles, consulte
     `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_):
 
-    Esta funci00f3n tiene el alias: ``VQC_UCCSD`` .
+    Esta función tiene el alias: ``VQC_UCCSD`` .
 
-    :param weights: tensor de tama00f1o ``(len(s_wires)+ len(d_wires))`` que contiene los par00e1metros :math:`\theta_{pr}` and :math:`\theta_{pqrs}` input Z rotations ``FermionicSingleExcitation`` and ``FermionicDoubleExcitation`` .
-    :param wires: 00edndices de qubits para la acci00f3n de la plantilla
-    :param s_wires: secuencia de listas que contienen 00edndices de qubits ``[r,...,p]`` generados por una excitaci00f3n simple :math:`\vert r, p \rangle = \hat{c}_p^\dagger \hat{c}_r \vert \mathrm{HF} \rangle`,where :math:`\vert \mathrm{HF} \rangle` denotes the Hartee-Fock reference state.
-    :param d_wires: secuencia de listas, cada una conteniendo dos listas que especifican 00edndices ``[s,...,r]`` y ``[q,...,p]`` definiendo doble excitaci00f3n :math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \vert \mathrm{HF} \rangle` .
-    :param init_state: vector de n00fameros de ocupaci00f3n de longitud ``len(wires)`` que representa el estado de alta frecuencia. ``init_state`` Estado de inicializaci00f3n del qubit.
-    :param q_machine: Dispositivo de m00e1quina virtual cu00e1ntica.
+    :param weights: tensor de tamaño ``(len(s_wires)+ len(d_wires))`` que contiene los parámetros :math:`\theta_{pr}` y :math:`\theta_{pqrs}` de las rotaciones Z de entrada ``FermionicSingleExcitation`` y ``FermionicDoubleExcitation`` .
+    :param wires: índices de qubits para la acción de la plantilla
+    :param s_wires: secuencia de listas que contienen índices de qubits ``[r,...,p]`` generados por una excitación simple :math:`\vert r, p \rangle = \hat{c}_p^\dagger \hat{c}_r \vert \mathrm{HF} \rangle`, donde :math:`\vert \mathrm{HF} \rangle` denota el estado de referencia de Hartree-Fock.
+    :param d_wires: secuencia de listas, cada una conteniendo dos listas que especifican índices ``[s,...,r]`` y ``[q,...,p]`` definiendo doble excitación :math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \vert \mathrm{HF} \rangle` .
+    :param init_state: vector de números de ocupación de longitud ``len(wires)`` que representa el estado de alta frecuencia. ``init_state`` Estado de inicialización del qubit.
+    :param q_machine: Dispositivo de máquina virtual cuántica.
 
-    Examples::
+    Ejemplos::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4669,9 +4669,9 @@ vqc_zfeaturemap
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_zfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.torch.QMachine, data_map_func=None, rep: int = 2)
 
-    Circuito de evoluci00f3n Pauli Z de primer orden.
+    Circuito de evolución Pauli Z de primer orden.
 
-    For 3 qubits and 2 repetitions, the circuit is represented as:
+    Para 3 qubits y 2 repeticiones, el circuito se representa como:
 
     .. parsed-literal::
 
@@ -4683,14 +4683,14 @@ vqc_zfeaturemap
         ┤ H ├┤ U1(2.0*x[2]) ├┤ H ├┤ U1(2.0*x[2]) ├
         └───┘└──────────────┘└───┘└──────────────┘
 
-    La cadena Pauli est00e1 fijada a ``Z``. Por lo tanto, la expansi00f3n de primer orden ser00e1 un circuito sin compuertas de entrelazamiento.
+    La cadena Pauli está fijada a ``Z``. Por lo tanto, la expansión de primer orden será un circuito sin compuertas de entrelazamiento.
 
     :param input_feat: Arreglo que representa los parámetros de entrada.
-    :param q_machine: M00e1quina virtual cu00e1ntica.
-    :param data_map_func: Matriz de mapeo de par00e1metros, una funci00f3n invocable, dise00f1ada como: ``data_map_func = lambda x: x``.
-    :param rep: N00famero de veces que se repite el m00f3dulo.
+    :param q_machine: Máquina virtual cuántica.
+    :param data_map_func: Matriz de mapeo de parámetros, una función invocable, diseñada como: ``data_map_func = lambda x: x``.
+    :param rep: Número de veces que se repite el módulo.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4708,9 +4708,9 @@ vqc_zzfeaturemap
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_zzfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.torch.QMachine, data_map_func=None, entanglement: Union[str, List[List[int]],Callable[[int], List[int]]] = "full",rep: int = 2)
 
-    Circuito de evoluci00f3n Pauli-Z de segundo orden.
+    Circuito de evolución Pauli-Z de segundo orden.
 
-    For 3 qubits, 1 repeat, and linear entanglement, the circuit is represented as:
+    Para 3 qubits, 1 repetición y entrelazamiento lineal, el circuito se representa como:
 
     .. parsed-literal::
 
@@ -4723,7 +4723,7 @@ vqc_zzfeaturemap
         ┤ H ├┤ U1(2.0*φ(x[2])) ├──────────────────────────────────┤ X ├┤ U1(2.0*φ(x[1],x[2])) ├┤ X ├
         └───┘└─────────────────┘                                  └───┘└──────────────────────┘└───┘
     
-    Donde ``φ`` es una funci00f3n no lineal cl00e1sica. Si se ingresan dos valores, ``φ(x,y) = (pi - x)(pi - y)``, y si se ingresa uno, ``φ(x) = x``. Se expresa de la siguiente manera usando ``data_map_func``:
+    Donde ``φ`` es una función no lineal clásica. Si se ingresan dos valores, ``φ(x,y) = (pi - x)(pi - y)``, y si se ingresa uno, ``φ(x) = x``. Se expresa de la siguiente manera usando ``data_map_func``:
 
     .. code-block::
 
@@ -4732,12 +4732,12 @@ vqc_zzfeaturemap
             return coeff
 
     :param input_feat: Arreglo que representa los parámetros de entrada.
-    :param q_machine: M00e1quina virtual cu00e1ntica.
-    :param data_map_func: matriz de mapeo de par00e1metros, una funci00f3n invocable.
+    :param q_machine: Máquina virtual cuántica.
+    :param data_map_func: matriz de mapeo de parámetros, una función invocable.
     :param entanglement: estructura de entrelazamiento especificada.
-    :param rep: veces de repetici00f3n del m00f3dulo.
+    :param rep: veces de repetición del módulo.
     
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4754,18 +4754,18 @@ vqc_allsinglesdoubles
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_allsinglesdoubles(weights, q_machine: pyvqnet.qnn.vqc.torch.QMachine, hf_state, wires, singles=None, doubles=None)
 
-    En este caso, tenemos cuatro excitaciones simples y dobles para preservar la proyecci00f3n de esp00edn total del estado de Hartree-Fock.
+    En este caso, tenemos cuatro excitaciones simples y dobles para preservar la proyección de espín total del estado de Hartree-Fock.
 
-    La matriz unitaria resultante preserva la poblaci00f3n de part00edculas y prepara el sistema de n-qubits en una superposici00f3n del estado inicial de Hartree-Fock y otros estados que codifican la configuraci00f3n de m00faltiples excitaciones.
+    La matriz unitaria resultante preserva la población de partículas y prepara el sistema de n-qubits en una superposición del estado inicial de Hartree-Fock y otros estados que codifican la configuración de múltiples excitaciones.
 
-    :param weights: Un QTensor de tama00f1o ``(len(singles) + len(doubles),)`` que contiene los 00e1ngulos que entran en las operaciones vqc.qCircuit.single_excitation y vqc.qCircuit.double_excitation en secuencia
-    :param q_machine: La m00e1quina cu00e1ntica.
-    :param hf_state: Un vector de longitud ``len(wires)`` de n00fameros de ocupaci00f3n que representa el estado de Hartree-Fock, ``hf_state`` usado para inicializar los wires.
+    :param weights: Un QTensor de tamaño ``(len(singles) + len(doubles),)`` que contiene los ángulos que entran en las operaciones vqc.qCircuit.single_excitation y vqc.qCircuit.double_excitation en secuencia
+    :param q_machine: La máquina cuántica.
+    :param hf_state: Un vector de longitud ``len(wires)`` de números de ocupación que representa el estado de Hartree-Fock, ``hf_state`` usado para inicializar los wires.
     :param wires: Los qubits sobre los que actuar.
-    :param singles: Una secuencia de listas con los 00edndices de los dos qubits sobre los que act00faa la operaci00f3n single_excitation.
-    :param doubles: Secuencia de listas con los 00edndices de los dos qubits sobre los que act00faa la operaci00f3n double_excitation.
+    :param singles: Una secuencia de listas con los índices de los dos qubits sobre los que actúa la operación single_excitation.
+    :param doubles: Secuencia de listas con los índices de los dos qubits sobre los que actúa la operación double_excitation.
 
-    Por ejemplo, el circuito cu00e1ntico para dos electrones y seis qubits se muestra a continuaci00f3n:
+    Por ejemplo, el circuito cuántico para dos electrones y seis qubits se muestra a continuación:
 
     .. image:: ./images/all_singles_doubles.png
         :width: 600 px
@@ -4773,7 +4773,7 @@ vqc_allsinglesdoubles
 
     |
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4792,19 +4792,19 @@ vqc_basisrotation
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_basisrotation(q_machine: pyvqnet.qnn.vqc.torch.QMachine, wires, unitary_matrix: QTensor, check=False)
 
-    Implementa un circuito que proporciona un conjunto que puede usarse para realizar rotaciones precisas de base unitaria simple. The circuit is derived from the single-particle fermion-determined unitary transformation :math:`U(u)` given in `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\ 
+    Implementa un circuito que proporciona un conjunto que puede usarse para realizar rotaciones precisas de base unitaria simple. El circuito se deriva de la transformación unitaria determinada por fermiones de una partícula :math:`U(u)` dada en `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\
     
     .. math::
         U(u) = \exp{\left( \sum_{pq} \left[\log u \right]_{pq} (a_p^\dagger a_q - a_q^\dagger a_p) \right)}.
 
-    :math:`U(u)` is obtained by using the scheme given in the paper `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\ .
+    :math:`U(u)` se obtiene usando el esquema dado en el artículo `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\ .
 
-    :param q_machine: m00e1quina cu00e1ntica.
+    :param q_machine: máquina cuántica.
     :param wires: qubits sobre los que actuar.
-    :param unitary_matrix: matriz que especifica la base para la transformaci00f3n.
+    :param unitary_matrix: matriz que especifica la base para la transformación.
     :param check: verificar si `unitary_matrix` es una matriz unitaria.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
 
@@ -4836,16 +4836,16 @@ vqc_quantumpooling_circuit
 
 .. py:function:: pyvqnet.qnn.vqc.torch.vqc_quantumpooling_circuit(ignored_wires, sinks_wires, params, q_machine)
 
-    Circuito cu00e1ntico que reduce la resoluci00f3n de los datos.
+    Circuito cuántico que reduce la resolución de los datos.
 
-    Para reducir el n00famero de qubits en el circuito, primero se crean pares de qubits en el sistema. Despu00e9s de emparejar inicialmente todos los qubits, se aplica una unitaria generalizada de 2 qubits a cada par de qubits. Y despu00e9s de aplicar estas unitarias de dos qubits, se ignora un qubit en cada par de qubits para el resto de la red neuronal.
+    Para reducir el número de qubits en el circuito, primero se crean pares de qubits en el sistema. Después de emparejar inicialmente todos los qubits, se aplica una unitaria generalizada de 2 qubits a cada par de qubits. Y después de aplicar estas unitarias de dos qubits, se ignora un qubit en cada par de qubits para el resto de la red neuronal.
 
-    :param sources_wires: 00cdndices de qubits fuente que ser00e1n ignorados.
-    :param sinks_wires: 00cdndices de qubits destino que ser00e1n retenidos.
-    :param params: Par00e1metros de entrada.
-    :param q_machine: Dispositivo de m00e1quina virtual cu00e1ntica.
+    :param sources_wires: Índices de qubits fuente que serán ignorados.
+    :param sinks_wires: Índices de qubits destino que serán retenidos.
+    :param params: Parámetros de entrada.
+    :param q_machine: Dispositivo de máquina virtual cuántica.
 
-    Examples:: 
+    Ejemplos::
 
         import pyvqnet
 
@@ -4870,7 +4870,7 @@ QuantumLayerAdjoint
 .. py:class:: pyvqnet.qnn.vqc.torch.QuantumLayerAdjoint(general_module: pyvqnet.nn.Module, use_qpanda=False, name="")
 
 
-    Una capa QuantumLayer automáticamente diferenciable que usa el enfoque de matriz adjunta para calcular gradientes, see `Efficient calculation of gradients in classical simulations of variational quantum algorithms <https://arxiv.org/abs/2009.02823>`_ .
+    Una capa QuantumLayer automáticamente diferenciable que usa el enfoque de matriz adjunta para calcular gradientes, consulte `Efficient calculation of gradients in classical simulations of variational quantum algorithms <https://arxiv.org/abs/2009.02823>`_ .
 
     :param general_module: una instancia de `pyvqnet.nn.Module` construida usando solo la interfaz de circuito cuántico bajo ``pyvqnet.qnn.vqc.torch``.
     :param use_qpanda: Si usar la línea qpanda para la transmisión forward, valor predeterminado: False.
@@ -4883,7 +4883,7 @@ QuantumLayerAdjoint
         Actualmente soporta las siguientes compuertas lógicas parametrizadas `RX`, `RY`, `RZ`, `PhaseShift`, `RXX`, `RYY`, `RZZ`, `RZX`, `U1`, `U2`, `U3` y otros circuitos variacionales que consisten en compuertas lógicas no paramétricas.
 
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -4944,7 +4944,7 @@ QuantumLayerAdjoint
 
 
 
-M00f3dulo de Circuito Cu00e1ntico Variacional con Backend de Red de Tensores
+Módulo de Circuito Cuántico Variacional con Backend de Red de Tensores
 ==========================================================================================
 
 La Red de Tensores (TN) reduce significativamente la complejidad computacional descomponiendo un tensor complejo en una red de múltiples tensores de baja dimensión.
@@ -4990,7 +4990,7 @@ TNQModule
             estos argumentos deben compartir la misma forma de lote en la primera dimensión, valor predeterminado 0.
     :param name: nombre del Módulo.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         from pyvqnet.nn import Parameter
@@ -5062,13 +5062,13 @@ TNQMachine
 
     .. warning::
         
-        In the quantum circuit of the tensor network, the ``vmap`` function will be enabled by default, and the batch dimension will be discarded in the logic gate parameters on the line.
-        When using the call parameter, if the dimension is [batch_size, \*], the first batch_size dimension is discarded, and the following dimensions are used directly, e.g., for the input data x[:,1] -> x[1], and for the trainable parameter as well, see the following example for the usage of xx, weights.
+        En el circuito cuántico de la red de tensores, la función ``vmap`` se habilitará de forma predeterminada y la dimensión de lote se descartará en los parámetros de las compuertas lógicas de la línea.
+        Al usar el parámetro de llamada, si la dimensión es [batch_size, \*], se descarta la primera dimensión batch_size y se usan directamente las dimensiones siguientes; por ejemplo, para los datos de entrada x[:,1] -> x[1], y también para el parámetro entrenable; consulte el siguiente ejemplo para el uso de xx, weights.
 
     .. note::
 
-        Before each run of the complete quantum circuit, you must use `pyvqnet.qnn.vqc.QMachine.reset_states(batchsize)` to reinitialize the initial state in the simulator and broadcast it to
-        (batchsize,*) dimensions to adapt to batch data training.
+        Antes de cada ejecución del circuito cuántico completo, debe usar `pyvqnet.qnn.vqc.QMachine.reset_states(batchsize)` para reinicializar el estado inicial en el simulador y transmitirlo a
+        (batchsize,*) dimensiones para adaptarse al entrenamiento con datos por lotes.
 
     :param num_wires: número de qubits a usar
     :param dtype: tipo de datos interno usado para calcular.
@@ -5076,7 +5076,7 @@ TNQMachine
 
     :return: Produce un objeto TNQMachine.
 
-    Example::
+    Ejemplo::
         
         import pyvqnet
         from pyvqnet.nn import Parameter
@@ -5141,7 +5141,7 @@ TNQMachine
 Módulo de compuerta lógica cuántica variacional
 ------------------------------------------------
 
-The following function interfaces in ``pyvqnet.qnn.vqc`` directly support ``QTensor`` of ``torch`` backend for calculation, import path ``pyvqnet.qnn.vqc.tn``.
+Las siguientes interfaces de funciones en ``pyvqnet.qnn.vqc`` admiten directamente ``QTensor`` del backend ``torch`` para su cálculo, ruta de importación ``pyvqnet.qnn.vqc.tn``.
 
 .. csv-table:: Lista de interfaces pyvqnet.qnn.vqc soportadas
     :file: ./images/same_apis_from_tn.csv
@@ -5173,7 +5173,7 @@ I
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import I,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5221,7 +5221,7 @@ Hadamard
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import Hadamard,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5268,7 +5268,7 @@ T
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import T,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5316,7 +5316,7 @@ S
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import S,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5364,7 +5364,7 @@ PauliX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import PauliX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5413,7 +5413,7 @@ PauliY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import PauliY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5461,7 +5461,7 @@ PauliZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import PauliZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5510,7 +5510,7 @@ X1
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import X1,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5558,7 +5558,7 @@ RX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import RX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5608,7 +5608,7 @@ RY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import RY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5655,7 +5655,7 @@ RZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import RZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5702,7 +5702,7 @@ CRX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import CRX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5752,7 +5752,7 @@ CRY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import CRY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5800,7 +5800,7 @@ CRZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import CRZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5848,7 +5848,7 @@ U1
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import U1,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5896,7 +5896,7 @@ U2
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import U2,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5944,7 +5944,7 @@ U3
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import U3,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -5992,7 +5992,7 @@ CNOT
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import CNOT,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6038,7 +6038,7 @@ CY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import CY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6085,7 +6085,7 @@ CZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import CZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6135,7 +6135,7 @@ CR
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import CR,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6184,7 +6184,7 @@ SWAP
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import SWAP,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6242,7 +6242,7 @@ CSWAP
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import CSWAP,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6289,7 +6289,7 @@ RXX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import RXX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6335,7 +6335,7 @@ RYY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import RYY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6382,7 +6382,7 @@ RZZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import RZZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6430,7 +6430,7 @@ RZX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import RZX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6476,7 +6476,7 @@ Toffoli
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import Toffoli,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6523,7 +6523,7 @@ IsingXX
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import IsingXX,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6571,7 +6571,7 @@ IsingYY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import IsingYY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6618,7 +6618,7 @@ IsingZZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import IsingZZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6666,7 +6666,7 @@ IsingXY
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import IsingXY,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6714,7 +6714,7 @@ PhaseShift
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import PhaseShift,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6761,7 +6761,7 @@ MultiRZ
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import MultiRZ,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6810,7 +6810,7 @@ SDG
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import SDG,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6859,7 +6859,7 @@ TDG
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
         
         from pyvqnet.qnn.vqc.tn import TDG,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6908,7 +6908,7 @@ ControlledPhaseShift
     :param use_dagger: si usar la versión transpuesta conjugada de la compuerta, el valor predeterminado es False.
     :return: una instancia de ``pyvqnet.qnn.vqc.tn.QModule``
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn import ControlledPhaseShift,TNQMachine,TNQModule,MeasureAll, rx
         import pyvqnet
@@ -6937,7 +6937,7 @@ ControlledPhaseShift
         print(y)
 
 
-Measurements API
+API de mediciones
 ------------------------------
 
 VQC_Purity
@@ -6946,27 +6946,27 @@ VQC_Purity
 
 .. py:function:: pyvqnet.qnn.vqc.tn.VQC_Purity(state, qubits_idx, num_wires, use_tn=False)
 
-    Calculate the purity on a particular qubit ``qubits_idx`` from the state vector ``state``.
+    Calcula la pureza en un qubit concreto ``qubits_idx`` a partir del vector de estado ``state``.
 
     .. math::
         \gamma = \text{Tr}(\rho^2)
 
-    where :math:`\rho` is a density matrix. The purity of a normalized quantum state satisfies :math:`\frac{1}{d} \leq \gamma \leq 1` ,
-    where :math:`d` is the dimension of the Hilbert space.
-    The purity of the pure state is 1.
+    donde :math:`\rho` es una matriz de densidad. La pureza de un estado cuántico normalizado satisface :math:`\frac{1}{d} \leq \gamma \leq 1`,
+    donde :math:`d` es la dimensión del espacio de Hilbert.
+    La pureza del estado puro es 1.
 
-    :param state: Quantum state obtained from TNQMachine.get_states()
-    :param qubits_idx: Qubit index for which to calculate purity
-    :param num_wires: Qubit idx
-    :param use_tn: use tensornetwork need to be set True, default False
+    :param state: Estado cuántico obtenido de TNQMachine.get_states()
+    :param qubits_idx: Índice del qubit para el que se calcula la pureza
+    :param num_wires: Índice de qubit
+    :param use_tn: usar tensornetwork; debe establecerse en True, valor predeterminado False
 
-    :return: purity
+    :return: pureza
 
     .. note::
         
-        batch_size need TNQModule.
+        batch_size requiere TNQModule.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         from pyvqnet.qnn.vqc.tn import TNQMachine, qcircuit, TNQModule,VQC_Purity
@@ -7000,14 +7000,14 @@ VQC_VarMeasure
 
 .. py:function:: pyvqnet.qnn.vqc.tn.VQC_VarMeasure(q_machine, obs)
 
-    Return the measurement variance of the provided observable ``obs`` in statevectors in ``q_machine`` .
+    Devuelve la varianza de medición del observable proporcionado ``obs`` en los vectores de estado de ``q_machine``.
 
-    :param q_machine: Estado cu00e1ntico obtenido de pyqpanda get_qstate()
+    :param q_machine: Estado cuántico obtenido de pyqpanda get_qstate()
     :param obs: observables
 
-    :return: variance value
+    :return: valor de la varianza
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         from pyvqnet.qnn.vqc.tn import TNQMachine, qcircuit, VQC_VarMeasure, TNQModule,PauliY
@@ -7046,15 +7046,15 @@ VQC_DensityMatrixFromQstate
 
 .. py:function:: pyvqnet.qnn.vqc.tn.VQC_DensityMatrixFromQstate(state, indices, use_tn=False)
 
-    Computes the density matrix of quantum states ``state`` over a specific set of qubits ``indices`` .
+    Calcula la matriz de densidad de los estados cuánticos ``state`` sobre un conjunto específico de qubits ``indices``.
 
-    :param state: A 1D list of state vectors. The size of this list should be ``(2**N,)`` For the number of qubits ``N``, qstate should start from 000 -> 111.
-    :param indices: A list of qubit indices in the considered subsystem.
-    :param use_tn: use tensornetwork need to be set True, default False.
+    :param state: Una lista 1D de vectores de estado. El tamaño de esta lista debe ser ``(2**N,)``. Para el número de qubits ``N``, qstate debe comenzar desde 000 -> 111.
+    :param indices: Una lista de índices de qubits en el subsistema considerado.
+    :param use_tn: usar tensornetwork; debe establecerse en True, valor predeterminado False.
 
-    :return: A density matrix of size "(b, 2**len(indices), 2**len(indices))".
+    :return: Una matriz de densidad de tamaño "(b, 2**len(indices), 2**len(indices))".
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         from pyvqnet.tensor import QTensor
@@ -7100,22 +7100,22 @@ VQC_DensityMatrixFromQstate
         #   0.4356633+0.j       ]]]   
 
 
-Probability
+Probabilidad
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 .. py:class:: pyvqnet.qnn.vqc.tn.Probability(wires=None, name="")
 
-    Calcula el resultado de medici00f3n de probabilidad del circuito cu00e1ntico en un bit espec00edfico.
+    Calcula el resultado de medición de probabilidad del circuito cuántico en un bit específico.
 
     Esta clase hereda de ``pyvqnet.qnn.vqc.tn.QModule`` y ``torch.nn.Module``.
     Esta clase se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
-    :param wires: The index of the measurement bit, list, tuple or integer.
-    :param name: El nombre del m00f3dulo, valor predeterminado: ""
-    :return: The measurement result, QTensor.
+    :param wires: El índice del bit de medición, lista, tupla o entero.
+    :param name: El nombre del módulo, valor predeterminado: ""
+    :return: El resultado de la medición, QTensor.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7140,25 +7140,25 @@ MeasureAll
 
 .. py:class:: pyvqnet.qnn.vqc.tn.MeasureAll(obs=None, name="")
 
-    Calcula los resultados de medici00f3n de circuitos cu00e1nticos, soporta entrada obs como m00faltiples o simples operadores Pauli o Hamiltonianos.
+    Calcula los resultados de medición de circuitos cuánticos, soporta entrada obs como múltiples o simples operadores Pauli o Hamiltonianos.
     
-    For example:
+    Por ejemplo:
 
-    {\'X0\': 0.23} indicates a PauliX effect on qubit 0, with a coefficient of 0.23.
+    {\'X0\': 0.23} indica un efecto PauliX sobre el qubit 0, con un coeficiente de 0.23.
 
-    {\'X1 Z2\': 2.4,\'Y2\': -0.5} corresponds to the observed value 2.4 * X1 @ Z2 - 0.5 * Y2.
+    {\'X1 Z2\': 2.4,\'Y2\': -0.5} corresponde al valor observado 2.4 * X1 @ Z2 - 0.5 * Y2.
 
-    [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] corresponds to the two observed values 4 * X1 @ Z2 + 3 * Z1 @ Z0 and 3.5 * X1 @ Y2 @ Z0.
+    [{\'X1 Z2\': 4,\'Z1 Z0\': 3},{\'X1 Y2 Z0\': 3.5}] corresponde a los dos valores observados 4 * X1 @ Z2 + 3 * Z1 @ Z0 y 3.5 * X1 @ Y2 @ Z0.
         
     Esta clase hereda de ``pyvqnet.qnn.vqc.tn.QModule`` y ``torch.nn.Module``.
 
     Esta clase se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
     :param obs: observable.
-    :param name: nombre del m00f3dulo, valor predeterminado: ""
-    :return: measurement result, QTensor.
+    :param name: nombre del módulo, valor predeterminado: ""
+    :return: resultado de la medición, QTensor.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7185,24 +7185,24 @@ MeasureAll
 
 
 
-Samples
+Muestras
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. py:class:: pyvqnet.qnn.vqc.tn.Samples(wires=None, obs=None, shots = 1,name="")
 
-    Get sample results with shot on  specific wires.
+    Obtiene resultados de muestreo con ``shots`` en cables específicos.
 
     Esta clase hereda de ``pyvqnet.qnn.vqc.tn.QModule`` y ``torch.nn.Module``.
     Esta clase se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
 
-    :param wires: 00cdndice del qubit de muestreo. Valor predeterminado: None, usa todos los bits del simulador en tiempo de ejecuci00f3n.
+    :param wires: Índice del qubit de muestreo. Valor predeterminado: None, usa todos los bits del simulador en tiempo de ejecución.
     :param obs: Este valor solo puede ser None.
     :param shots: Recuento de repeticiones de muestreo, valor predeterminado: 1.
-    :param name: El nombre de este m00f3dulo, valor predeterminado: ""
-    :return: a measurement method class
+    :param name: El nombre de este módulo, valor predeterminado: ""
+    :return: una clase de método de medición
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7231,17 +7231,17 @@ HermitianExpval
 
 .. py:class:: pyvqnet.qnn.vqc.tn.HermitianExpval(obs=None, name="")
 
-    Calcula la expectativa de una cantidad Hermitiana en un circuito cu00e1ntico.
+    Calcula la expectativa de una cantidad Hermitiana en un circuito cuántico.
 
     Esta clase hereda de ``pyvqnet.qnn.vqc.tn.QModule`` y ``torch.nn.Module``.
     Esta clase se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
 
     :param obs: Cantidad Hermitiana.
-    :param name: nombre del m00f3dulo, valor predeterminado: ""
-    :return: expected result, QTensor.
+    :param name: nombre del módulo, valor predeterminado: ""
+    :return: resultado esperado, QTensor.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7293,7 +7293,7 @@ HermitianExpval
 
         print(batch_y)
 
-Plantillas comunes para circuitos cu00e1nticos
+Plantillas comunes para circuitos cuánticos
 ----------------------------------------------
 
 VQC_HardwareEfficientAnsatz
@@ -7302,23 +7302,23 @@ VQC_HardwareEfficientAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_HardwareEfficientAnsatz(n_qubits,single_rot_gate_list,entangle_gate="CNOT",entangle_rules='linear',depth=1,initial=None,dtype=None)
 
-    Implementation of Hardware Efficient Ansatz introduced in the paper: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
+    Implementación de Hardware Efficient Ansatz presentado en el artículo: `Hardware-efficient Variational Quantum Eigensolver for Small Molecules <https://arxiv.org/pdf/1704.05018.pdf>`__ .
 
     Esta clase hereda de ``pyvqnet.qnn.vqc.tn.QModule`` y ``torch.nn.Module``.
 
     Esta clase se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
 
-    :param n_qubits: Number of qubits.
-    :param single_rot_gate_list: A single qubit rotation gate list is constructed by one or several rotation gate that act on every qubit.Currently support Rx, Ry, Rz.
-    :param entangle_gate: The non parameterized entanglement gate.CNOT,CZ is supported.default:CNOT.
-    :param entangle_rules: How entanglement gate is used in the circuit. 'linear' means the entanglement gate will be act on every neighboring qubits. 'all' means the entanglment gate will be act on any two qbuits. Default:linear.
-    :param depth: The depth of ansatz, default:1.
-    :param initial: initial one same value for paramaters,default:None,this module will initialize parameters randomly.
-    :param dtype: data dtype of parameters.
-    :return: a VQC_HardwareEfficientAnsatz instance.
+    :param n_qubits: Número de qubits.
+    :param single_rot_gate_list: Una lista de compuertas de rotación de un solo qubit construida por una o varias compuertas de rotación que actúan en cada qubit. Actualmente soporta Rx, Ry, Rz.
+    :param entangle_gate: La compuerta de entrelazamiento no parametrizada. Se soporta CNOT, CZ. Valor predeterminado: CNOT.
+    :param entangle_rules: Cómo se usa la compuerta de entrelazamiento en el circuito. 'linear' significa que la compuerta de entrelazamiento actuará en cada par de qubits vecinos. 'all' significa que la compuerta de entrelazamiento actuará en cualquier par de qubits. Valor predeterminado: linear.
+    :param depth: La profundidad del ansatz, valor predeterminado: 1.
+    :param initial: valor inicial único para los parámetros, valor predeterminado: None, este módulo inicializará los parámetros aleatoriamente.
+    :param dtype: tipo de datos de los parámetros.
+    :return: una instancia de VQC_HardwareEfficientAnsatz.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.nn.torch import Linear
         from pyvqnet.qnn.vqc.tn.qcircuit import VQC_HardwareEfficientAnsatz,RZZ,RZ
@@ -7363,22 +7363,22 @@ VQC_BasicEntanglerTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_BasicEntanglerTemplate(num_layer=1, num_qubits=1, rotation="RX", initial=None, dtype=None)
 
-    A layer consisting of a single-parameter single-qubit rotation on each qubit, followed by multiple CNOT gates in a closed chain or ring combination.
+    Una capa que consiste en una rotación de un solo qubit con un solo parámetro en cada qubit, seguida de múltiples compuertas CNOT en una combinación de cadena cerrada o anillo.
 
-    A ring of CNOT gates connects each qubit to its neighbors, and finally the a qubit is considered to be the neighbor of the a th qubit.
+    Un anillo de compuertas CNOT conecta cada qubit con sus vecinos, y finalmente el qubit a se considera vecino del qubit a-ésimo.
 
     Esta clase hereda de ``pyvqnet.qnn.vqc.tn.QModule`` y ``torch.nn.Module``.
 
     Esta clase se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
-    :param num_layers: number of repeat layers, default: 1.
-    :param num_qubits: number of qubits, default: 1.
-    :param rotation: one-parameter single-qubit gate to use, default: `RX`
-    :param initial: initialized same value for all paramters. default:None,parameters will be initialized randomly.
-    :param dtype: data type of parameter, default:None,use float32.
-    :return: A VQC_BasicEntanglerTemplate instance
+    :param num_layers: número de capas repetidas, valor predeterminado: 1.
+    :param num_qubits: número de qubits, valor predeterminado: 1.
+    :param rotation: compuerta de un solo qubit con un parámetro a usar, valor predeterminado: `RX`
+    :param initial: valor inicial igual para todos los parámetros. valor predeterminado: None, los parámetros se inicializarán aleatoriamente.
+    :param dtype: tipo de datos del parámetro, valor predeterminado: None, usa float32.
+    :return: Una instancia de VQC_BasicEntanglerTemplate
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7418,21 +7418,21 @@ VQC_StronglyEntanglingTemplate
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_StronglyEntanglingTemplate(num_layers=1, num_qubits=1, ranges=None,initial=None, dtype=None)
 
-    Layers consisting of single qubit rotations and entanglers, as in `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
+    Capas que consisten en rotaciones de un solo qubit y entrelazadores, como en `circuit-centric classifier design <https://arxiv.org/abs/1804.00633>`__ .
 
     Esta clase hereda de ``pyvqnet.qnn.vqc.tn.QModule`` y ``torch.nn.Module``.
     Esta clase se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
 
-    :param num_layers: number of repeat layers, default: 1.
-    :param num_qubits: number of qubits, default: 1.
-    :param ranges: sequence determining the range hyperparameter for each subsequent layer; default: None
-                                using :math: `r=l \mod M` for the :math:`l` th layer and :math:`M` qubits.
-    :param initial: initial value for all parameters.default: None,initialized randomly.
-    :param dtype: data type of parameter, default:None,use float32.
-    :return: A VQC_StronglyEntanglingTemplate instance.
+    :param num_layers: número de capas repetidas, valor predeterminado: 1.
+    :param num_qubits: número de qubits, valor predeterminado: 1.
+    :param ranges: secuencia que determina el hiperparámetro de rango para cada capa subsiguiente; valor predeterminado: None
+                                usando :math: `r=l \mod M` para la :math:`l`-ésima capa y :math:`M` qubits.
+    :param initial: valor inicial para todos los parámetros. valor predeterminado: None, inicializado aleatoriamente.
+    :param dtype: tipo de datos del parámetro, valor predeterminado: None, usa float32.
+    :return: Una instancia de VQC_StronglyEntanglingTemplate.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.nn.torch import TorchModule,Linear,TorchModuleList
         from pyvqnet.qnn.vqc.tn.qcircuit import VQC_StronglyEntanglingTemplate
@@ -7474,23 +7474,23 @@ VQC_QuantumEmbedding
 
 .. py:class:: pyvqnet.qnn.vqc.tn.VQC_QuantumEmbedding(qubits, machine, num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
     
-    Use RZ,RY,RZ to create variational quantum circuits to encode classical data into quantum states.
-    Reference `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
+    Usa RZ, RY, RZ para crear circuitos cuánticos variacionales que codifican datos clásicos en estados cuánticos.
+    Referencia `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
 
     Esta clase hereda de ``pyvqnet.qnn.vqc.tn.QModule`` y ``torch.nn.Module``.
     Esta clase se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
  
-    :param num_repetitions_input: number of repeat times to encode input in a submodule.
-    :param depth_input: number of input dimension .
-    :param num_unitary_layers: number of repeat times of variational quantum gates.
-    :param num_repetitions: number of repeat times of submodule.
-    :param initial: valor de inicializaci00f3n de par00e1metros, valor predeterminado None
-    :param dtype: tipo de par00e1metro, valor predeterminado None, usa float32.
+    :param num_repetitions_input: número de repeticiones para codificar la entrada en un submódulo.
+    :param depth_input: número de dimensiones de entrada.
+    :param num_unitary_layers: número de repeticiones de compuertas cuánticas variacionales.
+    :param num_repetitions: número de repeticiones del submódulo.
+    :param initial: valor de inicialización de parámetros, valor predeterminado None
+    :param dtype: tipo de parámetro, valor predeterminado None, usa float32.
     :param name: nombre de la clase
-    :return: A VQC_QuantumEmbedding instance.
+    :return: Una instancia de VQC_QuantumEmbedding.
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn.qcircuit import VQC_QuantumEmbedding
         from pyvqnet.qnn.vqc.tn import TNQMachine, MeasureAll, TNQModule
@@ -7534,22 +7534,22 @@ ExpressiveEntanglingAnsatz
 
 .. py:class:: pyvqnet.qnn.vqc.tn.ExpressiveEntanglingAnsatz(type: int, num_wires: int, depth: int, dtype=None, name: str = "")
 
-    19 different ansatz from the paper `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
+    19 ansatz diferentes del artículo `Expressibility and entangling capability of parameterized quantum circuits for hybrid quantum-classical algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_.
 
     Esta clase hereda de ``pyvqnet.qnn.vqc.tn.QModule`` y ``torch.nn.Module``.
 
     Esta clase se puede agregar al modelo torch como submódulo de ``torch.nn.Module``.
 
-    :param type: Circuit type from 1 to 19, a total of 19 lines.
-    :param num_wires: Number of qubits.
-    :param depth: Circuit depth.
-    :param dtype: data type of parameter, default:None,use float32.
-    :param name: Name, default "".
+    :param type: Tipo de circuito del 1 al 19, un total de 19 líneas.
+    :param num_wires: Número de qubits.
+    :param depth: Profundidad del circuito.
+    :param dtype: tipo de datos del parámetro, valor predeterminado: None, usa float32.
+    :param name: Nombre, valor predeterminado "".
 
     :return:
-        a ExpressiveEntanglingAnsatz instance
+        una instancia de ExpressiveEntanglingAnsatz
 
-    Example::
+    Ejemplo::
 
         from pyvqnet.qnn.vqc.tn.qcircuit import ExpressiveEntanglingAnsatz
         from pyvqnet.qnn.vqc.tn import Probability, TNQMachine, MeasureAll, TNQModule
@@ -7592,15 +7592,15 @@ vqc_basis_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_basis_embedding(basis_state,q_machine)
 
-    Codifica n caracter00edsticas binarias en el estado base de n qubits de ``q_machine``. Esta funci00f3n tiene el alias `VQC_BasisEmbedding`.
+    Codifica n características binarias en el estado base de n qubits de ``q_machine``. Esta función tiene el alias `VQC_BasisEmbedding`.
 
-    For example, for ``basis_state=([0, 1, 1])``, the basis state in the quantum system is :math:`|011 \rangle`.
+    Por ejemplo, para ``basis_state=([0, 1, 1])``, el estado base en el sistema cuántico es :math:`|011 \rangle`.
 
-    :param basis_state: ``(n)`` size binary input.
-    :param q_machine: dispositivo de m00e1quina cu00e1ntica.
+    :param basis_state: entrada binaria de tamaño ``(n)``.
+    :param q_machine: dispositivo de máquina cuántica.
     
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7618,25 +7618,25 @@ vqc_angle_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_angle_embedding(input_feat, wires, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, rotation: str = "X")
 
-    Codifica :math:`N` características en el ángulo de rotación de :math:`n` qubits, where :math:`N \leq n`.
+    Codifica :math:`N` características en el ángulo de rotación de :math:`n` qubits, donde :math:`N \leq n`.
     Esta función tiene el alias `VQC_AngleEmbedding` .
 
-    La rotación se puede seleccionar como: 'X' , 'Y' , 'Z', as defined by the ``rotation`` parameter:
+    La rotación se puede seleccionar como: 'X' , 'Y' , 'Z', como se define mediante el parámetro ``rotation``:
 
-    * ``rotation='X'`` Usa la caracter00edstica como el 00e1ngulo de rotaci00f3n RX.
+    * ``rotation='X'`` Usa la característica como el ángulo de rotación RX.
 
-    * ``rotation='Y'`` Usa la caracter00edstica como el 00e1ngulo de rotaci00f3n RY.
+    * ``rotation='Y'`` Usa la característica como el ángulo de rotación RY.
 
-    * ``rotation='Z'`` Usa la caracter00edstica como el 00e1ngulo de rotaci00f3n RZ.
+    * ``rotation='Z'`` Usa la característica como el ángulo de rotación RZ.
 
-    ``wires`` representa el 00edndice de la compuerta de rotaci00f3n en el qubit.
+    ``wires`` representa el índice de la compuerta de rotación en el qubit.
 
     :param input_feat: Arreglo que representa los parámetros.
     :param wires: Índice del qubit.
     :param q_machine: Dispositivo de máquina cuántica.
     :param rotation: Compuerta de rotación, valor predeterminado "X".
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7657,13 +7657,13 @@ vqc_amplitude_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_amplitude_embedding(input_feature, q_machine)
 
-    Codifica una caracter00edstica de :math:`2^n` en un vector de amplitudes de :math:`n` qubits. Esta funci00f3n tiene el alias `VQC_AmplitudeEmbedding`.
+    Codifica una característica de :math:`2^n` en un vector de amplitudes de :math:`n` qubits. Esta función tiene el alias `VQC_AmplitudeEmbedding`.
 
-    :param input_feature: arreglo numpy que representa el par00e1metro.
-    :param q_machine: dispositivo de m00e1quina cu00e1ntica.
+    :param input_feature: arreglo numpy que representa el parámetro.
+    :param q_machine: dispositivo de máquina cuántica.
     
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7680,17 +7680,17 @@ vqc_iqp_embedding
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_iqp_embedding(input_feat, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, rep: int = 1)
 
-    Codifica :math:`n` caracter00edsticas en :math:`n` qubits usando compuertas diagonales de un circuito IQP. Alias: ``VQC_IQPEmbedding`` .
+    Codifica :math:`n` características en :math:`n` qubits usando compuertas diagonales de un circuito IQP. Alias: ``VQC_IQPEmbedding`` .
 
-    The encoding is proposed by `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
+    La codificación fue propuesta por `Havlicek et al. (2018) <https://arxiv.org/pdf/1804.11326.pdf>`_.
 
-    By specifying ``rep`` , the basic IQP circuit can be repeated.
+    Al especificar ``rep``, se puede repetir el circuito IQP básico.
 
-    :param input_feat: Array of parameters.
-    :param q_machine: M00e1quina cu00e1ntica.
-    :param rep: N00famero de veces para repetir el bloque de circuito cu00e1ntico, valor predeterminado 1.
+    :param input_feat: Arreglo de parámetros.
+    :param q_machine: Máquina cuántica.
+    :param rep: Número de veces para repetir el bloque de circuito cuántico, valor predeterminado 1.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7707,7 +7707,7 @@ vqc_rotcircuit
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_rotcircuit(q_machine, wire, params)
 
-    Combinaci00f3n arbitraria de compuertas l00f3gicas de rotaci00f3n de un solo bit cu00e1ntico. Esta funci00f3n tiene el alias: ``VQC_RotCircuit`` .
+    Combinación arbitraria de compuertas lógicas de rotación de un solo bit cuántico. Esta función tiene el alias: ``VQC_RotCircuit`` .
 
     .. math::
         R(\phi,\theta,\omega) = RZ(\omega)RY(\theta)RZ(\phi)= \begin{bmatrix}
@@ -7715,11 +7715,11 @@ vqc_rotcircuit
         e^{-i(\phi-\omega)/2}\sin(\theta/2) & e^{i(\phi+\omega)/2}\cos(\theta/2)
         \end{bmatrix}.
 
-    :param q_machine: dispositivo de m00e1quina virtual cu00e1ntica.
-    :param wire: quantum bit index.
+    :param q_machine: dispositivo de máquina virtual cuántica.
+    :param wire: índice del qubit.
     :param params: represents parameters :math:`[\phi, \theta, \omega]`.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7736,7 +7736,7 @@ vqc_crot_circuit
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_crot_circuit(para,control_qubits,rot_wire,q_machine)
 
-    Combinaci00f3n de compuertas l00f3gicas de rotaci00f3n controlada de un solo bit cu00e1ntico. Esta funci00f3n tiene el alias: ``VQC_CRotCircuit`` .
+    Combinación de compuertas lógicas de rotación controlada de un solo bit cuántico. Esta función tiene el alias: ``VQC_CRotCircuit`` .
 
     .. math:: 
         CR(\phi, \theta, \omega) = \begin{bmatrix}
@@ -7746,13 +7746,13 @@ vqc_crot_circuit
         0 & 0 & e^{-i(\phi-\omega)/2}\sin(\theta/2) & e^{i(\phi+\omega)/2}\cos(\theta/2)
         \end{bmatrix}.
 
-    :param para: represents the array of parameters.
-    :param control_qubits: Control qubit index.
-    :param rot_wire: Rot qubit index.
+    :param para: representa el arreglo de parámetros.
+    :param control_qubits: Índice del qubit de control.
+    :param rot_wire: Índice del qubit de rotación.
     :param q_machine: Dispositivo de máquina cuántica.
     
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7774,7 +7774,7 @@ vqc_controlled_hadamard
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_controlled_hadamard(wires, q_machine)
 
-    Circuito cu00e1ntico de compuerta l00f3gica Hadamard controlada. Esta funci00f3n tiene el alias: ``VQC_Controlled_Hadamard`` .
+    Circuito cuántico de compuerta lógica Hadamard controlada. Esta función tiene el alias: ``VQC_Controlled_Hadamard`` .
 
     .. math:: 
         CH = \begin{bmatrix}
@@ -7784,10 +7784,10 @@ vqc_controlled_hadamard
         0 & 0 & \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}
         \end{bmatrix}.
 
-    :param wires: lista de 00edndices de bits cu00e1nticos, el primero es el bit de control, la longitud de la lista es 2.
-    :param q_machine: dispositivo de m00e1quina virtual cu00e1ntica.
+    :param wires: lista de índices de bits cuánticos, el primero es el bit de control, la longitud de la lista es 2.
+    :param q_machine: dispositivo de máquina virtual cuántica.
 
-    Examples::
+    Ejemplos::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7808,7 +7808,7 @@ vqc_ccz
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_ccz(wires, q_machine)
 
-    Controlled-controlled-Z logic gate. Alias: ``VQC_CCZ`` .
+    Compuerta lógica Z controlada-controlada. Alias: ``VQC_CCZ`` .
 
     .. math::
         CCZ =
@@ -7825,10 +7825,10 @@ vqc_ccz
         0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & -1
         \end{pmatrix}
 
-    :param wires: lista de 00edndices de bits cu00e1nticos, el primero es el bit de control. La longitud de la lista es 3.
-    :param q_machine: dispositivo de m00e1quina virtual cu00e1ntica.
+    :param wires: lista de índices de bits cuánticos, el primero es el bit de control. La longitud de la lista es 3.
+    :param q_machine: dispositivo de máquina virtual cuántica.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7850,7 +7850,7 @@ vqc_fermionic_single_excitation
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_fermionic_single_excitation(weight, wires, q_machine)
 
-    Operador de excitaci00f3n 00fanica de cluster acoplado para producto tensorial de matrices Pauli. La forma matricial est00e1 dada por:
+    Operador de excitación única de cluster acoplado para producto tensorial de matrices Pauli. La forma matricial está dada por:
 
     .. math::
         \hat{U}_{pr}(\theta) = \mathrm{exp} \{ \theta_{pr} (\hat{c}_p^\dagger \hat{c}_r
@@ -7858,13 +7858,13 @@ vqc_fermionic_single_excitation
 
     Alias: ``VQC_FermionicSingleExcitation`` .
 
-    :param weight: Par00e1metro en el qubit p, solo un elemento.
-    :param wires: Un subconjunto de 00edndices de qubits en el intervalo [r, p]. La longitud m00ednima debe ser 2. El primer valor de 00edndice se interpreta como r, y el 00faltimo valor de 00edndice se interpreta como p. Los 00edndices intermedios son afectados por compuertas CNOT para calcular la paridad del conjunto de qubits.
-    :param q_machine: Dispositivo de m00e1quina virtual cu00e1ntica.
+    :param weight: Parámetro en el qubit p, solo un elemento.
+    :param wires: Un subconjunto de índices de qubits en el intervalo [r, p]. La longitud mínima debe ser 2. El primer valor de índice se interpreta como r, y el último valor de índice se interpreta como p. Los índices intermedios son afectados por compuertas CNOT para calcular la paridad del conjunto de qubits.
+    :param q_machine: Dispositivo de máquina virtual cuántica.
 
     
 
-    Examples::
+    Ejemplos::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7888,18 +7888,18 @@ vqc_fermionic_double_excitation
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_fermionic_double_excitation(weight, wires1, wires2, q_machine)
 
-    Operador de bi-excitaci00f3n de cluster acoplado para producto tensorial de matrices Pauli exponenciado, forma matricial dada por:
+    Operador de bi-excitación de cluster acoplado para producto tensorial de matrices Pauli exponenciado, forma matricial dada por:
 
     .. math::
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \{ \theta (\hat{c}_p^\dagger \hat{c}_q^\dagger
         \hat{c}_r \hat{c}_s - \mathrm{H.c.}) \},
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are fermion annihilation and
-    operators are created and indexed :math:`r, s` and :math:`p, q` on occupied and
-    empty molecular orbitals respectively. Use `Jordan-Wigner transformation
-    <https://arxiv.org/abs/1208.5986>`_ The fermion operator defined above can be written as
-    in terms of the Pauli matrix (see
-    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ for more details)
+    donde :math:`\hat{c}` y :math:`\hat{c}^\dagger` son los operadores de aniquilación y
+    creación de fermiones, indexados :math:`r, s` y :math:`p, q` en orbitales moleculares
+    ocupados y vacíos respectivamente. Use la `transformación de Jordan-Wigner
+    <https://arxiv.org/abs/1208.5986>`_; el operador fermiónico definido anteriormente puede escribirse
+    en términos de la matriz de Pauli (consulte
+    `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_ para más detalles)
 
     .. math::
         \hat{U}_{pqrs}(\theta) = \mathrm{exp} \Big\{
@@ -7908,16 +7908,16 @@ vqc_fermionic_double_excitation
         \hat{Y}_s \hat{X}_r \hat{Y}_q \hat{Y}_p +\\ \hat{X}_s \hat{Y}_r \hat{Y}_q \hat{Y}_p +
         \hat{X}_s \hat{X}_r \hat{X}_q \hat{Y}_p - \mathrm{H.c.} ) \Big\}
 
-    Esta funci00f3n tiene el alias: ``VQC_FermionicDoubleExcitation`` .
+    Esta función tiene el alias: ``VQC_FermionicDoubleExcitation`` .
 
-    :param weight: par00e1metro variable
-    :param wires1: representa el subconjunto de qubits en el intervalo de lista de 00edndices [s, r]. El 00edndice a-th se interpreta como s y el 00faltimo 00edndice se interpreta como r. La compuerta CNOT opera en los 00edndices intermedios para calcular la paridad de un grupo de qubits.
-    :param wires2: representa el subconjunto de qubits en el intervalo de lista de 00edndices [q, p]. El primer 00edndice ra00edz se interpreta como q y el 00faltimo 00edndice se interpreta como p. La compuerta CNOT opera en los 00edndices intermedios para calcular la paridad de un grupo de qubits.
-    :param q_machine: Dispositivo de m00e1quina virtual cu00e1ntica.
+    :param weight: parámetro variable
+    :param wires1: representa el subconjunto de qubits en el intervalo de lista de índices [s, r]. El índice a-th se interpreta como s y el último índice se interpreta como r. La compuerta CNOT opera en los índices intermedios para calcular la paridad de un grupo de qubits.
+    :param wires2: representa el subconjunto de qubits en el intervalo de lista de índices [q, p]. El primer índice raíz se interpreta como q y el último índice se interpreta como p. La compuerta CNOT opera en los índices intermedios para calcular la paridad de un grupo de qubits.
+    :param q_machine: Dispositivo de máquina virtual cuántica.
 
     
 
-    Examples::
+    Ejemplos::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7939,9 +7939,9 @@ vqc_uccsd
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_uccsd(weights, wires, s_wires, d_wires, init_state, q_machine)
 
-    Implementa la Simulaci00f3n de Excitaciones 00danicas y Dobles del Cluster Acoplado Unitario (UCCSD). UCCSD es una simulaci00f3n VQE com00fanmente usada para ejecutar simulaciones de qu00edmica cu00e1ntica.
+    Implementa la Simulación de Excitaciones Únicas y Dobles del Cluster Acoplado Unitario (UCCSD). UCCSD es una simulación VQE comúnmente usada para ejecutar simulaciones de química cuántica.
 
-    Within the first-order Trotter approximation, the UCCSD unitary function is given by:
+    Dentro de la aproximación de Trotter de primer orden, la función unitaria UCCSD viene dada por:
 
     .. math::
         \hat{U}(\vec{\theta}) =
@@ -7950,21 +7950,21 @@ vqc_uccsd
         \prod_{p > q > r > s} \mathrm{exp} \Big\{\theta_{pqrs}
         (\hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r \hat{c}_s-\mathrm{H.c.}) \Big\}
 
-    where :math:`\hat{c}` and :math:`\hat{c}^\dagger` are fermion annihilation and
-    creation operators and index :math:`r, s` and :math:`p, q` on occupied and
-    empty molecular orbitals respectively. (For more details see
+    donde :math:`\hat{c}` y :math:`\hat{c}^\dagger` son los operadores de aniquilación y
+    creación de fermiones, e indexan :math:`r, s` y :math:`p, q` en orbitales moleculares
+    ocupados y vacíos respectivamente. (Para más detalles, consulte
     `arXiv:1805.04340 <https://arxiv.org/abs/1805.04340>`_):
 
-    Esta funci00f3n tiene el alias: ``VQC_UCCSD`` .
+    Esta función tiene el alias: ``VQC_UCCSD`` .
 
-    :param weights: tensor de tama00f1o ``(len(s_wires)+ len(d_wires))`` que contiene los par00e1metros :math:`\theta_{pr}` and :math:`\theta_{pqrs}` input Z rotations ``FermionicSingleExcitation`` and ``FermionicDoubleExcitation`` .
-    :param wires: 00edndices de qubits para la acci00f3n de la plantilla
-    :param s_wires: secuencia de listas que contienen 00edndices de qubits ``[r,...,p]`` generados por una excitaci00f3n simple :math:`\vert r, p \rangle = \hat{c}_p^\dagger \hat{c}_r \vert \mathrm{HF} \rangle`,where :math:`\vert \mathrm{HF} \rangle` denotes the Hartee-Fock reference state.
-    :param d_wires: secuencia de listas, cada una conteniendo dos listas que especifican 00edndices ``[s,...,r]`` y ``[q,...,p]`` definiendo doble excitaci00f3n :math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \vert \mathrm{HF} \rangle` .
-    :param init_state: vector de n00fameros de ocupaci00f3n de longitud ``len(wires)`` que representa el estado de alta frecuencia. ``init_state`` Estado de inicializaci00f3n del qubit.
-    :param q_machine: Dispositivo de m00e1quina virtual cu00e1ntica.
+    :param weights: tensor de tamaño ``(len(s_wires)+ len(d_wires))`` que contiene los parámetros :math:`\theta_{pr}` y :math:`\theta_{pqrs}` de las rotaciones Z de entrada ``FermionicSingleExcitation`` y ``FermionicDoubleExcitation`` .
+    :param wires: índices de qubits para la acción de la plantilla
+    :param s_wires: secuencia de listas que contienen índices de qubits ``[r,...,p]`` generados por una excitación simple :math:`\vert r, p \rangle = \hat{c}_p^\dagger \hat{c}_r \vert \mathrm{HF} \rangle`, donde :math:`\vert \mathrm{HF} \rangle` denota el estado de referencia de Hartree-Fock.
+    :param d_wires: secuencia de listas, cada una conteniendo dos listas que especifican índices ``[s,...,r]`` y ``[q,...,p]`` definiendo doble excitación :math:`\vert s, r, q, p \rangle = \hat{c}_p^\dagger \hat{c}_q^\dagger \hat{c}_r\hat{c}_s \vert \mathrm{HF} \rangle` .
+    :param init_state: vector de números de ocupación de longitud ``len(wires)`` que representa el estado de alta frecuencia. ``init_state`` Estado de inicialización del qubit.
+    :param q_machine: Dispositivo de máquina virtual cuántica.
 
-    Examples::
+    Ejemplos::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -7989,9 +7989,9 @@ vqc_zfeaturemap
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_zfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, data_map_func=None, rep: int = 2)
 
-    Circuito de evoluci00f3n Pauli Z de primer orden.
+    Circuito de evolución Pauli Z de primer orden.
 
-    For 3 qubits and 2 repetitions, the circuit is represented as:
+    Para 3 qubits y 2 repeticiones, el circuito se representa como:
 
     .. parsed-literal::
 
@@ -8003,14 +8003,14 @@ vqc_zfeaturemap
         ┤ H ├┤ U1(2.0*x[2]) ├┤ H ├┤ U1(2.0*x[2]) ├
         └───┘└──────────────┘└───┘└──────────────┘
 
-    La cadena Pauli est00e1 fijada a ``Z``. Por lo tanto, la expansi00f3n de primer orden ser00e1 un circuito sin compuertas de entrelazamiento.
+    La cadena Pauli está fijada a ``Z``. Por lo tanto, la expansión de primer orden será un circuito sin compuertas de entrelazamiento.
 
     :param input_feat: Arreglo que representa los parámetros de entrada.
-    :param q_machine: M00e1quina virtual cu00e1ntica.
-    :param data_map_func: Matriz de mapeo de par00e1metros, una funci00f3n invocable, dise00f1ada como: ``data_map_func = lambda x: x``.
-    :param rep: N00famero de veces que se repite el m00f3dulo.
+    :param q_machine: Máquina virtual cuántica.
+    :param data_map_func: Matriz de mapeo de parámetros, una función invocable, diseñada como: ``data_map_func = lambda x: x``.
+    :param rep: Número de veces que se repite el módulo.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -8028,9 +8028,9 @@ vqc_zzfeaturemap
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_zzfeaturemap(input_feat, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, data_map_func=None, entanglement: Union[str, List[List[int]],Callable[[int], List[int]]] = "full",rep: int = 2)
 
-    Circuito de evoluci00f3n Pauli-Z de segundo orden.
+    Circuito de evolución Pauli-Z de segundo orden.
 
-    For 3 qubits, 1 repeat, and linear entanglement, the circuit is represented as:
+    Para 3 qubits, 1 repetición y entrelazamiento lineal, el circuito se representa como:
 
     .. parsed-literal::
 
@@ -8043,7 +8043,7 @@ vqc_zzfeaturemap
         ┤ H ├┤ U1(2.0*φ(x[2])) ├──────────────────────────────────┤ X ├┤ U1(2.0*φ(x[1],x[2])) ├┤ X ├
         └───┘└─────────────────┘                                  └───┘└──────────────────────┘└───┘
     
-    Donde ``φ`` es una funci00f3n no lineal cl00e1sica. Si se ingresan dos valores, ``φ(x,y) = (pi - x)(pi - y)``, y si se ingresa uno, ``φ(x) = x``. Se expresa de la siguiente manera usando ``data_map_func``:
+    Donde ``φ`` es una función no lineal clásica. Si se ingresan dos valores, ``φ(x,y) = (pi - x)(pi - y)``, y si se ingresa uno, ``φ(x) = x``. Se expresa de la siguiente manera usando ``data_map_func``:
 
     .. code-block::
 
@@ -8052,12 +8052,12 @@ vqc_zzfeaturemap
             return coeff
 
     :param input_feat: Arreglo que representa los parámetros de entrada.
-    :param q_machine: M00e1quina virtual cu00e1ntica.
-    :param data_map_func: matriz de mapeo de par00e1metros, una funci00f3n invocable.
+    :param q_machine: Máquina virtual cuántica.
+    :param data_map_func: matriz de mapeo de parámetros, una función invocable.
     :param entanglement: estructura de entrelazamiento especificada.
-    :param rep: veces de repetici00f3n del m00f3dulo.
+    :param rep: veces de repetición del módulo.
     
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -8074,18 +8074,18 @@ vqc_allsinglesdoubles
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_allsinglesdoubles(weights, q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, hf_state, wires, singles=None, doubles=None)
 
-    En este caso, tenemos cuatro excitaciones simples y dobles para preservar la proyecci00f3n de esp00edn total del estado de Hartree-Fock.
+    En este caso, tenemos cuatro excitaciones simples y dobles para preservar la proyección de espín total del estado de Hartree-Fock.
 
-    La matriz unitaria resultante preserva la poblaci00f3n de part00edculas y prepara el sistema de n-qubits en una superposici00f3n del estado inicial de Hartree-Fock y otros estados que codifican la configuraci00f3n de m00faltiples excitaciones.
+    La matriz unitaria resultante preserva la población de partículas y prepara el sistema de n-qubits en una superposición del estado inicial de Hartree-Fock y otros estados que codifican la configuración de múltiples excitaciones.
 
-    :param weights: Un QTensor de tama00f1o ``(len(singles) + len(doubles),)`` que contiene los 00e1ngulos que entran en las operaciones vqc.qCircuit.single_excitation y vqc.qCircuit.double_excitation en secuencia
-    :param q_machine: La m00e1quina cu00e1ntica.
-    :param hf_state: Un vector de longitud ``len(wires)`` de n00fameros de ocupaci00f3n que representa el estado de Hartree-Fock, ``hf_state`` usado para inicializar los wires.
+    :param weights: Un QTensor de tamaño ``(len(singles) + len(doubles),)`` que contiene los ángulos que entran en las operaciones vqc.qCircuit.single_excitation y vqc.qCircuit.double_excitation en secuencia
+    :param q_machine: La máquina cuántica.
+    :param hf_state: Un vector de longitud ``len(wires)`` de números de ocupación que representa el estado de Hartree-Fock, ``hf_state`` usado para inicializar los wires.
     :param wires: Los qubits sobre los que actuar.
-    :param singles: Una secuencia de listas con los 00edndices de los dos qubits sobre los que act00faa la operaci00f3n single_excitation.
-    :param doubles: Secuencia de listas con los 00edndices de los dos qubits sobre los que act00faa la operaci00f3n double_excitation.
+    :param singles: Una secuencia de listas con los índices de los dos qubits sobre los que actúa la operación single_excitation.
+    :param doubles: Secuencia de listas con los índices de los dos qubits sobre los que actúa la operación double_excitation.
 
-    Por ejemplo, el circuito cu00e1ntico para dos electrones y seis qubits se muestra a continuaci00f3n:
+    Por ejemplo, el circuito cuántico para dos electrones y seis qubits se muestra a continuación:
 
     .. image:: ./images/all_singles_doubles.png
         :width: 600 px
@@ -8093,7 +8093,7 @@ vqc_allsinglesdoubles
 
     |
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
@@ -8112,19 +8112,19 @@ vqc_basisrotation
 
 .. py:function:: pyvqnet.qnn.vqc.tn.vqc_basisrotation(q_machine: pyvqnet.qnn.vqc.tn.TNQMachine, wires, unitary_matrix: QTensor, check=False)
 
-    Implementa un circuito que proporciona un conjunto que puede usarse para realizar rotaciones precisas de base unitaria simple. The circuit is derived from the single-particle fermion-determined unitary transformation :math:`U(u)` given in `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\ 
+    Implementa un circuito que proporciona un conjunto que puede usarse para realizar rotaciones precisas de base unitaria simple. El circuito se deriva de la transformación unitaria determinada por fermiones de una partícula :math:`U(u)` dada en `arXiv:1711.04789 <https://arxiv.org/abs/1711.04789>`_\
     
     .. math::
         U(u) = \exp{\left( \sum_{pq} \left[\log u \right]_{pq} (a_p^\dagger a_q - a_q^\dagger a_p) \right)}.
 
-    :math:`U(u)` is obtained by using the scheme given in the paper `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\ .
+    :math:`U(u)` se obtiene usando el esquema dado en el artículo `Optica, 3, 1460 (2016) <https://opg.optica.org/optica/fulltext.cfm?uri=optica-3-12-1460&id=355743>`_\ .
 
-    :param q_machine: m00e1quina cu00e1ntica.
+    :param q_machine: máquina cuántica.
     :param wires: qubits sobre los que actuar.
-    :param unitary_matrix: matriz que especifica la base para la transformaci00f3n.
+    :param unitary_matrix: matriz que especifica la base para la transformación.
     :param check: verificar si `unitary_matrix` es una matriz unitaria.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet
 
@@ -8151,18 +8151,18 @@ vqc_basisrotation
 
 
 
-Distributed interface
+Interfaz distribuida
 ================================================
 
-Distributed related functions, when using the ``torch`` computing backend, encapsulate the ``torch.distributed`` interface of torch,
+Las funciones relacionadas con la distribución, cuando se usa el backend de cálculo ``torch``, encapsulan la interfaz ``torch.distributed`` de torch,
 
 .. note::
 
-    Please refer to `torch distributed <https://pytorch.org/docs/stable/distributed.html>`_ to start the distributed method.
-    When using CPU for distribution, please use ``gloo`` instead of ``mpi``.
-    When using GPU for distribution, please use ``nccl``.
+    Consulte `torch distributed <https://pytorch.org/docs/stable/distributed.html>`_ para iniciar el método distribuido.
+    Al usar CPU para la distribución, use ``gloo`` en lugar de ``mpi``.
+    Al usar GPU para la distribución, use ``nccl``.
 
-    :ref:`vqnet_dist` VQNet's own distributed interface is not applicable to the ``torch`` computing backend.
+    La interfaz distribuida propia de VQNet, :ref:`vqnet_dist`, no es aplicable al backend de cálculo ``torch``.
 
 CommController
 -------------------------
@@ -8170,17 +8170,17 @@ CommController
 .. py:class:: pyvqnet.distributed.ControlComm.CommController(backend,rank=None,world_size=None)
     :noindex:
     
-    CommController is used to control the data communication controller under cpu and gpu. It generates cpu (gloo) and gpu (nccl) controllers by setting the parameter `backend`.
-    Esta clase llamar00e1 a backend, rank, world_size para inicializar ``torch.distributed.init_process_group(backend, rank, world_size)`` .
+    CommController se usa para controlar el controlador de comunicación de datos en cpu y gpu. Genera controladores de cpu (gloo) y gpu (nccl) estableciendo el parámetro `backend`.
+    Esta clase llamará a backend, rank, world_size para inicializar ``torch.distributed.init_process_group(backend, rank, world_size)`` .
 
-    :param backend: used to generate cpu or gpu data communication controller, 'gloo' or 'nccl'.
-    :param rank: the process number of the current program.
-    :param world_size: the number of all global processes.
+    :param backend: usado para generar el controlador de comunicación de datos de cpu o gpu, 'gloo' o 'nccl'.
+    :param rank: el número de proceso del programa actual.
+    :param world_size: el número de todos los procesos globales.
 
     :return:
-        CommController instance.
+        Una instancia de CommController.
 
-    Examples::
+    Ejemplos::
 
         from pyvqnet.distributed import CommController
         import pyvqnet
@@ -8216,11 +8216,11 @@ CommController
     .. py:method:: getRank()
         :noindex:
 
-        Used to get the process ID of the current process.
+        Se usa para obtener el ID de proceso del proceso actual.
 
-        :return: Returns the process ID of the current process.
+        :return: Devuelve el ID de proceso del proceso actual.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import CommController
             import pyvqnet
@@ -8257,11 +8257,11 @@ CommController
     .. py:method:: getSize()
         :noindex:
 
-        Used to get the total number of processes started.
+        Se usa para obtener el número total de procesos iniciados.
 
-        :return: Returns the total number of processes.
+        :return: Devuelve el número total de procesos.
 
-        Examples::
+        Ejemplos::
 
                         from pyvqnet.distributed import CommController
             import pyvqnet
@@ -8298,13 +8298,13 @@ CommController
     .. py:method:: getLocalRank()
         :noindex:
 
-        In each process, get the local process number of each machine through ``os.environ['LOCAL_RANK'] = rank``.
+        En cada proceso, obtenga el número de proceso local de cada máquina mediante ``os.environ['LOCAL_RANK'] = rank``.
 
-        The environment variable `LOCAL_RANK` needs to be set in advance.
+        La variable de entorno `LOCAL_RANK` debe establecerse de antemano.
 
-        :return: The current process number on the current machine.
+        :return: El número de proceso actual en la máquina actual.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import CommController
             import pyvqnet
@@ -8340,12 +8340,12 @@ CommController
     .. py:method:: split_groups(rankL)
         :noindex:
 
-        The process number list set according to the input parameter is used to divide multiple communication groups.
+        La lista de números de proceso establecida según el parámetro de entrada se usa para dividir varios grupos de comunicación.
 
-        :param rankL: process group list.
-        :return: a list containing ``torch.distributed.ProcessGroup``
+        :param rankL: lista de grupos de proceso.
+        :return: una lista que contiene ``torch.distributed.ProcessGroup``
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
@@ -8390,11 +8390,11 @@ CommController
     .. py:method:: barrier()
         :noindex:
 
-        Synchronization of different processes.
+        Sincronización de distintos procesos.
 
-        :return: Synchronization operation.
+        :return: Operación de sincronización.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import CommController
             import pyvqnet
@@ -8428,12 +8428,12 @@ CommController
     .. py:method:: allreduce(tensor, c_op = "avg")
         :noindex:
 
-        Supports allreduce communication on data.
+        Admite comunicación allreduce sobre datos.
 
-        :param tensor: Input data.
-        :param c_op: Calculation method.
+        :param tensor: Datos de entrada.
+        :param c_op: Método de cálculo.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
@@ -8472,13 +8472,13 @@ CommController
     .. py:method:: reduce(tensor, root = 0, c_op = "avg")
         :noindex:
 
-        Supports reduce communication on data.
+        Admite comunicación reduce sobre datos.
 
-        :param tensor: Input data.
-        :param root: Specifies the node where the data is returned.
-        :param c_op: Calculation method.
+        :param tensor: Datos de entrada.
+        :param root: Especifica el nodo donde se devuelven los datos.
+        :param c_op: Método de cálculo.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
@@ -8519,12 +8519,12 @@ CommController
     .. py:method:: broadcast(tensor, root = 0)
         :noindex:
 
-        Broadcast the data on the specified process root to all processes.
+        Difunde los datos del proceso raíz especificado a todos los procesos.
 
-        :param tensor: Input data.
-        :param root: The specified node.
+        :param tensor: Datos de entrada.
+        :param root: El nodo especificado.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
@@ -8566,11 +8566,11 @@ CommController
     .. py:method:: allgather(tensor)
         :noindex:
 
-        Gather all the data from all processes together. This interface only supports the nccl backend.
+        Reúne todos los datos de todos los procesos. Esta interfaz solo admite el backend nccl.
 
-        :param tensor: Input data.
+        :param tensor: Datos de entrada.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import get_local_rank,CommController,get_world_size
             import pyvqnet
@@ -8611,12 +8611,12 @@ CommController
     .. py:method:: send(tensor, dest)
         :noindex:
 
-        p2p communication interface.
+        Interfaz de comunicación p2p.
 
-        :param tensor: input data.
-        :param dest: destination process.
+        :param tensor: datos de entrada.
+        :param dest: proceso de destino.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import get_rank,CommController,get_world_size
             import pyvqnet
@@ -8659,12 +8659,12 @@ CommController
     .. py:method:: recv(tensor, source)
         :noindex:
 
-        p2p communication interface.
+        Interfaz de comunicación p2p.
 
-        :param tensor: input data.
-        :param source: receiving process.
+        :param tensor: datos de entrada.
+        :param source: proceso receptor.
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import get_rank,CommController,get_world_size
             import pyvqnet
@@ -8707,13 +8707,13 @@ CommController
     .. py:method:: allreduce_group(tensor, c_op = "avg", group = None)
         :noindex:
 
-        Intra-group allreduce communication interface.
+        Interfaz de comunicación allreduce dentro del grupo.
 
-        :param tensor: Input data.
-        :param c_op: Calculation method.
-        :param group: Communication group generated from `split_groups` or `init_groups` .
+        :param tensor: Datos de entrada.
+        :param c_op: Método de cálculo.
+        :param group: Grupo de comunicación generado por `split_groups` o `init_groups` .
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
@@ -8763,14 +8763,14 @@ CommController
     .. py:method:: reduce_group(tensor, root = 0, c_op = "avg", group = None)
         :noindex:
 
-        Intra-group reduce communication interface.
+        Interfaz de comunicación reduce dentro del grupo.
 
-        :param tensor: Input data.
-        :param root: Specify the process number.
-        :param c_op: Calculation method.
-        :param group: Communication group generated from `split_groups` or `init_groups` .
+        :param tensor: Datos de entrada.
+        :param root: Especifica el número de proceso.
+        :param c_op: Método de cálculo.
+        :param group: Grupo de comunicación generado por `split_groups` o `init_groups` .
 
-        Examples::
+        Ejemplos::
 
             from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
@@ -8815,13 +8815,13 @@ CommController
     .. py:method:: broadcast_group(tensor, root = 0, group = None)
         :noindex:
 
-        Intra-group broadcast communication interface.
+        Interfaz de comunicación broadcast dentro del grupo.
 
-        :param tensor: Input data.
-        :param root: Specify the process ID.
-        :param group: Communication group generated from `split_groups` or `init_groups` .
+        :param tensor: Datos de entrada.
+        :param root: Especifica el ID de proceso.
+        :param group: Grupo de comunicación generado por `split_groups` o `init_groups` .
 
-        Examples::
+        Ejemplos::
             
             from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
@@ -8869,12 +8869,12 @@ CommController
     .. py:method:: allgather_group(tensor, group = None)
         :noindex:
         
-        Allgather communication interface within the group.
+        Interfaz de comunicación allgather dentro del grupo.
 
-        :param tensor: input data.
-        :param group: Communication group generated from `split_groups` or `init_groups` .
+        :param tensor: datos de entrada.
+        :param group: Grupo de comunicación generado por `split_groups` o `init_groups` .
 
-        Examples::
+        Ejemplos::
             
             from pyvqnet.distributed import get_local_rank,CommController,get_world_size
             import pyvqnet

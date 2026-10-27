@@ -80,7 +80,7 @@ Teóricamente es posible calcular el gradiente de los parámetros con respecto a
 
         La clase tiene un alias: `QpandaQCircuitVQCLayer` .
 
-    Example::
+    Ejemplo::
 
         import pyqpanda as pq
         from pyvqnet.qnn.measure import ProbsMeasure
@@ -172,7 +172,7 @@ Si está más familiarizado con la sintaxis de pyQPanda2, puede usar la clase Qu
 
         La clase tiene un alias: `QpandaQCircuitVQCLayerLite` .
 
-    Example::
+    Ejemplo::
 
         import pyqpanda as pq
         from pyvqnet.qnn.measure import ProbsMeasure
@@ -283,7 +283,7 @@ Podemos usar ``NoiseQuantumLayer`` para definir una capa de diferenciación auto
 
         `m_machine`: simulador creado por NoiseQuantumLayer
 
-    Example::
+    Ejemplo::
 
         import pyqpanda as pq
         from pyvqnet.qnn.measure import ProbsMeasure
@@ -399,7 +399,7 @@ QiskitLayer
     :param para_num: `int` - El número de parámetros.
     :return: Una clase capaz de ejecutar modelos de circuitos cuánticos de Qiskit.
 
-    Example::
+    Ejemplo::
 
 
         """
@@ -691,7 +691,7 @@ CirqLayer
 
         El código de ejemplo siguiente requiere `cirq==1.5.0, numpy <2`.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import random
@@ -931,7 +931,7 @@ AmplitudeEmbeddingCircuit
     :param qubits: qubits asignados por pyQPanda
     :return: circuitos cuánticos
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyqpanda as pq
@@ -1183,7 +1183,7 @@ Optimizadores por Aproximación Estocástica de Perturbación Simultánea
 
         SPSA solo admite parámetros unidimensionales.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyqpanda as pq
@@ -1245,7 +1245,7 @@ Optimizadores por Aproximación Estocástica de Perturbación Simultánea
 
         theta_best: Los parámetros promedio después de las últimas `last_avg` iteraciones.
 
-    Example::
+    Ejemplo::
 
         import numpy as np
         import pyqpanda as pq
@@ -1330,7 +1330,7 @@ Matriz de información de Fisher cuántica
     :param qcir_lists: La lista de circuitos cuánticos antes de la puerta parametrizada objetivo para calcular el tensor métrico, consulte el siguiente ejemplo.
     :param wires: Índice total de bits cuánticos para los circuitos cuánticos.
 
-    Example::
+    Ejemplo::
     
         import pyqpanda as pq
 

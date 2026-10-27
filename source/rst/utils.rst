@@ -19,7 +19,7 @@ set_random_seed
             Cuando se especifica una semilla de número aleatorio fija, la distribución aleatoria generará una distribución pseudoaleatoria fija basada en esa semilla.
             Las funciones afectadas incluyen: `tensor.randu` , `tensor.randn` , inicialización de parámetros para redes neuronales clásicas paramétricas y capas de computación cuántica.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet.tensor as tensor
         from pyvqnet.utils import get_random_seed, set_random_seed
@@ -98,7 +98,7 @@ get_random_seed
     
     Obtiene la semilla aleatoria actual.
 
-    Example::
+    Ejemplo::
 
         import pyvqnet.tensor as tensor
         from pyvqnet.utils import get_random_seed, set_random_seed

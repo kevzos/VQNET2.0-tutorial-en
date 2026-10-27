@@ -37,7 +37,7 @@ Si el usuario personaliza un circuito variacional cuántico, use la interfaz baj
 
 Si el usuario desea usar una lista que contiene múltiples módulos como submódulo en `Module`, no use la lista Python incorporada. En su lugar, use pyvqnet.nn.module.ModuleList. De esta manera, los parámetros de entrenamiento de los submódulos pueden registrarse en todo el modelo, permitiendo el entrenamiento por diferenciación automática. Aquí hay un ejemplo:
 
-     Example::
+     Ejemplo::
 
          from pyvqnet. tensor import *
          from pyvqnet.nn import Module,Linear,ModuleList
