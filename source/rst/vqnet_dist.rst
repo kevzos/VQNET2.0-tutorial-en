@@ -88,7 +88,7 @@ n, np
 
 Die ``vqnetrun``-Schnittstelle ermöglicht die Steuerung der Anzahl gestarteter Prozesse mit den Parametern ``-n`` und ``-np``, wie im folgenden Beispiel gezeigt.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed import CommController
         Comm_OP = CommController("mpi") # MPI-Controller initialisieren
@@ -106,7 +106,7 @@ backend
 Die ``vqnetrun``-Schnittstelle ermöglicht die Auswahl des verteilten Backends mit dem Parameter ``--backend`` und unterstützt die Modi ``mpi`` (Standard) und ``nccl``.
 Der MPI-Modus ist für verteiltes Rechnen auf der CPU vorgesehen, der NCCL-Modus für verteiltes Rechnen auf der GPU.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed import CommController
         Comm_OP = CommController("nccl")
@@ -122,7 +122,7 @@ nproc_per_node
 
 Die ``vqnetrun``-Schnittstelle ermöglicht die Steuerung der Anzahl der Prozesse pro Knoten mit dem Parameter ``--nproc_per_node``. Dieser ist nur im NCCL-Modus verfügbar.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed import CommController
         Comm_OP = CommController("nccl")
@@ -140,7 +140,7 @@ Die ``vqnetrun``-Schnittstelle ermöglicht das Speichern der Ausgabe in einer an
 
 Eine beispielhafte Implementierung sieht wie folgt aus:
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed import CommController, get_host_name
         Comm_OP = CommController("mpi") # MPI-Controller initialisieren
@@ -160,7 +160,7 @@ Die ``vqnetrun``-Schnittstelle kann mit dem Befehlszeilenparameter ``--verbose``
 
 Eine beispielhafte Implementierung sieht wie folgt aus:
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed import CommController, get_host_name
         Comm_OP = CommController("mpi") # MPI-Controller initialisieren
@@ -180,7 +180,7 @@ Die ``vqnetrun``-Schnittstelle kann mit dem Befehlszeilenparameter ``-start-time
 
 Eine beispielhafte Implementierung sieht wie folgt aus:
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed import CommController, get_host_name
         Comm_OP = CommController("mpi") # MPI-Controller initialisieren
@@ -211,7 +211,7 @@ __init__
     :return:
         CommController-Instanz.
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.distributed import CommController
         Comm_OP = CommController("nccl") # NCCL-Controller initialisieren
@@ -225,7 +225,7 @@ __init__
 
         :return: Gibt die Prozessnummer des aktuellen Prozesses zurück.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController
             Comm_OP = CommController("nccl") # NCCL-Controller initialisieren
@@ -240,7 +240,7 @@ __init__
 
         :return: Gibt die Gesamtzahl der Prozesse zurück.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController
             Comm_OP = CommController("nccl") # NCCL-Controller initialisieren
@@ -258,7 +258,7 @@ __init__
 
         :return: Die aktuelle Prozessnummer auf der aktuellen Maschine.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController
             Comm_OP = CommController("nccl") # NCCL-Controller initialisieren
@@ -276,7 +276,7 @@ __init__
         :return: Wenn das Backend `nccl` ist, wird ein Tupel von Prozessgruppen-Ranks zurückgegeben.
                  Wenn das Backend `mpi` ist, wird eine Liste zurückgegeben, deren Länge der Anzahl der Gruppen entspricht; jedes Element ist ein Tupel (comm, rank), wobei comm der MPI-Kommunikator der Gruppe und rank die Sequenznummer innerhalb der Gruppe ist.
 
-        Examples::
+        Beispiele::
             
             from pyvqnet.distributed import CommController,get_rank,get_local_rank
             from pyvqnet.tensor import tensor
@@ -294,7 +294,7 @@ __init__
 
         :return: Synchronisation.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController
             Comm_OP = CommController("nccl")
@@ -308,7 +308,7 @@ __init__
 
         :return: Gibt die Anzahl der Grafikkarten auf dem aktuellen Knoten zurück.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController
             Comm_OP = CommController("nccl")
@@ -325,7 +325,7 @@ __init__
         :param tensor: Eingabedaten.
         :param c_op: Berechnungsoperation.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController
             from pyvqnet.tensor import tensor
@@ -348,7 +348,7 @@ __init__
         :param root: Gibt den Knoten an, an den die Daten zurückgegeben werden.
         :param c_op: Berechnungsoperation.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController
             from pyvqnet.tensor import tensor
@@ -371,7 +371,7 @@ __init__
         :param tensor: Eingabe.
         :param root: Gibt den Knoten an.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController
             from pyvqnet.tensor import tensor
@@ -392,7 +392,7 @@ __init__
 
         :param tensor: Eingabe.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController
             from pyvqnet.tensor import tensor
@@ -414,7 +414,7 @@ __init__
         :param tensor: Eingabe.
         :param dest: Zielprozess.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController,get_rank
             from pyvqnet.tensor import tensor
@@ -441,7 +441,7 @@ __init__
         :param tensor: Eingabe.
         :param source: Quellprozess.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController,get_rank
             from pyvqnet.tensor import tensor
@@ -470,7 +470,7 @@ __init__
         :param group: Kommunikationsgruppe. Bei Verwendung des MPI-Backends geben Sie die von `init_groups` oder `split_groups` erzeugte Gruppe ein, die der Kommunikationsgruppe entspricht. Bei Verwendung des NCCL-Backends geben Sie die von `split_groups` erzeugte Gruppennummer ein.
 
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.distributed import CommController,get_rank,get_local_rank
             from pyvqnet.tensor import tensor
@@ -497,7 +497,7 @@ __init__
         :param c_op: Berechnungsoperation.
         :param group: Kommunikationsgruppe. Bei Verwendung des MPI-Backends geben Sie die von `init_groups` oder `split_groups` erzeugte Gruppe ein, die der Kommunikationsgruppe entspricht. Bei Verwendung des NCCL-Backends geben Sie die von `split_groups` erzeugte Gruppennummer ein.
 
-        Examples::
+        Beispiele::
             
             from pyvqnet.distributed import CommController,get_rank,get_local_rank
             from pyvqnet.tensor import tensor
@@ -524,7 +524,7 @@ __init__
         :param root: Gibt die Prozessnummer an, von der aus gesendet wird, Standard: 0.
         :param group: Kommunikationsgruppe. Bei Verwendung des MPI-Backends geben Sie die von `init_groups` oder `split_groups` erzeugte Gruppe ein, die der Kommunikationsgruppe entspricht. Bei Verwendung des NCCL-Backends geben Sie die von `split_groups` erzeugte Gruppennummer ein.
 
-        Examples::
+        Beispiele::
             
             from pyvqnet.distributed import CommController,get_rank,get_local_rank
             from pyvqnet.tensor import tensor
@@ -551,7 +551,7 @@ __init__
         :param tensor: Eingabe.
         :param group: Kommunikationsgruppe. Bei Verwendung des MPI-Backends geben Sie die von `init_groups` oder `split_groups` erzeugte Gruppe ein, die der Kommunikationsgruppe entspricht. Bei Verwendung des NCCL-Backends geben Sie die von `split_groups` erzeugte Gruppennummer ein.
 
-        Examples::
+        Beispiele::
             
             from pyvqnet.distributed import CommController,get_rank,get_local_rank
             from pyvqnet.tensor import tensor
@@ -576,7 +576,7 @@ __init__
 
         :param optimizer: Optimierer.
 
-        Examples::
+        Beispiele::
             
             from pyvqnet.distributed import CommController,get_rank,get_local_rank
             from pyvqnet.tensor import tensor
@@ -624,7 +624,7 @@ __init__
 
         :param model: Modell.
 
-        Examples::
+        Beispiele::
         
             from pyvqnet.distributed import CommController,get_rank,get_local_rank
             from pyvqnet.tensor import tensor
@@ -657,7 +657,7 @@ __init__
         :param model: Modell.
         :param root: Gibt die Prozessnummer an.
 
-        Examples::
+        Beispiele::
         
             from pyvqnet.distributed import CommController,get_rank,get_local_rank
             from pyvqnet.tensor import tensor
@@ -692,7 +692,7 @@ __init__
         :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
         :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet import tensor
             import pyvqnet
@@ -715,7 +715,7 @@ __init__
         :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
         :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
-        Examples::
+        Beispiele::
 
             import pyvqnet
             from pyvqnet.tensor import tensor
@@ -737,7 +737,7 @@ __init__
         :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
         :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet import tensor
             import pyvqnet
@@ -758,7 +758,7 @@ __init__
         :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
         :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
-        Examples::
+        Beispiele::
 
             import pyvqnet
             from pyvqnet.tensor import tensor
@@ -782,7 +782,7 @@ __init__
         :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
         :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
-        Examples::
+        Beispiele::
 
             import pyvqnet
             from pyvqnet.tensor import tensor
@@ -809,7 +809,7 @@ __init__
         :param async_op: Gibt an, ob dieser Vorgang asynchron ist, Standard: False.
         :return: Work - Ein asynchrones Kommunikations-Handle. Verwenden Sie wait(), um auf die Fertigstellung dieses Vorgangs zu warten.
 
-        Examples::
+        Beispiele::
 
             import pyvqnet
             from pyvqnet.tensor import tensor
@@ -843,7 +843,7 @@ Legt Parameter für verteiltes Rechnen fest.
 
     :return: Aufgeteilte Trainingsdaten und Labels.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed import split_data
         import numpy as np
@@ -864,7 +864,7 @@ Verwenden Sie ``get_local_rank``, um die Prozessnummer auf der aktuellen Maschin
 
     :return: Aktuelle Prozessnummer auf der aktuellen Maschine.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed.ControlComm import get_local_rank
 
@@ -881,7 +881,7 @@ Verwenden Sie ``get_rank``, um die Prozessnummer auf der aktuellen Maschine zu e
 
     :return: Die Prozessnummer des aktuellen Prozesses.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed.ControlComm import get_rank
 
@@ -899,7 +899,7 @@ Verwenden Sie ``init_groups``, um CPU-basierte Prozessgruppen basierend auf der 
     :param rank_lists: Liste der Kommunikationsprozessgruppen.
     :return: Eine Liste der initialisierten Prozessgruppen.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.distributed import *
         import numpy as np
@@ -937,7 +937,7 @@ PipelineParallelTrainingWrapper
     Weitere Konfigurationsparameter finden Sie in `args`.
     Zusätzlich muss jeder Prozess die Umgebungsvariable `LOCAL_RANK` in der `__main__`-Funktion konfigurieren.
 
-    Examples::
+    Beispiele::
 
         import os
         import pyvqnet
@@ -1072,7 +1072,7 @@ Im Folgenden wird der MNIST-Datensatz verwendet, um eine Klassifikationsaufgabe 
 
         os.environ["LOCAL_RANK"] = str(dist.get_local_rank())
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.distributed import *
         from pyvqnet import *
@@ -1258,7 +1258,7 @@ ColumnParallelLinear
 
     Mehrprozess-Nutzung basierend auf `# vqnetrun --backend nccl --nproc_per_node 2 python test.py`.
 
-    Examples::
+    Beispiele::
 
         import pyvqnet.distributed
         import pyvqnet.optim as optim
@@ -1433,7 +1433,7 @@ RowParallelLinear
 
     Mehrprozess-Nutzung basierend auf `# vqnetrun --backend nccl --nproc_per_node 2 python test.py`.
 
-    Examples::
+    Beispiele::
 
         import pyvqnet.distributed
         import pyvqnet.optim as optim
@@ -1619,7 +1619,7 @@ DistributeQMachine
             qm.set_qr_config({'qubit': total qubits number, 'global_qubit':  distributed qubits number})
     
     
-    Examples::
+    Beispiele::
 
         from pyvqnet.distributed import get_rank
         from pyvqnet import tensor
@@ -1700,7 +1700,7 @@ DistQuantumLayerAdjoint
         Diese Schnittstelle wird nur unter Linux unterstützt;
 
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.distributed import get_rank
         from pyvqnet import tensor

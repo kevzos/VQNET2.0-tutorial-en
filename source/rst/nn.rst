@@ -92,7 +92,7 @@ forward
     :param \*\*kwargs: Ein Schlüsselwort-Variablenparameter
     :return: Modulausgabe
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -139,7 +139,7 @@ state_dict
 
     :return: Ein Dictionary, das den gesamten Zustand des Moduls enthält
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import Conv2D
         test_conv = Conv2D(2,3,(3,3),(2,2),"same")
@@ -163,7 +163,7 @@ toGPU
     :param device: Das Gerät, das aktuell den QTensor speichert, Standard=DEV_GPU_0. device = pyvqnet.DEV_GPU_0, gespeichert in der ersten GPU, device = DEV_GPU_1, gespeichert in der zweiten GPU, und so weiter.
     :return: Modul, das auf das GPU-Gerät verschoben wurde.
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.nn.conv import ConvT2D 
         test_conv = ConvT2D(3, 2, [4,4], [2, 2], "same")
@@ -181,7 +181,7 @@ toCPU
 
     :return: Modul, das auf das CPU-Gerät verschoben wurde.
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.nn.conv import ConvT2D 
         test_conv = ConvT2D(3, 2, [4,4], [2, 2], "same")
@@ -202,7 +202,7 @@ save_parameters
     :param f: Ein String oder os.PathLike-Objekt, das einen Dateinamen enthält
     :return: None
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import Module,Conv2D
         import pyvqnet
@@ -229,7 +229,7 @@ load_parameters
     :param f: Ein String oder os.PathLike-Objekt, das einen Dateinamen enthält
     :return: Gespeichertes OrderedDict für ``load_state_dict()``
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import Module,Conv2D
         import pyvqnet
@@ -262,7 +262,7 @@ ModuleList
 
     :return: Eine Liste von Modulen
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import *
         from pyvqnet.nn import Module,Linear,ModuleList
@@ -327,7 +327,7 @@ ParameterList
 
     :return: Eine Parameter-Liste.
 
-    Example::
+    Beispiel::
 
         from pyvqnet import nn
         class MyModule(nn.Module):
@@ -356,7 +356,7 @@ Sequential
 
     :return: Sequential.
 
-    Example::
+    Beispiel::
         
         from pyvqnet import nn
         from collections import OrderedDict
@@ -410,7 +410,7 @@ Conv1D
 
         ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -458,7 +458,7 @@ Conv2D
 
         ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -516,7 +516,7 @@ ConvT2D
         ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -565,7 +565,7 @@ AvgPool1D
 
 
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -608,7 +608,7 @@ MaxPool1D
         ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -647,7 +647,7 @@ AvgPool2D
         ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -683,7 +683,7 @@ MaxPool2D
         ``padding='same'`` füllt die Eingabe so auf, dass die Ausgabe die gleiche Form wie die Eingabe hat.
 
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -717,7 +717,7 @@ Embedding
 
     :return: Eine Embedding-Klasse
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -783,7 +783,7 @@ BatchNorm2d
     :param name: Name der Ausgabeschicht
     :return: Eine BatchNorm2d-Klasse
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -847,7 +847,7 @@ BatchNorm1d
     :param name: Name der Ausgabeschicht
     :return: Eine BatchNorm1d-Klasse
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -892,7 +892,7 @@ LayerNormNd
 
     :return: Eine LayerNormNd-Klasse.
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -938,7 +938,7 @@ LayerNorm2d
     
     :return: Eine LayerNorm2d-Klasse
 
-    Example::
+    Beispiel::
 
         import numpy as np
         import pyvqnet
@@ -991,7 +991,7 @@ LayerNorm1d
 
     :return: Eine LayerNorm1d-Klasse
 
-    Example::
+    Beispiel::
 
         import numpy as np
         import pyvqnet
@@ -1034,7 +1034,7 @@ GroupNorm
 
     :return: GroupNorm-Klasse
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.tensor import QTensor
@@ -1064,7 +1064,7 @@ Linear
 
     :return: Eine Linear-Klasse
 
-    Example::
+    Beispiel::
 
         import numpy as np
         import pyvqnet
@@ -1099,7 +1099,7 @@ Dropout
     :param dropout_rate: `float` - Wahrscheinlichkeit, dass ein Neuron auf Null gesetzt wird
     :return: Eine Dropout-Klasse
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn.dropout import Dropout
         import numpy as np
@@ -1136,7 +1136,7 @@ DropPath
 
     :return: DropPath-Instanz.
 
-    Example::
+    Beispiel::
 
         import pyvqnet.nn as nn
         import pyvqnet.tensor as tensor
@@ -1159,7 +1159,7 @@ Pixel_Shuffle
     :return:
             Pixel_Shuffle-Modul
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import Pixel_Shuffle
         from pyvqnet.tensor import tensor
@@ -1182,7 +1182,7 @@ Pixel_Unshuffle
     :return:
             Pixel_Unshuffle-Modul
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import Pixel_Unshuffle
         from pyvqnet.tensor import tensor
@@ -1223,7 +1223,7 @@ GRU
 
     :return: Eine GRU-Modulinstanz.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import GRU
         from pyvqnet.tensor import tensor
@@ -1296,7 +1296,7 @@ RNN
 
     :return: Eine RNN-Modulinstanz.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import RNN
         from pyvqnet.tensor import tensor
@@ -1370,7 +1370,7 @@ LSTM
 
     :return: Eine LSTM-Modulinstanz.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import LSTM
         from pyvqnet.tensor import tensor
@@ -1467,7 +1467,7 @@ Dynamic_GRU
 
     :return: Eine Dynamic_GRU-Klasse
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import Dynamic_GRU
         from pyvqnet.tensor import tensor
@@ -1557,7 +1557,7 @@ Dynamic_RNN
 
     :return: Dynamic_RNN-Instanz
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import Dynamic_RNN
         from pyvqnet.tensor import tensor
@@ -1619,7 +1619,7 @@ Dynamic_LSTM
 
 .. py:class:: pyvqnet.nn.lstm.Dynamic_LSTM(input_size, hidden_size, num_layers=1, batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = '')
     
-    Apply Long Short-Term Memory (LSTM) RNNs to dynamic-length input sequences.
+    Wendet Long Short-Term Memory (LSTM)-RNNs auf Eingabesequenzen variabler Länge an.
 
     Die erste Eingabe sollte eine als
     ``tensor.PackedSequence``-Klasse definierte
@@ -1627,8 +1627,8 @@ Dynamic_LSTM
     Die ``tensor.PackedSequence``-Klasse kann durch
     aufeinanderfolgendes Aufrufen von ``pad_sequence``, ``pack_pad_sequence`` konstruiert werden.
 
-    The first output of Dynamic_LSTM is also a ``tensor.PackedSequence`` class,
-    It can be unpacked into a normal QTensor using ``tensor.pad_pack_sequence``.
+    Die erste Ausgabe von Dynamic_LSTM ist ebenfalls eine ``tensor.PackedSequence``-Klasse.
+    Sie kann mit ``tensor.pad_pack_sequence`` in einen normalen QTensor entpackt werden.
 
     Rekurrentes Neuronales Netzwerk (RNN) Modul, verwendet :math:`\tanh` oder :math:`\text{ReLU}` als Aktivierungsfunktion. Unterstützt zweiseitige, mehrschichtige Konfiguration.
     Die Berechnungsformel des einschichtigen einseitigen RNN lautet wie folgt:
@@ -1645,7 +1645,7 @@ Dynamic_LSTM
 
     :param input_size: Dimension der Eingabemerkmale.
     :param hidden_size: Dimension der versteckten Merkmale.
-    :param num_layers: Number of stacked LSTM layers, default: 1.
+    :param num_layers: Anzahl der gestapelten LSTM-Schichten, Standard: 1.
     :param batch_first: Wenn True, ist die Eingabeform [batch size, sequence length, feature dimension],
       Wenn False, ist die Eingabeform [sequence length, batch size, feature dimension], Standard True.
     :param use_bias: Wenn False, wendet das Modul keine Bias-Elemente an, Standard: True.
@@ -1655,7 +1655,7 @@ Dynamic_LSTM
 
     :return: Dynamic_LSTM-Instanz
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import Dynamic_LSTM
         from pyvqnet.tensor import tensor
@@ -1741,7 +1741,7 @@ Interpolate
     :param recompute_scale_factor: Den scale_factor für die Interpolationsberechnung neu berechnen.
     :param name: Modulname.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.nn import Interpolate
         from pyvqnet.tensor import tensor
@@ -1795,7 +1795,7 @@ fuse_module
 
     :return: Modell mit fusionierten Modulen.
 
-    Examples::
+    Beispiele::
     
         from pyvqnet import tensor,kfloat32
         from pyvqnet.nn import Linear
@@ -1911,7 +1911,7 @@ SDPA
     :param scale: Skalierungsfaktor, der vor Softmax angewendet wird.
     :param is_causal: Wenn true, wird eine kausale Aufmerksamkeitsmaskierung in der oberen linken Ecke angenommen, und es wird ein Fehler ausgegeben, wenn sowohl attn_mask als auch is_causal gesetzt sind.
     
-    Examples::
+    Beispiele::
     
         from pyvqnet.transformer import SDPA
         from pyvqnet import tensor
@@ -1980,7 +1980,7 @@ MeanSquaredError
 
         y: :math:`(N, *)`, gleiche Form wie die Eingabe
 
-    Example::
+    Beispiel::
     
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat64
@@ -2025,7 +2025,7 @@ BinaryCrossEntropy
 
         y: :math:`(N, *)`, gleiche Form wie die Eingabe
 
-    Example::
+    Beispiel::
 
         import pyvqnet
         from pyvqnet.tensor import QTensor
@@ -2060,7 +2060,7 @@ CategoricalCrossEntropy
 
         y: :math:`(N, *)`, gleiche Form wie die Eingabe, sollte den Datentyp der 64-Bit-Ganzzahl haben.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32,kint64
@@ -2096,7 +2096,7 @@ SoftmaxCrossEntropy
 
         y: :math:`(N, *)`, gleiche Form wie die Eingabe, sollte den Datentyp der 64-Bit-Ganzzahl haben.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32, kint64
@@ -2140,7 +2140,7 @@ NLL_Loss
         y: :math:`(N, *)`, der von der Verlustfunktion erwartete wahre Wert, sollte den Datentyp der 64-Bit-Ganzzahl haben.
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32,kint64
@@ -2187,7 +2187,7 @@ CrossEntropyLoss
         y: :math:`(N, *)`, der von der Verlustfunktion erwartete wahre Wert, sollte den Datentyp der 64-Bit-Ganzzahl haben.
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet import kfloat32,kint64
@@ -2233,7 +2233,7 @@ Sigmoid
         :param name: Name der Ausgabeschicht
         :return: Sigmoid-Aktivierungsschicht
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.nn import Sigmoid
             from pyvqnet.tensor import QTensor
@@ -2255,7 +2255,7 @@ Softplus
         :param name: Name der Ausgabeschicht
         :return: Softplus-Aktivierungsschicht
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.nn import Softplus
         from pyvqnet.tensor import QTensor
@@ -2277,7 +2277,7 @@ Softsign
         :param name: Name der Ausgabeschicht
         :return: Softsign-Aktivierungsschicht
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.nn import Softsign
             from pyvqnet.tensor import QTensor
@@ -2301,7 +2301,7 @@ Softmax
     :param name: Name der Ausgabeschicht
     :return: Softmax-Aktivierungsschicht
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.nn import Softmax
         from pyvqnet.tensor import QTensor
@@ -2328,7 +2328,7 @@ HardSigmoid
     :param name: Name der Ausgabeschicht
     :return: Hard-Sigmoid-Aktivierungsschicht
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.nn import HardSigmoid
         from pyvqnet.tensor import QTensor
@@ -2354,7 +2354,7 @@ ReLu
     :param name: Name der Ausgabeschicht
     :return: ReLu-Aktivierungsschicht
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.nn import ReLu
         from pyvqnet.tensor import QTensor
@@ -2382,7 +2382,7 @@ LeakyReLu
     :param name: Name der Ausgabeschicht
     :return: Leaky-ReLu-Aktivierungsschicht
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.nn import LeakyReLu
         from pyvqnet.tensor import QTensor
@@ -2409,7 +2409,7 @@ Gelu
 
     :return: Gelu-Aktivierungsfunktionsschicht-Instanz.
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.tensor import randu, ones_like
         from pyvqnet.nn import Gelu
@@ -2438,7 +2438,7 @@ ELU
     :param name: Name der Ausgabeschicht
     :return: ELU-Aktivierungsschicht
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.nn import ELU
         from pyvqnet.tensor import QTensor
@@ -2460,7 +2460,7 @@ Tanh
     :param name: Name der Ausgabeschicht
     :return: Hyperbolische-Tangens-Aktivierungsschicht
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.nn import Tanh
         from pyvqnet.tensor import QTensor
@@ -2505,7 +2505,7 @@ adadelta
     :param epsilon: Zum Nenner hinzugefügter Term zur Verbesserung der numerischen Stabilität (Standard: 1e-8)
     :return: Ein Adadelta-Optimierer
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.optim import adadelta
@@ -2555,7 +2555,7 @@ adagrad
     :param epsilon: Zum Nenner hinzugefügter Term zur Verbesserung der numerischen Stabilität (Standard: 1e-8)
     :return: Ein Adagrad-Optimierer
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.optim import adagrad
@@ -2627,7 +2627,7 @@ AdamW
     :param amsgrad: Ob die AMSGrad-Variante dieses Algorithmus verwendet werden soll (Standard: False).
     :return: Ein AdamW-Optimierer.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.optim import adam
         import numpy as np
@@ -2688,7 +2688,7 @@ Adam
     :param amsgrad: Ob die AMSGrad-Variante dieses Algorithmus verwendet werden soll (Standard: False)
     :return: Ein Adam-Optimierer
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.optim import adam
@@ -2745,7 +2745,7 @@ adamax
     :param epsilon: Zum Nenner hinzugefügter Term zur Verbesserung der numerischen Stabilität (Standard: 1e-8)
     :return: Ein Adamax-Optimierer
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.optim import adamax
@@ -2796,7 +2796,7 @@ rmsprop
     :param epsilon: Zum Nenner hinzugefügter Term zur Verbesserung der numerischen Stabilität (Standard: 1e-8)
     :return: Ein RMSProp-Optimierer
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.optim import rmsprop
@@ -2845,7 +2845,7 @@ sgd
     :param nesterov: Aktiviert Nesterov-Momentum (Standard: False)
     :return: Ein SGD-Optimierer
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.optim import sgd
@@ -2894,7 +2894,7 @@ MSE
     :param y_pred_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), geschätzte Zielwerte.
     :return: Gibt ein float-Ergebnis zurück.
 
-    Example::
+    Beispiel::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -2926,7 +2926,7 @@ RMSE
     :param y_pred_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), geschätzte Zielwerte.
     :return: Gibt ein float-Ergebnis zurück.
 
-    Example::
+    Beispiel::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -2959,7 +2959,7 @@ MAE
     :param y_pred_Qtensor: Ein QTensor der Form (n_samples,) oder (n_samples, n_outputs), geschätzte Zielwerte.
     :return: Gibt ein float-Ergebnis zurück.
 
-    Example::
+    Beispiel::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -2996,7 +2996,7 @@ R_Square
     :param sample_weight: Array der Form (n_samples,), optionales Stichprobengewicht, Standard: None.
     :return: Gibt ein float-Ergebnis zurück.
 
-    Example::
+    Beispiel::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -3032,7 +3032,7 @@ precision_recall_f1_2_score
         - recall - Recall-Ergebnis
         - f1 - F1-Score
 
-    Example::
+    Beispiel::
 
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -3073,7 +3073,7 @@ precision_recall_f1_N_score
         - recall - Recall-Ergebnis
         - f1 - F1-Score
 
-    Example::
+    Beispiel::
 
                 import numpy as np
                 from pyvqnet.tensor import tensor
@@ -3127,7 +3127,7 @@ precision_recall_f1_Multi_score
         - recall - Recall-Ergebnis
         - f1 - F1-Score
 
-    Example::
+    Beispiel::
 
 
                     import numpy as np
@@ -3195,7 +3195,7 @@ auc_calculate
                      Ob einige suboptimale Schwellenwerte, die nicht auf der gezeichneten ROC-Kurve erscheinen, weggelassen werden sollen.
     :return: Gibt ein float-Ergebnis aus.
 
-    Example::
+    Beispiel::
 
                 import numpy as np
                 from pyvqnet.tensor import tensor

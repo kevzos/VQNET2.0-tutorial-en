@@ -37,7 +37,7 @@ Wenn der Benutzer einen Quanten-Variationsschaltkreis anpasst, verwenden Sie bit
 
 Wenn der Benutzer eine Liste mit mehreren Modulen als Untermodul in `Module` verwenden möchte, verwenden Sie bitte nicht die integrierte Python-Liste. Verwenden Sie stattdessen pyvqnet.nn.module.ModuleList. Auf diese Weise können die Trainingsparameter der Untermodelle im gesamten Modell registriert werden, was ein automatisches Differenzierungstraining ermöglicht. Hier ist ein Beispiel:
 
-     Example::
+     Beispiel::
 
          from pyvqnet. tensor import *
          from pyvqnet.nn import Module,Linear,ModuleList

@@ -30,7 +30,7 @@ QTensor
     :return: Ausgabe-QTensor
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.dtype import *
@@ -54,7 +54,7 @@ QTensor
 
         :return: Die Anzahl der Dimensionen eines Tensors.
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import QTensor
 
@@ -69,7 +69,7 @@ QTensor
 
         :return: Eine Liste der Dimensionen des Tensors
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import QTensor
 
@@ -84,7 +84,7 @@ QTensor
 
         :return: Die Anzahl der Elemente eines Tensors.
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import QTensor
 
@@ -99,7 +99,7 @@ QTensor
 
         :return: Die Anzahl der Elemente in einem Tensor.
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import QTensor
 
@@ -132,7 +132,7 @@ QTensor
 
         :return: Der Datentyp des Tensors.
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import QTensor
 
@@ -147,7 +147,7 @@ QTensor
 
         :return: None
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -165,7 +165,7 @@ QTensor
 
         :return: None
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -188,7 +188,7 @@ QTensor
 
             numpy unterst�tzt den Typ bfloat16 nicht. Sie m�ssen zuerst in einen anderen von numpy unterst�tzten Datentyp wie float32 konvertieren, bevor Sie diese Schnittstelle aufrufen.
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -205,7 +205,7 @@ QTensor
 
             :return: die einzigen Daten dieses Objekts
 
-            Example::
+            Beispiel::
 
                 from pyvqnet.tensor import tensor
 
@@ -225,7 +225,7 @@ QTensor
 
         :return: die Indizes des Maximalwerts im Eingabe-QTensor.
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -266,7 +266,7 @@ QTensor
 
         :return: die Indizes des Minimalwerts im Eingabe-QTensor.
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -300,7 +300,7 @@ QTensor
             :param v: ein skalarer Wert
             :return: None
 
-            Example::
+            Beispiel::
 
                 from pyvqnet.tensor import tensor
                 from pyvqnet.tensor import QTensor
@@ -322,7 +322,7 @@ QTensor
 
             :return: True, wenn alle QTensor-Werte ungleich Null sind.
 
-            Example::
+            Beispiel::
 
                 from pyvqnet.tensor import tensor
                 from pyvqnet.tensor import QTensor
@@ -341,7 +341,7 @@ QTensor
 
             :return: True, wenn irgendein QTensor-Wert ungleich Null ist.
 
-            Example::
+            Beispiel::
 
                 from pyvqnet.tensor import tensor
                 from pyvqnet.tensor import QTensor
@@ -364,7 +364,7 @@ QTensor
         :param v: Binarisierungsschwellwert
         :return: None
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -389,7 +389,7 @@ QTensor
         :param v: ein skalarer Wert
         :return: None
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -416,7 +416,7 @@ QTensor
         :param v: ein skalarer Wert
         :return: None
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -445,7 +445,7 @@ QTensor
         :param fast_math: True, wenn schnelle Mathematik verwendet werden soll
         :return: None
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -469,7 +469,7 @@ QTensor
         :param new_dims: die neue Reihenfolge der Dimensionen (Liste von Integers).
         :return: Ergebnis-QTensor.
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -497,7 +497,7 @@ QTensor
         :param new_shape: die neue Form (Liste von Integers)
         :return: ein neuer QTensor
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -525,7 +525,7 @@ QTensor
         :param new_shape: die neue Form (Liste von Integers)
         :return: None
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.tensor import QTensor
@@ -550,7 +550,7 @@ QTensor
 
             :return: ein NumPy-Array
 
-            Example::
+            Beispiel::
 
 
                 from pyvqnet.tensor import tensor
@@ -588,7 +588,7 @@ QTensor
 
         :return: Ein neuer QTensor.
 
-            Example::
+            Beispiel::
 
                 from pyvqnet.tensor import tensor, QTensor
                 aaa = tensor.arange(1, 61)
@@ -680,7 +680,7 @@ QTensor
         :return: None
 
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             aaa = tensor.arange(1, 61)
@@ -828,7 +828,7 @@ QTensor
 
         :return: Klont QTensor auf das GPU-Ger�t.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -844,7 +844,7 @@ QTensor
 
         :return: Klont QTensor auf das CPU-Ger�t.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -868,7 +868,7 @@ QTensor
         :param device: Das Ger�t, das aktuell den QTensor speichert, Standard=DEV_GPU_0. device = pyvqnet.DEV_GPU_0, gespeichert auf der ersten GPU, device = DEV_GPU_1, gespeichert auf der zweiten GPU, und so weiter.
         :return: QTensor auf das GPU-Ger�t verschoben.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -884,7 +884,7 @@ QTensor
 
         :return: QTensor auf das CPU-Ger�t verschoben.
 
-        Examples::
+        Beispiele::
 
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -899,7 +899,7 @@ QTensor
 
         :return: Gibt an, ob die Daten dieses QTensor im GPU-Hostspeicher gespeichert sind.
 
-        Examples::
+        Beispiele::
         
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -913,7 +913,7 @@ QTensor
 
         :return: Gibt an, ob die Daten dieses QTensor im CPU-Hostspeicher gespeichert sind.
 
-        Examples::
+        Beispiele::
         
             from pyvqnet.tensor import QTensor
             a = QTensor([2])
@@ -939,7 +939,7 @@ ones
     
     :return: Ausgabe-QTensor mit der angegebenen Form.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -965,7 +965,7 @@ ones_like
     :return: Ausgabe-QTensor
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -989,7 +989,7 @@ full
     
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1016,7 +1016,7 @@ full_like
     
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1043,7 +1043,7 @@ zeros
     
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1072,7 +1072,7 @@ zeros_like
     
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1097,7 +1097,7 @@ arange
     :param requires_grad: ob der Gradient des Tensors verfolgt werden soll, Standardwert False
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1121,7 +1121,7 @@ linspace
     :param requires_grad: ob der Gradient des Tensors verfolgt werden soll, Standardwert False
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1146,7 +1146,7 @@ logspace
     :param requires_grad: ob der Gradient des Tensors verfolgt werden soll, Standardwert False
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1171,7 +1171,7 @@ eye
     
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1200,7 +1200,7 @@ diagonal
     :param dim1: erste Dimension, aus der die Diagonale entnommen wird. Standard: 0.
     :param dim2: zweite Dimension, aus der die Diagonale entnommen wird. Standard: 1.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import randn,diagonal
 
@@ -1229,7 +1229,7 @@ diag
         Hauptdiagonale)
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1276,7 +1276,7 @@ randu
     :return: Ausgabe-QTensor
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1304,7 +1304,7 @@ randn
     :param requires_grad: ob der Gradient des Tensors verfolgt werden soll, Standardwert False
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1329,7 +1329,7 @@ binomial
     :return:
         QTensor f�r die Binomialverteilung.
 
-    Example::
+    Beispiel::
 
         import pyvqnet.tensor as tensor
 
@@ -1357,7 +1357,7 @@ multinomial
     :return:
         Ausgabe-Stichprobenindex
 
-    Examples::
+    Beispiele::
 
         from pyvqnet import tensor
         weights = tensor.QTensor([0.1,10, 3, 1]) 
@@ -1384,7 +1384,7 @@ triu
 
     :return: Ausgabe eines QTensor
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.tensor import tensor
         a = tensor.arange(1.0, 2 * 6 * 5 + 1.0).reshape([2, 6, 5])
@@ -1417,7 +1417,7 @@ tril
 
     :return: Ausgabe eines QTensor
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.tensor import tensor
         a = tensor.arange(1.0, 2 * 6 * 5 + 1.0).reshape([12, 5])
@@ -1453,7 +1453,7 @@ floor
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
 
@@ -1473,7 +1473,7 @@ ceil
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
 
@@ -1493,7 +1493,7 @@ round
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
 
@@ -1516,7 +1516,7 @@ sort
     :param stable: Ob stabile Sortierung verwendet werden soll oder nicht
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1545,7 +1545,7 @@ argsort
     :param stable: Ob stabile Sortierung verwendet werden soll oder nicht
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1577,7 +1577,7 @@ topK
 
     :return: Ein neuer QTensor
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.tensor import tensor, QTensor
         x = QTensor([
@@ -1613,7 +1613,7 @@ argtopK
 
     :return: Ein neuer QTensor
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.tensor import tensor, QTensor
         x = QTensor([
@@ -1646,7 +1646,7 @@ add
     :param t2: zweiter QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1669,7 +1669,7 @@ sub
     :param t2: zweiter QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1692,7 +1692,7 @@ mul
     :return: Ausgabe-QTensor
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1716,7 +1716,7 @@ divide
     :return: Ausgabe-QTensor
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1740,7 +1740,7 @@ sums
     :return: Ausgabe-QTensor
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1764,7 +1764,7 @@ cumsum
 
     :return: Ausgabe-QTensor.
 
-    Example::
+    Beispiel::
 
        from pyvqnet.tensor import tensor, QTensor
        t = QTensor(([1, 2, 3], [4, 5, 6]))
@@ -1788,7 +1788,7 @@ mean
     :param keepdims: ob die Dimension des Ausgabe-QTensor beibehalten wird oder nicht, Standardwert False.
     :return: gibt den Mittelwert des Eingabe-QTensor zur�ck.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1811,7 +1811,7 @@ median
 
     :return: Gibt den Median der Werte in der Eingabe oder dem QTensor zur�ck.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1845,7 +1845,7 @@ std
     :param unbiased: ob die Bessel-Korrektur verwendet werden soll, Standardwert True
     :return: Gibt die Standardabweichung der Werte in der Eingabe oder dem QTensor zur�ck
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1881,7 +1881,7 @@ var
 
     :return: Ermittelt die Varianz im QTensor.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1903,7 +1903,7 @@ matmul
     :param t2: zweiter QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -1947,7 +1947,7 @@ kron
     
     :return: Ausgabe-QTensor.
 
-    Example::
+    Beispiel::
 
         from pyvqnet import tensor
         a = tensor.arange(1,1+ 24).reshape([2,1,2,3,2])
@@ -2056,7 +2056,7 @@ einsum
 
         Das QTensor-Ergebnis.
 
-    Example::
+    Beispiel::
 
         from pyvqnet import tensor
 
@@ -2081,7 +2081,7 @@ reciprocal
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2103,7 +2103,7 @@ sign
     :return: Ausgabe-QTensor
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2125,7 +2125,7 @@ neg
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2148,7 +2148,7 @@ trace
         Hauptdiagonale)
     :return: die Summe der Elemente der Diagonalen der eingegebenen 2-D-Matrix
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2176,7 +2176,7 @@ exp
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2196,7 +2196,7 @@ acos
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2232,7 +2232,7 @@ asin
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2253,7 +2253,7 @@ atan
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2275,7 +2275,7 @@ sin
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2296,7 +2296,7 @@ cos
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2317,7 +2317,7 @@ tan
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2337,7 +2337,7 @@ tanh
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2358,7 +2358,7 @@ sinh
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2379,7 +2379,7 @@ cosh
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2400,7 +2400,7 @@ power
     :param t2: zweiter QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2421,7 +2421,7 @@ abs
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2441,7 +2441,7 @@ log
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2463,7 +2463,7 @@ log_softmax
 
     :return: Ausgabe-QTensor.
 
-    Example::
+    Beispiel::
 
         from pyvqnet import tensor
         output = tensor.arange(1,13).reshape([3,2,2])
@@ -2489,7 +2489,7 @@ sqrt
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2510,7 +2510,7 @@ square
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2537,7 +2537,7 @@ eigh
 
         Gibt Eigenwerte und Eigenvektoren zur�ck
 
-    Examples::
+    Beispiele::
 
         import numpy as np
         import pyvqnet
@@ -2577,7 +2577,7 @@ frobenius_norm
     :return: Gibt einen QTensor oder F-Norm-Wert zur�ck.
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet import tensor,QTensor
         t = QTensor([[[1., 2., 3.], [4., 5., 6.]], [[7., 8., 9.], [10., 11., 12.]],
@@ -2608,7 +2608,7 @@ maximum
     :param t2: zweiter QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2631,7 +2631,7 @@ minimum
     :param t2: zweiter QTensor
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2655,7 +2655,7 @@ min
     :param keepdims: ob die Dimension des Ausgabe-Tensors beibehalten wird oder nicht. Standardwert False
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2681,7 +2681,7 @@ max
     :param keepdims: ob die Dimension des Ausgabe-Tensors beibehalten wird oder nicht. Standardwert False
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2704,7 +2704,7 @@ clip
     :param max_val: Maximalwert
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2726,7 +2726,7 @@ where
     :param t2: QTensor, aus dem Elemente entnommen werden, wenn die Bedingung nicht erf�llt ist, Standardwert None
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2747,7 +2747,7 @@ nonzero
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor enth�lt Indizes von Nicht-Null-Elementen.
 
-    Example::
+    Beispiel::
     
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2774,7 +2774,7 @@ isfinite
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2795,7 +2795,7 @@ isinf
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
     
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2816,7 +2816,7 @@ isnan
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
     
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2837,7 +2837,7 @@ isneginf
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
     
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2858,7 +2858,7 @@ isposinf
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
     
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2880,7 +2880,7 @@ logical_and
     :param t2: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
     
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2903,7 +2903,7 @@ logical_or
     :param t2: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2925,7 +2925,7 @@ logical_not
     :param t: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2948,7 +2948,7 @@ logical_xor
 
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2972,7 +2972,7 @@ greater
     :param t2: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -2996,7 +2996,7 @@ greater_equal
     :param t2: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3020,7 +3020,7 @@ less
     :param t2: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3044,7 +3044,7 @@ less_equal
     :param t2: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3068,7 +3068,7 @@ equal
     :param t2: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
     
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3092,7 +3092,7 @@ not_equal
     :param t2: Eingabe-QTensor
     :return: Ausgabe-QTensor, der True zur�ckgibt, wenn das entsprechende Positionselement die Bedingung erf�llt, andernfalls False.
     
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3119,7 +3119,7 @@ bitwise_and
     :return:
         Ergebnis-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import *
         import numpy as np
@@ -3146,7 +3146,7 @@ select
     :param index: Ein String, der die Ausgabedimension enth�lt
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3179,7 +3179,7 @@ broadcast
     :return t11: t1 mit neuer Broadcast-Form.
     :return t22: t2 mit neuer Broadcast-Form.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         t1 = tensor.ones([5, 4])
@@ -3225,7 +3225,7 @@ concatenate
     :param axis: Dimension zum Verketten. Muss zwischen 0 und der Anzahl der Dimensionen der zu verkettenden Tensoren liegen.
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3250,7 +3250,7 @@ stack
     :param axis: Dimension zum Einf�gen. Muss zwischen 0 und der Anzahl der Dimensionen der zu stapelnden Tensoren liegen.
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3289,7 +3289,7 @@ permute
     :param dim: die neue Reihenfolge der Dimensionen (Liste von Integers)
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3320,7 +3320,7 @@ transpose
     :param dim: die neue Reihenfolge der Dimensionen (Liste von Integers)
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3360,7 +3360,7 @@ tile
     :param reps: die Anzahl der Wiederholungen pro Dimension.
     :return: ein neuer QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3390,7 +3390,7 @@ squeeze
     :param axis: Stauchungsachse, wenn axis = -1, werden alle Dimensionen mit der Gr��e 1 gestaucht.
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3420,7 +3420,7 @@ unsqueeze
     :param axis: Achse f�r die Erweiterung, an der die Dimension eingef�gt wird.
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3459,7 +3459,7 @@ moveaxis
         Neuer QTensor
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet import QTensor,tensor
         a = tensor.arange(0,24).reshape((2,3,4))
@@ -3479,7 +3479,7 @@ swapaxis
     :param axis2: Zielposition f�r die urspr�ngliche Achse. Diese muss ebenfalls eindeutig sein.
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3512,7 +3512,7 @@ masked_fill
     :param value: angegebener Wert
     :return: Ein QTensor
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.tensor import tensor
         import numpy as np
@@ -3545,7 +3545,7 @@ flatten
     :param end: Enddimension, Standard = -1, endet mit der letzten Dimension.
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3568,7 +3568,7 @@ reshape
 
     :return: Ein QTensor mit neuer Form.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         from pyvqnet.tensor import QTensor
@@ -3597,7 +3597,7 @@ flip
 
     :return: Ausgabe-QTensor.
 
-    Example::
+    Beispiel::
 
         from pyvqnet import tensor
         t = tensor.arange(1, 3 * 2 *2 * 2 + 1).reshape([3, 2, 2, 2])
@@ -3643,7 +3643,7 @@ gather
 
     :return: das aggregierte Ergebnis
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import gather,QTensor,tensor
         import numpy as np
@@ -3685,7 +3685,7 @@ scatter
     :param indices: Index-QTensor, sollte die gleiche Dimensionsgr��e wie die Eingabe haben.
     :param src: Der Quell-Tensor zum Streuen.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import scatter, QTensor
         import numpy as np
@@ -3746,7 +3746,7 @@ broadcast_to
     
     :return: Der QTensor des neu gebroadcasteten t.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor.tensor import QTensor
         from pyvqnet.tensor import *
@@ -3772,7 +3772,7 @@ to_tensor
     :param x: Integer, Float oder numpy.array
     :return: Ausgabe-QTensor
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import tensor
         t = tensor.to_tensor(10.0)
@@ -3796,7 +3796,7 @@ pad_sequence
          Wenn batch_first ``False`` ist, hat der Tensor die Gr��e ``batch size x longest sequence length x *``.
          Andernfalls hat der Tensor die Gr��e ``longest sequence length x batch size x *``.
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.tensor import tensor
         a = tensor.ones([4, 2,3])
@@ -3852,7 +3852,7 @@ pad_packed_sequence
     :return:
         Ein Tupel von Tensoren, das die aufgef�llten Sequenzen enth�lt, sowie eine Liste von L�ngen f�r jede Sequenz im Stapel. Stapelelemente werden in ihrer urspr�nglichen Reihenfolge angeordnet.
     
-    Examples::
+    Beispiele::
 
         from pyvqnet.tensor import tensor
         a = tensor.ones([4, 2,3])
@@ -3927,7 +3927,7 @@ pack_pad_sequence
 
     :return: Ein :class:`PackedSequence`-Objekt.
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.tensor import tensor
         a = tensor.ones([4, 2,3])
@@ -3986,7 +3986,7 @@ functional_conv2d
     :return: qtensor 
 
 
-    Examples:: 
+    Beispiele::
 
         from pyvqnet.nn.functional import functional_conv2d 
         from pyvqnet.tensor import arange,ones 
@@ -4020,7 +4020,7 @@ no_grad
 
     Deaktiviert die Aufzeichnung von R�ckw�rtsdurchlauf-Knoten bei der Vorw�rtsberechnung.
 
-    Example::
+    Beispiel::
 
         import pyvqnet.tensor as tensor
         from pyvqnet import no_grad

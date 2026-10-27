@@ -19,7 +19,7 @@ set_random_seed
             Wenn ein fester Zufallszahlensamen angegeben wird, erzeugt die Zufallsverteilung eine feste pseudozufällige Verteilung basierend auf diesem Samen.
             Betroffene Funktionen umfassen: `tensor.randu` , `tensor.randn` , Parameterinitialisierung für parametrische klassische neuronale Netzwerke und Quantenberechnungsschichten.
 
-    Example::
+    Beispiel::
 
         import pyvqnet.tensor as tensor
         from pyvqnet.utils import get_random_seed, set_random_seed
@@ -98,7 +98,7 @@ get_random_seed
     
     Ruft den aktuellen Zufallssamen ab.
 
-    Example::
+    Beispiel::
 
         import pyvqnet.tensor as tensor
         from pyvqnet.utils import get_random_seed, set_random_seed

@@ -1,5 +1,5 @@
-Verwendung des pyQPanda3 Quantum Machine Learning Moduls
-#########################################################
+Verwendung des pyQPanda3-Moduls für quantenmaschinelles Lernen
+##############################################################
 
 .. warning::
 
@@ -46,7 +46,7 @@ Wenn Sie mit der pyQPanda3-Syntax vertraut sind, können Sie die Schnittstelle Q
 
         Diese Klasse hat die Aliase ``QuantumLayerV2``, ``QpandaQCircuitVQCLayerLite``.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3.measure import ProbsMeasure
         from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
@@ -139,7 +139,7 @@ QpandaQProgVQCLayer
 
         Diese Klasse hat den Alias ``QuantumLayerV3``.
 
-    Example::
+    Beispiel::
 
         import pyqpanda3.core as pq
         import pyvqnet
@@ -233,7 +233,7 @@ Wenn Sie die neueste Version von pyqpanda3 installiert haben, können Sie diese 
     :param query_kwargs: Zusätzliche Schlüsselwortparameter für die Abfrage von Quantenergebnissen, Standard: {"timeout":1,"total_timeout":60,"print_query_info":True,"sub_circuits_split_size":1}.
     :return: Ein Modul, das Quantenschaltkreise berechnen kann.
 
-    Example::
+    Beispiel::
 
         import pyqpanda3.core as pq
         import pyvqnet
@@ -343,7 +343,7 @@ QuantumLayerAdjoint
     :return: Gibt eine QuantumLayerAdjoint-Instanz zurück.
 
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3 import QuantumLayerAdjoint
         from pyvqnet import tensor
@@ -496,7 +496,7 @@ VQCQCloudLayer
     :param submit_kwargs: Zusätzliche Schlüsselwortparameter für die Übermittlung von Quantenschaltkreisen, Standard: {"if_print_qcloud_log":False,"chip_id":"WK_C180","is_amend":True,"is_mapping":True,"is_optimization":True,"compile_level":3,"default_task_group_size":200,"test_qcloud_fake":False,"":"server_ip_address"}, wenn test_qcloud_fake auf True gesetzt ist, lokale CPUQVM-Simulation.
     :param query_kwargs: Zusätzliche Schlüsselwortargumente für die Abfrage von Quantenergebnissen. Standard: {"timeout":1,"total_timeout":60, "print_query_info":True,"sub_circuits_split_size":1}.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.vqc import *
         from pyvqnet.qnn.pq3 import VQCQCloudLayer
@@ -550,7 +550,7 @@ grad
         Gradient der Parameter
 
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.qnn.pq3 import grad, ProbsMeasure
         import pyqpanda3.core as pq
@@ -602,7 +602,7 @@ QLinear implementiert einen Quanten-Vollverbindungsalgorithmus. Zunächst werden
     :param machine: ``str`` - Die zu verwendende virtuelle Maschine, standardmäßig wird CPU-Simulation verwendet.
     :return: Quanten-Vollverbindungsschicht.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.tensor import QTensor
         from pyvqnet.qnn.qlinear import QLinear
@@ -655,7 +655,7 @@ Qconv
         :return: Quanten-Faltungsschicht.
 
 
-        Example::
+        Beispiel::
 
             from pyvqnet.tensor import tensor
             from pyvqnet.qnn.qcnn.qconv import QConv
@@ -698,7 +698,7 @@ BasicEmbeddingCircuit
     :return: Quantenschaltkreis.
 
 
-    Example::
+    Beispiel::
 
             from pyvqnet.qnn.pq3.template import BasicEmbeddingCircuit
             import pyqpanda3.core as pq
@@ -732,7 +732,7 @@ AngleEmbeddingCircuit
     :param rotation: Welche Rotation verwendet werden soll, Standard ist „X“.
     :return: Quantenschaltkreis.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3.template import AngleEmbeddingCircuit
         import numpy as np 
@@ -762,7 +762,7 @@ IQPEmbeddingCircuits
     :param rep: Wiederholung des Quantenschaltkreisblocks, die Standardanzahl ist 1.
     :return: Quantenschaltkreis.
 
-    Example::
+    Beispiel::
 
         import numpy as np
         from pyvqnet.qnn.pq3.template import IQPEmbeddingCircuits
@@ -790,7 +790,7 @@ RotCircuit
     :param qubits: Qubit-Index, es werden nur einzelne Qubits akzeptiert.
     :return: Quantenschaltkreis.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3.template import RotCircuit
         import pyqpanda3.core as pq
@@ -823,7 +823,7 @@ CRotCircuit
     :param rot_qubits: Rotations-Qubit-Index, die Anzahl der Qubits sollte 1 sein.
     :return: Quantenschaltkreis.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3.template import CRotCircuit
         import pyqpanda3.core as pq
@@ -863,7 +863,7 @@ CSWAPcircuit
     :param qubits: Liste der Qubit-Indizes. Das erste Qubit ist das Kontroll-Qubit. Die Länge von qlist muss 3 sein.
     :return: Der Quantenschaltkreis.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3 import CSWAPcircuit
         import pyqpanda3.core as pq
@@ -892,7 +892,7 @@ Controlled_Hadamard
 
     :param qubits: Qubit-Index.
 
-    Examples::
+    Beispiele::
 
         import pyqpanda3.core as pq
 
@@ -930,7 +930,7 @@ CCZ
     :return:
         pyQPanda3 QCircuit
 
-    Example::
+    Beispiel::
 
         import pyqpanda3.core as pq
 
@@ -963,7 +963,7 @@ FermionicSingleExcitation
     :return:
         pyQPanda3 QCircuit
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.qnn.pq3 import FermionicSingleExcitation, expval
 
@@ -1011,7 +1011,7 @@ FermionicDoubleExcitation
     :return:
         pyQPanda3 QCircuit
 
-    Examples::
+    Beispiele::
 
         import pyqpanda3.core as pq
         from pyvqnet.qnn.pq3 import FermionicDoubleExcitation, expval
@@ -1057,7 +1057,7 @@ UCCSD
     :param init_state: Besetzungszahl-Vektor der Länge ``len(wires)``, der den HF-Zustand darstellt. ``init_state`` initialisiert den Qubit-Zustand.
     :param qubits: Qubit-Index.
 
-    Examples::
+    Beispiele::
         
         import pyqpanda3.core as pq
         from pyvqnet.tensor import tensor
@@ -1089,7 +1089,7 @@ QuantumPoolingCircuit
     :return:
         pyQPanda3 QCircuit
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.qnn.pq3.template import QuantumPoolingCircuit
         import pyqpanda3.core as pq
@@ -1120,7 +1120,7 @@ HardwareEfficientAnsatz
     :return:
         Eine HardwareEfficientAnsatz-Instanz
 
-    Example::
+    Beispiel::
 
         import pyqpanda3.core as pq
         from pyvqnet.tensor import QTensor,tensor
@@ -1152,7 +1152,7 @@ BasicEntanglerTemplate
     :return:
         Eine BasicEntanglerTemplate-Instanz
 
-    Example::
+    Beispiel::
 
         import pyqpanda3.core as pq
         import numpy as np
@@ -1186,7 +1186,7 @@ StronglyEntanglingTemplate
     :return:
         Eine StronglyEntanglingTemplate-Instanz
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3 import StronglyEntanglingTemplate
         import pyqpanda3.core as pq
@@ -1221,7 +1221,7 @@ ComplexEntanglingTemplate
     :return:
         Eine ComplexEntanglingTemplate-Instanz
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3 import ComplexEntanglingTemplate
         import pyqpanda3.core as pq
@@ -1259,7 +1259,7 @@ Quantum_Embedding
     :return:
         Eine Quantum_Embedding-Instanz
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3 import QuantumLayerV2,Quantum_Embedding
         from pyvqnet.tensor import tensor
@@ -1312,7 +1312,7 @@ expval
 
     :return: Erwartungswert.
 
-    Example::
+    Beispiel::
 
         import pyqpanda3.core as pq
         from pyvqnet.qnn.pq3.measure import expval
@@ -1353,7 +1353,7 @@ QuantumMeasure
     :param noise_model: Anzuwendendes Rauschmodell, Standard ist None (ideale Simulation).
     :return: Gibt die mit der Monte-Carlo-Methode erhaltenen Messergebnisse zurück.
 
-    Example::
+    Beispiel::
 
         from pyqpanda3.core import *
         circuit = QCircuit(3)
@@ -1397,7 +1397,7 @@ ProbsMeasure
     :return: Misst Qubits in lexikografischer Reihenfolge.
 
 
-    Example::
+    Beispiel::
 
         from pyqpanda3.core import *
         from pyvqnet.qnn.pq3.measure import probs_measure
@@ -1435,7 +1435,7 @@ DensityMatrixFromQstate
     :return: 
         Dichtematrix der Größe ``(2**len(indices), 2**len(indices))``.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3.measure import DensityMatrixFromQstate
         qstate = [(0.9306699299765968+0j), (0.18865613455240968+0j), (0.1886561345524097+0j), (0.03824249173404786+0j), -0.048171819846746615j, -0.00976491131165138j, -0.23763904794287155j, -0.048171819846746615j]
@@ -1462,7 +1462,7 @@ VN_Entropy
 
     :return: Gleitkommawert der Von-Neumann-Entropie.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3.measure import VN_Entropy
         qstate = [(0.9022961387408862 + 0j), -0.06676534788028633j,
@@ -1494,7 +1494,7 @@ Mutal_Info
 
     :return: Gegenseitige Information zwischen Subsystemen.
 
-    Example::
+    Beispiel::
 
         from pyvqnet.qnn.pq3.measure import Mutal_Info
         qstate = [(0.9022961387408862 + 0j), -0.06676534788028633j,
@@ -1525,7 +1525,7 @@ Purity
     :return:
         Reinheit
 
-    Examples::
+    Beispiele::
 
         from pyvqnet.qnn.pq3.measure import Purity
         qstate = [(0.9306699299765968 + 0j), (0.18865613455240968 + 0j),

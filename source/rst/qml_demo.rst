@@ -1128,10 +1128,10 @@ Trainings- und Validierungsverlust sowie Klassifikationsgenauigkeit in Abhaengig
     # 14	0.020372112181037665	0.956	0.46692863543197743	0.83
 
 
-Quantum AutoEncoder Demo
+Quantum-AutoEncoder-Demo
 *******************************
 
-1. Quantum AutoEncoder
+1. Quantum-AutoEncoder
 =======================================
 
 Der klassische Autoencoder ist ein neuronales Netz, das hocheffiziente niedrigdimensionale Darstellungen von Daten in einem hochdimensionalen Raum erlernen kann.
@@ -3526,8 +3526,8 @@ Aufbau hybrider quantenklassischer neuronaler Netze
 
 
 
-data result
---------------------
+Daten-Ergebnis
+----------------------
 
 Die Verlustfunktionskurve der Trainingsdaten wird angezeigt und gespeichert.
 Verlust auf dem Trainingsdatensatz.
@@ -3733,8 +3733,8 @@ Erfordert ``gym`` == 0.23.0 , ``pygame`` == 2.1.2 .
         end = time.time()
 
 
-Unsupervised learning
-****************************
+Unüberwachtes Lernen
+********************
 
 1 Quantum Kmeans
 =======================================
@@ -4000,8 +4000,8 @@ Berechnung des Clusterzentrums relevanter Clusterdaten
 
 |
 
-Quantum Machine Learning Research
-*********************************************
+Forschung zum quantenmaschinellen Lernen
+*****************************************
 
 Quantenmodelle als Fourier-Reihen
 ================================================================================
@@ -4763,8 +4763,8 @@ Im Folgenden wird mit VQNet die Quantenschaltungsausdruckskraft von `HardwareEff
 
 
 
-Quantum Perceptron
-=======================================
+Quanten-Perzeptron
+===================
 
 Kuenstliche neuronale Netze sind das Herz von Algorithmen des maschinellen Lernens und von Protokollen der kuenstlichen Intelligenz. Historisch gesehen geht die einfachste Implementierung eines kuenstlichen Neurons auf das klassische Rosenblatt-Perzeptron zurueck, aber seine langfristigen praktischen Anwendungen koennten durch die schnell wachsende Rechenkomplexitaet behindert werden, die besonders fuer das Training mehrschichtiger Perzeptronnetze relevant ist.
 Hier beziehen wir uns auf die Arbeit `An Artificial Neuron Implemented on an Actual Quantum Processor <https://arxiv.org/abs/1811.02266>`_, die einen quanteninformationsbasierten Algorithmus zur Implementierung der Quantencomputerversion eines Perzeptrons vorstellt, der einen exponentiellen Vorteil bei der Kodierungsressourcen gegenueber alternativen Realisierungen zeigt.
@@ -4838,8 +4838,8 @@ Auf den Testdaten koennen die Genauigkeitsergebnisse erzielt werden
 
 
 
-Doubly Stochastic Gradient Descent
-===============================================================================
+Doppelt stochastischer Gradientenabstieg
+=========================================
 
 In variativen Quantenalgorithmen werden parametrisierte Quantenschaltungen durch
 klassischen Gradientenabstieg optimiert, um den erwarteten Funktionswert zu minimieren.
@@ -5162,8 +5162,8 @@ Es ist absehbar, dass die durch beliebige parametrische Logikgatter aufgebaute Q
 |
 
 
-Gradient based pruning
-===============================================================================
+Gradientenbasiertes Pruning
+============================
 
 Das folgende Beispiel implementiert den Algorithmus aus der Arbeit `Towards Efficient On-Chip Training of Quantum Neural Networks <https://openreview.net/forum?id=vKefw-zKOft>`_.
 Durch sorgfaeltiges Studium des Prozesses von Parametern in der Quantenvariationsschaltung beobachteten die Forscher, dass kleine Gradienten unter Quantenrauschen oft grosse relative Aenderungen oder sogar falsche Richtungen aufweisen.

@@ -1,5 +1,5 @@
-Quantum Machine Learning API mit QPanda2
-####################################################
+API für quantenmaschinelles Lernen mit QPanda2
+##############################################
 
 
 .. warning::
@@ -955,7 +955,7 @@ AmplitudeEmbeddingCircuit
 
 
 
-Quantum Machine Learning APIs mit pyQPanda2
+APIs für quantenmaschinelles Lernen mit pyQPanda2
 ***************************************************************************
 
 Quanten Generative Adversarial Networks zum Lernen und Laden von Zufallsverteilungen
@@ -1308,7 +1308,7 @@ Simultaneous Perturbation Stochastic Approximation Optimierer
         y = model(data)
         print(y)
 
-Quantum Fisher Informationsberechnungsmatrix
+Quanten-Fisher-Informationsmatrix
 ========================================================
 
 .. py:class:: pyvqnet.qnn.opt.quantum_fisher(py_qpanda_config, params, target_gate_type_lists,target_gate_bits_lists, qcir_lists, wires)

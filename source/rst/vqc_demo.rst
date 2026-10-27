@@ -2092,7 +2092,7 @@ Der folgende Code dient zum Laden der Daten:
             labels[i] = lbl[ind[i]]
         return images, labels
 
-Classic neural network training, using ``SGD`` to train all neural network parameters for 30 batches:
+Klassisches Training eines neuronalen Netzes, das ``SGD`` verwendet, um alle Parameter des neuronalen Netzes über 30 Batches zu trainieren:
 
 .. code-block::
 
@@ -2945,7 +2945,7 @@ Der spezifische Code ist wie folgt:
     # qubits 8, projected_accuracy 0.99
 
 
-Beispiel für Quantum Natural Gradient Interface
+Beispiel für die Quantum-Natural-Gradient-Schnittstelle
 ===================================================================
 Quanten-Maschinenlern-Modelle verwenden im Allgemeinen den Gradientenabstieg, um Parameter in variablen Quantenlogikschaltkreisen zu optimieren. Die Formel für die klassische Gradientenabstiegsmethode lautet wie folgt:
 

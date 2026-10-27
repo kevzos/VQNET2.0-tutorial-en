@@ -141,9 +141,9 @@ Der Ablauf des Trainingsprozesses
     from pyvqnet.nn.module import Module
 
 
-Defining a model: the ``__init__`` function defines the internal neural network modules and quantum modules, and the ``forward`` function defines the forward computation. ``QuantumLayer`` is an abstract class
-that encapsulates quantum computing.
-VQNet will automatically calculate the parameter gradients for `qdrl_circuit` with `param_num`.
+Definieren eines Modells: Die Funktion ``__init__`` definiert die internen Module des neuronalen Netzes und die Quantenmodule, und die Funktion ``forward`` definiert die Vorwärtsberechnung. ``QuantumLayer`` ist eine abstrakte Klasse,
+die Quantenberechnung kapselt.
+VQNet berechnet automatisch die Parametergradienten für `qdrl_circuit` mit `param_num`.
 
 
 .. code-block::
@@ -163,7 +163,7 @@ VQNet will automatically calculate the parameter gradients for `qdrl_circuit` wi
             x = self.pqc(x)
             return x
 
-Defining some functions for training the model 
+Definieren einiger Funktionen für das Training des Modells
 
 .. code-block::
 
@@ -193,7 +193,7 @@ Defining some functions for training the model
         score = np.sum(pred == score)
         return score
 
-VQNet follows the general workflow of machine learning: loading the data iteratively, forward propagation, calculating the loss function, back propagation, and updating the parameters.
+VQNet folgt dem allgemeinen Arbeitsablauf des maschinellen Lernens: iteratives Laden der Daten, Vorwärtspropagation, Berechnung der Verlustfunktion, Rückpropagation und Aktualisierung der Parameter.
 
 .. code-block::
 
@@ -204,7 +204,7 @@ VQNet follows the general workflow of machine learning: loading the data iterati
     # using cross-entropy to define a loss function
     Closs = CategoricalCrossEntropy()
 
-A function to train the model
+Eine Funktion zum Trainieren des Modells
 
 .. code-block::
 
@@ -243,7 +243,7 @@ A function to train the model
             print(f"epoch:{i}, train_accuracy:{accuracy/count}")
             print(f"epoch:{i}, train_loss:{loss/count}\n")
             
-A function to validate the model
+Eine Funktion zum Validieren des Modells
 
 .. code-block::
 
@@ -266,7 +266,7 @@ A function to validate the model
 
         print(f"test_accuracy:{test_accuracy/count}")
 
-Training and testing results
+Ergebnisse des Trainings und der Tests
 
 .. code-block::
 
