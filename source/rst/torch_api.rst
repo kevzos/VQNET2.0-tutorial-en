@@ -268,7 +268,7 @@ TorchModuleList
 TorchParameterList
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.TorchParameterList(value=None)
+.. py:class:: pyvqnet.nn.torch.TorchParameterList(values=None)
 
     This module is used to store child ``pyvqnet.nn.Parameter`` instances in a list. The TorchParameterList can be indexed like a regular Python list, and the internal parameters it contains can be saved.
     
@@ -509,9 +509,8 @@ ConvT2D
 
     .. note::
 
-        ``padding='valid'`` does not apply padding.
-
-        ``padding='same'`` applies zero-padding to the input, with the output's height equal to `ceil(height / stride)`.
+        The torch backend only accepts integer tuples for ``padding``; the strings ``'valid'`` and
+        ``'same'`` are not supported.
 
     Example::
 
@@ -528,7 +527,7 @@ ConvT2D
 AvgPool1D
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.AvgPool1D(kernel, stride, padding=0, name = "")
+.. py:class:: pyvqnet.nn.torch.AvgPool1D(kernel, stride, padding=0, dtype=None, name="")
 
     Perform average pooling on 1D input. The input has the shape (batch_size, input_channels, in_height).
     This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
@@ -562,7 +561,7 @@ AvgPool1D
 MaxPool1D
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.MaxPool1D(kernel, stride, padding=0, name="")
+.. py:class:: pyvqnet.nn.torch.MaxPool1D(kernel, stride, padding=0, dtype=None, name="")
 
     Perform max pooling on 1D input. The input has the shape (batch_size, input_channels, in_height).
     This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
@@ -596,7 +595,7 @@ MaxPool1D
 AvgPool2D
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.AvgPool2D(kernel, stride, padding=(0,0), name="")
+.. py:class:: pyvqnet.nn.torch.AvgPool2D(kernel, stride, padding=(0,0), dtype=None, name="")
 
     Perform average pooling on 2D input. The input has the shape (batch_size, input_channels, height, width).
     This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
@@ -630,7 +629,7 @@ AvgPool2D
 MaxPool2D
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.MaxPool2D(kernel, stride, padding=(0,0), name="")
+.. py:class:: pyvqnet.nn.torch.MaxPool2D(kernel, stride, padding=(0,0), dtype=None, name="")
 
     Perform max pooling on 2D input. The input has the shape (batch_size, input_channels, height, width).
     This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
@@ -822,7 +821,7 @@ LayerNormNd
 LayerNorm2d
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.LayerNorm2d(norm_size:int, epsilon:float = 1e-5, affine=True, dtype=None, name="")
+.. py:class:: pyvqnet.nn.torch.LayerNorm2d(normalized_shape: Union[int, List[int], Tuple[int, ...]], epsilon:float=1e-5, affine=True, dtype=None, name="")
 
     Applies layer normalization on 4D inputs. The specific method is described in the paper:
     `Layer Normalization <https://arxiv.org/abs/1607.06450>`__.
@@ -830,14 +829,14 @@ LayerNorm2d
     .. math::
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    The mean and standard deviation are computed across the remaining dimensions, excluding the first one. For inputs like (B, C, H, W), ``norm_size`` should be equal to C * H * W.
+    The mean and standard deviation are computed across the remaining dimensions, excluding the first one. For inputs like (B, C, H, W), ``normalized_shape`` should be equal to C * H * W.
 
     This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
 
     The data in the class's ``_buffers`` is of type ``torch.Tensor``.
     The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
 
-    :param norm_size: `int` - The size of the normalization, should be equal to C * H * W.
+    :param normalized_shape: `Union[int, List[int], Tuple[int, ...]]` - The size of the normalization, should be equal to C * H * W.
     :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
     :param affine: `bool` - If `True`, this module has learnable affine parameters for each channel, initialized to 1 (for weights) and 0 (for biases). Default is `True`.
     :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
@@ -862,7 +861,7 @@ LayerNorm2d
 LayerNorm1d
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.LayerNorm1d(norm_size:int, epsilon:float = 1e-5, affine=True, dtype=None, name="")
+.. py:class:: pyvqnet.nn.torch.LayerNorm1d(normalized_shape: Union[int, List[int], Tuple[int, ...]], epsilon:float=1e-5, affine=True, dtype=None, name="")
 
     Applies layer normalization on 2D inputs. The specific method is described in the paper:
     `Layer Normalization <https://arxiv.org/abs/1607.06450>`__.
@@ -870,14 +869,14 @@ LayerNorm1d
     .. math::
         y = \frac{x - \mathrm{E}[x]}{ \sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta
 
-    The mean and standard deviation are computed across the last dimension size, where ``norm_size`` is the value of the last dimension.
+    The mean and standard deviation are computed across the last dimension size, where ``normalized_shape`` is the normalized size.
 
     This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as a submodule to a torchmodel.
 
     The data in the class's ``_buffers`` is of type ``torch.Tensor``.
     The data in the class's ``_parameters`` is of type ``torch.nn.Parameter``.
 
-    :param norm_size: `int` - The size of the normalization, should be equal to the size of the last dimension.
+    :param normalized_shape: `Union[int, List[int], Tuple[int, ...]]` - The size of the normalization, should be equal to the size of the last dimension.
     :param epsilon: `float` - A small constant for numerical stability, default is 1e-5.
     :param affine: `bool` - If `True`, this module has learnable affine parameters for each channel, initialized to 1 (for weights) and 0 (for biases). Default is `True`.
     :param dtype: The data type for the parameters, defaults to None, using `kfloat32` (32-bit floating point).
@@ -941,7 +940,7 @@ GroupNorm
 Dropout
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.Dropout(dropout_rate = 0.5)
+.. py:class:: pyvqnet.nn.torch.Dropout(dropout_rate: float = 0.5, name: str = "")
 
     Dropout module. The dropout module randomly sets some units' output to zero, while scaling the remaining units by the given dropout_rate probability.
 
@@ -1044,7 +1043,7 @@ Pixel_Unshuffle
 GRU
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.nn.torch.GRU(input_size, hidden_size, num_layers=1, nonlinearity='tanh', batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = "")
+.. py:class:: pyvqnet.nn.torch.GRU(input_size, hidden_size, num_layers=1, batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = "")
 
     Gated Recurrent Unit (GRU) module. Supports multi-layer stacking and bidirectional configuration. The formula for a single-layer unidirectional GRU is:
 
@@ -1931,7 +1930,7 @@ Softmax
     This class inherits from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
-    :param dim: the dimension to calculate (the last dim is -1), default： -1.
+    :param dim: the dimension to calculate (the last dim is -1), default: -1.
     :param name: The name of the activation function layer, default is "".
 
     :return: a Softmax instance.
@@ -2141,6 +2140,39 @@ Tanh
 
 
 
+reward_loss
+-----------------------------
+
+.. py:function:: pyvqnet.torch.trl.reward_loss(model, chosen_ids, rejected_ids, margin=None, center_coef=None)
+
+    Reward model contrastive loss. Trains a reward model by maximizing the reward difference between preferred and non-preferred sequences.
+
+    :param model: The reward model, whose forward pass returns a scalar reward value.
+    :param chosen_ids: Token IDs of the preferred sequence.
+    :param rejected_ids: Token IDs of the non-preferred sequence.
+    :param margin: Contrastive margin, default None.
+    :param center_coef: Reward centering coefficient, default None.
+    :return: Reward model loss value.
+
+    Example::
+
+        import torch
+        torch.manual_seed(42)
+        import torch.nn as nn
+        from pyvqnet.torch.trl import reward_loss
+
+        class TinyLM(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.embed = nn.Embedding(8, 8)
+                self.head = nn.Linear(8, 8)
+            def forward(self, x):
+                return self.head(self.embed(x))
+
+        loss = reward_loss(TinyLM(), torch.tensor([[1,2,3]]), torch.tensor([[3,2,1]]))
+        print(loss.item())
+        # 0.7172
+
 Optimizer module
 ---------------------------------------------
 
@@ -2148,13 +2180,199 @@ For classical and quantum circuit modules inherited from `TorchModule`, the para
 
 
 
-Using pyqpanda to run quantum variational circuit
+Quantum variational circuit training functions using pyqpanda3
+======================================================================
+
+The following are the variational quantum circuit training interfaces for circuit computation using pyqpanda3.
+
+
+
 .. warning::
 
     The quantum computing part of the following TorchQcloud3QuantumLayer and TorchQpanda3QuantumLayer interfaces uses pyqpanda3 https://qcloud.originqc.com.cn/document/qpanda-3/index.html.
 
+
+TorchVQCLayer
+---------------------------------------------
+
+.. py:class:: pyvqnet.qnn.pq3.torch.torchvqclayer.TorchVQCLayer(vqc_module, qcloud_token=None, shots=1000, diff_method="parameter_shift", submit_kwargs=None, query_kwargs=None, name="")
+
+    TorchVQCLayer is a unified quantum layer interface. It has the same functionality as the native ``VQCLayer`` and wraps a torch-backend VQC Module containing a ``QMachine`` into a trainable quantum layer. The execution backend is selected through ``submit_kwargs["backend"]``:
+
+    * ``vqnet_native`` (default): Compute gradients locally on the torch backend through VQC autograd, without submitting the circuit.
+    * ``qcloud_fake``: Submit to the local pyqpanda3 QVM (FakeBackend) simulator and compute gradients using the parameter-shift method.
+    * ``qcloud_service``: Submit to a real QCloud chip. Setting ``submit_kwargs["test_qcloud_fake"]=True`` performs a dry run of the same OriginIR path on the local simulator without consuming chip quota.
+    * ``qpanda_runtime``: Submit to a real qpanda3_runtime chip.
+
+    Measurement is managed uniformly by this layer, and the two measurement modes are mutually exclusive:
+
+    * ``submit_kwargs["pauli_str_dict"]``: Expectation-value measurement.
+    * ``query_kwargs["measure_qubits"]``: Probability measurement.
+
+    Classical Shadow measurement:
+
+    When ``submit_kwargs["pauli_str_dict"]`` is enabled, a faster expectation-value measurement scheme can be selected through ``submit_kwargs["shadow_config"]``:
+
+    * ``shadow_config=0`` (default): Full measurement (MeasureAll), exact expectation value.
+    * ``shadow_config=1``: Random classical shadow. shots indicates the total number of snapshots T, and each snapshot circuit runs 1 shot.
+    * ``shadow_config=2``: Derandomized classical shadow. shots indicates the scheduling length N, and greedy scheduling generates N circuits, each with 1 shot.
+
+    Classical shadow is available on ``vqnet_native`` and the submission backends (``qcloud_fake`` / ``qcloud_service``), but is not supported on ``qpanda_runtime`` (raises ``ValueError``).
+    Gradient path: ``vqnet_native`` uses the native automatic differentiation of the VQC module;
+    submission backends use the parameter-shift method on the mode-0 circuit.
+
+    .. note::
+
+        The torch backend must be set before use: ``pyvqnet.backends.set_backend("torch")``.
+
+    .. note::
+
+        ``vqc_module`` must contain a ``QMachine`` with ``save_ir=True``; the submission backends use it to build the OriginIR.
+        For example: ``QMachine(num_wires, dtype=dtype, save_ir=True)``.
+
+    .. note::
+
+        Exactly one measurement mode must be specified: choose either ``submit_kwargs["pauli_str_dict"]`` (expectation value)
+        or ``query_kwargs["measure_qubits"]`` (probability). Specifying both or neither raises ``ValueError``.
+
+    .. note::
+
+        When ``diff_method="random_coordinate_descent"``, the layer randomly selects a single parameter to compute the gradient on each backward pass,
+        and the remaining parameters stay zero. Reference: https://arxiv.org/abs/2311.00088
+
+    :param vqc_module: A torch-backend VQC Module (``TorchModule``) containing a ``QMachine`` with ``save_ir=True``.
+    :param qcloud_token: ``str|None`` - The QCloud token for the submission backends (``qcloud_fake`` / ``qcloud_service``). Ignored by the ``vqnet_native`` backend. Default None.
+    :param shots: ``int`` - Number of measurements. Default 1000.
+    :param diff_method: ``str`` - Gradient computation method, default ``"parameter_shift"``. Can be ``"random_coordinate_descent"``.
+    :param submit_kwargs: ``dict|None`` - Execution and measurement settings, default None (``{}``). Recognized keys:
+        ``backend``: Execution backend, ``vqnet_native`` default / ``qcloud_fake`` / ``qcloud_service`` / ``qpanda_runtime``;
+        ``pauli_str_dict``: Expectation-value measurement, mutually exclusive with ``query_kwargs["measure_qubits"]``;
+        ``shadow_config``: Expectation-value measurement scheme (requires ``pauli_str_dict``): 0 = full measurement (default), 1 = random classical shadow, 2 = derandomized classical shadow. Supported on ``vqnet_native`` and the submission backends, not supported on ``qpanda_runtime``;
+        ``shadow_seed``: Classical shadow recipe seed, random by default (fixed for the lifetime of the layer, making training reproducible);
+        ``noise_model``: ``QCloudNoiseModel`` noise model instance, used by the ``qcloud_fake`` backend to generate noisy local simulation results; the ``qcloud_service`` backend only supports cloud simulator chips (``full_amplitude`` / ``partial_amplitude`` / ``single_amplitude``);
+        ``log_file``: Log output file path (through ``LogOutput.FILE``), mutually exclusive with ``if_print_qcloud_log``, FILE takes precedence; default empty string (no file output);
+        ``point_label``: Passed through to the cloud backend submission JSON, default 1;
+        ``enable_binary_encoding``: Enable binary-encoding submission, default False;
+        ``if_print_qcloud_log``: Whether to print submission logs, default False;
+        ``chip_id``: Chip ID, default "WK_C180";
+        ``set_specified_block``: Specify chip blocks, default [];
+        ``is_amend``: Whether to perform error correction, default True;
+        ``is_mapping``: Whether to perform mapping, default True;
+        ``is_optimization``: Whether to perform circuit optimization, default True;
+        ``default_task_group_size``: Task group size, default 200;
+        ``test_qcloud_fake``: Execute on the local simulator when True; forced to True for the ``qcloud_fake`` backend;
+        ``fake_async_delay``: Local simulator async delay in seconds, default None;
+        ``print_ir``: Whether to print OriginIR, default False;
+        ``server_ip_address``: QCloud server address, default "";
+        ``use_qwc``: Whether to use QWC task grouping, default True;
+        ``streaming``: Whether to enable streaming gradients, default False;
+        ``block_b`` / ``block_o`` / ``block_k``: Batch/output/core dimensions of blocked contraction, default 0 (disabled).
+    :param query_kwargs: ``dict|None`` - Query settings, default None (``{}``). Recognized keys:
+        ``measure_qubits``: Probability measurement, mutually exclusive with ``submit_kwargs["pauli_str_dict"]``;
+        ``total_timeout``: Total timeout in seconds, default 60, 3600 for the local simulator;
+        ``timeout``: Single-query timeout in seconds, default 1, 0.01 for the local simulator;
+        ``print_query_info``: Whether to print query information, default False;
+        ``sub_circuits_split_size``: Sub-circuit split size, default 1.
+    :param name: ``str`` - Module name. Default "".
+    :return: A unified quantum layer that can compute quantum circuits.
+
+    Example::
+
+        import pyvqnet
+
+        pyvqnet.backends.set_backend("torch")
+        import torch
+        from pyvqnet.tensor import QTensor
+        from pyvqnet.qnn.vqc.sv.torch import QMachine, RY, TorchModule
+        from pyvqnet.qnn.pq3.torch import TorchVQCLayer
+
+        # Define a torch-backend VQC module: wire0 is a trainable RY(w) rotation, wire1 encodes classical data RY(x).
+        class QModel(TorchModule):
+            def __init__(self):
+                super().__init__()
+                self.qm = QMachine(2, save_ir=True)
+                self.ry_w = RY(trainable=True, wires=0, init_params=QTensor([[0.4]]))
+                self.ry_x = RY(trainable=False, wires=1)
+
+            def forward(self, x):
+                self.qm.reset_states(x.shape[0])
+                self.ry_w(q_machine=self.qm)
+                self.ry_x(params=x[:, [0]], q_machine=self.qm)
+                return x
+
+        # Backend 1: vqnet_native (default), expectation-value measurement.
+        layer = TorchVQCLayer(
+            QModel(),
+            submit_kwargs={"backend": "vqnet_native", "pauli_str_dict": {"Z0 Z1": 1}},
+        )
+        x = QTensor([[0.3], [0.7]], requires_grad=True)
+        y = layer(x)
+        y.backward(torch.ones_like(y))
+        print(y.detach().cpu().numpy())          # Expectation value of Z0*Z1, shape (2, 1)
+        print(x.grad.detach().cpu().numpy())     # d<Z0 Z1>/dx
+
+        # Probability measurement for backend 1 (mutually exclusive with pauli_str_dict).
+        layer = TorchVQCLayer(
+            QModel(),
+            submit_kwargs={"backend": "vqnet_native"},
+            query_kwargs={"measure_qubits": [1]},
+        )
+        x = QTensor([[0.6]], requires_grad=True)
+        y = layer(x)      # Probability vector on wire1, shape (1, 2)
+        print(y.detach().cpu().numpy())
+
+        # Backend 2: qcloud_fake (local pyqpanda3 QVM + parameter-shift gradients, no real chip required).
+        from pyvqnet.utils import set_random_seed
+
+        set_random_seed(42)
+        layer = TorchVQCLayer(
+            QModel(),
+            qcloud_token="your_qcloud_token",
+            shots=8000,
+            submit_kwargs={
+                "backend": "qcloud_fake",
+                "test_qcloud_fake": True,
+                "pauli_str_dict": {"Z0 Z1": 1},
+            },
+        )
+        x = QTensor([[0.3]], requires_grad=True)
+        y = layer(x)
+        y.backward(torch.ones_like(y))
+        print(y.detach().cpu().numpy())          # Sampled expectation value, shape (1, 1)
+        print(layer.vqc_module.ry_w.params.grad.detach().cpu().numpy())
+
+        # Backend 1: classical shadow measurement (shadow_config=1, random classical shadow).
+        # shots=500 means 500 snapshots, and each snapshot runs 1 shot.
+        layer = TorchVQCLayer(
+            QModel(), shots=500,
+            submit_kwargs={
+                "backend": "vqnet_native",
+                "pauli_str_dict": {"Z0 Z1": 1},
+                "shadow_config": 1,
+                "shadow_seed": 42,
+            },
+        )
+        x = QTensor([[0.3], [0.7]], requires_grad=True)
+        y = layer(x)
+        y.backward(torch.ones_like(y))
+        print(x.grad.detach().cpu().numpy())
+
+        # Backend 1: derandomized classical shadow (shadow_config=2).
+        layer = TorchVQCLayer(
+            QModel(), shots=500,
+            submit_kwargs={
+                "backend": "vqnet_native",
+                "pauli_str_dict": {"Z0 Z1": 1},
+                "shadow_config": 2,
+                "shadow_seed": 42,
+            },
+        )
+        y = layer(QTensor([[0.3], [0.7]]))
+        print(y.detach().numpy())
+
+
 TorchQcloud3QuantumLayer
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------------
 
 When you install the latest version of pyqpanda3, you can use this interface to define a variational circuit and submit it to the real chip of originqc for operation.
 
@@ -2203,7 +2421,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
 
         import pyqpanda3.core as pq
         import pyvqnet
-        from pyvqnet.qnn.vqc.sv.torch import TorchQcloud3QuantumLayer
+        from pyvqnet.qnn.pq3.torch import TorchQcloud3QuantumLayer
 
         pyvqnet.backends.set_backend("torch")
         def qfun(input,param):
@@ -2281,7 +2499,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
         print(x.grad)
 
 TorchQpanda3QuantumLayer
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------------
 
 If you are more familiar with pyQPanda3 syntax, you can use the interface TorchQpanda3QuantumLayer.
 
@@ -2318,7 +2536,7 @@ If you are more familiar with pyQPanda3 syntax, you can use the interface TorchQ
         from pyvqnet.tensor import QTensor
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.sv.torch import TorchQpanda3QuantumLayer
+        from pyvqnet.qnn.pq3.torch import TorchQpanda3QuantumLayer
         def pqctest (input,param):
             num_of_qubits = 4
 
@@ -2457,14 +2675,13 @@ The following quantum circuit modules inherit from ``pyvqnet.qnn.vqc.sv.torch.QM
 I
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.I(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.I(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a I quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2488,14 +2705,13 @@ I
 Hadamard
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.Hadamard(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.Hadamard(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a Hadamard quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2519,14 +2735,13 @@ Hadamard
 T
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.T(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.T(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a T quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2551,14 +2766,13 @@ T
 S
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.S(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.S(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a S quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2582,7 +2796,7 @@ S
 PauliX
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.PauliX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.PauliX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PauliX quantum gate .
 
@@ -2590,7 +2804,6 @@ PauliX
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2614,7 +2827,7 @@ PauliX
 PauliY
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.PauliY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.PauliY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PauliY quantum gate .
 
@@ -2622,7 +2835,6 @@ PauliY
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2647,7 +2859,7 @@ PauliY
 PauliZ
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.PauliZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.PauliZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PauliZ quantum gate .
 
@@ -2655,7 +2867,6 @@ PauliZ
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2680,14 +2891,13 @@ PauliZ
 X1
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.X1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.X1(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a X1 quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2711,14 +2921,13 @@ X1
 RX
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.RX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.RX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2732,7 +2941,7 @@ RX
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = RX(has_params= True, trainable= True, wires=0)
+        layer = RX(trainable=True, wires=0)
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -2743,14 +2952,13 @@ RX
 RY
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.RY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.RY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2764,7 +2972,7 @@ RY
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = RY(has_params= True, trainable= True, wires=0)
+        layer = RY(trainable=True, wires=0)
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -2774,14 +2982,13 @@ RY
 RZ
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.RZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.RZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2795,7 +3002,7 @@ RZ
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = RZ(has_params= True, trainable= True, wires=0)
+        layer = RZ(trainable=True, wires=0)
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -2805,14 +3012,13 @@ RZ
 CRX
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.CRX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.CRX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CRX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2826,7 +3032,7 @@ CRX
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = CRX(has_params= True, trainable= True, wires=[0,2])
+        layer = CRX(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -2837,14 +3043,13 @@ CRY
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.CRY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.CRY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CRY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2858,7 +3063,7 @@ CRY
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = CRY(has_params= True, trainable= True, wires=[0,2])
+        layer = CRY(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -2869,14 +3074,13 @@ CRZ
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.CRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.CRZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CRZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2890,7 +3094,7 @@ CRZ
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = CRZ(has_params= True, trainable= True, wires=[0,2])
+        layer = CRZ(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -2901,14 +3105,13 @@ CRZ
 U1
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.U1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.U1(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a U1 quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2922,7 +3125,7 @@ U1
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = U1(has_params= True, trainable= True, wires=0)
+        layer = U1(trainable=True, wires=0)
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -2932,14 +3135,13 @@ U2
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.U2(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.U2(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a U2 quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2953,7 +3155,7 @@ U2
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = U2(has_params= True, trainable= True, wires=1)
+        layer = U2(trainable=True, wires=1)
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -2964,14 +3166,13 @@ U3
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.U3(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.U3(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a U3 quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -2985,7 +3186,7 @@ U3
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = U3(has_params= True, trainable= True, wires=1)
+        layer = U3(trainable=True, wires=1)
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -2996,14 +3197,13 @@ U3
 CNOT
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.CNOT(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.CNOT(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CNOT quantum gate , alias `CX` .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3026,14 +3226,13 @@ CNOT
 CY
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.CY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.CY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3057,14 +3256,13 @@ CY
 CZ
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.CZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.CZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3090,14 +3288,13 @@ CZ
 CR
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.CR(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.CR(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CR quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3112,7 +3309,7 @@ CR
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
         device = QMachine(4)
-        layer = CR(has_params= True, trainable= True, wires=[0,2])
+        layer = CR(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3124,14 +3321,13 @@ SWAP
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.SWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.SWAP(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SWAP quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3155,7 +3351,7 @@ SWAP
 CSWAP
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.CSWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.CSWAP(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SWAP quantum gate .
 
@@ -3173,7 +3369,6 @@ CSWAP
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3197,14 +3392,13 @@ RXX
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.RXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.RXX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RXX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3218,7 +3412,7 @@ RXX
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = RXX(has_params= True, trainable= True, wires=[0,2])
+        layer = RXX(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3227,14 +3421,13 @@ RXX
 RYY
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.RYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.RYY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RYY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3248,7 +3441,7 @@ RYY
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = RYY(has_params= True, trainable= True, wires=[0,2])
+        layer = RYY(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3258,14 +3451,13 @@ RYY
 RZZ
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.RZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.RZZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RZZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3279,7 +3471,7 @@ RZZ
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = RZZ(has_params= True, trainable= True, wires=[0,2])
+        layer = RZZ(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3290,14 +3482,13 @@ RZZ
 RZX
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.RZX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.RZX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RZX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3311,7 +3502,7 @@ RZX
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = RZX(has_params= True, trainable= True, wires=[0,2])
+        layer = RZX(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3320,14 +3511,13 @@ RZX
 Toffoli
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.Toffoli(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.Toffoli(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a Toffoli quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3351,14 +3541,13 @@ IsingXX
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.IsingXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.IsingXX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingXX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3372,7 +3561,7 @@ IsingXX
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = IsingXX(has_params= True, trainable= True, wires=[0,2])
+        layer = IsingXX(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3383,14 +3572,13 @@ IsingYY
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.IsingYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.IsingYY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingYY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3404,7 +3592,7 @@ IsingYY
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = IsingYY(has_params= True, trainable= True, wires=[0,2])
+        layer = IsingYY(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3414,14 +3602,13 @@ IsingYY
 IsingZZ
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.IsingZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.IsingZZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingZZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3435,7 +3622,7 @@ IsingZZ
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = IsingZZ(has_params= True, trainable= True, wires=[0,2])
+        layer = IsingZZ(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3446,14 +3633,13 @@ IsingXY
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.IsingXY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.IsingXY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingXY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3467,7 +3653,7 @@ IsingXY
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = IsingXY(has_params= True, trainable= True, wires=[0,2])
+        layer = IsingXY(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3478,14 +3664,13 @@ PhaseShift
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.PhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.PhaseShift(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PhaseShift quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3499,7 +3684,7 @@ PhaseShift
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = PhaseShift(has_params= True, trainable= True, wires=1)
+        layer = PhaseShift(trainable=True, wires=1)
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3509,14 +3694,13 @@ PhaseShift
 MultiRZ
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.MultiRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.MultiRZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a MultiRZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3530,7 +3714,7 @@ MultiRZ
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = MultiRZ(has_params= True, trainable= True, wires=[0,2])
+        layer = MultiRZ(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3542,14 +3726,13 @@ SDG
 """"""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.SDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.SDG(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SDG quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3575,14 +3758,13 @@ SDG
 TDG
 """"""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.TDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.TDG(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SDG quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3608,14 +3790,13 @@ ControlledPhaseShift
 """""""""""""""""""""""""""""""""""""""""""""
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.ControlledPhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.ControlledPhaseShift(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a ControlledPhaseShift quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3629,7 +3810,7 @@ ControlledPhaseShift
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
         device = QMachine(4)
-        layer = ControlledPhaseShift(has_params= True, trainable= True, wires=[0,2])
+        layer = ControlledPhaseShift(trainable=True, wires=[0,2])
         batchsize = 2
         device.reset_states(batchsize)
         layer(q_machine = device)
@@ -3640,14 +3821,13 @@ ControlledPhaseShift
 MultiControlledX
 """""""""""""""""""""""""""""""""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.MultiControlledX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False,control_values=None)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.MultiControlledX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False,control_values=None)
     
     define a MultiControlledX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
     
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -3715,7 +3895,7 @@ Probability
 MeasureAll
 """""""""""""""""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.MeasureAll(obs=None, name="")
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.MeasureAll(obs, name="")
 
     Calculate the measurement results of quantum circuits, support input obs as multiple or single Pauli operators or Hamiltonians.
     For example:
@@ -3838,8 +4018,7 @@ HermitianExpval
                 self._dtype = dtype
                 self.qm = QMachine(num_wires, dtype=dtype)
                 self.rx_layer1 = VQC_RotCircuit
-                self.ry_layer2 = RY(has_params=True,
-                                    trainable=True,
+                self.ry_layer2 = RY(trainable=True,
                                     wires=0,
                                     init_params=tensor.QTensor([-0.5]))
                 self.xlayer = PauliX(wires=0)
@@ -4736,18 +4915,17 @@ vqc_basisrotation
 QuantumLayerAdjoint
 """"""""""""""""""""""""""""""""""""""""
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.QuantumLayerAdjoint(general_module: pyvqnet.nn.Module, use_qpanda=False, name="")
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.QuantumLayerAdjoint(vqc_module, name="")
 
 
     An automatically differentiable QuantumLayer layer that uses the adjoint matrix approach to calculate gradients, see `Efficient calculation of gradients in classical simulations of variational quantum algorithms <https://arxiv.org/abs/2009.02823>`_ .
 
-    :param general_module: a `pyvqnet.nn.Module` instance built using only the quantum circuit interface under ``pyvqnet.qnn.vqc.sv.torch``.
-    :param use_qpanda: Whether to use qpanda line for forward transmission, default: False.
+    :param vqc_module: A ``pyvqnet.qnn.vqc.sv.torch.QModule`` instance built using only the quantum circuit interface under ``pyvqnet.qnn.vqc.sv.torch``.
     :param name: The name of the layer, defaults to "".
 
     .. note::
 
-        The QMachine of general_module should set grad_method = "adjoint".
+        The QMachine of vqc_module should set grad_method = "adjoint".
 
         Currently supports the following parameterized logic gates `RX`, `RY`, `RZ`, `PhaseShift`, `RXX`, `RYY`, `RZZ`, `RZX`, `U1`, `U2`, `U3` and other variational circuits consisting of non-parameter logic gates.
 
@@ -4769,10 +4947,10 @@ QuantumLayerAdjoint
                 self._num_wires = num_wires
                 self._dtype = dtype
                 self.qm = QMachine(num_wires, dtype=dtype, grad_mode=grad_mode)
-                self.rx_layer = RX(has_params=True, trainable=False, wires=0)
-                self.ry_layer = RY(has_params=True, trainable=False, wires=1)
-                self.rz_layer = RZ(has_params=True, trainable=False, wires=1)
-                self.rz_layer2 = RZ(has_params=True, trainable=True, wires=1)
+                self.rx_layer = RX(trainable=False, wires=0)
+                self.ry_layer = RY(trainable=False, wires=1)
+                self.rz_layer = RZ(trainable=False, wires=1)
+                self.rz_layer2 = RZ(trainable=True, wires=1)
 
                 self.rot = VQC_HardwareEfficientAnsatz(6, ["rx", "RY", "rz"],
                                                     entangle_gate="cnot",
@@ -4805,7 +4983,8 @@ QuantumLayerAdjoint
         qunatum_model = QModel(num_wires=6,
                             dtype=pyvqnet.kcomplex64,
                             grad_mode="adjoint")
-        adjoint_model = QuantumLayerAdjoint(qunatum_model, qunatum_model.qm)
+        adjoint_model = QuantumLayerAdjoint(qunatum_model)
+        adjoint_model.train()
         batch_y = adjoint_model(input_x)
         batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
 
@@ -4844,7 +5023,7 @@ Writing a  variational quantum circuit model on tensornetwork requires inheritin
 TNQModule
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.TNQModule(use_jit=False, vectorized_argnums=0, name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.TNQModule(use_jit=True, vectorized_argnums: Union[int, Sequence[int]]=0, name="", mesh=None, cotengra_options=None, tree_path=None)
 
     .. note::
 
@@ -5027,14 +5206,13 @@ The following quantum circuit modules inherit from ``pyvqnet.qnn.vqc.tn.torch.TN
 I
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.I(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.I(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a I quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5058,14 +5236,13 @@ I
 Hadamard
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.Hadamard(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.Hadamard(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a Hadamard quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5089,14 +5266,13 @@ Hadamard
 T
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.T(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.T(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a T quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5120,14 +5296,13 @@ T
 S
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.S(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.S(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a S quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5151,7 +5326,7 @@ S
 PauliX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.PauliX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.PauliX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PauliX quantum gate .
 
@@ -5159,7 +5334,6 @@ PauliX
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5183,7 +5357,7 @@ PauliX
 PauliY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.PauliY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.PauliY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PauliY quantum gate .
 
@@ -5191,7 +5365,6 @@ PauliY
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5215,7 +5388,7 @@ PauliY
 PauliZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.PauliZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.PauliZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PauliZ quantum gate .
 
@@ -5223,7 +5396,6 @@ PauliZ
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5247,14 +5419,13 @@ PauliZ
 RX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.RX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5277,14 +5448,13 @@ RX
 RY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.RY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5307,14 +5477,13 @@ RY
 RZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.RZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5337,14 +5506,13 @@ RZ
 CRX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.CRX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CRX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CRX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5368,14 +5536,13 @@ CRY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.CRY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CRY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CRY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5399,14 +5566,13 @@ CRZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.CRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CRZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CRZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5429,14 +5595,13 @@ CRZ
 U1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.U1(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.U1(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a U1 quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5460,14 +5625,13 @@ U2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.U2(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.U2(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a U2 quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5491,14 +5655,13 @@ U3
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.U3(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.U3(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a U3 quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5521,14 +5684,13 @@ U3
 CNOT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.CNOT(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CNOT(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CNOT quantum gate , alias `CX` .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5551,14 +5713,13 @@ CNOT
 CY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.CY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5581,14 +5742,13 @@ CY
 CZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.CZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5611,14 +5771,13 @@ CZ
 CR
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.CR(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CR(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a CR quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5642,14 +5801,13 @@ SWAP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.SWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.SWAP(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SWAP quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5672,7 +5830,7 @@ SWAP
 CSWAP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.CSWAP(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.CSWAP(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SWAP quantum gate .
 
@@ -5690,7 +5848,6 @@ CSWAP
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5714,14 +5871,13 @@ RXX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.RXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RXX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RXX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5744,14 +5900,13 @@ RXX
 RYY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.RYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RYY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RYY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5774,14 +5929,13 @@ RYY
 RZZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.RZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RZZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RZZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5804,14 +5958,13 @@ RZZ
 RZX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.RZX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.RZX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a RZX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5834,14 +5987,13 @@ RZX
 Toffoli
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.Toffoli(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.Toffoli(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a Toffoli quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5865,14 +6017,13 @@ IsingXX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingXX(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingXX(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingXX quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5896,14 +6047,13 @@ IsingYY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingYY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingYY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingYY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5926,14 +6076,13 @@ IsingYY
 IsingZZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingZZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingZZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingZZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5957,14 +6106,13 @@ IsingXY
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingXY(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.IsingXY(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a IsingXY quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -5988,14 +6136,13 @@ PhaseShift
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.PhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.PhaseShift(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a PhaseShift quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -6018,14 +6165,13 @@ PhaseShift
 MultiRZ
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.MultiRZ(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.MultiRZ(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a MultiRZ quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -6050,14 +6196,13 @@ SDG
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.SDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.SDG(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SDG quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -6081,14 +6226,13 @@ SDG
 TDG
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.TDG(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.TDG(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a SDG quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -6113,14 +6257,13 @@ ControlledPhaseShift
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.ControlledPhaseShift(has_params: bool = False,trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.ControlledPhaseShift(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
     
     define a ControlledPhaseShift quantum gate .
 
     This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
     This class can be added to the torch model as a submodule of ``torch.nn.Module``.
 
-    :param has_params: whether it has parameters, such as RX, RY and other gates need to be set to True, and those without parameters need to be set to False, the default is False.
     :param trainable: whether it has parameters to be trained. If the layer uses external input data to build the logic gate matrix, set to False. If the parameters to be trained need to be initialized from this layer, it is True, the default is False.
     :param init_params: Initialization parameters used to encode classic data QTensor, the default is None.
     :param wires: Bit index of the line effect, the default is None.
@@ -6147,9 +6290,9 @@ VQC_Purity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.torch.VQC_Purity(state, qubits_idx, num_wires, use_tn=False)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.VQC_Purity(qubits_idx, num_wires, qmachine)
 
-    Calculate the purity on a particular qubit ``qubits_idx`` from the state vector ``state``.
+    Calculate the purity on a particular qubit ``qubits_idx``.
 
     .. math::
         \gamma = \text{Tr}(\rho^2)
@@ -6158,10 +6301,9 @@ VQC_Purity
     where :math:`d` is the dimension of the Hilbert space.
     The purity of the pure state is 1.
 
-    :param state: Quantum state obtained from TNQMachine.get_states()
     :param qubits_idx: Qubit index for which to calculate purity
-    :param num_wires: Qubit idx
-    :param use_tn: use tensornetwork need to be set True, default False
+    :param num_wires: Number of qubits
+    :param qmachine: A TNQMachine or TNQModule instance.
 
     :return: purity
 
@@ -6190,7 +6332,7 @@ VQC_Purity
                 qcircuit.ry(q_machine=self.device, wires=2, params=x[1])
                 qcircuit.cnot(q_machine=self.device, wires=[0, 1])
                 qcircuit.cnot(q_machine=self.device, wires=[2, 1])
-                return VQC_Purity(self.device.get_states(), [0, 1], num_wires=3, use_tn=True)
+                return VQC_Purity([0, 1], 3, self.device)
 
         model = QM().toGPU()
         y_tn = model(x)
@@ -6247,15 +6389,15 @@ VQC_DensityMatrixFromQstate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.torch.VQC_DensityMatrixFromQstate(state, indices, use_tn=False)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.VQC_DensityMatrixFromQstate(indices, num_wires, qmachine)
 
-    Computes the density matrix of quantum states ``state`` over a specific set of qubits ``indices`` .
+    Computes the density matrix of a quantum state over a specific set of qubits ``indices`` .
 
-    :param state: A 1D list of state vectors. The size of this list should be ``(2**N,)`` For the number of qubits ``N``, qstate should start from 000 -> 111.
     :param indices: A list of qubit indices in the considered subsystem.
-    :param use_tn: use tensornetwork need to be set True, default False.
+    :param num_wires: Number of qubits.
+    :param qmachine: A TNQMachine or TNQModule instance.
 
-    :return: A density matrix of size "(b, 2**len(indices), 2**len(indices))".
+    :return: A density matrix of size "(b, 2**len(indices), 2**len(indices))", where b is the batch size of ``q_machine.reset_states(b)``.
 
     Example::
 
@@ -6276,7 +6418,7 @@ VQC_DensityMatrixFromQstate
                 qcircuit.ry(q_machine=self.device, wires=2, params=x[1])
                 qcircuit.cnot(q_machine=self.device, wires=[0, 1])
                 qcircuit.cnot(q_machine=self.device, wires=[2, 1])
-                return VQC_DensityMatrixFromQstate(self.device.get_states(),[0,1],use_tn=True)
+                return VQC_DensityMatrixFromQstate([0,1], 3, self.device)
             
         model = QM().toGPU()
         y = model(x)
@@ -6307,7 +6449,7 @@ Probability
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.Probability(wires=None, name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.Probability(wires, name="")
 
     Calculate the probability measurement result of the quantum circuit on a specific bit.
 
@@ -6341,7 +6483,7 @@ Probability
 MeasureAll
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.MeasureAll(obs=None, name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.MeasureAll(obs, name="")
 
     Calculate the measurement results of quantum circuits, support input obs as multiple or single Pauli operators or Hamiltonians.
     
@@ -6432,7 +6574,7 @@ Samples
 HermitianExpval
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.HermitianExpval(obs=None, name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.HermitianExpval(obs, name="")
 
     Compute the expectation of a Hermitian quantity in a quantum circuit.
 
@@ -6463,8 +6605,7 @@ HermitianExpval
                 self._dtype = dtype
                 self.qm = TNQMachine(num_wires, dtype=dtype)
                 self.rx_layer1 = VQC_RotCircuit
-                self.ry_layer2 = RY(has_params=True,
-                                    trainable=True,
+                self.ry_layer2 = RY(trainable=True,
                                     wires=0,
                                     init_params=tensor.QTensor([-0.5]))
                 self.xlayer = PauliX(wires=0)
@@ -6524,6 +6665,7 @@ VQC_HardwareEfficientAnsatz
     Example::
 
         from pyvqnet.nn.torch import Linear
+        from pyvqnet.qnn.vqc import QModule
         from pyvqnet.qnn.vqc.tn.torch.qcircuit import VQC_HardwareEfficientAnsatz,RZZ,RZ
         from pyvqnet.qnn.vqc.tn.torch import Probability,TNQMachine, TNQModule
         from pyvqnet import tensor
@@ -6531,10 +6673,10 @@ VQC_HardwareEfficientAnsatz
         pyvqnet.backends.set_backend("torch")
         pyvqnet.utils.set_random_seed(25)
 
-        class QM(TNQModule):
-            def __init__(self, name=""):
+        class QPart(TNQModule):
+            def __init__(self, batch_size, name=""):
                 super().__init__(name)
-                self.linearx = Linear(4,2)
+                self.batch_size = batch_size
                 self.ansatz = VQC_HardwareEfficientAnsatz(4, ["rx", "RY", "rz"],
                                             entangle_gate="cnot",
                                             entangle_rules="linear",
@@ -6543,18 +6685,25 @@ VQC_HardwareEfficientAnsatz
                 self.encode2 = RZ(wires=1)
                 self.measure = Probability(wires=[0, 2])
                 self.device = TNQMachine(4)
-            def forward(self, x, *args, **kwargs):
-                self.device.reset_states(bz)
-                y = self.linearx(x)
+            def forward(self, y, *args, **kwargs):
+                self.device.reset_states(self.batch_size)
                 self.encode1(params = y[0],q_machine = self.device,)
                 self.encode2(params = y[1],q_machine = self.device,)
                 self.ansatz(q_machine =self.device)
                 return self.measure(q_machine =self.device)
 
+        class QM(QModule):
+            def __init__(self, batch_size, name=""):
+                super().__init__(name)
+                self.linearx = Linear(4,2)
+                self.qpart = QPart(batch_size)
+            def forward(self, x, *args, **kwargs):
+                return self.qpart(self.linearx(x))
+
         bz =3
         inputx = tensor.arange(1.0,bz*4+1).reshape([bz,4])
         inputx.requires_grad= True
-        qlayer = QM()
+        qlayer = QM(bz)
         y = qlayer(inputx)
         y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
@@ -8178,8 +8327,8 @@ The benchmark code is as follows:
 
     def plot_results_main(results, output_path="grad_benchmarks_main.png"):
         """
-        只画主力框架对比（7 个框架的分组柱状图）：
-        pyVQNet (fused CRZ) / VQNet JAX TN（TNQModule, torch 接口）/ TensorCircuit-NG（torch 接口）/
+        Plot only the main framework comparison (grouped bar chart of 7 frameworks):
+        pyVQNet (fused CRZ) / VQNet JAX TN (TNQModule, torch interface) / TensorCircuit-NG (torch interface) /
         TorchQuantum / PennyLane / DeepQuantum / MindQuantum
         """
         plot_results(results, output_path,
@@ -8302,7 +8451,7 @@ Distributed related functions, when using the ``torch`` computing backend, encap
 .. note::
 
     Please refer to `torch distributed <https://PyTorch.org/docs/stable/distributed.html>`_ to start the distributed method.
-    When using CPU for distribution, please use ``gloo`` instead of ``mpi``.
+    When using CPU for distribution, please use ``gloo`` to configure the backend.
     When using GPU for distribution, please use ``nccl``.
 
     :ref:`vqnet_dist` VQNet's own distributed interface is not applicable to the ``torch`` computing backend.
@@ -8480,12 +8629,12 @@ CommController
                     p.join()
 
  
-    .. py:method:: split_groups(rankL)
+    .. py:method:: split_groups(rank_lists)
         :noindex:
 
-        The process number list set according to the input parameter is used to divide multiple communication groups.
+        Divide multiple communication groups according to the process number list set by the input parameter.
 
-        :param rankL: process group list.
+        :param rank_lists: Each sublist is the process number of a communication group, for example ``[[0, 1], [2, 3]]``.
         :return: a list containing ``torch.distributed.ProcessGroup``
 
         Example::

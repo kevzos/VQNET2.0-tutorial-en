@@ -772,7 +772,6 @@ Define the variational quantum circuit model:
     from pyvqnet.data.data import data_generator
     from pyvqnet.tensor import tensor
     from pyvqnet.qnn.measure import expval
-    from pyvqnet.qnn.quantumlayer import QuantumLayer
     from pyvqnet.qnn.template import AmplitudeEmbeddingCircuit
     from pyvqnet.nn.linear import Linear
     import numpy as np
@@ -2373,9 +2372,9 @@ which consists of 15 random You matrices corresponding to the classical Dense La
     from sklearn import datasets
     import seaborn as sns
 
-from pyvqnet.qnn.vqc import isingxx,isingyy,isingzz,u3,cnot,VQC_AmplitudeEmbedding,rxx,ryy,rzz,rzx
-from pyvqnet.qnn.vqc import QMachine
-from pyvqnet.qnn.vqc.common import probs
+    from pyvqnet.qnn.vqc import isingxx,isingyy,isingzz,u3,cnot,VQC_AmplitudeEmbedding,rxx,ryy,rzz,rzx
+    from pyvqnet.qnn.vqc import QMachine
+    from pyvqnet.qnn.vqc.common import probs
     from pyvqnet.nn import Module, Parameter
     from pyvqnet.tensor import tensor
     from pyvqnet.tensor import QTensor
@@ -2698,13 +2697,12 @@ The specific code implementation is as follows:
     import sys
     sys.path.insert(0, "../")
     import pyvqnet
-    from pyvqnet import _core
     from pyvqnet.dtype import *
 
     from pyvqnet.tensor.tensor import QTensor
-from pyvqnet.qnn.vqc import PauliZ, VQC_ZZFeatureMap,PauliX,PauliY,hadamard,crz,rz
-from pyvqnet.qnn.vqc import QMachine
-from pyvqnet.qnn.vqc import MeasureAll
+    from pyvqnet.qnn.vqc import PauliZ, VQC_ZZFeatureMap,PauliX,PauliY,hadamard,crz,rz
+    from pyvqnet.qnn.vqc import QMachine
+    from pyvqnet.qnn.vqc import MeasureAll
     from pyvqnet import tensor
     import functools as ft
 
@@ -3401,17 +3399,15 @@ Finally, through the `op_history_summary` interface, the `op_history` informatio
 
             self.s = S(wires=0)
 
-            self.ps = PhaseShift(has_params=True,
-                                    trainable=True,
+            self.ps = PhaseShift(trainable=True,
                                     wires=0,
                                     dtype=dtype)
 
-            self.cps = ControlledPhaseShift(has_params=True,
-                                            trainable=True,
+            self.cps = ControlledPhaseShift(trainable=True,
                                             wires=(1, 0),
                                             dtype=dtype)
             self.t = T(wires=0)
-            self.rz = RZ(has_params=True, wires=1, dtype=dtype)
+            self.rz = RZ(wires=1, dtype=dtype)
 
             self.measure = MeasureAll(obs={
                 "Z0":1
@@ -3463,17 +3459,15 @@ Finally, through the `op_history_summary` interface, the `op_history` informatio
 
             self.s = S(wires=0)
 
-            self.ps = PhaseShift(has_params=True,
-                                    trainable=True,
+            self.ps = PhaseShift(trainable=True,
                                     wires=0,
                                     dtype=dtype)
 
-            self.cps = ControlledPhaseShift(has_params=True,
-                                            trainable=True,
+            self.cps = ControlledPhaseShift(trainable=True,
                                             wires=(1, 0),
                                             dtype=dtype)
             self.t = T(wires=0)
-            self.rz = RZ(has_params=True, wires=1, dtype=dtype)
+            self.rz = RZ(wires=1, dtype=dtype)
 
             self.measure = MeasureAll(obs={
                 "Z0":1

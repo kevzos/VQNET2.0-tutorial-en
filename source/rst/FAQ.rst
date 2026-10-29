@@ -3,9 +3,9 @@ Frequently Asked Questions
 
 **Q: What are the features of VQNet**
 
-Answer: VQNet is a quantum machine learning toolset developed based on pyQPanda by Origin Quantum. VQNet provides a rich and easy-to-use interface for classical neural network computing modules, which can be easily optimized for machine learning.
+Answer: VQNet is a quantum machine learning toolset developed based on pyQPanda3 by Origin Quantum. VQNet provides a rich and easy-to-use interface for classical neural network computing modules, which can be easily optimized for machine learning.
 The model definition method is consistent with the mainstream machine learning framework, which reduces the user's learning cost.
-At the same time, based on pyQPanda, a high-performance quantum simulator developed by Origin Quantum, VQNet can also support the operation of a large number of quantum bits on personal laptops. Finally, VQNet also has a rich :doc:`./qml_demo` for your reference and learning.
+At the same time, based on pyQPanda3, a high-performance quantum simulator developed by Origin Quantum, VQNet can also support the operation of a large number of quantum bits on personal laptops. Finally, VQNet also has a rich :doc:`./qml_demo` for your reference and learning.
 
 **Q: How to use VQNet to train quantum machine learning models**
 

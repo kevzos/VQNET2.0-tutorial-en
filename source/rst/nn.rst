@@ -60,7 +60,7 @@ abstract calculation module
 Module
 =================================
 
-.. py:class:: pyvqnet.nn.module.Module
+.. py:class:: pyvqnet.nn.module.Module(name="", *args, **kwargs)
 
     Base class for all neural network modules including quantum modules or classic modules.
     Your models should also be subclass of this class for autograd calculation.
@@ -126,7 +126,7 @@ forward
 state_dict 
 =================================
 
-.. py:method:: pyvqnet.nn.module.Module.state_dict(destination=None, prefix='')
+.. py:method:: pyvqnet.nn.module.Module.state_dict(destination=None, prefix="", keep_vars=False)
 
     Return a dictionary containing a whole state of the module.
 
@@ -166,7 +166,7 @@ toGPU
     Example::
 
         from pyvqnet.nn.conv import ConvT2D 
-        test_conv = ConvT2D(3, 2, [4,4], [2, 2], "same")
+        test_conv = ConvT2D(3, 2, [4,4], [2, 2], (1, 1))
         test_conv = test_conv.toGPU()
         print(test_conv.backend)
         #1000
@@ -184,7 +184,7 @@ toCPU
     Example::
 
         from pyvqnet.nn.conv import ConvT2D 
-        test_conv = ConvT2D(3, 2, [4,4], [2, 2], "same")
+        test_conv = ConvT2D(3, 2, [4,4], [2, 2], (1, 1))
         test_conv = test_conv.toCPU()
         print(test_conv.backend)
         #0
@@ -253,7 +253,7 @@ load_parameters
 ModuleList
 **************************************************************************************************************************************************************************
 
-.. py:class:: pyvqnet.nn.module.ModuleList([pyvqnet.nn.module.Module])
+.. py:class:: pyvqnet.nn.module.ModuleList(modules=None)
 
 
     Save submodules in a list. ModuleList can be indexed like a normal Python list, and the internal parameters of the Module it contains can be saved.
@@ -323,12 +323,12 @@ ModuleList
 
 ParameterList
 *********************************************************
-.. py:class:: pyvqnet.nn.module.ParameterList([pyvqnet.nn.module.Module])
+.. py:class:: pyvqnet.nn.module.ParameterList(values=None)
 
 
     To store parameters in a list, a ParameterList can be indexed like a normal Python list, and the internal parameters of the Parameter it contains can be stored.
 
-    :param modules: nn.Parameter list.
+    :param values: nn.Parameter list.
 
     :return: a Parameter list.
 
@@ -352,7 +352,7 @@ ParameterList
 
 Sequential
 *********************************************************
-.. py:class:: pyvqnet.nn.module.Sequential([pyvqnet.nn.module.Module])
+.. py:class:: pyvqnet.nn.module.Sequential(*args)
 
     Modules will be added in the order they are passed in. Alternatively, a ``OrderedDict`` of modules can be passed in. The ``forward()`` method of ``Sequential`` takes any input and forwards it to its first module.
     It then ``Sequential`` the output to the input of each subsequent module in turn, and finally returns the output of the last module.
@@ -503,7 +503,7 @@ ConvT2D
     :param output_channels: `int` - Number of kernels
     :param kernel_size: `tuple|list` - Size of a single kernel. kernel shape = [input_channels,output_channels/group,kernel_size,kernel_size]
     :param stride: `tuple|list` - Stride, defaults to (1, 1)|[1,1]
-    :param padding: `str|tuple` - padding option, which can be a string {'valid', 'same'} or a tuple of integers giving the amount of implicit padding to apply on both sides. Default "valid".
+    :param padding: `str|tuple` - padding option, which can be the string {'valid'} or a tuple of integers giving the amount of implicit padding to apply on both sides. Default "valid".
     :param use_bias: `bool` - Whether to use a offset item. Default to use
     :param kernel_initializer: `callable` - Defaults to None
     :param bias_initializer: `callable` - Defaults to None
@@ -518,7 +518,7 @@ ConvT2D
     .. note::
         ``padding='valid'`` is the same as no padding.
 
-        ``padding='same'`` pads the input so the output has the shape as the input.
+        ``padding='same'`` is not supported; use an integer tuple to specify padding explicitly.
 
 
     Example::
@@ -1097,7 +1097,7 @@ Linear
 Dropout
 =================================
 
-.. py:class:: pyvqnet.nn.dropout.Dropout(dropout_rate = 0.5)
+.. py:class:: pyvqnet.nn.dropout.Dropout(dropout_rate: float = 0.5, name: str = "")
 
     Dropout module.The dropout module randomly sets the outputs of some units to zero, while upscale others according to the given dropout probability.
 
@@ -1297,7 +1297,7 @@ Pixel_Unshuffle
 GRU
 =================================
 
-.. py:class:: pyvqnet.nn.gru.GRU(input_size, hidden_size, num_layers=1, nonlinearity='tanh', batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = '')
+.. py:class:: pyvqnet.nn.gru.GRU(input_size, hidden_size, num_layers=1, batch_first=True, use_bias=True, bidirectional=False, dtype=None, name: str = '')
 
 
     Gated Recurrent Unit (GRU) module. Support multi-layer stacking, bidirectional configuration.
@@ -2314,7 +2314,7 @@ Activation Function
 
 Activation
 =================================
-.. py:class:: pyvqnet.nn.activation.Activation
+.. py:class:: pyvqnet.nn.activation.Activation(name: str = "")
 
     Base class of activation. Specific activation functions inherit  this functions.
 
@@ -2576,12 +2576,12 @@ Optimizer Module
 
 Optimizer
 =================================
-.. py:class:: pyvqnet.optim.optimizer.Optimizer(params, lr=0.01)
+.. py:class:: pyvqnet.optim.optimizer.Optimizer(params, lr=0.1, defaults=None)
 
     Base class for all optimizers.
 
     :param params: params of model which need to be optimized
-    :param lr: learning_rate of model (default: 0.01)
+    :param lr: learning_rate of model (default: 0.1)
 
 adadelta
 =================================
@@ -2993,8 +2993,6 @@ MSE
             import numpy as np
             from pyvqnet.tensor import tensor
             from pyvqnet.utils import metrics as vqnet_metrics
-            from pyvqnet import _core
-            _vqnet = _core.vqnet
 
             y_true_Qtensor = tensor.arange(1, 12)
             y_pred_Qtensor = tensor.arange(4, 15)
@@ -3025,8 +3023,6 @@ RMSE
             import numpy as np
             from pyvqnet.tensor import tensor
             from pyvqnet.utils import metrics as vqnet_metrics
-            from pyvqnet import _core
-            _vqnet = _core.vqnet
 
             y_true_Qtensor = tensor.arange(1, 12)
             y_pred_Qtensor = tensor.arange(4, 15)
@@ -3058,8 +3054,6 @@ MAE
             import numpy as np
             from pyvqnet.tensor import tensor
             from pyvqnet.utils import metrics as vqnet_metrics
-            from pyvqnet import _core
-            _vqnet = _core.vqnet
 
             y_true_Qtensor = tensor.arange(1, 12)
             y_pred_Qtensor = tensor.arange(4, 15)
@@ -3095,8 +3089,6 @@ R_Square
             import numpy as np
             from pyvqnet.tensor import tensor
             from pyvqnet.utils import metrics as vqnet_metrics
-            from pyvqnet import _core
-            _vqnet = _core.vqnet
 
             y_true_Qtensor = tensor.arange(1, 12)
             y_pred_Qtensor = tensor.arange(4, 15)
@@ -3131,8 +3123,6 @@ precision_recall_f1_2_score
             import numpy as np
             from pyvqnet.tensor import tensor
             from pyvqnet.utils import metrics as vqnet_metrics
-            from pyvqnet import _core
-            _vqnet = _core.vqnet
 
             y_true_Qtensor = tensor.QTensor([0, 0, 0, 0, 0, 1, 1, 1, 1, 1])
             y_pred_Qtensor = tensor.QTensor([0, 0, 1, 1, 1, 0, 0, 1, 1, 1])
@@ -3172,8 +3162,6 @@ precision_recall_f1_N_score
                 import numpy as np
                 from pyvqnet.tensor import tensor
                 from pyvqnet.utils import metrics as vqnet_metrics
-                from pyvqnet import _core
-                _vqnet = _core.vqnet
 
                 reference_list = [1, 1, 2, 2, 2, 3, 3, 3, 3, 3]
                 prediciton_list = [1, 2, 2, 2, 3, 1, 2, 3, 3, 3]
@@ -3227,8 +3215,6 @@ precision_recall_f1_Multi_score
                     import numpy as np
                     from pyvqnet.tensor import tensor
                     from pyvqnet.utils import metrics as vqnet_metrics
-                    from pyvqnet import _core
-                    _vqnet = _core.vqnet
 
                     reference_list = [[1, 0], [0, 1], [0, 0], [1, 1], [1, 0]]
                     prediciton_list = [[1, 0], [0, 0], [1, 0], [0, 0], [0, 0]]
@@ -3294,8 +3280,6 @@ auc_calculate
                 import numpy as np
                 from pyvqnet.tensor import tensor
                 from pyvqnet.utils import metrics as vqnet_metrics
-                from pyvqnet import _core
-                _vqnet = _core.vqnet
 
                 y = np.array([1, 1, 1, 1, 0, 1, 0, 0, 0, 0])
                 pred = np.array([0.9, 0.8, 0.7, 0.6, 0.6, 0.4, 0.4, 0.3, 0.2, 0.1])

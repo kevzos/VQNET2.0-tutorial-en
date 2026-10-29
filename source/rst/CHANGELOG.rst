@@ -2,6 +2,46 @@ VQNet Changelog
 ###############################
 
 
+[v2.18.2] - 2026-08-17
+***************************
+
+Added
+===================
+- Added the unified quantum layer ``VQCLayer`` (``pyvqnet.qnn.pq3.vqclayer.VQCLayer``), which selects the execution backend via ``submit_kwargs["backend"]`` (``vqnet_native`` / ``qcloud_fake`` / ``qcloud_service`` / ``qpanda_runtime``) and supports two mutually exclusive measurement modes: expectation values and probabilities.
+- Added the torch-backend unified quantum layer ``TorchVQCLayer``, functionally equivalent to the native ``VQCLayer``.
+- Added ``ParallelTrainingWrapper`` for hybrid quantum-classical multi-level distributed training.
+
+Changed
+===================
+- Removed the MPI backend from the distributed computing module; CPU communication now uses ``gloo`` uniformly. The default ``CommController`` backend changed from ``mpi`` to ``gloo``, and ``init_groups`` no longer has the MPI-only restriction.
+- Renamed the ``VQCLayer`` / ``TorchVQCLayer`` ``submit_kwargs["backend"]`` value ``vqc_autograd`` to ``vqnet_native`` to better reflect that it uses VQNet's native execution engine.
+- Synced quantum logic gate class API signatures with the source: removed the ``has_params`` parameter and moved ``trainable`` to the first positional parameter.
+- Synced the ``QTensor`` interface: removed the ``name`` and ``nodes`` parameters.
+- Synced the ``QuantumLayerAdjoint`` interface: removed the ``use_qpanda`` parameter and renamed ``general_module`` to ``vqc_module``.
+- Removed documentation sections for APIs deleted from the source, including pyqpanda2 compatibility interfaces such as ``QuantumLayer`` and ``NoiseQuantumLayer`` (including the MNIST example section), and deleted the entire pqanda2 API page ``qnn.rst``; only pyqpanda3-compatible interfaces are retained.
+- Corrected existing documentation discrepancies: ``nn`` module layers, ``LayerNorm`` ``normalized_shape``, optimizer ``lr``, required ``obs``/``wires`` for measurement classes, and renamed the ``pq3`` template parameter ``qubits`` to ``qlist``.
+- Synced the ``TNQModule`` interface: added ``mesh``, ``cotengra_options``, and ``tree_path`` parameters, and corrected the ``use_jit`` default value.
+- Synced the ``Module`` / ``state_dict`` interface signatures: ``Module(name="", *args, **kwargs)`` and ``state_dict`` now accepts ``keep_vars``.
+- ``ConvT2D`` no longer supports ``"same"`` for ``padding``; only ``"valid"`` or integer tuples are supported, and examples now pass ``(1, 1)`` explicitly.
+- Updated all ``pyQPanda`` references in the documentation to ``pyQPanda3`` and removed examples that depend on the legacy pyqpanda.
+- Rewrote the home page overview to describe the ``pyvqnet`` (native) and ``torch`` backends separately for the implemented 2.18.2 interfaces, describe distributed computing in terms of gloo/NCCL, and document the tensor-network backend ``pyvqnet.qnn.vqc.tn`` and LLM operators.
+- Distributed documentation: removed the ``vqnetrun --backend`` parameter description and command examples (the parameter has been removed; the backend is determined by each worker process at runtime), and corrected the return values of ``split_groups`` / ``init_groups`` and the ``group`` parameter for group communication.
+
+Fixed
+===================
+- Fixed incorrect CRX/CRY/CRZ parameter-shift rule coefficients in ``QuantumLayerV3``.
+- Fixed gradient errors in the default ``CRot`` mode, enabled adjoint gradients for ``Rot``, ``CR``, and ``CRot``, and implemented ``generator()`` for ``CRX``, ``CRY``, and ``CRZ``.
+- Fixed an incorrect fan calculation in the ``he_uniform_for_linear`` initializer.
+- Fixed parameter divergence caused by stale ``delta`` and an incorrect gradient formula in ``SPSA._step()``.
+- Fixed a false positive in overlap detection for ``setitem``/``copy`` in tensor alias scenarios that caused copies to be silently skipped.
+- Fixed a gradient regression in ``cpu_basic_indexing`` for set-select.
+- Fixed an out-of-bounds access in CUDA ``expval`` when the number of ``float64`` elements is less than 4, and zero gradients in fused-crz when ``M > 32``.
+- Fixed result flattening, ``batch=1`` backward, and circuit submission issues in the ``VQCQCloudLayer`` real-chip path.
+- Fixed missing configurable submission parameters in the ``qpanda3_runtime`` path.
+- Fixed incorrect print-style comma arguments in ``logger.info()`` calls.
+- Fixed an incorrect (communicator, rank list) structure in the ``allgather_group`` example; the example now uses the return value of ``split_groups``.
+
+
 [v2.18.1] - 2026-07-08
 ***************************
 

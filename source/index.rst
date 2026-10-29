@@ -61,10 +61,9 @@ VQNet is not only a powerful development tool, but has also been widely used in 
     rst/utils.rst
 
 .. toctree::
-    :caption: QNN API integrated with pyqpanda
+    :caption: QNN API integrated with pyqpanda3
     :maxdepth: 2
 
-    rst/qnn.rst
     rst/qnn_pq3.rst
 
 .. toctree::
