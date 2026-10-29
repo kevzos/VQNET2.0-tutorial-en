@@ -2003,7 +2003,7 @@ fuse_module
 
 SDPA
 =================================
-.. py:class:: pyvqnet.transformer.e2eqvit.SDPA(attn_mask=None,dropout_p=0.,scale=None,is_causal=False)
+.. py:class:: pyvqnet.transformer.SDPA(attn_mask=None,dropout_p=0.,scale=None,is_causal=False)
 
     SDPA scaling dot product attention mechanism.
 

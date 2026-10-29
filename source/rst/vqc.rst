@@ -2763,7 +2763,7 @@ VQC_AngleEmbedding
 VQC_AmplitudeEmbedding
 --------------------------
 
-.. py:function:: pyvqnet.qnn.vqc.VQC_AmplitudeEmbeddingCircuit(input_feature, q_machine)
+.. py:function:: pyvqnet.qnn.vqc.VQC_AmplitudeEmbedding(input_feature, q_machine)
 
     Encode a :math:`2^n` feature into an amplitude vector of :math:`n` qubits in ``q_machine`` .
 
@@ -3378,7 +3378,7 @@ vqc_qft_add_to_register
 vqc_qft_add_two_register
 -------------------------------------
 
-.. py:function:: vqc_qft_add_two_register(q_machine, m, k, wires_m, wires_k, wires_solution)
+.. py:function:: pyvqnet.qnn.vqc.vqc_qft_add_two_register(q_machine, m, k, wires_m, wires_k, wires_solution)
 
     Add the unsigned integers encoded in the two qubits.
 
@@ -3422,7 +3422,7 @@ vqc_qft_add_two_register
 vqc_qft_mul
 -------------------------------------
 
-.. py:function:: vqc_qft_mul(q_machine, m, k, wires_m, wires_k, wires_solution)
+.. py:function:: pyvqnet.qnn.vqc.vqc_qft_mul(q_machine, m, k, wires_m, wires_k, wires_solution)
 
     Add the values ​​encoded in two qubits.
 
@@ -5576,7 +5576,7 @@ wrapper_compile
 QNSPSAOptimizer
 ---------------------------------------------------------------
 
-.. py:class:: pyvqnet.qnn.vqc.qng.QNSPSAOptimizer(stepsize=1e-3,regularization=1e-3,finite_diff_step=1e-2,resamplings=1,blocking=True,history_length=5,seed=None)
+.. py:class:: pyvqnet.qnn.vqc.QNSPSAOptimizer(stepsize=1e-3,regularization=1e-3,finite_diff_step=1e-2,resamplings=1,blocking=True,history_length=5,seed=None)
 
     Quantum Natural SPSA (QNSPSA) Optimizer is a second-order stochastic optimizer for quantum circuits that combines gradient descent with Fubini-Study metric tensor information.
     Gradient estimation using symmetric perturbations (similar to SPSA):
@@ -7975,7 +7975,8 @@ VQC_VarMeasure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.native.VQC_VarMeasure(q_machine, obs)
+.. py:function:: pyvqnet.qnn.vqc.VQC_VarMeasure(q_machine, obs)
+    :no-index:
 
     The variance of the provided observable ``obs``.
 

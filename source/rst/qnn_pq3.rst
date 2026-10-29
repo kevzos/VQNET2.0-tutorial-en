@@ -1001,7 +1001,7 @@ QiskitLayer
 CirqLayer
 =================================
 
-.. py:class:: pyvqnet.qnn.CirqLayer(cirq_vqc,para_num)
+.. py:class:: pyvqnet.qnn.utils.CirqLayer(cirq_vqc,para_num)
 
     A cirq circuit encapsulation layer for implementing forward and backward propagation in vqnet. CIRQ_VQC is a class that requires users to define a cirq quantum circuit and its `run` function. The following example demonstrates its working principle.
     This layer only supports circuit inputs and weights as parameters.
