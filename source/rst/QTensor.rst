@@ -15,14 +15,14 @@ QTensor's Functions and Attributes
 QTensor
 ==============================
 
-.. py:class:: pyvqnet.tensor.tensor.QTensor(data, requires_grad=False, device=0, dtype=None)
+.. py:class:: pyvqnet.tensor.tensor.QTensor(data, requires_grad=False, device=pyvqnet.DEV_CPU, dtype=None)
 
     Wrapper of data structure with dynamic computational graph construction
     and automatic differentiation.
 
     :param data: _core.Tensor or numpy array which represents a QTensor
     :param requires_grad: should tensor's gradient be tracked, defaults to False
-    :param device: current device to save QTensor ,default = 0, use CPU.
+    :param device: current device to save QTensor, default = pyvqnet.DEV_CPU, use CPU.
     :param dtype: The data type of the parameter, defaults None, use the default data type: kfloat32, which represents a 32-bit floating point number.
 
     :return: output QTensor
