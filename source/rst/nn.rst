@@ -80,6 +80,8 @@ Module
 
     Submodules assigned in this way will be registered
 
+    :param name: name of the module, default: ""
+
 forward
 =================================
 
@@ -136,6 +138,7 @@ state_dict
     :param destination: a dict where state will be stored
     :param prefix: the prefix for parameters and buffers used in this
         module
+    :param keep_vars: if ``False``, the returned tensors are detached from autograd; if ``True``, they are not detached. Default: ``False``.
 
     :return: a dictionary containing a whole state of the module
 
@@ -1102,6 +1105,7 @@ Dropout
     Dropout module.The dropout module randomly sets the outputs of some units to zero, while upscale others according to the given dropout probability.
 
     :param dropout_rate: `float` - probability that a neuron will be set to zero
+    :param name: name of the module, default: ""
     :return: a Dropout class
 
     Example::
@@ -2318,6 +2322,8 @@ Activation
 
     Base class of activation. Specific activation functions inherit  this functions.
 
+    :param name: name of the activation module, default: ""
+
 Sigmoid
 =================================
 .. py:class:: pyvqnet.nn.Sigmoid(name: str = '')
@@ -2582,6 +2588,7 @@ Optimizer
 
     :param params: params of model which need to be optimized
     :param lr: learning_rate of model (default: 0.1)
+    :param defaults: default hyperparameters of the optimizer, default: None
 
 adadelta
 =================================
