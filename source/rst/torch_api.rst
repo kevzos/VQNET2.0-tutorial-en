@@ -274,7 +274,7 @@ TorchParameterList
     
     This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.nn.ParameterList``, and can be added as a submodule to a torchmodel.
 
-    :param value: A list of ``nn.Parameter``
+    :param values: A list of ``nn.Parameter``
 
     :return: A TorchParameterList class
 
@@ -2376,7 +2376,7 @@ TorchQcloud3QuantumLayer
 
 When you install the latest version of pyqpanda3, you can use this interface to define a variational circuit and submit it to the real chip of originqc for operation.
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.TorchQcloud3QuantumLayer(origin_qprog_func, qcloud_token, para_num, pauli_str_dict=None, shots = 1000, initializer=None, dtype=None, name="", diff_method="parameter_shift", submit_kwargs={}, query_kwargs={})
+.. py:class:: pyvqnet.qnn.pq3.torch.qpanda3_layer.TorchQcloud3QuantumLayer(origin_qprog_func, qcloud_token, para_num, pauli_str_dict=None, shots = 1000, initializer=None, dtype=None, name="", diff_method="parameter_shift", submit_kwargs={}, query_kwargs={})
     
     An abstract computation module for real chips using originqc of pyqpanda3. It submits parameterized quantum circuits to real chips and obtains measurement results.
     If diff_method == "random_coordinate_descent" , the layer will randomly select a single parameter to calculate the gradient, and other parameters will remain zero. Reference: https://arxiv.org/abs/2311.00088
@@ -2407,7 +2407,7 @@ When you install the latest version of pyqpanda3, you can use this interface to 
     :param qcloud_token: `str` - The type of quantum machine or cloud token for execution.
     :param para_num: `int` - The number of parameters, the parameter is a QTensor of size [para_num].
     :param pauli_str_dict: `dict|list` - Dictionary or list of dictionaries representing Pauli operators in quantum circuits. Defaults to "None", which means measurement operations are performed. If a dictionary of Pauli operators is entered, a single expectation or multiple expectations are calculated.
-    :param shot: `int` - Number of measurements. The default value is 1000.
+    :param shots: `int` - Number of measurements. The default value is 1000.
     :param initializer: Initializer for parameter values. The default value is "None", using a 0~2*pi normal distribution.
     :param dtype: Data type of the parameter. The default value is None, which means using the default data type pyvqnet.kfloat32.
     :param name: The name of the module. The default value is an empty string.
@@ -2503,7 +2503,7 @@ TorchQpanda3QuantumLayer
 
 If you are more familiar with pyQPanda3 syntax, you can use the interface TorchQpanda3QuantumLayer.
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.TorchQpanda3QuantumLayer(qprog_with_measure,para_num,diff_method:str = "parameter_shift",delta:float = 0.01,dtype=None,name="")
+.. py:class:: pyvqnet.qnn.pq3.torch.qpanda3_layer.TorchQpanda3QuantumLayer(qprog_with_measure,para_num,diff_method:str = "parameter_shift",delta:float = 0.01,dtype=None,name="")
 
     Abstract computation module of variational quantum layer. Use pyQPanda3 to simulate a parameterized quantum circuit and get the measurement results. This variational quantum layer inherits the gradient computation module of the VQNet framework. You can use the parameter drift method to calculate the gradient of the circuit parameters, train the variational quantum circuit model, or embed the variational quantum circuit into a hybrid quantum and classical model.
 
@@ -5033,10 +5033,13 @@ TNQModule
 
         The data in ``_parmeters`` of this class is of ``torch.nn.Parameter`` type.
 
-    :param use_jit: control quantum circuit jit compilation functionality.
+    :param use_jit: control quantum circuit jit compilation functionality, default: True.
     :param vectorized_argnums: the args to be vectorized,
             these arguments should share the same batch shape in the fist dimension,defaults to 0.
     :param name: name of Module.
+    :param mesh: ``jax.sharding.Mesh`` for distributed contraction. ``None`` uses single-device JIT; a mesh enables SPMD model parallelism.
+    :param cotengra_options: optional dict of options passed to ``cotengra.ReusableHyperOptimizer`` when ``mesh`` is provided.
+    :param tree_path: optional path to a pre-computed contraction plan (``.pkl``); if given, the cotengra search is skipped.
 
     Example::
 

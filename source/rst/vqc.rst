@@ -4551,7 +4551,7 @@ QuantumLayerAdjoint
 DataParallelVQCAdjointLayer
 ---------------------------------------------------------------
 
-.. py:class:: pyvqnet.distributed.DataParallelVQCAdjointLayer(Comm_OP, vqc_module, name="", use_bucket_cpp_allreduce=False, bucket_bytes_cap=25*1024*1024, first_bucket_bytes_cap=1024*1024, find_unused_parameters=False, gradient_as_bucket_view=False)
+.. py:class:: pyvqnet.distributed.DataParallelVQCAdjointLayer(Comm_OP, vqc_module, name="", use_bucket_cpp_allreduce=True, bucket_bytes_cap=25*1024*1024, first_bucket_bytes_cap=1024*1024, find_unused_parameters=False, gradient_as_bucket_view=False)
 
 Create vqc with data parallelism for batch size of data using adjoint gradient computation. Where ``vqc_module`` must be a VQC module of type ``QuantumLayerAdjoint``.
 
@@ -4561,6 +4561,11 @@ In each node, `batch_size/N` data are forwarded to run the variational quantum c
 :param Comm_OP: Sets the communication controller for the distributed environment.
 :param vqc_module: A VQC module of type QuantumLayerAdjoint with forward(), make sure qmachine is set up correctly.
 :param name: The name of the module. Default value is an empty string.
+:param use_bucket_cpp_allreduce: whether to use the C++ bucketed all-reduce implementation. Default: True.
+:param bucket_bytes_cap: maximum size of a gradient bucket in bytes. Default: 25*1024*1024.
+:param first_bucket_bytes_cap: maximum size of the first gradient bucket in bytes. Default: 1024*1024.
+:param find_unused_parameters: whether to find unused parameters in the autograd graph. Default: False.
+:param gradient_as_bucket_view: whether to expose gradients as views into the communication buckets. Default: False.
 :return: A module that can compute quantum circuits.
 
 Example::
@@ -4674,7 +4679,7 @@ Example::
 DataParallelVQCLayer
 ---------------------------------------------------------------
 
-.. py:class:: pyvqnet.distributed.DataParallelVQCLayer(Comm_OP, vqc_module, name="", use_bucket_cpp_allreduce=False, bucket_bytes_cap=25*1024*1024, first_bucket_bytes_cap=1024*1024, find_unused_parameters=False, gradient_as_bucket_view=False)
+.. py:class:: pyvqnet.distributed.DataParallelVQCLayer(Comm_OP, vqc_module, use_bucket_cpp_allreduce=True, bucket_bytes_cap=25*1024*1024, first_bucket_bytes_cap=1024*1024, find_unused_parameters=False, gradient_as_bucket_view=False)
 
     Create vqc with data parallelism for batch size of data using automatic differentiation computation.
     If we use N nodes to run this module,
@@ -4682,7 +4687,11 @@ DataParallelVQCLayer
 
     :param Comm_OP: Sets the communication controller for the distributed environment.
     :param vqc_module: VQC module with forward(), make sure qmachine is setup correctly.
-    :param name: Name of the module. Default is an empty string.
+    :param use_bucket_cpp_allreduce: whether to use the C++ bucketed all-reduce implementation. Must be True; False raises NotImplementedError because the legacy per-parameter all-reduce was removed. Default: True.
+    :param bucket_bytes_cap: maximum size of a gradient bucket in bytes. Default: 25*1024*1024.
+    :param first_bucket_bytes_cap: maximum size of the first gradient bucket in bytes. Default: 1024*1024.
+    :param find_unused_parameters: whether to find unused parameters in the autograd graph. Default: False.
+    :param gradient_as_bucket_view: whether to expose gradients as views into the communication buckets. Default: False.
     :return: Module that can compute quantum circuits.
 
     Example::
@@ -6575,6 +6584,9 @@ Variational quantum circuit models based on tensor networks need to inherit from
     :param use_jit: Enable JIT compilation, default: True.
     :param vectorized_argnums: Indices of the arguments to be vectorized. These arguments should share the same batch shape along the same dimension, default: 0.
     :param name: Name of the module.
+    :param mesh: ``jax.sharding.Mesh`` for distributed contraction. ``None`` uses single-device JIT; a mesh enables SPMD model parallelism.
+    :param cotengra_options: optional dict of options passed to ``cotengra.ReusableHyperOptimizer`` when ``mesh`` is provided.
+    :param tree_path: optional path to a pre-computed contraction plan (``.pkl``); if given, the cotengra search is skipped.
 
     .. note::
 
