@@ -5073,7 +5073,7 @@ vqc_basisrotation
 
         vqc_basisrotation(q_machine=qm,
                         wires=wires,
-                        unitary_matrix=QTensor(umat, dtype=qm.state.dtype))
+                        unitary_matrix=QTensor(umat, dtype=qm.states.dtype))
 
         print(qm.states)
 
@@ -8809,7 +8809,7 @@ CommController
 
         Example::
 
-            from pyvqnet.distributed import get_local_rank,CommController,init_group
+            from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -8897,7 +8897,7 @@ CommController
 
         Example::
 
-            from pyvqnet.distributed import get_local_rank,CommController,init_group
+            from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -8942,7 +8942,7 @@ CommController
 
         Example::
 
-            from pyvqnet.distributed import get_local_rank,CommController,init_group
+            from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -8988,7 +8988,7 @@ CommController
 
         Example::
 
-            from pyvqnet.distributed import get_local_rank,CommController,init_group
+            from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -9173,7 +9173,7 @@ CommController
 
         :param tensor: Input data.
         :param c_op: Calculation method.
-        :param group: Communication group generated from `split_groups` or `init_group` .
+        :param group: Communication group generated from `split_groups` or `init_groups` .
 
         Example::
 
@@ -9230,7 +9230,7 @@ CommController
         :param tensor: Input data.
         :param root: Specify the process number.
         :param c_op: Calculation method.
-        :param group: Communication group generated from `split_groups` or `init_group` .
+        :param group: Communication group generated from `split_groups` or `init_groups` .
 
         Example::
 
@@ -9281,11 +9281,11 @@ CommController
 
         :param tensor: Input data.
         :param root: Specify the process ID.
-        :param group: Communication group generated from `split_groups` or `init_group` .
+        :param group: Communication group generated from `split_groups` or `init_groups` .
 
         Example::
             
-            from pyvqnet.distributed import get_local_rank,CommController,init_group
+            from pyvqnet.distributed import get_local_rank,CommController
             import pyvqnet
             import numpy as np
             from pyvqnet.tensor import tensor
@@ -9334,7 +9334,7 @@ CommController
         Allgather communication interface within the group.
 
         :param tensor: input data.
-        :param group: Communication group generated from `split_groups` or `init_group` .
+        :param group: Communication group generated from `split_groups` or `init_groups` .
 
         Example::
             
