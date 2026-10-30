@@ -3539,9 +3539,9 @@ VQC_CRotCircuit
 ---------------------------------------------------------------
 
 
-.. py:function:: pyvqnet.qnn.vqc.VQC_CRotCircuit(para,control_qubits,rot_wire,q_machine)
+.. py:function:: pyvqnet.qnn.vqc.VQC_CRotCircuit(para,control_wire,rot_wire,q_machine)
 
-    Apply the controlled Rot operator to qubit ``rot_wire`` in ``q_machine`` using ``params``, controlled by ``control_qubits``.
+    Apply the controlled Rot operator to qubit ``rot_wire`` in ``q_machine`` using ``params``, controlled by ``control_wire``.
 
     .. math:: CR(\phi, \theta, \omega) = \begin{bmatrix}
             1 & 0 & 0 & 0 \\
@@ -3551,7 +3551,7 @@ VQC_CRotCircuit
         \end{bmatrix}.
 
     :param para: Array representing the parameters.
-    :param control_qubits: Control qubit indices.
+    :param control_wire: Control qubit indices.
     :param rot_wire: Index of the Rot qubit.
     :param q_machine: Quantum virtual machine device.
 
@@ -8731,7 +8731,7 @@ vqc_crot_circuit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.native.vqc_crot_circuit(para,control_qubits,rot_wire,q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.native.vqc_crot_circuit(para,control_wire,rot_wire,q_machine)
    :noindex:
 
     A quantum logic gate combination for controlled Rot single-qubit rotation. This function is an alias of: ``VQC_CRotCircuit``.
@@ -8744,7 +8744,7 @@ vqc_crot_circuit
         \end{bmatrix}.
 
     :param para: Array representing the parameters.
-    :param control_qubits: Control qubit indices.
+    :param control_wire: Control qubit indices.
     :param rot_wire: Rot qubit index.
     :param q_machine: Quantum virtual machine device.
 

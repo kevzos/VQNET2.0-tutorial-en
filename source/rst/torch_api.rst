@@ -4954,7 +4954,7 @@ vqc_crot_circuit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.sv.torch.vqc_crot_circuit(para,control_qubits,rot_wire,q_machine)
+.. py:function:: pyvqnet.qnn.vqc.sv.torch.vqc_crot_circuit(para,control_wire,rot_wire,q_machine)
 
     A combination of controlled Rot single-qubit rotation quantum gates. The function alias is ``VQC_CRotCircuit``.
 
@@ -4966,7 +4966,7 @@ vqc_crot_circuit
         \end{bmatrix}.
 
     :param para: Array representing the parameters.
-    :param control_qubits: Control qubit indices.
+    :param control_wire: Control qubit indices.
     :param rot_wire: Rot qubit index.
     :param q_machine: Quantum machine device.
 
@@ -7641,7 +7641,7 @@ vqc_crot_circuit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_crot_circuit(para,control_qubits,rot_wire,q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_crot_circuit(para,control_wire,rot_wire,q_machine)
 
 	Composite quantum gate for a controlled Rot single-qubit rotation. This function is aliased as ``VQC_CRotCircuit``.
 
@@ -7653,7 +7653,7 @@ vqc_crot_circuit
         \end{bmatrix}.
 
     :param para: Array representing the parameters.
-    :param control_qubits: Control qubit indices.
+    :param control_wire: Control qubit indices.
     :param rot_wire: Qubit indices of the Rot gate.
     :param q_machine: Quantum machine device.
 
