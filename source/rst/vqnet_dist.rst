@@ -29,7 +29,7 @@ The distributed computing interface is started through the ``vqnetrun`` command.
 nproc_per_node
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to control the number of processes started through the ``--nproc_per_node`` parameter. An example is as follows:
+The ``vqnetrun`` interface requires ``--nproc_per_node`` to specify the number of worker processes launched on the current node. The parameter applies to both gloo CPU workers and NCCL GPU workers.
 
     Example::
 
@@ -64,26 +64,10 @@ The ``vqnetrun`` command does not provide a ``--backend`` parameter. When multip
         # Node 0: vqnetrun --nproc_per_node 2 --nnodes 2 --node_rank 0 --master_addr 10.0.0.1 python test.py
         # Node 1: vqnetrun --nproc_per_node 2 --nnodes 2 --node_rank 1 --master_addr 10.0.0.1 python test.py
 
-nproc_per_node
-^^^^^^^^^^^^^^^^^^^^^^
-
-The ``vqnetrun`` interface allows you to control the number of processes started on each node through the ``--nproc_per_node`` parameter. This parameter is used only in NCCL mode.
-
-    Example::
-
-        from pyvqnet.distributed import CommController
-        Comm_OP = CommController("nccl")
-
-        rank = Comm_OP.getRank()
-        size = Comm_OP.getSize()
-        print(f"rank: {rank}, size {size}")
-
-        # vqnetrun --nproc_per_node 4 python test.py
-
 nnodes
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to control the total number of nodes through the ``--nnodes`` parameter. This parameter is used only in NCCL mode, and its default value is 1.
+The ``vqnetrun`` interface allows you to control the total number of nodes through the ``--nnodes`` parameter. The default value is 1. The launcher uses ``nnodes * nproc_per_node`` to calculate ``WORLD_SIZE``.
 
     Example::
 
@@ -99,7 +83,7 @@ The ``vqnetrun`` interface allows you to control the total number of nodes throu
 node_rank
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to control the rank of the current node through the ``--node_rank`` parameter. This parameter is used only in NCCL mode, and its default value is 0.
+The ``vqnetrun`` interface allows you to control the rank of the current node through the ``--node_rank`` parameter. The default value is 0. The launcher uses it with ``nproc_per_node`` to calculate each worker's global ``RANK``.
 
     Example::
 
@@ -117,7 +101,7 @@ The ``vqnetrun`` interface allows you to control the rank of the current node th
 master_addr
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to specify the address of the master node through the ``--master_addr`` parameter. This parameter is used only in NCCL mode, and its default value is ``127.0.0.1``.
+The ``vqnetrun`` interface allows you to specify the master node address through the ``--master_addr`` parameter. The default value is ``127.0.0.1``. The value is exported to worker processes as ``MASTER_ADDR``.
 
     Example::
 
@@ -133,7 +117,7 @@ The ``vqnetrun`` interface allows you to specify the address of the master node 
 master_port
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to specify the port of the master node through the ``--master_port`` parameter. This parameter is used only in NCCL mode, and its default value is ``29500``.
+The ``vqnetrun`` interface allows you to specify the master node port through the ``--master_port`` parameter. The default value is ``29500``. The value is exported to worker processes as ``MASTER_PORT``.
 
     Example::
 
@@ -149,8 +133,8 @@ The ``vqnetrun`` interface allows you to specify the port of the master node thr
 nccl_socket_ifname
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to specify the network interface name used by NCCL through the ``--nccl_socket_ifname`` parameter. This parameter is used only in NCCL mode.
-This parameter corresponds to the environment variable ``NCCL_SOCKET_IFNAME``, and is used to specify the network card used for NCCL communication in multi-NIC environments.
+The ``vqnetrun`` interface allows you to specify the network interface name used by NCCL through the ``--nccl_socket_ifname`` parameter. This parameter applies to NCCL communication.
+It corresponds to the environment variable ``NCCL_SOCKET_IFNAME`` and is useful in multi-NIC environments.
 
     Example::
 
@@ -163,144 +147,32 @@ This parameter corresponds to the environment variable ``NCCL_SOCKET_IFNAME``, a
 
         # vqnetrun --nproc_per_node 2 --nccl_socket_ifname eth0 python test.py
 
-H, hosts
-^^^^^^^^^^^^^^^^^^^^^^
-
-The ``vqnetrun`` interface allows you to specify nodes and process assignments for cross-node execution through ``-H``, ``--hosts`` (when running across nodes, the environments of the nodes must be configured successfully, and execution must be performed in the same environment and under the same paths). An example is as follows:
-
-    Example::
-
-        from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("gloo")
-
-        rank = Comm_OP.getRank()
-        size = Comm_OP.getSize()
-        print(f"rank: {rank}, size {size}")
-        print(f"LocalRank {Comm_OP.getLocalRank()} hosts name {get_host_name()}")
-
-        # vqnetrun --nproc_per_node 4 -H node0:1,node2:1 python test.py
-        # vqnetrun --nproc_per_node 4 --hosts node0:1,node2:1 python test.py
-
-
-.. _hostfile:
-
-hostfile, f, hostfile
-^^^^^^^^^^^^^^^^^^^^^^
-
-The ``vqnetrun`` interface allows you to specify nodes and process assignments for cross-node execution by specifying a hosts file (when running across nodes, the environments of the nodes must be configured successfully, and execution must be performed in the same environment and under the same paths). The command line arguments are ``-hostfile``, ``-f``, ``--hostfile``.
-
-Each line in the file must be formatted as <hostname> slots=<slots>, for example:
-
-node0 slots=1
-
-node2 slots=1
-
-An example is as follows
-
-    Example::
-
-        from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("gloo")
-
-        rank = Comm_OP.getRank()
-        size = Comm_OP.getSize()
-        print(f"rank: {rank}, size {size}")
-        print(f"LocalRank {Comm_OP.getLocalRank()} hosts name {get_host_name()}")
-
-        # vqnetrun --nproc_per_node 4 -f hosts python test.py
-        # vqnetrun --nproc_per_node 4 -hostfile hosts python test.py
-        # vqnetrun --nproc_per_node 4 --hostfile hosts python test.py
-
-
-output-filename
-^^^^^^^^^^^^^^^^^^^^^^
-
-The ``vqnetrun`` interface allows you to save the output to a specified file through the command line parameter ``--output-filename``.
-
-An example is as follows
-
-    Example::
-
-        from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("gloo")
-
-        rank = Comm_OP.getRank()
-        size = Comm_OP.getSize()
-        print(f"rank: {rank}, size {size}")
-        print(f"LocalRank {Comm_OP.getLocalRank()} hosts name {get_host_name()}")
-
-        # vqnetrun --nproc_per_node 4 --hostfile hosts --output-filename output  python test.py
-
-
 verbose
 ^^^^^^^^^^^^^^^^^^^^^^
-The ``vqnetrun`` interface allows you to detect communication between nodes through the command line parameter ``--verbose`` and additionally output the detection results.
 
-An example is as follows
+The ``vqnetrun`` interface allows you to print additional launcher diagnostic information through the ``--verbose`` flag, such as node/process rank settings, master rendezvous settings, and local worker launch information. It does not perform a node connectivity test.
 
     Example::
 
-        from pyvqnet.distributed import CommController, get_host_name
+        from pyvqnet.distributed import CommController
         Comm_OP = CommController("gloo")
 
         rank = Comm_OP.getRank()
         size = Comm_OP.getSize()
         print(f"rank: {rank}, size {size}")
-        print(f"LocalRank {Comm_OP.getLocalRank()} hosts name {get_host_name()}")
 
-        # vqnetrun --nproc_per_node 4 --hostfile hosts --verbose python test.py
-
-
-start-timeout
-^^^^^^^^^^^^^^^^^^^^^^
-The ``vqnetrun`` interface allows you to specify, through the command line parameter ``--start-timeout``, the timeout before all checks are executed and processes are started. The default value is 30 seconds.
-
-An example is as follows
-
-    Example::
-
-        from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("gloo")
-
-        rank = Comm_OP.getRank()
-        size = Comm_OP.getSize()
-        print(f"rank: {rank}, size {size}")
-        print(f"LocalRank {Comm_OP.getLocalRank()} hosts name {get_host_name()}")
-
-        # vqnetrun --nproc_per_node 4 --start-timeout 10 python test.py
-
-
-disable-cache
-^^^^^^^^^^^^^^^^^^^^^^
-The ``vqnetrun`` interface allows you to disable caching of initialization checks through the ``--disable-cache`` flag. By default, vqnetrun caches the results of initialization checks for 60 minutes. If caching is disabled, the initialization checks are re-executed on every run.
-
-The execution code is as follows
-
-    Example::
-
-        from pyvqnet.distributed import CommController, get_host_name
-        Comm_OP = CommController("gloo")
-
-        rank = Comm_OP.getRank()
-        size = Comm_OP.getSize()
-        print(f"rank: {rank}, size {size}")
-        print(f"LocalRank {Comm_OP.getLocalRank()} hosts name {get_host_name()}")
-
-        # vqnetrun --nproc_per_node 4 --disable-cache python test.py
-
+        # vqnetrun --nproc_per_node 4 --verbose python test.py
 
 cb, check-build
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``vqnetrun`` interface allows you to view the distributed backends and communication libraries supported by the current build through the ``-cb``, ``--check-build`` flags.
-
-The execution code is as follows
+The ``vqnetrun`` interface allows you to view the distributed controllers and communication libraries supported by the current build through the ``-cb`` or ``--check-build`` flags.
+Because ``--nproc_per_node`` is required by the launcher parser, it must also be supplied when checking the build information.
 
     Example::
 
-        # vqnetrun -cb
-        # vqnetrun --check-build
-
+        # vqnetrun --nproc_per_node 1 -cb
+        # vqnetrun --nproc_per_node 1 --check-build
 
 CommController
 ^^^^^^^^^^^^^^^^^^^^^^^

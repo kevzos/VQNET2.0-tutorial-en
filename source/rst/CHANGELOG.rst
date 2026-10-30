@@ -26,6 +26,7 @@ Changed
 - Updated all ``pyQPanda`` references in the documentation to ``pyQPanda3`` and removed examples that depend on the legacy pyqpanda.
 - Rewrote the home page overview to describe the ``pyvqnet`` (native) and ``torch`` backends separately for the implemented 2.18.2 interfaces, describe distributed computing in terms of gloo/NCCL, and document the tensor-network backend ``pyvqnet.qnn.vqc.tn`` and LLM operators.
 - Distributed documentation: removed the ``vqnetrun --backend`` parameter description and command examples (the parameter has been removed; the backend is determined by each worker process at runtime), and corrected the return values of ``split_groups`` / ``init_groups`` and the ``group`` parameter for group communication.
+- Cleaned up the ``vqnetrun`` CLI documentation to match the current launcher: removed the unsupported ``-H`` / ``--hosts``, host-file, ``--output-filename``, ``--start-timeout``, and ``--disable-cache`` options; documented ``--nproc_per_node`` as a required parameter for both gloo and NCCL; corrected ``--verbose`` to describe extra launcher diagnostics rather than connectivity testing; and updated ``-cb`` / ``--check-build`` examples to include the required ``--nproc_per_node`` argument.
 
 Fixed
 ===================
