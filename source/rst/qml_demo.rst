@@ -516,30 +516,32 @@ Following figures show the local quantum circuits structure on each qubits:
         pass
 
 
-    def circuits_of_vsql(x, weights, qlist, clist, machine):  
+    def circuits_of_vsql(x, weights):
         """
         VSQL model of quantum circuits
         """
+        qlist = range(n)
+        machine = pq.CPUQVM()
         weights = weights.reshape([depth + 1, 3, n_qsc])
 
         def subcir(weights, qlist, depth, n_qsc, n_start):  
             cir = pq.QCircuit()
 
             for i in range(n_qsc):
-                cir.insert(pq.RX(qlist[n_start + i], weights[0][0][i]))
-                cir.insert(pq.RY(qlist[n_start + i], weights[0][1][i]))
-                cir.insert(pq.RX(qlist[n_start + i], weights[0][2][i]))
+                cir << pq.RX(qlist[n_start + i], weights[0][0][i])
+                cir << pq.RY(qlist[n_start + i], weights[0][1][i])
+                cir << pq.RX(qlist[n_start + i], weights[0][2][i])
             for repeat in range(1, depth + 1):
                 for i in range(n_qsc - 1):
-                    cir.insert(pq.CNOT(qlist[n_start + i], qlist[n_start + i + 1]))
-                cir.insert(pq.CNOT(qlist[n_start + n_qsc - 1], qlist[n_start]))
+                    cir << pq.CNOT(qlist[n_start + i], qlist[n_start + i + 1])
+                cir << pq.CNOT(qlist[n_start + n_qsc - 1], qlist[n_start])
                 for i in range(n_qsc):
-                    cir.insert(pq.RY(qlist[n_start + i], weights[repeat][1][i]))
+                    cir << pq.RY(qlist[n_start + i], weights[repeat][1][i])
 
             return cir
 
         def get_pauli_str(n_start, n_qsc):  
-            pauli_str = ",".join("X" + str(i)
+            pauli_str = " ".join("X" + str(i)
                                 for i in range(n_start, n_start + n_qsc))
             return {pauli_str: 1.0}
 
@@ -548,12 +550,12 @@ Following figures show the local quantum circuits structure on each qubits:
         for st in range(n - n_qsc + 1):
             psd = get_pauli_str(st, n_qsc)
             cir = pq.QCircuit()
-            cir.insert(origin_in)
-            cir.insert(subcir(weights, qlist, depth, n_qsc, st))
+            cir << origin_in
+            cir << subcir(weights, qlist, depth, n_qsc, st)
             prog = pq.QProg()
-            prog.insert(cir)
+            prog << cir
 
-            f_ij = expval(machine, prog, psd, qlist)
+            f_ij = expval(machine, prog, psd)
             f_i.append(f_ij)
         f_i = np.array(f_i)
         return f_i
@@ -571,8 +573,7 @@ Following figures show the local quantum circuits structure on each qubits:
         """
         def __init__(self):
             super().__init__()
-            self.vq = QuantumLayer(circuits_of_vsql, (depth + 1) * 3 * n_qsc,
-                                "cpu", 10)
+            self.vq = QuantumLayer(circuits_of_vsql, (depth + 1) * 3 * n_qsc)
             self.fc = Linear(n - n_qsc + 1, 2)
 
         def forward(self, x):
@@ -1338,38 +1339,36 @@ The approach here is that this set of optimal quantum logic gates should make th
         pass
 
     machine = pq.CPUQVM()
-    machine.init_qvm()
-    nqbits = machine.qAlloc_many(2)
+    nqbits = range(2)
 
     def gen(param, generators, qbits, circuit):
         if generators == "X":
-            circuit.insert(pq.RX(qbits, param))
+            circuit << pq.RX(qbits, param)
         elif generators == "Y":
-            circuit.insert(pq.RY(qbits, param))
+            circuit << pq.RY(qbits, param)
         else:
-            circuit.insert(pq.RZ(qbits, param))
+            circuit << pq.RZ(qbits, param)
 
     def circuits(params, generators, circuit):
         gen(params[0], generators[0], nqbits[0], circuit)
         gen(params[1], generators[1], nqbits[1], circuit)
-        circuit.insert(pq.CNOT(nqbits[0], nqbits[1]))
+        circuit << pq.CNOT(nqbits[0], nqbits[1])
         prog = pq.QProg()
-        prog.insert(circuit)
+        prog << circuit
         return prog
 
     def ansatz1(params: QTensor, generators):
         circuit = pq.QCircuit()
         params = params.to_numpy()
         prog = circuits(params, generators, circuit)
-        return expval(machine, prog, {"Z0": 1},
-                    nqbits), expval(machine, prog, {"Y1": 1}, nqbits)
+        return expval(machine, prog, {"Z0": 1}), expval(machine, prog, {"Y1": 1})
 
 
     def ansatz2(params: QTensor, generators):
         circuit = pq.QCircuit()
         params = params.to_numpy()
         prog = circuits(params, generators, circuit)
-        return expval(machine, prog, {"X0": 1}, nqbits)
+        return expval(machine, prog, {"X0": 1})
 
 
     def loss(params, generators):
@@ -1921,6 +1920,7 @@ Quantum partial circuit diagram are illustrated below:
     from pyvqnet.nn.module import *
     from pyvqnet.utils.initializer import *
     from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
+    from pyvqnet.qnn.pq3.measure import expval
 
     try:
         matplotlib.use('TkAgg')
@@ -2193,7 +2193,7 @@ Quantum partial circuit diagram are illustrated below:
             """
             circuit = pq.QCircuit()
             for idx in range(nqubits):
-                circuit.insert(pq.H(qubits[idx]))
+                circuit << pq.H(qubits[idx])
             return circuit
 
         def Q_RY_layer(qubits, w):
@@ -2201,7 +2201,7 @@ Quantum partial circuit diagram are illustrated below:
             """
             circuit = pq.QCircuit()
             for idx, element in enumerate(w):
-                circuit.insert(pq.RY(qubits[idx], element))
+                circuit << pq.RY(qubits[idx], element)
             return circuit
 
         def Q_entangling_layer(qubits, nqubits):
@@ -2212,44 +2212,41 @@ Quantum partial circuit diagram are illustrated below:
             #   CNOT  CNOT  CNOT...  CNOT
             circuit = pq.QCircuit()
             for i in range(0, nqubits - 1, 2):  # Loop over even indices: i=0,2,...N-2
-                circuit.insert(pq.CNOT(qubits[i], qubits[i + 1]))
+                circuit << pq.CNOT(qubits[i], qubits[i + 1])
             for i in range(1, nqubits - 1, 2):  # Loop over odd indices:  i=1,3,...N-3
-                circuit.insert(pq.CNOT(qubits[i], qubits[i + 1]))
+                circuit << pq.CNOT(qubits[i], qubits[i + 1])
             return circuit
 
-        def Q_quantum_net(q_input_features, q_weights_flat, qubits, cbits, machine):
+        def Q_quantum_net(q_input_features, q_weights_flat):
             """
             The variational quantum circuit.
             """
             machine = pq.CPUQVM()
-            machine.init_qvm()
-            qubits = machine.qAlloc_many(n_qubits)
+            qubits = range(n_qubits)
             circuit = pq.QCircuit()
 
             # Reshape weights
             q_weights = q_weights_flat.reshape([q_depth, n_qubits])
 
             # Start from state |+> , unbiased w.r.t. |0> and |1>
-            circuit.insert(Q_H_layer(qubits, n_qubits))
+            circuit << Q_H_layer(qubits, n_qubits)
 
             # Embed features in the quantum node
-            circuit.insert(Q_RY_layer(qubits, q_input_features))
+            circuit << Q_RY_layer(qubits, q_input_features)
 
             # Sequence of trainable variational layers
             for k in range(q_depth):
-                circuit.insert(Q_entangling_layer(qubits, n_qubits))
-                circuit.insert(Q_RY_layer(qubits, q_weights[k]))
+                circuit << Q_entangling_layer(qubits, n_qubits)
+                circuit << Q_RY_layer(qubits, q_weights[k])
 
             # Expectation values in the Z basis
             prog = pq.QProg()
-            prog.insert(circuit)
+            prog << circuit
 
             exp_vals = []
             for position in range(n_qubits):
                 pauli_str = "Z" + str(position)
-                pauli_map = pq.PauliOperator(pauli_str, 1)
-                hamiltion = pauli_map.toHamiltonian(True)
-                exp = machine.get_expectation(prog, hamiltion, qubits)
+                exp = expval(machine, prog, {pauli_str: 1.0})
                 exp_vals.append(exp)
 
             return exp_vals
@@ -2264,7 +2261,7 @@ Quantum partial circuit diagram are illustrated below:
                 super().__init__()
                 self.pre_net = Linear(128, n_qubits)
                 self.post_net = Linear(n_qubits, 10)
-                self.temp_Q = QuantumLayer(Q_quantum_net, q_depth * n_qubits, "cpu", n_qubits, n_qubits)
+                self.temp_Q = QuantumLayer(Q_quantum_net, q_depth * n_qubits)
 
             def forward(self, input_features):
                 """
@@ -2397,7 +2394,7 @@ Quantum partial circuit diagram are illustrated below:
             """
             circuit = pq.QCircuit()
             for idx in range(nqubits):
-                circuit.insert(pq.H(qubits[idx]))
+                circuit << pq.H(qubits[idx])
             return circuit
 
         def Q_RY_layer(qubits, w):
@@ -2405,7 +2402,7 @@ Quantum partial circuit diagram are illustrated below:
             """
             circuit = pq.QCircuit()
             for idx, element in enumerate(w):
-                circuit.insert(pq.RY(qubits[idx], element))
+                circuit << pq.RY(qubits[idx], element)
             return circuit
 
         def Q_entangling_layer(qubits, nqubits):
@@ -2416,43 +2413,41 @@ Quantum partial circuit diagram are illustrated below:
             #   CNOT  CNOT  CNOT...  CNOT
             circuit = pq.QCircuit()
             for i in range(0, nqubits - 1, 2):  # Loop over even indices: i=0,2,...N-2
-                circuit.insert(pq.CNOT(qubits[i], qubits[i + 1]))
+                circuit << pq.CNOT(qubits[i], qubits[i + 1])
             for i in range(1, nqubits - 1, 2):  # Loop over odd indices:  i=1,3,...N-3
-                circuit.insert(pq.CNOT(qubits[i], qubits[i + 1]))
+                circuit << pq.CNOT(qubits[i], qubits[i + 1])
             return circuit
 
-        def Q_quantum_net(q_input_features, q_weights_flat, qubits, cbits, machine):
+        def Q_quantum_net(q_input_features, q_weights_flat):
             """
             The variational quantum circuit.
             """
             machine = pq.CPUQVM()
-            machine.init_qvm()
-            qubits = machine.qAlloc_many(n_qubits)
+            qubits = range(n_qubits)
             circuit = pq.QCircuit()
 
             # Reshape weights
             q_weights = q_weights_flat.reshape([q_depth, n_qubits])
 
             # Start from state |+> , unbiased w.r.t. |0> and |1>
-            circuit.insert(Q_H_layer(qubits, n_qubits))
+            circuit << Q_H_layer(qubits, n_qubits)
 
             # Embed features in the quantum node
-            circuit.insert(Q_RY_layer(qubits, q_input_features))
+            circuit << Q_RY_layer(qubits, q_input_features)
 
             # Sequence of trainable variational layers
             for k in range(q_depth):
-                circuit.insert(Q_entangling_layer(qubits, n_qubits))
-                circuit.insert(Q_RY_layer(qubits, q_weights[k]))
+                circuit << Q_entangling_layer(qubits, n_qubits)
+                circuit << Q_RY_layer(qubits, q_weights[k])
 
             # Expectation values in the Z basis
             prog = pq.QProg()
-            prog.insert(circuit)
+            prog << circuit
+
             exp_vals = []
             for position in range(n_qubits):
                 pauli_str = "Z" + str(position)
-                pauli_map = pq.PauliOperator(pauli_str, 1)
-                hamiltion = pauli_map.toHamiltonian(True)
-                exp = machine.get_expectation(prog, hamiltion, qubits)
+                exp = expval(machine, prog, {pauli_str: 1.0})
                 exp_vals.append(exp)
 
             return exp_vals
@@ -2467,7 +2462,7 @@ Quantum partial circuit diagram are illustrated below:
                 super().__init__()
                 self.pre_net = Linear(128, n_qubits)
                 self.post_net = Linear(n_qubits, 10)
-                self.temp_Q = QuantumLayer(Q_quantum_net, q_depth * n_qubits, "cpu", n_qubits, n_qubits)
+                self.temp_Q = QuantumLayer(Q_quantum_net, q_depth * n_qubits)
 
             def forward(self, input_features):
                 """
@@ -2643,6 +2638,7 @@ Import necessary libraries and functions
     import matplotlib.pyplot as plt
 
     import cv2
+    from pyvqnet.qnn.pq3.measure import probs_measure
 
 Preprocessing data
 
@@ -2692,8 +2688,8 @@ Preprocessing data
             for i, pix in enumerate(pixels):
                 theta = np.arctan(pix)
                 phi = np.arctan(pix**2)
-                cir.insert(pq.RY(qlist[i], theta))
-                cir.insert(pq.RZ(qlist[i], phi))
+                cir << pq.RY(qlist[i], theta)
+                cir << pq.RZ(qlist[i], phi)
             return cir
 
         def entangle_cir(self, qlist):
@@ -2704,26 +2700,24 @@ Preprocessing data
                 ctred = i+1
                 if ctred == k_size:
                     ctred = 0
-                cir.insert(pq.CNOT(qlist[ctr], qlist[ctred]))
+                cir << pq.CNOT(qlist[ctr], qlist[ctred])
             return cir
 
         def qcnn_circuit(self, pixels):
             k_size = len(pixels)
-            machine = pq.MPSQVM()
-            machine.init_qvm()
-            qlist = machine.qAlloc_many(k_size)
+            machine = pq.CPUQVM()
+            qlist = range(k_size)
             cir = pq.QProg()
 
-            cir.insert(self.encode_cir(qlist, np.array(pixels) * np.pi / 2))
-            cir.insert(self.entangle_cir(qlist))
+            cir << self.encode_cir(qlist, np.array(pixels) * np.pi / 2)
+            cir << self.entangle_cir(qlist)
 
-            result0 = machine.prob_run_list(cir, [qlist[0]], -1)
-            result1 = machine.prob_run_list(cir, [qlist[1]], -1)
-            result2 = machine.prob_run_list(cir, [qlist[2]], -1)
-            result3 = machine.prob_run_list(cir, [qlist[3]], -1)
+            result0 = probs_measure(machine, cir, [qlist[0]])
+            result1 = probs_measure(machine, cir, [qlist[1]])
+            result2 = probs_measure(machine, cir, [qlist[2]])
+            result3 = probs_measure(machine, cir, [qlist[3]])
 
             result = [result0[-1]+result1[-1]+result2[-1]+result3[-1]]
-            machine.finalize()
             return result
 
     def quanconv_(image):
@@ -3282,85 +3276,86 @@ Building Hybrid Classical-Quantum Neural Networks
             raise ValueError(" numbers of paramters in Rot should be 3")
 
         cir = pq.QCircuit()
-        cir.insert(pq.RZ(qlist, para[2]))
-        cir.insert(pq.RY(qlist, para[1]))
-        cir.insert(pq.RZ(qlist, para[0]))
+        cir << pq.RZ(qlist, para[2])
+        cir << pq.RY(qlist, para[1])
+        cir << pq.RZ(qlist, para[0])
 
         return cir
 
     def build_RotCircuit(qubits, weights):
         cir = pq.QCircuit()
-        cir.insert(RotCircuit(weights[0:3], qubits[0]))
-        cir.insert(RotCircuit(weights[3:6], qubits[1]))
-        cir.insert(RotCircuit(weights[6:9], qubits[2]))
-        cir.insert(RotCircuit(weights[9:12], qubits[3]))
-        cir.insert(RotCircuit(weights[12:15], qubits[4]))
-        cir.insert(RotCircuit(weights[15:18], qubits[5]))
-        cir.insert(RotCircuit(weights[18:21], qubits[6]))
-        cir.insert(RotCircuit(weights[21:24], qubits[7]))
-        cir.insert(RotCircuit(weights[24:27], qubits[8]))
-        cir.insert(RotCircuit(weights[27:30], qubits[9]))
-        cir.insert(RotCircuit(weights[30:33], qubits[10]))
-        cir.insert(RotCircuit(weights[33:36], qubits[11]))
-        cir.insert(RotCircuit(weights[36:39], qubits[12]))
-        cir.insert(RotCircuit(weights[39:42], qubits[13]))
-        cir.insert(RotCircuit(weights[42:45], qubits[14]))
-        cir.insert(RotCircuit(weights[45:48], qubits[15]))
+        cir << RotCircuit(weights[0:3], qubits[0])
+        cir << RotCircuit(weights[3:6], qubits[1])
+        cir << RotCircuit(weights[6:9], qubits[2])
+        cir << RotCircuit(weights[9:12], qubits[3])
+        cir << RotCircuit(weights[12:15], qubits[4])
+        cir << RotCircuit(weights[15:18], qubits[5])
+        cir << RotCircuit(weights[18:21], qubits[6])
+        cir << RotCircuit(weights[21:24], qubits[7])
+        cir << RotCircuit(weights[24:27], qubits[8])
+        cir << RotCircuit(weights[27:30], qubits[9])
+        cir << RotCircuit(weights[30:33], qubits[10])
+        cir << RotCircuit(weights[33:36], qubits[11])
+        cir << RotCircuit(weights[36:39], qubits[12])
+        cir << RotCircuit(weights[39:42], qubits[13])
+        cir << RotCircuit(weights[42:45], qubits[14])
+        cir << RotCircuit(weights[45:48], qubits[15])
 
         return cir
 
     def CRXCircuit(para, control_qlists, rot_qlists):
         cir = pq.QCircuit()
-        cir.insert(pq.RX(rot_qlists, para))
-        cir.set_control(control_qlists)
+        cir << pq.CRX(control_qlists, rot_qlists, para)
         return cir
 
     def build_CRotCircuit(qubits, weights):
         cir = pq.QCircuit()
-        cir.insert(CRXCircuit(weights[0], qubits[0], qubits[1]))
-        cir.insert(CRXCircuit(weights[1], qubits[1], qubits[2]))
-        cir.insert(CRXCircuit(weights[2], qubits[2], qubits[3]))
-        cir.insert(CRXCircuit(weights[3], qubits[3], qubits[4]))
-        cir.insert(CRXCircuit(weights[4], qubits[4], qubits[5]))
-        cir.insert(CRXCircuit(weights[5], qubits[5], qubits[6]))
-        cir.insert(CRXCircuit(weights[6], qubits[6], qubits[7]))
-        cir.insert(CRXCircuit(weights[7], qubits[7], qubits[8]))
-        cir.insert(CRXCircuit(weights[8], qubits[8], qubits[9]))
-        cir.insert(CRXCircuit(weights[9], qubits[9], qubits[10]))
-        cir.insert(CRXCircuit(weights[10], qubits[10], qubits[11]))
-        cir.insert(CRXCircuit(weights[11], qubits[11], qubits[12]))
-        cir.insert(CRXCircuit(weights[12], qubits[12], qubits[13]))
-        cir.insert(CRXCircuit(weights[13], qubits[13], qubits[14]))
-        cir.insert(CRXCircuit(weights[14], qubits[14], qubits[15]))
-        cir.insert(CRXCircuit(weights[15], qubits[15], qubits[0]))
+        cir << CRXCircuit(weights[0], qubits[0], qubits[1])
+        cir << CRXCircuit(weights[1], qubits[1], qubits[2])
+        cir << CRXCircuit(weights[2], qubits[2], qubits[3])
+        cir << CRXCircuit(weights[3], qubits[3], qubits[4])
+        cir << CRXCircuit(weights[4], qubits[4], qubits[5])
+        cir << CRXCircuit(weights[5], qubits[5], qubits[6])
+        cir << CRXCircuit(weights[6], qubits[6], qubits[7])
+        cir << CRXCircuit(weights[7], qubits[7], qubits[8])
+        cir << CRXCircuit(weights[8], qubits[8], qubits[9])
+        cir << CRXCircuit(weights[9], qubits[9], qubits[10])
+        cir << CRXCircuit(weights[10], qubits[10], qubits[11])
+        cir << CRXCircuit(weights[11], qubits[11], qubits[12])
+        cir << CRXCircuit(weights[12], qubits[12], qubits[13])
+        cir << CRXCircuit(weights[13], qubits[13], qubits[14])
+        cir << CRXCircuit(weights[14], qubits[14], qubits[15])
+        cir << CRXCircuit(weights[15], qubits[15], qubits[0])
 
         return cir
 
 
-    def build_qmlp_circuit(x, weights, qubits, clist, machine):
+    def build_qmlp_circuit(x, weights):
+        qubits = range(16)
+        machine = pq.CPUQVM()
         cir = pq.QCircuit()
         num_qubits = len(qubits)
         for i in range(num_qubits):
-            cir.insert(pq.RX(qubits[i], x[i]))
+            cir << pq.RX(qubits[i], x[i])
 
-        cir.insert(build_RotCircuit(qubits, weights[0:48]))
-        cir.insert(build_CRotCircuit(qubits, weights[48:64]))
+        cir << build_RotCircuit(qubits, weights[0:48])
+        cir << build_CRotCircuit(qubits, weights[48:64])
 
         for i in range(num_qubits):
-            cir.insert(pq.RX(qubits[i], x[i]))
+            cir << pq.RX(qubits[i], x[i])
 
-        cir.insert(build_RotCircuit(qubits, weights[64:112]))
-        cir.insert(build_CRotCircuit(qubits, weights[112:128]))
+        cir << build_RotCircuit(qubits, weights[64:112])
+        cir << build_CRotCircuit(qubits, weights[112:128])
 
         prog = pq.QProg()
-        prog.insert(cir)
+        prog << cir
         # print(prog)
         # exit()
 
         exp_vals = []
         for position in range(num_qubits):
             pauli_str = {"Z" + str(position): 1.0}
-            exp2 = expval(machine, prog, pauli_str, qubits)
+            exp2 = expval(machine, prog, pauli_str)
             exp_vals.append(exp2)
 
         return exp_vals
@@ -3371,7 +3366,7 @@ Building Hybrid Classical-Quantum Neural Networks
         def __init__(self):
             super(QMLPModel, self).__init__()
             self.ave_pool2d = AvgPool2D([7, 7], [7, 7], "valid")
-            self.quantum_circuit = QuantumLayer(build_qmlp_circuit, 128, "CPU", 16, diff_method="finite_diff")
+            self.quantum_circuit = QuantumLayer(build_qmlp_circuit, 128, diff_method="finite_diff")
             
             self.linear = Linear(16, 10)
 
@@ -3533,52 +3528,54 @@ Requires ``gym`` == 0.23.0 , ``pygame`` == 2.1.2 .
         if para.shape[0] != 3:
             raise ValueError(" numbers of paramters in Rot should be 3")
         cir = pq.QCircuit()
-        cir.insert(pq.RZ(qlist, para[2]))
-        cir.insert(pq.RY(qlist, para[1]))
-        cir.insert(pq.RZ(qlist, para[0]))
+        cir << pq.RZ(qlist, para[2])
+        cir << pq.RY(qlist, para[1])
+        cir << pq.RZ(qlist, para[0])
         return cir
     def layer_circuit(qubits, weights):
         cir = pq.QCircuit()
         # Entanglement block
-        cir.insert(pq.CNOT(qubits[0], qubits[1]))
-        cir.insert(pq.CNOT(qubits[1], qubits[2]))
-        cir.insert(pq.CNOT(qubits[2], qubits[3]))
+        cir << pq.CNOT(qubits[0], qubits[1])
+        cir << pq.CNOT(qubits[1], qubits[2])
+        cir << pq.CNOT(qubits[2], qubits[3])
         # u3 gate
-        cir.insert(RotCircuit(weights[0], qubits[0]))  # weights shape = [4, 3]
-        cir.insert(RotCircuit(weights[1], qubits[1]))
-        cir.insert(RotCircuit(weights[2], qubits[2]))
-        cir.insert(RotCircuit(weights[3], qubits[3]))
+        cir << RotCircuit(weights[0], qubits[0])  # weights shape = [4, 3]
+        cir << RotCircuit(weights[1], qubits[1])
+        cir << RotCircuit(weights[2], qubits[2])
+        cir << RotCircuit(weights[3], qubits[3])
         return cir
     def encoder(encodings):
         encodings = int(encodings[0])
         return [i for i, b in enumerate(f'{encodings:0{CIRCUIT_SIZE}b}') if b == '1']
 
-    def build_qc(x, weights, qubits, cbits ,machine):
+    def build_qc(x, weights):
 
 
+        machine = pq.CPUQVM()
+        qubits = range(CIRCUIT_SIZE)
         cir = pq.QCircuit()
         if x:
             wires = encoder(x)
             for wire in wires:
-                cir.insert(pq.RX(qubits[wire], np.pi))
-                cir.insert(pq.RZ(qubits[wire], np.pi))
+                cir << pq.RX(qubits[wire], np.pi)
+                cir << pq.RZ(qubits[wire], np.pi)
         # parameter number = 24
         weights = weights.reshape([2, 4, 3])
         # layer wise
         for w in weights:
-            cir.insert(layer_circuit(qubits, w))
+            cir << layer_circuit(qubits, w)
         prog = pq.QProg()
-        prog.insert(cir)
+        prog << cir
         exp_vals = []
         for position in range(n_qubits):
             pauli_str = {"Z" + str(position): 1.0}
-            exp2 = expval(machine, prog, pauli_str, qubits)
+            exp2 = expval(machine, prog, pauli_str)
             exp_vals.append(exp2)
         return exp_vals
     class DRLModel(Module):
         def __init__(self):
             super(DRLModel, self).__init__()
-            self.quantum_circuit = QuantumLayer(build_qc, 24, "CPU", 4, diff_method="finite_diff")
+            self.quantum_circuit = QuantumLayer(build_qc, 24, diff_method="finite_diff")
 
         def forward(self, x):
             quanutum_result = self.quantum_circuit(x)
@@ -3772,37 +3769,34 @@ Constructing quantum circuits using VQNet
 
         num_qubits = 3
         machine = pq.CPUQVM()
-        machine.init_qvm()
-        qubits = machine.qAlloc_many(num_qubits)
-        cbits = machine.cAlloc_many(num_qubits)
+        qubits = range(num_qubits)
+        cbits = range(num_qubits)
         circuit = pq.QCircuit()
 
-        circuit.insert(pq.H(qubits[0]))
-        circuit.insert(pq.H(qubits[1]))
-        circuit.insert(pq.H(qubits[2]))
+        circuit << pq.H(qubits[0])
+        circuit << pq.H(qubits[1])
+        circuit << pq.H(qubits[2])
 
-        circuit.insert(pq.U3(qubits[1], theta_1, np.pi, np.pi))
-        circuit.insert(pq.U3(qubits[2], theta_2, np.pi, np.pi))
+        circuit << pq.U3(qubits[1], theta_1, np.pi, np.pi)
+        circuit << pq.U3(qubits[2], theta_2, np.pi, np.pi)
 
-        circuit.insert(pq.SWAP(qubits[1], qubits[2]).control([qubits[0]]))
+        circuit << pq.SWAP(qubits[1], qubits[2]).control([qubits[0]])
 
-        circuit.insert(pq.H(qubits[0]))
+        circuit << pq.H(qubits[0])
 
         prog = pq.QProg()
-        prog.insert(circuit)
-        prog << pq.Measure(qubits[0], cbits[0])
-        prog.insert(pq.Reset(qubits[0]))
-        prog.insert(pq.Reset(qubits[1]))
-        prog.insert(pq.Reset(qubits[2]))
+        prog << circuit
+        prog << pq.measure(qubits[0], cbits[0])
 
-        result = machine.run_with_configuration(prog, cbits, 1024)
+        machine.run(prog, 1024)
+        result = machine.result().get_counts()
 
         data = result
 
         if len(data) == 1:
             return 0.0
         else:
-            return data['001'] / 1024.0
+            return result.get("1", 0) / 1024.0
 
 1.3.4 Data visualization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4001,35 +3995,34 @@ Make input data, define parallel quantum models, and do not perform model traini
 
     def S(scaling, x, qubits):
         cir = pq.QCircuit()
-        cir.insert(pq.RX(qubits[0], scaling * x))
+        cir << pq.RX(qubits[0], scaling * x)
         return cir
 
     def W(theta, qubits):
         cir = pq.QCircuit()
-        cir.insert(pq.RZ(qubits[0], theta[0]))
-        cir.insert(pq.RY(qubits[0], theta[1]))
-        cir.insert(pq.RZ(qubits[0], theta[2]))
+        cir << pq.RZ(qubits[0], theta[0])
+        cir << pq.RY(qubits[0], theta[1])
+        cir << pq.RZ(qubits[0], theta[2])
         return cir
 
     def serial_quantum_model(weights, x, num_qubits, scaling):
         cir = pq.QCircuit()
         machine = pq.CPUQVM()  # outside
-        machine.init_qvm()  # outside
-        qubits = machine.qAlloc_many(num_qubits)
+        qubits = range(num_qubits)
 
         for theta in weights[:-1]:
-            cir.insert(W(theta, qubits))
-            cir.insert(S(scaling, x, qubits))
+            cir << W(theta, qubits)
+            cir << S(scaling, x, qubits)
 
         # (L+1)'th unitary
-        cir.insert(W(weights[-1], qubits))
+        cir << W(weights[-1], qubits)
         prog = pq.QProg()
-        prog.insert(cir)
+        prog << cir
 
         exp_vals = []
         for position in range(num_qubits):
             pauli_str = {"Z" + str(position): 1.0}
-            exp2 = expval(machine, prog, pauli_str, qubits)
+            exp2 = expval(machine, prog, pauli_str)
             exp_vals.append(exp2)
 
         return exp_vals
@@ -4107,14 +4100,14 @@ Make the input data, define the serial quantum model, and build the training mod
 
     def S(x, qubits):
         cir = pq.QCircuit()
-        cir.insert(pq.RX(qubits[0], x))
+        cir << pq.RX(qubits[0], x)
         return cir
 
     def W(theta, qubits):
         cir = pq.QCircuit()
-        cir.insert(pq.RZ(qubits[0], theta[0]))
-        cir.insert(pq.RY(qubits[0], theta[1]))
-        cir.insert(pq.RZ(qubits[0], theta[2]))
+        cir << pq.RZ(qubits[0], theta[0])
+        cir << pq.RY(qubits[0], theta[1])
+        cir << pq.RZ(qubits[0], theta[2])
         return cir
 
 
@@ -4124,25 +4117,27 @@ Make the input data, define the serial quantum model, and build the training mod
     x = np.linspace(-6, 6, 70)
 
 
-    def q_circuits_loop(x, weights, qubits, clist, machine):
+    def q_circuits_loop(x, weights):
 
+        machine = pq.CPUQVM()
+        qubits = range(1)
         result = []
         for xx in x:
             cir = pq.QCircuit()
             weights = weights.reshape([2, 3])
 
             for theta in weights[:-1]:
-                cir.insert(W(theta, qubits))
-                cir.insert(S(xx, qubits))
+                cir << W(theta, qubits)
+                cir << S(xx, qubits)
 
-            cir.insert(W(weights[-1], qubits))
+            cir << W(weights[-1], qubits)
             prog = pq.QProg()
-            prog.insert(cir)
+            prog << cir
 
             exp_vals = []
             for position in range(1):
                 pauli_str = {"Z" + str(position): 1.0}
-                exp2 = expval(machine, prog, pauli_str, qubits)
+                exp2 = expval(machine, prog, pauli_str)
                 exp_vals.append(exp2)
                 result.append(exp2)
         return result
@@ -4150,7 +4145,7 @@ Make the input data, define the serial quantum model, and build the training mod
     class Model(Module):
         def __init__(self):
             super(Model, self).__init__()
-            self.q_fourier_series = QuantumLayer(q_circuits_loop, 6, "CPU", 1)
+            self.q_fourier_series = QuantumLayer(q_circuits_loop, 6)
 
         def forward(self, x):
             return self.q_fourier_series(x)
@@ -4280,57 +4275,56 @@ Make input data, define parallel quantum models, and do not perform model traini
     def S1(x, qubits):
         cir = pq.QCircuit()
         for q in qubits:
-            cir.insert(pq.RX(q, x))
+            cir << pq.RX(q, x)
         return cir
 
     def W1(theta, qubits):
         cir = pq.QCircuit()
         for i in range(len(qubits)):
-            cir.insert(pq.RZ(qubits[i], theta[0][i][0]))
-            cir.insert(pq.RY(qubits[i], theta[0][i][1]))
-            cir.insert(pq.RZ(qubits[i], theta[0][i][2]))
+            cir << pq.RZ(qubits[i], theta[0][i][0])
+            cir << pq.RY(qubits[i], theta[0][i][1])
+            cir << pq.RZ(qubits[i], theta[0][i][2])
 
         for i in range(len(qubits) - 1):
-            cir.insert(pq.CNOT(qubits[i], qubits[i + 1]))
-        cir.insert(pq.CNOT(qubits[len(qubits) - 1], qubits[0]))
+            cir << pq.CNOT(qubits[i], qubits[i + 1])
+        cir << pq.CNOT(qubits[len(qubits) - 1], qubits[0])
 
         for i in range(len(qubits)):
-            cir.insert(pq.RZ(qubits[i], theta[1][i][0]))
-            cir.insert(pq.RY(qubits[i], theta[1][i][1]))
-            cir.insert(pq.RZ(qubits[i], theta[1][i][2]))
+            cir << pq.RZ(qubits[i], theta[1][i][0])
+            cir << pq.RY(qubits[i], theta[1][i][1])
+            cir << pq.RZ(qubits[i], theta[1][i][2])
 
-        cir.insert(pq.CNOT(qubits[0], qubits[len(qubits) - 1]))
+        cir << pq.CNOT(qubits[0], qubits[len(qubits) - 1])
         for i in range(len(qubits) - 1):
-            cir.insert(pq.CNOT(qubits[i + 1], qubits[i]))
+            cir << pq.CNOT(qubits[i + 1], qubits[i])
 
         for i in range(len(qubits)):
-            cir.insert(pq.RZ(qubits[i], theta[2][i][0]))
-            cir.insert(pq.RY(qubits[i], theta[2][i][1]))
-            cir.insert(pq.RZ(qubits[i], theta[2][i][2]))
+            cir << pq.RZ(qubits[i], theta[2][i][0])
+            cir << pq.RY(qubits[i], theta[2][i][1])
+            cir << pq.RZ(qubits[i], theta[2][i][2])
 
         for i in range(len(qubits) - 1):
-            cir.insert(pq.CNOT(qubits[i], qubits[i + 1]))
-        cir.insert(pq.CNOT(qubits[len(qubits) - 1], qubits[0]))
+            cir << pq.CNOT(qubits[i], qubits[i + 1])
+        cir << pq.CNOT(qubits[len(qubits) - 1], qubits[0])
 
         return cir
 
     def parallel_quantum_model(weights, x, num_qubits):
         cir = pq.QCircuit()
         machine = pq.CPUQVM()  # outside
-        machine.init_qvm()  # outside
-        qubits = machine.qAlloc_many(num_qubits)
+        qubits = range(num_qubits)
 
-        cir.insert(W1(weights[0], qubits))
-        cir.insert(S1(x, qubits))
+        cir << W1(weights[0], qubits)
+        cir << S1(x, qubits)
 
-        cir.insert(W1(weights[1], qubits))
+        cir << W1(weights[1], qubits)
         prog = pq.QProg()
-        prog.insert(cir)
+        prog << cir
 
         exp_vals = []
         for position in range(1):
             pauli_str = {"Z" + str(position): 1.0}
-            exp2 = expval(machine, prog, pauli_str, qubits)
+            exp2 = expval(machine, prog, pauli_str)
             exp_vals.append(exp2)
 
         return exp_vals
@@ -4410,58 +4404,60 @@ Make the input data, define the parallel quantum model, and build the training m
     def S1(x, qubits):
         cir = pq.QCircuit()
         for q in qubits:
-            cir.insert(pq.RX(q, x))
+            cir << pq.RX(q, x)
         return cir
 
     def W1(theta, qubits):
         cir = pq.QCircuit()
         for i in range(len(qubits)):
-            cir.insert(pq.RZ(qubits[i], theta[0][i][0]))
-            cir.insert(pq.RY(qubits[i], theta[0][i][1]))
-            cir.insert(pq.RZ(qubits[i], theta[0][i][2]))
+            cir << pq.RZ(qubits[i], theta[0][i][0])
+            cir << pq.RY(qubits[i], theta[0][i][1])
+            cir << pq.RZ(qubits[i], theta[0][i][2])
 
         for i in range(len(qubits) - 1):
-            cir.insert(pq.CNOT(qubits[i], qubits[i + 1]))
-        cir.insert(pq.CNOT(qubits[len(qubits) - 1], qubits[0]))
+            cir << pq.CNOT(qubits[i], qubits[i + 1])
+        cir << pq.CNOT(qubits[len(qubits) - 1], qubits[0])
 
         for i in range(len(qubits)):
-            cir.insert(pq.RZ(qubits[i], theta[1][i][0]))
-            cir.insert(pq.RY(qubits[i], theta[1][i][1]))
-            cir.insert(pq.RZ(qubits[i], theta[1][i][2]))
+            cir << pq.RZ(qubits[i], theta[1][i][0])
+            cir << pq.RY(qubits[i], theta[1][i][1])
+            cir << pq.RZ(qubits[i], theta[1][i][2])
 
-        cir.insert(pq.CNOT(qubits[0], qubits[len(qubits) - 1]))
+        cir << pq.CNOT(qubits[0], qubits[len(qubits) - 1])
         for i in range(len(qubits) - 1):
-            cir.insert(pq.CNOT(qubits[i + 1], qubits[i]))
+            cir << pq.CNOT(qubits[i + 1], qubits[i])
 
         for i in range(len(qubits)):
-            cir.insert(pq.RZ(qubits[i], theta[2][i][0]))
-            cir.insert(pq.RY(qubits[i], theta[2][i][1]))
-            cir.insert(pq.RZ(qubits[i], theta[2][i][2]))
+            cir << pq.RZ(qubits[i], theta[2][i][0])
+            cir << pq.RY(qubits[i], theta[2][i][1])
+            cir << pq.RZ(qubits[i], theta[2][i][2])
 
         for i in range(len(qubits) - 1):
-            cir.insert(pq.CNOT(qubits[i], qubits[i + 1]))
-        cir.insert(pq.CNOT(qubits[len(qubits) - 1], qubits[0]))
+            cir << pq.CNOT(qubits[i], qubits[i + 1])
+        cir << pq.CNOT(qubits[len(qubits) - 1], qubits[0])
 
         return cir
 
-    def q_circuits_loop(x, weights, qubits, clist, machine):
+    def q_circuits_loop(x, weights):
 
+        machine = pq.CPUQVM()
+        qubits = range(3)
         result = []
         for xx in x:
             cir = pq.QCircuit()
             weights = weights.reshape([2, 3, 3, 3])
 
-            cir.insert(W1(weights[0], qubits))
-            cir.insert(S1(xx, qubits))
+            cir << W1(weights[0], qubits)
+            cir << S1(xx, qubits)
 
-            cir.insert(W1(weights[1], qubits))
+            cir << W1(weights[1], qubits)
             prog = pq.QProg()
-            prog.insert(cir)
+            prog << cir
 
             exp_vals = []
             for position in range(1):
                 pauli_str = {"Z" + str(position): 1.0}
-                exp2 = expval(machine, prog, pauli_str, qubits)
+                exp2 = expval(machine, prog, pauli_str)
                 exp_vals.append(exp2)
                 result.append(exp2)
         return result
@@ -4471,7 +4467,7 @@ Make the input data, define the parallel quantum model, and build the training m
         def __init__(self):
             super(Model, self).__init__()
 
-            self.q_fourier_series = QuantumLayer(q_circuits_loop, 2 * 3 * 3 * 3, "CPU", 3)
+            self.q_fourier_series = QuantumLayer(q_circuits_loop, 2 * 3 * 3 * 3)
 
         def forward(self, x):
             return self.q_fourier_series(x)
@@ -4626,8 +4622,7 @@ The following uses VQNet to demonstrate the quantum circuit expression capabilit
         plt.show()
     def cir(num_qubits, depth):
         machine = pq.CPUQVM()
-        machine.init_qvm()
-        qlist = machine.qAlloc_many(num_qubits)
+        qlist = range(num_qubits)
         az = HardwareEfficientAnsatz(qlist, ["rx", "RY", "rz"],
                                     entangle_gate="cnot",
                                     entangle_rules="linear",
@@ -4797,9 +4792,9 @@ The following shows an example of applying VQNet to calculate the gradient using
     except:
         pass
     import matplotlib.pyplot as plt
-    machine = pq.init_quantum_machine(pq.QMachineType.CPU)
-    q = machine.qAlloc_many(2)
-    c = machine.cAlloc_many(2)
+    machine = pq.CPUQVM()
+    q = range(2)
+    c = range(2)
     # some basic Pauli matrices
     I = np.eye(2)
     X = np.array([[0, 1], [1, 0]])
@@ -4814,11 +4809,11 @@ The following shows an example of applying VQNet to calculate the gradient using
         G = Generator(*gate_pars)
         G = expm(-1j * G)
         x = G.flatten().tolist()
-        cir = pq.matrix_decompose(q, x)
+        cir = pq.Oracle(list(q), np.array(x).reshape(2**len(q), 2**len(q)))
         m_prog = pq.QProg()
-        m_prog.insert(cir)
+        m_prog << cir
         pauli_dict = {'Z0': 1}
-        exp2 = expval(machine, m_prog, pauli_dict, q)
+        exp2 = expval(machine, m_prog, pauli_dict)
         return exp2
 
 The stochastic parameter shift method first randomly samples a variable
@@ -4839,21 +4834,21 @@ We define the expected value of the observabley obtained at this time as :math:`
         # step a)
         G1 = expm(1j * (1 - s) * G)
         x = G1.flatten().tolist()
-        cir = pq.matrix_decompose(q, x)
+        cir = pq.Oracle(list(q), np.array(x).reshape(2**len(q), 2**len(q)))
         m_prog = pq.QProg()
-        m_prog.insert(cir)
+        m_prog << cir
         # step b)
         G2 = expm(1j * sign * np.pi / 4 * X)
         x = G2.flatten().tolist()
-        cir = pq.matrix_decompose(q[0], x)
-        m_prog.insert(cir)
+        cir = pq.Oracle([q[0]], np.array(x).reshape(2, 2))
+        m_prog << cir
         # step c)
         G3 = expm(1j * s * G)
         x = G3.flatten().tolist()
-        cir = pq.matrix_decompose(q, x)
-        m_prog.insert(cir)
+        cir = pq.Oracle(list(q), np.array(x).reshape(2**len(q), 2**len(q)))
+        m_prog << cir
         pauli_dict = {'Z0': 1}
-        exp2 = expval(machine, m_prog, pauli_dict, q)
+        exp2 = expval(machine, m_prog, pauli_dict)
         return exp2
 
 Change :math:`\tfrac{\pi}{4}` in the previous step to :math:`-\tfrac{\pi}{4}`,
@@ -4958,14 +4953,13 @@ VQNet implements an example of this algorithm: solving the ground state energy o
         params = params.reshape(param_shape)
         num_qubits = 2
         machine = pq.CPUQVM()
-        machine.init_qvm()
-        qubits = machine.qAlloc_many(num_qubits)
+        qubits = range(num_qubits)
         circuit = StronglyEntanglingTemplate(params, num_qubits=num_qubits)
         qcir = circuit.create_circuit(qubits)
         prog = pq.QProg()
-        prog.insert(qcir)
-        machine.directly_run(prog)
-        result = machine.get_qstate()
+        prog << qcir
+        machine.run(prog, 0)
+        result = machine.result().get_state_vector()
         return result
 
 The Hamiltonian in this example is a Hermitian matrix,
@@ -5138,8 +5132,7 @@ Through the operation, it is not difficult for readers to find that as the numbe
         def rand_circuit_pq(params, num_qubits):
             cir = pq.QCircuit()
             machine = pq.CPUQVM()
-            machine.init_qvm()
-            qlist = machine.qAlloc_many(num_qubits)
+            qlist = range(num_qubits)
 
             for i in range(num_qubits):
                 cir << pq.RY(
@@ -5158,9 +5151,9 @@ Through the operation, it is not difficult for readers to find that as the numbe
                 cir << pq.CZ(qlist[i], qlist[i + 1])
 
             prog = pq.QProg()
-            prog.insert(cir)
-            machine.directly_run(prog)
-            result = machine.get_qstate()
+            prog << cir
+            machine.run(prog, 0)
+            result = machine.result().get_state_vector()
 
             H = np.zeros((2**num_qubits, 2**num_qubits))
             H[0, 0] = 1
@@ -5277,87 +5270,98 @@ The following is the application of the QVC classification example using the gra
     qvc_test_data = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0]
 
 
-    def qvc_circuits(x, weights, qlist, clist, machine):
+    def qvc_circuits(x, weights):
         """
         Quantum circuits run function
         """
+        machine = pq.CPUQVM()
+        qlist = range(4)
+        clist = range(4)
         def get_cnot(nqubits):
             cir = pq.QCircuit()
             for i in range(len(nqubits) - 1):
-                cir.insert(pq.CNOT(nqubits[i], nqubits[i + 1]))
-            cir.insert(pq.CNOT(nqubits[len(nqubits) - 1], nqubits[0]))
+                cir << pq.CNOT(nqubits[i], nqubits[i + 1])
+            cir << pq.CNOT(nqubits[len(nqubits) - 1], nqubits[0])
             return cir
 
         def build_circuit(weights, xx, nqubits):
             def Rot(weights_j, qubits):
                 circuit = pq.QCircuit()
-                circuit.insert(pq.RZ(qubits, weights_j[0]))
-                circuit.insert(pq.RY(qubits, weights_j[1]))
-                circuit.insert(pq.RZ(qubits, weights_j[2]))
+                circuit << pq.RZ(qubits, weights_j[0])
+                circuit << pq.RY(qubits, weights_j[1])
+                circuit << pq.RZ(qubits, weights_j[2])
                 return circuit
 
             def basisstate():
                 circuit = pq.QCircuit()
                 for i in range(len(nqubits)):
                     if xx[i] == 1:
-                        circuit.insert(pq.X(nqubits[i]))
+                        circuit << pq.X(nqubits[i])
                 return circuit
 
             circuit = pq.QCircuit()
-            circuit.insert(basisstate())
+            circuit << basisstate()
 
             for i in range(weights.shape[0]):
 
                 weights_i = weights[i, :, :]
                 for j in range(len(nqubits)):
                     weights_j = weights_i[j]
-                    circuit.insert(Rot(weights_j, nqubits[j]))
+                    circuit << Rot(weights_j, nqubits[j])
                 cnots = get_cnot(nqubits)
-                circuit.insert(cnots)
+                circuit << cnots
 
-            circuit.insert(pq.Z(nqubits[0]))
+            circuit << pq.Z(nqubits[0])
 
             prog = pq.QProg()
 
-            prog.insert(circuit)
+            prog << circuit
             return prog
 
         weights = weights.reshape([2, 4, 3])
         prog = build_circuit(weights, x, qlist)
-        prob = machine.prob_run_dict(prog, qlist[0], -1)
-        prob = list(prob.values())
+        machine.run(prog, 0)
+        state = np.array(machine.result().get_state_vector())
+        prob0 = np.sum(np.abs(state[0::2])**2)
+        prob1 = np.sum(np.abs(state[1::2])**2)
+        prob = [float(prob0), float(prob1)]
 
         return prob
 
 
-    def qvc_circuits2(x, weights, qlist, clist, machine):
+    def qvc_circuits2(x, weights):
         """
         Quantum circuits run function
         """
+        machine = pq.CPUQVM()
+        qlist = range(4)
         prog = pq.QProg()
         circuit = pq.QCircuit()
-        circuit.insert(pq.RZ(qlist[0], x[0]))
-        circuit.insert(pq.RZ(qlist[1], x[1]))
-        circuit.insert(pq.CNOT(qlist[0], qlist[1]))
-        circuit.insert(pq.CNOT(qlist[1], qlist[2]))
-        circuit.insert(pq.CNOT(qlist[2], qlist[3]))
-        circuit.insert(pq.RY(qlist[0], weights[0]))
-        circuit.insert(pq.RY(qlist[1], weights[1]))
-        circuit.insert(pq.RY(qlist[2], weights[2]))
+        circuit << pq.RZ(qlist[0], x[0])
+        circuit << pq.RZ(qlist[1], x[1])
+        circuit << pq.CNOT(qlist[0], qlist[1])
+        circuit << pq.CNOT(qlist[1], qlist[2])
+        circuit << pq.CNOT(qlist[2], qlist[3])
+        circuit << pq.RY(qlist[0], weights[0])
+        circuit << pq.RY(qlist[1], weights[1])
+        circuit << pq.RY(qlist[2], weights[2])
 
-        circuit.insert(pq.CNOT(qlist[0], qlist[1]))
-        circuit.insert(pq.CNOT(qlist[1], qlist[2]))
-        circuit.insert(pq.CNOT(qlist[2], qlist[3]))
-        prog.insert(circuit)
-        prob = machine.prob_run_dict(prog, qlist[0], -1)
-        prob = list(prob.values())
+        circuit << pq.CNOT(qlist[0], qlist[1])
+        circuit << pq.CNOT(qlist[1], qlist[2])
+        circuit << pq.CNOT(qlist[2], qlist[3])
+        prog << circuit
+        machine.run(prog, 0)
+        state = np.array(machine.result().get_state_vector())
+        prob0 = np.sum(np.abs(state[0::2])**2)
+        prob1 = np.sum(np.abs(state[1::2])**2)
+        prob = [float(prob0), float(prob1)]
 
         return prob
 
     class Model(Module):
         def __init__(self):
             super(Model, self).__init__()
-            self.qvc = QuantumLayer(qvc_circuits, 24, "cpu", 4)
+            self.qvc = QuantumLayer(qvc_circuits, 24)
 
         def forward(self, x):
             y = self.qvc(x)
@@ -5505,6 +5509,7 @@ Model training using quantumlayer in VQNet
     import random
     import pyqpanda3.core as pq
     from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
+    from pyvqnet.qnn.pq3 import probs_measure
     import pyvqnet
     random.seed(1234)
 
@@ -5525,60 +5530,61 @@ Model training using quantumlayer in VQNet
     0, 0, 1, 0, 1,
     0, 0, 1, 1, 0]
 
-    def qvc_circuits(input,weights,qlist,clist,machine):
+    def qvc_circuits(input,weights):
 
+        qlist = range(4)
+        machine = pq.CPUQVM()
         def get_cnot(nqubits):
             cir = pq.QCircuit()
             for i in range(len(nqubits)-1):
-                cir.insert(pq.CNOT(nqubits[i],nqubits[i+1]))
-            cir.insert(pq.CNOT(nqubits[len(nqubits)-1],nqubits[0]))
+                cir << pq.CNOT(nqubits[i],nqubits[i+1])
+            cir << pq.CNOT(nqubits[len(nqubits)-1],nqubits[0])
             return cir
 
         def build_circuit(weights, xx, nqubits):
 
             def Rot(weights_j, qubits):
                 circuit = pq.QCircuit()
-                circuit.insert(pq.RZ(qubits, weights_j[0]))
-                circuit.insert(pq.RY(qubits, weights_j[1]))
-                circuit.insert(pq.RZ(qubits, weights_j[2]))
+                circuit << pq.RZ(qubits, weights_j[0])
+                circuit << pq.RY(qubits, weights_j[1])
+                circuit << pq.RZ(qubits, weights_j[2])
                 return circuit
             def basisstate():
                 circuit = pq.QCircuit()
                 for i in range(len(nqubits)):
                     if xx[i]==1:
-                        circuit.insert(pq.X(nqubits[i]))
+                        circuit << pq.X(nqubits[i])
                 return circuit
 
             circuit = pq.QCircuit()
-            circuit.insert(basisstate())
+            circuit << basisstate()
 
             for i in range(weights.shape[0]):
 
                 weights_i = weights[i,:,:]
                 for j in range(len(nqubits)):
                     weights_j = weights_i[j]
-                    circuit.insert(Rot(weights_j,nqubits[j]))
+                    circuit << Rot(weights_j,nqubits[j])
                 cnots = get_cnot(nqubits)
-                circuit.insert(cnots)
+                circuit << cnots
 
-            circuit.insert(pq.Z(nqubits[0]))
+            circuit << pq.Z(nqubits[0])
 
             prog = pq.QProg()
 
-            prog.insert(circuit)
+            prog << circuit
             return prog
 
         weights = weights.reshape([2,4,3])
         prog = build_circuit(weights,input,qlist)
-        prob = machine.prob_run_dict(prog, qlist[0], -1)
-        prob = list(prob.values())
+        prob = probs_measure(machine, prog, [0])
 
         return prob
 
     class Model(Module):
         def __init__(self):
             super(Model, self).__init__()
-            self.qvc = QuantumLayer(qvc_circuits,24,"cpu",4)
+            self.qvc = QuantumLayer(qvc_circuits,24)
 
         def forward(self, x):
             return self.qvc(x)
