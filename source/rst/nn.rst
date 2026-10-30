@@ -1,6 +1,12 @@
 Classical Neural Network Module
 #########################################
 
+Basic Examples
+*********************************************************
+
+CPU Model Training
+=================================
+
 The following classical neural network modules support automatic back propagation computation.After running the forward function, you can calculate the gradient by executing the reverse function.A simple example of the convolution layer is as follows:
 
 .. code-block::
@@ -47,6 +53,40 @@ The following classical neural network modules support automatic back propagatio
     #  [-0.0068994, 0.0914679, -0.0068994, 0.0914679],
     #  [-0.2820665, 0.3160213, -0.2820665, 0.3160213]]]
     # ]
+
+
+GPU Model Training
+=================================
+
+The Linux version of pyvqnet is required to use the GPU. Both the data QTensor and the Module must be on the GPU.
+Use ``toGPU`` to move data, ``GPU`` to create a copy, or specify ``device`` when creating the data.
+
+Example::
+
+    from pyvqnet.tensor import arange
+    from pyvqnet import kfloat32, DEV_GPU_0
+    from pyvqnet.nn import Conv2D
+
+    b = 2        # batch size
+    ic = 2       # input channels
+    oc = 2       # output channels
+    hw = 4       # input width and height
+
+    test_conv = Conv2D(ic, oc, (2, 2), (2, 2), "same")
+    # Move the module to GPU device DEV_GPU_0
+    test_conv.toGPU(DEV_GPU_0)
+    # Input shape: [b, ic, hw, hw]
+    x0 = arange(1, b * ic * hw * hw + 1, requires_grad=True, dtype=kfloat32).reshape([b, ic, hw, hw])
+
+    # Copy the data to DEV_GPU_0; the device can also be specified on the tensor.
+    x0 = x0.GPU(DEV_GPU_0)
+    x0.requires_grad = True
+    # Forward pass
+    x = test_conv(x0)
+
+    # Backward pass with autograd
+    x.backward()
+    print(x0.grad)
 
 .. currentmodule:: pyvqnet.nn
 
@@ -191,6 +231,9 @@ toCPU
         test_conv = test_conv.toCPU()
         print(test_conv.backend)
         #0
+
+Model Parameter Saving and Loading
+*********************************************************
 
 .. _save_parameters:
 
@@ -1202,30 +1245,6 @@ RoPE
         rope.toGPU(DEV_GPU_0)
         out_q, _ = rope.forward(q, k)
         print(out_q)
-
-
-SwiGLU
-=================================
-
-.. py:class:: pyvqnet.nn.SwiGLU(name:str="")
-
-    SwiGLU activation function layer, a variant of the SwiGLU gated linear unit: ``SiLU(gate) * up``.
-
-    :param name: Name of the activation function layer, default: "".
-    :return: A SwiGLU activation function layer instance.
-
-    Example::
-
-        from pyvqnet.nn import SwiGLU
-        from pyvqnet.tensor import QTensor, kfloat32
-        layer = SwiGLU()
-        gate = QTensor([1.0, 2.0, 3.0, 4.0], dtype=kfloat32)
-        up = QTensor([0.5, 1.0, 1.5, 2.0], dtype=kfloat32)
-        y = layer(gate, up)
-        print(y)
-
-        # [0.3655293,1.761594 ,4.286584 ,7.85611  ]
-
 
 
 DropPath
@@ -2311,6 +2330,351 @@ CrossEntropyLoss
         #[1.1508200]
 
 
+``pyvqnet.nn.functional`` and ``pyvqnet.nn._sampling`` provide low-level functional operators for building custom layers or implementing sampling logic.
+
+rope (Rotary Position Embedding)
+=================================
+
+.. py:function:: pyvqnet.nn.functional.rope(q, k, cos, sin)
+
+    Apply rotary position embedding (RoPE) to query and key tensors.
+
+    :param q: Query tensor.
+    :param k: Key tensor.
+    :param cos: Precomputed cosine cache with shape ``(seq_len, head_dim/2)``.
+    :param sin: Precomputed sine cache with shape ``(seq_len, head_dim/2)``.
+    :return: The rotated ``(q, k)`` tensors.
+
+    Example::
+
+        import pyvqnet
+        from pyvqnet.tensor import QTensor, tensor, DEV_GPU_0, kfloat32, cos, sin
+        from pyvqnet.nn.functional import rope
+        import numpy as np
+
+        # Precompute the cos/sin cache
+        head_dim = 4
+        seq_len = 4
+        half = head_dim // 2
+        i = tensor.arange(0, half, dtype=kfloat32)
+        theta = 1.0 / (10000.0 ** (2.0 * i / head_dim))
+        m = tensor.arange(0, seq_len, dtype=kfloat32).reshape([-1, 1])
+        cos_t = cos(m * theta)
+        sin_t = sin(m * theta)
+        print(cos_t)
+
+        # [[ 1.       , 1.       ],
+        #  [ 0.5403023, 0.99995  ],
+        #  [-0.4161468, 0.9998   ],
+        #  [-0.9899925, 0.99955  ]]
+
+        # Move to GPU and apply
+        q = QTensor(np.arange(1.0, 17.0, dtype=np.float32).reshape([1, 1, 4, 4]), device=DEV_GPU_0)
+        k = QTensor(np.arange(17.0, 33.0, dtype=np.float32).reshape([1, 1, 4, 4]), device=DEV_GPU_0)
+        cos_gpu = QTensor(cos_t.to_numpy(), device=DEV_GPU_0)
+        sin_gpu = QTensor(sin_t.to_numpy(), device=DEV_GPU_0)
+        out_q, out_k = rope(q, k, cos_gpu, sin_gpu)
+        print(out_q)
+
+        # [[[[  1.       ,  2.       ,  3.       ,  4.       ],
+        #    [ -3.1887856,  5.919701 ,  7.9894705,  8.059599 ],
+        #    [-13.747593 ,  9.758017 ,  3.6060615, 12.197587 ],
+        #    [-14.986703 , 13.513773 ,-13.015327 , 16.412737 ]]]]
+
+swiglu (Gated Linear Unit)
+=================================
+
+.. py:function:: pyvqnet.nn.functional.swiglu(gate, up)
+
+    Functional SwiGLU operator: ``SiLU(gate) * up``.
+
+    :param gate: Gate tensor.
+    :param up: Up-projection tensor.
+    :return: The resulting tensor.
+
+    Example::
+
+        from pyvqnet.tensor import QTensor, kfloat32
+        from pyvqnet.nn.functional import swiglu
+
+        gate = QTensor([1.0, 2.0, 3.0, 4.0], dtype=kfloat32)
+        up = QTensor([0.5, 1.0, 1.5, 2.0], dtype=kfloat32)
+        out = swiglu(gate, up)
+        print(out)
+
+        # [0.3655293,1.761594 ,4.286584 ,7.85611  ]
+
+scaled_softmax (Scaled Softmax)
+=================================
+
+.. py:function:: pyvqnet.nn.functional.scaled_softmax(input, scale: float)
+
+    Compute scaled softmax over the input.
+
+    :param input: Input tensor.
+    :param scale: Scaling factor.
+    :return: Scaled softmax result.
+
+    Example::
+
+        from pyvqnet.tensor import QTensor, kfloat32
+        from pyvqnet.nn.functional import scaled_softmax
+
+        x = QTensor([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], dtype=kfloat32)
+        out = scaled_softmax(x, 0.5)
+        print(out)
+
+        # [[0.1863237,0.3071959,0.5064804],
+        #  [0.1863237,0.3071959,0.5064804]]
+
+scaled_masked_softmax (Masked Scaled Softmax)
+================================================
+
+.. py:function:: pyvqnet.nn.functional.scaled_masked_softmax(input, mask, scale: float)
+
+    Compute masked scaled softmax.
+
+    :param input: Input tensor.
+    :param mask: Mask tensor with the same shape as ``input``. 0 keeps an element and 1 masks it (the masked position is set to ``-inf`` before softmax, so its result is 0).
+    :param scale: Scaling factor.
+    :return: Scaled masked softmax result.
+
+    Example::
+
+        from pyvqnet.tensor import QTensor, kfloat32
+        from pyvqnet.nn.functional import scaled_masked_softmax
+
+        x = QTensor([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], dtype=kfloat32)
+        mask = QTensor([[0, 0, 1], [1, 0, 0]], dtype=kfloat32)  # 1 = masked
+        out = scaled_masked_softmax(x, mask, 1.0)
+        print(out)
+
+        # [[0.2689414,0.7310586,0.       ],
+        #  [0.       ,0.2689414,0.7310586]]
+
+scaled_upper_triang_masked_softmax (Upper-Triangular Masked Scaled Softmax)
+=============================================================================
+
+.. py:function:: pyvqnet.nn.functional.scaled_upper_triang_masked_softmax(input, scale: float)
+
+    Compute scaled softmax with an upper-triangular mask.
+
+    :param input: Input tensor.
+    :param scale: Scaling factor.
+    :return: The computed result.
+
+    Example::
+
+        from pyvqnet.tensor import QTensor, kfloat32
+        from pyvqnet.nn.functional import scaled_upper_triang_masked_softmax
+
+        x = QTensor([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], dtype=kfloat32)
+        out = scaled_upper_triang_masked_softmax(x, 1.0)
+        print(out)
+
+        # [[1.       ,0.       ,0.       ],
+        #  [0.2689414,0.7310586,0.       ]]
+
+fused_moe (Fused Mixture of Experts)
+=====================================
+
+.. py:function:: pyvqnet.nn.functional.fused_moe(input, fc1_weight, fc2_weight, probs, indices, num_experts)
+
+    Fused mixture-of-experts (MoE) forward computation.
+
+    :param input: Input tensor.
+    :param fc1_weight: First-layer expert weights.
+    :param fc2_weight: Second-layer expert weights.
+    :param probs: Expert routing probabilities.
+    :param indices: Expert indices.
+    :param num_experts: Number of experts.
+    :return: Output tensor of the MoE computation.
+
+    .. note::
+
+        This function runs only on GPU. See the GPU Model Training section above for moving models and data to the GPU.
+
+    Example::
+
+        import pyvqnet
+        from pyvqnet.tensor import QTensor, DEV_GPU_0, kfloat32
+        from pyvqnet.dtype import kint32
+        from pyvqnet.nn.functional import fused_moe
+        import numpy as np
+
+        np.random.seed(42)
+        E = 2
+        x = QTensor(np.random.randn(2, 4).astype(np.float32), device=DEV_GPU_0)
+        w1 = QTensor(np.random.randn(E, 4, 8).astype(np.float32), device=DEV_GPU_0)
+        w2 = QTensor(np.random.randn(E, 4, 4).astype(np.float32), device=DEV_GPU_0)
+        probs = QTensor([[0.7], [0.8]], dtype=kfloat32, device=DEV_GPU_0)
+        idx = QTensor([[0], [1]], dtype=kint32, device=DEV_GPU_0)
+        y = fused_moe(x, w1, w2, probs, idx, E)
+        print(y)
+
+        # [[ 0.4034894,-0.2737532,-1.0371764,-1.3686538],
+        #  [ 3.2209034, 0.9456251, 0.8900909, 2.3802228]]
+
+Top-K and Top-P Sampling from Logits
+=====================================
+
+.. py:function:: pyvqnet.nn._sampling.top_k_top_p_sampling_from_logits(logits, temperature: Union[QTensor, float] = 1.0, top_k: Union[QTensor, int] = 0, top_p: Union[QTensor, float] = 1.0, deterministic: bool = True)
+
+    Joint top-k and top-p sampling from logits.
+
+    :param logits: Input logits tensor.
+    :param temperature: Temperature, default 1.0.
+    :param top_k: Keep the tokens with the highest ``k`` probabilities. 0 means no limit; default 0.
+    :param top_p: Cumulative-probability threshold, default 1.0 (no limit).
+    :param deterministic: Whether to use deterministic sampling, default True.
+    :return: A ``(tokens, valid_mask)`` tuple. ``tokens`` contains sampled token indices and ``valid_mask`` marks whether each sample is valid.
+
+    .. note::
+
+        This function runs only on GPU. See the GPU Model Training section above for moving models and data to the GPU.
+
+    Example::
+
+        import pyvqnet
+        from pyvqnet.tensor import QTensor, DEV_GPU_0, kfloat32
+        from pyvqnet.nn._sampling import top_k_top_p_sampling_from_logits
+
+        logits = QTensor([[1.0, 2.0, 3.0, 4.0], [4.0, 3.0, 2.0, 1.0]],
+                         dtype=kfloat32, device=DEV_GPU_0)
+        tokens, valid = top_k_top_p_sampling_from_logits(logits, 1.0, 0, 1.0, True)
+        print(tokens)
+        # [3, 0]
+        print(valid)
+        # [ True, True]
+
+Joint Top-K and Top-P Sampling from Probabilities
+===================================================
+
+.. py:function:: pyvqnet.nn._sampling.top_k_top_p_sampling_from_probs(probs, top_k: Union[QTensor, int] = 0, top_p: Union[QTensor, float] = 1.0, deterministic: bool = True)
+
+    Joint top-k and top-p sampling from a probability distribution.
+
+    :param probs: Input probability tensor.
+    :param top_k: Keep the tokens with the highest ``k`` probabilities. 0 means no limit; default 0.
+    :param top_p: Cumulative-probability threshold, default 1.0.
+    :param deterministic: Whether to use deterministic sampling, default True.
+    :return: A ``(tokens, valid_mask)`` tuple.
+
+    .. note::
+
+        This function runs only on GPU. See the GPU Model Training section above for moving models and data to the GPU.
+
+    Example::
+
+        import pyvqnet
+        from pyvqnet.tensor import QTensor, DEV_GPU_0, kfloat32
+        from pyvqnet.nn._sampling import top_k_top_p_sampling_from_probs
+        from pyvqnet.utils import set_random_seed
+
+        set_random_seed(42)
+        probs = QTensor([[0.1, 0.2, 0.3, 0.4], [0.4, 0.3, 0.2, 0.1]],
+                        dtype=kfloat32, device=DEV_GPU_0)
+        tokens, valid = top_k_top_p_sampling_from_probs(probs, 0, 1.0, True)
+        print(tokens)
+        # [3,0]
+        print(valid)
+        # [ True, True]
+
+Top-K Sampling from Probabilities
+===================================
+
+.. py:function:: pyvqnet.nn._sampling.top_k_sampling_from_probs(probs, top_k: Union[QTensor, int] = 0, deterministic: bool = True)
+
+    Top-k sampling from a probability distribution.
+
+    :param probs: Input probability tensor.
+    :param top_k: Keep the tokens with the highest ``k`` probabilities. 0 means no limit; default 0.
+    :param deterministic: Whether to use deterministic sampling, default True.
+    :return: A ``(tokens, valid_mask)`` tuple.
+
+    .. note::
+
+        This function runs only on GPU. See the GPU Model Training section above for moving models and data to the GPU.
+
+    Example::
+
+        import pyvqnet
+        from pyvqnet.tensor import QTensor, DEV_GPU_0, kfloat32
+        from pyvqnet.nn._sampling import top_k_sampling_from_probs
+        from pyvqnet.utils import set_random_seed
+
+        set_random_seed(42)
+        probs = QTensor([[0.1, 0.2, 0.3, 0.4], [0.4, 0.3, 0.2, 0.1]],
+                        dtype=kfloat32, device=DEV_GPU_0)
+        tokens, valid = top_k_sampling_from_probs(probs, 0, True)
+        print(tokens)
+        # [3,0]
+        print(valid)
+        # [ True, True]
+
+Top-P Sampling from Probabilities
+===================================
+
+.. py:function:: pyvqnet.nn._sampling.top_p_sampling_from_probs(probs, top_p: Union[QTensor, float] = 1.0, deterministic: bool = True)
+
+    Top-p sampling from a probability distribution.
+
+    :param probs: Input probability tensor.
+    :param top_p: Cumulative-probability threshold, default 1.0.
+    :param deterministic: Whether to use deterministic sampling, default True.
+    :return: A ``(tokens, valid_mask)`` tuple.
+
+    .. note::
+
+        This function runs only on GPU. See the GPU Model Training section above for moving models and data to the GPU.
+
+    Example::
+
+        import pyvqnet
+        from pyvqnet.tensor import QTensor, DEV_GPU_0, kfloat32
+        from pyvqnet.nn._sampling import top_p_sampling_from_probs
+        from pyvqnet.utils import set_random_seed
+
+        set_random_seed(42)
+        probs = QTensor([[0.1, 0.2, 0.3, 0.4], [0.4, 0.3, 0.2, 0.1]],
+                        dtype=kfloat32, device=DEV_GPU_0)
+        tokens, valid = top_p_sampling_from_probs(probs, 1.0, True)
+        print(tokens)
+        # [3,0]
+        print(valid)
+        # [ True, True]
+
+Min-P Sampling from Probabilities
+===================================
+
+.. py:function:: pyvqnet.nn._sampling.min_p_sampling_from_probs(probs, min_p: Union[QTensor, float] = 0.0, deterministic: bool = True)
+
+    Min-p sampling from a probability distribution.
+
+    :param probs: Input probability tensor.
+    :param min_p: Minimum-probability threshold, default 0.0.
+    :param deterministic: Whether to use deterministic sampling, default True.
+    :return: A ``(tokens, valid_mask)`` tuple.
+
+    .. note::
+
+        This function runs only on GPU. See the GPU Model Training section above for moving models and data to the GPU.
+
+    Example::
+
+        import pyvqnet
+        from pyvqnet.tensor import QTensor, DEV_GPU_0, kfloat32
+        from pyvqnet.nn._sampling import min_p_sampling_from_probs
+        from pyvqnet.utils import set_random_seed
+
+        set_random_seed(42)
+        probs = QTensor([[0.1, 0.2, 0.3, 0.4], [0.4, 0.3, 0.2, 0.1]],
+                        dtype=kfloat32, device=DEV_GPU_0)
+        tokens, valid = min_p_sampling_from_probs(probs, 0.0, True)
+        print(tokens)
+        # [3,0]
+        print(valid)
+        # [ True, True]
 
 Activation Function
 ********************************************************
@@ -2440,6 +2804,28 @@ HardSigmoid
         print(y)
 
         # [0.6666667, 0.8333334, 1, 1]
+
+SwiGLU
+=================================
+
+.. py:class:: pyvqnet.nn.SwiGLU(name:str="")
+
+    SwiGLU activation function layer, a variant of the SwiGLU gated linear unit: ``SiLU(gate) * up``.
+
+    :param name: Name of the activation function layer, default: "".
+    :return: A SwiGLU activation function layer instance.
+
+    Example::
+
+        from pyvqnet.nn import SwiGLU
+        from pyvqnet.tensor import QTensor, kfloat32
+        layer = SwiGLU()
+        gate = QTensor([1.0, 2.0, 3.0, 4.0], dtype=kfloat32)
+        up = QTensor([0.5, 1.0, 1.5, 2.0], dtype=kfloat32)
+        y = layer(gate, up)
+        print(y)
+
+        # [0.3655293,1.761594 ,4.286584 ,7.85611  ]
 
 ReLu
 =================================
@@ -2983,6 +3369,9 @@ sgd
         # ]
 
 
+
+Metrics Module
+*********************************************************
 
 MSE
 =================================

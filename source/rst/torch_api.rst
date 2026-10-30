@@ -2139,6 +2139,173 @@ Tanh
         y = layer(QTensor([-1, 2.0, -3, 4.0]))
 
 
+The following losses are used for RLHF/DPO/PPO/GRPO/SFT fine-tuning of large models.
+
+sft_loss
+-----------------------------
+
+.. py:function:: pyvqnet.torch.trl.sft_loss(model, input_ids, labels, ignore_index=-100)
+
+    Supervised fine-tuning (SFT) cross-entropy loss.
+
+    :param model: Neural network module whose forward pass returns logits of shape ``(B, L, V)``.
+    :param input_ids: Input token IDs of shape ``(B, L)``.
+    :param labels: Target token IDs of shape ``(B, L)``.
+    :param ignore_index: Label index to ignore, default -100.
+    :return: SFT loss value.
+
+    Example::
+
+        import torch
+        torch.manual_seed(42)
+        import torch.nn as nn
+        from pyvqnet.torch.trl import sft_loss
+
+        class TinyLM(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.embed = nn.Embedding(8, 8)
+                self.head = nn.Linear(8, 8)
+            def forward(self, x):
+                return self.head(self.embed(x))
+
+        loss = sft_loss(TinyLM(), torch.tensor([[1,2,3,4]]), torch.tensor([[2,3,4,5]]))
+        print(loss.item())
+        # 2.1718
+
+dpo_loss
+-----------------------------
+
+.. py:function:: pyvqnet.torch.trl.dpo_loss(policy_model, ref_model, chosen_ids, rejected_ids, chosen_mask, rejected_mask, beta=0.1)
+
+    DPO (Direct Preference Optimization) standard sigmoid preference loss. Training maximizes the implicit reward difference between preferred and non-preferred sequences.
+
+    :param policy_model: Policy network whose forward pass returns logits of shape ``(B, L, V)``.
+    :param ref_model: Reference network whose forward pass returns logits of shape ``(B, L, V)``.
+    :param chosen_ids: Token IDs of the preferred sequence, shape ``(B, L_chosen)``.
+    :param rejected_ids: Token IDs of the non-preferred sequence, shape ``(B, L_rejected)``.
+    :param chosen_mask: Attention mask for the preferred sequence.
+    :param rejected_mask: Attention mask for the non-preferred sequence.
+    :param beta: KL regularization coefficient, default 0.1.
+    :return: DPO loss value.
+
+    Example::
+
+        import torch
+        torch.manual_seed(42)
+        import torch.nn as nn
+        from pyvqnet.torch.trl import dpo_loss
+
+        class TinyLM(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.embed = nn.Embedding(8, 8)
+                self.head = nn.Linear(8, 8)
+            def forward(self, x):
+                return self.head(self.embed(x))
+
+        policy, ref = TinyLM(), TinyLM()
+        loss = dpo_loss(policy, ref,
+            torch.tensor([[0,1,2,3,4,5]]), torch.tensor([[5,4,3,2,1,0]]),
+            torch.tensor([[1,1,1,1,1,1]]), torch.tensor([[1,1,1,1,1,1]]),
+            beta=0.1)
+        print(loss.item())
+        # 0.7008
+
+ppo_loss
+-----------------------------
+
+.. py:function:: pyvqnet.torch.trl.ppo_loss(policy_model, value_model, ref_model, query_responses, context_length, response_mask, old_logprobs, old_values, advantages, returns, cliprange=0.2, cliprange_value=0.2, vf_coef=1.0, temperature=1.0)
+
+    PPO (Proximal Policy Optimization) joint policy and value loss. Includes a clipped surrogate policy loss and a value-function loss.
+
+    :param policy_model: Policy network whose forward pass returns logits.
+    :param value_model: Value network whose forward pass returns scalar values.
+    :param ref_model: Reference network used for the KL penalty.
+    :param query_responses: Concatenated query and response token IDs, shape ``(B, L)``.
+    :param context_length: Length of the query part, used to separate query and response tokens.
+    :param response_mask: Response mask of shape ``(B, L)``; 1 marks response tokens.
+    :param old_logprobs: Log probabilities under the old policy.
+    :param old_values: Value estimates from the old value network.
+    :param advantages: Advantage estimates.
+    :param returns: Discounted returns.
+    :param cliprange: Policy clipping range, default 0.2.
+    :param cliprange_value: Value clipping range, default 0.2.
+    :param vf_coef: Value-loss coefficient, default 1.0.
+    :param temperature: Sampling temperature, default 1.0.
+    :return: PPO loss value.
+
+    Example::
+
+        import torch
+        torch.manual_seed(42)
+        import torch.nn as nn
+        from pyvqnet.torch.trl import ppo_loss
+
+        class TinyLM(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.embed = nn.Embedding(8, 8)
+                self.head = nn.Linear(8, 8)
+            def forward(self, x):
+                return self.head(self.embed(x))
+
+        class TinyValue(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.embed = nn.Embedding(8, 8)
+                self.head = nn.Linear(8, 1)
+            def forward(self, x):
+                return self.head(self.embed(x)).squeeze(-1)
+
+        loss = ppo_loss(TinyLM(), TinyValue(), TinyLM(),
+            torch.tensor([[0,1,2,3,4,5,6,7]]), 2,
+            torch.ones(1,6), torch.zeros(1,6), torch.zeros(1,6),
+            torch.ones(1,6), torch.ones(1,6))
+        print(loss.item())
+        # 0.8530
+
+grpo_loss
+-----------------------------
+
+.. py:function:: pyvqnet.torch.trl.grpo_loss(policy_model, ref_model, input_ids, completion_mask, old_per_token_logps, advantages, beta=0.0, epsilon=0.2, epsilon_low=None, epsilon_high=None)
+
+    GRPO (Group Relative Policy Optimization) clipped surrogate loss. Multiple completions are grouped together to compute advantages.
+
+    :param policy_model: Policy network whose forward pass returns logits.
+    :param ref_model: Reference network, or None.
+    :param input_ids: Concatenated prompt and completion token IDs, shape ``(B*G, L)``, where G is the group size.
+    :param completion_mask: Completion mask of shape ``(B*G, L)``; 1 marks completion tokens and 0 marks prompt/padding tokens.
+    :param old_per_token_logps: Per-token log probabilities under the old policy, shape ``(B*G, T)``.
+    :param advantages: Advantage estimates within each group.
+    :param beta: KL penalty coefficient, default 0.0.
+    :param epsilon: PPO clipping range, default 0.2.
+    :param epsilon_low: Lower clipping bound; default None (uses ``epsilon``).
+    :param epsilon_high: Upper clipping bound; default None (uses ``epsilon``).
+    :return: GRPO loss value.
+
+    Example::
+
+        import torch
+        torch.manual_seed(42)
+        import torch.nn as nn
+        from pyvqnet.torch.trl import grpo_loss
+
+        class TinyLM(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.embed = nn.Embedding(8, 8)
+                self.head = nn.Linear(8, 8)
+            def forward(self, x):
+                return self.head(self.embed(x))
+
+        loss = grpo_loss(TinyLM(), TinyLM(),
+            torch.tensor([[0,1,2,3,4],[5,6,7,0,1]]),
+            torch.tensor([[0,0,1,1,1],[0,1,1,1,1]]),
+            torch.zeros(2,3), torch.tensor([1.0, -0.5]),
+            beta=0.0, epsilon=0.2)
+        print(loss.item())
+        # 0.0697
 
 reward_loss
 -----------------------------
@@ -2171,7 +2338,7 @@ reward_loss
 
         loss = reward_loss(TinyLM(), torch.tensor([[1,2,3]]), torch.tensor([[3,2,1]]))
         print(loss.item())
-        # 0.7172
+        # 0.7184
 
 Optimizer module
 ---------------------------------------------
