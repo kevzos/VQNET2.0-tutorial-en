@@ -21,13 +21,13 @@ NCCL Installation
 NCCL is a common library for communication between GPUs. **The GPU distributed computing function in VQNet is implemented based on NCCL.** This software installs the NCCL dynamic link library by default during installation, so it is generally not necessary to install NCCL.
 
 
-Distributed launch
-=================================
+vqnetrun
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The distributed computing interface is started through the ``vqnetrun`` command. The following describes the parameters of ``vqnetrun``.
 
 nproc_per_node
-^^^^^^^^^^^^^^^^^^^^^^
+========================================
 
 The ``vqnetrun`` interface requires ``--nproc_per_node`` to specify the number of worker processes launched on the current node. The parameter applies to both gloo CPU workers and NCCL GPU workers.
 
@@ -43,7 +43,7 @@ The ``vqnetrun`` interface requires ``--nproc_per_node`` to specify the number o
         # vqnetrun --nproc_per_node 2 python test.py
 
 backend
-^^^^^^^^^^^^^^^^^^^^^^
+========================================
 
 The distributed backend is selected in the code and determined by the constructor arguments of ``CommController``: ``CommController("gloo")`` is used for CPU, and ``CommController("nccl")`` is used for GPU. The default ``CommController()`` automatically determines the communication method according to the device on which the data to be communicated resides.
 The ``vqnetrun`` command does not provide a ``--backend`` parameter. When multiple processes are launched, each worker process determines the backend: an NCCL communication domain is constructed directly when a CUDA context exists, and gloo is used when running purely on CPU.
@@ -65,7 +65,7 @@ The ``vqnetrun`` command does not provide a ``--backend`` parameter. When multip
         # Node 1: vqnetrun --nproc_per_node 2 --nnodes 2 --node_rank 1 --master_addr 10.0.0.1 python test.py
 
 nnodes
-^^^^^^^^^^^^^^^^^^^^^^
+========================================
 
 The ``vqnetrun`` interface allows you to control the total number of nodes through the ``--nnodes`` parameter. The default value is 1. The launcher uses ``nnodes * nproc_per_node`` to calculate ``WORLD_SIZE``.
 
@@ -81,7 +81,7 @@ The ``vqnetrun`` interface allows you to control the total number of nodes throu
         # vqnetrun --nproc_per_node 2 --nnodes 2 --node_rank 0 --master_addr 10.0.0.1 python test.py
 
 node_rank
-^^^^^^^^^^^^^^^^^^^^^^
+========================================
 
 The ``vqnetrun`` interface allows you to control the rank of the current node through the ``--node_rank`` parameter. The default value is 0. The launcher uses it with ``nproc_per_node`` to calculate each worker's global ``RANK``.
 
@@ -99,7 +99,7 @@ The ``vqnetrun`` interface allows you to control the rank of the current node th
         # Node 2: vqnetrun --nproc_per_node 2 --nnodes 3 --node_rank 2 --master_addr 10.0.0.1 python test.py
 
 master_addr
-^^^^^^^^^^^^^^^^^^^^^^
+========================================
 
 The ``vqnetrun`` interface allows you to specify the master node address through the ``--master_addr`` parameter. The default value is ``127.0.0.1``. The value is exported to worker processes as ``MASTER_ADDR``.
 
@@ -115,7 +115,7 @@ The ``vqnetrun`` interface allows you to specify the master node address through
         # vqnetrun --nproc_per_node 2 --nnodes 2 --node_rank 0 --master_addr 10.0.0.1 python test.py
 
 master_port
-^^^^^^^^^^^^^^^^^^^^^^
+========================================
 
 The ``vqnetrun`` interface allows you to specify the master node port through the ``--master_port`` parameter. The default value is ``29500``. The value is exported to worker processes as ``MASTER_PORT``.
 
@@ -131,7 +131,7 @@ The ``vqnetrun`` interface allows you to specify the master node port through th
         # vqnetrun --nproc_per_node 2 --master_port 29600 python test.py
 
 nccl_socket_ifname
-^^^^^^^^^^^^^^^^^^^^^^
+========================================
 
 The ``vqnetrun`` interface allows you to specify the network interface name used by NCCL through the ``--nccl_socket_ifname`` parameter. This parameter applies to NCCL communication.
 It corresponds to the environment variable ``NCCL_SOCKET_IFNAME`` and is useful in multi-NIC environments.
@@ -148,7 +148,7 @@ It corresponds to the environment variable ``NCCL_SOCKET_IFNAME`` and is useful 
         # vqnetrun --nproc_per_node 2 --nccl_socket_ifname eth0 python test.py
 
 verbose
-^^^^^^^^^^^^^^^^^^^^^^
+========================================
 
 The ``vqnetrun`` interface allows you to print additional launcher diagnostic information through the ``--verbose`` flag, such as node/process rank settings, master rendezvous settings, and local worker launch information. It does not perform a node connectivity test.
 
@@ -164,7 +164,7 @@ The ``vqnetrun`` interface allows you to print additional launcher diagnostic in
         # vqnetrun --nproc_per_node 4 --verbose python test.py
 
 cb, check-build
-^^^^^^^^^^^^^^^^^^^^^^
+========================================
 
 The ``vqnetrun`` interface allows you to view the distributed controllers and communication libraries supported by the current build through the ``-cb`` or ``--check-build`` flags.
 Because ``--nproc_per_node`` is required by the launcher parser, it must also be supplied when checking the build information.
