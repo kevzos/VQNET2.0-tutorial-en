@@ -3995,7 +3995,7 @@ functional_conv2d
         from pyvqnet.nn import Module,Parameter 
 
 
-        classTM(Module): 
+        class TM(Module):
             def __init__(self, *args, **kwargs): 
                 super().__init__(*args, **kwargs) 
                 self.w = ones([5,4,2,2]) 
