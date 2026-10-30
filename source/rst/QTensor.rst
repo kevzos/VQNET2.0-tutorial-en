@@ -520,11 +520,11 @@ QTensor's Functions and Attributes
 
 
 
-    .. py:method:: reshape(new_shape)
+    .. py:method:: reshape(shape)
 
         Changes the shape of the QTensor and returns a new tensor.
 
-        :param new_shape: New shape.
+        :param shape: New shape.
 
         :return: A QTensor with the new shape.
 
@@ -1115,13 +1115,13 @@ arange
 linspace
 ==============================
 
-.. py:function:: pyvqnet.tensor.linspace(start, end, num, device=pyvqnet.DEV_CPU,dtype=None,requires_grad= False)
+.. py:function:: pyvqnet.tensor.linspace(start, end, nums, device=pyvqnet.DEV_CPU,dtype=None,requires_grad= False)
 
-    Creates a one-dimensional QTensor whose elements are num evenly spaced values over the interval from start to end.
+    Creates a one-dimensional QTensor whose elements are nums evenly spaced values over the interval from start to end.
 
     :param start: Start of the interval.
     :param end: End of the interval.
-    :param num: Number of values in the interval.
+    :param nums: Number of values in the interval.
     :param device: Device to use, default = pyvqnet.DEV_CPU, using the CPU device.
     :param dtype: Data type of the parameter. Default: None, which uses the default data type kfloat32, representing a 32-bit floating point number.
     :param requires_grad: Whether to compute gradients. Defaults to False.
@@ -1140,13 +1140,13 @@ linspace
 logspace
 ==============================
 
-.. py:function:: pyvqnet.tensor.logspace(start, end, num, base, device=pyvqnet.DEV_CPU,dtype=None, requires_grad)
+.. py:function:: pyvqnet.tensor.logspace(start, end, nums, base, device=pyvqnet.DEV_CPU,dtype=None, requires_grad= False)
 
     Creates a one-dimensional QTensor with evenly spaced values on a logarithmic scale.
 
     :param start: ``base ** start`` is the starting value
     :param end: ``base ** end`` is the final value of the sequence
-    :param num: Number of samples to generate
+    :param nums: Number of samples to generate
     :param base: Base of the logarithmic scale
     :param device: Device to use, default = pyvqnet.DEV_CPU, using the CPU device.
     :param dtype: Data type of the parameter. Default: None, which uses the default data type kfloat32, representing a 32-bit floating point number.
@@ -3469,15 +3469,15 @@ unsqueeze
 
 moveaxis
 ==============================
-.. py:function:: pyvqnet.tensor.moveaxis(t, source: int, destination: int)
+.. py:function:: pyvqnet.tensor.moveaxis(t, src, dst)
 
-    Move the dimensions of `t` from the positions in `source` to the positions in `destination`.
+    Move the dimensions of `t` from the positions in `src` to the positions in `dst`.
 
-    Other dimensions of `t` that are not explicitly moved keep their original order and appear at the positions in `destination` that are not specified.
+    Other dimensions of `t` that are not explicitly moved keep their original order and appear at the positions in `dst` that are not specified.
 
     :param t: Input QTensor.
-    :param source: (int or tuple of ints) Original positions of the dimensions to move. These positions must be unique.
-    :param destination: (int or tuple of ints) Destination position for each original dimension. These positions must also be unique.
+    :param src: (int or tuple of ints) Original positions of the dimensions to move. These positions must be unique.
+    :param dst: (int or tuple of ints) Destination position for each original dimension. These positions must also be unique.
 
     :return: A new QTensor.
 
@@ -3583,12 +3583,12 @@ flatten
 reshape
 ==============================
 
-.. py:function:: pyvqnet.tensor.reshape(t: pyvqnet.tensor.QTensor,new_shape)
+.. py:function:: pyvqnet.tensor.reshape(t: pyvqnet.tensor.QTensor,shape)
 
     Change the shape of the QTensor and return a new tensor.
 
     :param t: Input QTensor.
-    :param new_shape: New shape.
+    :param shape: New shape.
 
     :return: A QTensor with the new shape.
 
@@ -3692,7 +3692,7 @@ gather
 scatter
 ==============================
 
-.. py:function:: pyvqnet.tensor.scatter(input, dim, index,src)
+.. py:function:: pyvqnet.tensor.scatter(input, dim, indices, src)
 
 
     Write all values in tensor src into input at the indices specified in the indices tensor.
