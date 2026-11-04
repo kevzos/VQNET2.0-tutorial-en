@@ -170,6 +170,13 @@ latex_elements = {
 % Latin mono: FreeMono (Sphinx zh_CN default) lacks box-drawing glyphs in its
 % oblique shape; prefer Consolas on Windows, DejaVu Sans Mono elsewhere.
 \IfFontExistsTF{Consolas}{\setmonofont{Consolas}[Scale=0.90]}{\setmonofont{DejaVu Sans Mono}[Scale=0.90]}
+% PDF only: drop the alphabetical index. Sphinx's \spxentry macro is not
+% defined by this Sphinx's sphinx.sty, so index entries render as literal
+% "\spxentry..." text; CJK entries also cannot sort under English xindy
+% rules. Neutralize \makeindex too so latexmk never invokes the (broken
+% on some systems) xindy rule. HTML genindex/search is unaffected.
+\let\printindex\relax
+\let\makeindex\relax
 \XeTeXlinebreaklocale "zh"
 \XeTeXlinebreakskip = 0pt plus 1pt
 \parindent 2em
