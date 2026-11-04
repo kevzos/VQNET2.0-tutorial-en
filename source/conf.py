@@ -157,10 +157,19 @@ latex_elements = {
     'preamble': r'''
 \usepackage{xeCJK}
 \usepackage{fancyhdr}
-% Use fonts available on Windows
+% CJK fonts: prefer Windows fonts (SimSun/SimHei/YaHei), fall back to Noto CJK on Linux
+\IfFontExistsTF{SimSun}{%
 \setCJKmainfont[BoldFont=SimHei, ItalicFont=KaiTi]{SimSun}
 \setCJKsansfont{SimHei}
 \setCJKmonofont{Microsoft YaHei}
+}{%
+\setCJKmainfont[BoldFont=Noto Sans CJK SC, ItalicFont=Noto Serif CJK SC]{Noto Serif CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKmonofont{Noto Sans CJK SC}
+}
+% Latin mono: FreeMono (Sphinx zh_CN default) lacks box-drawing glyphs in its
+% oblique shape; prefer Consolas on Windows, DejaVu Sans Mono elsewhere.
+\IfFontExistsTF{Consolas}{\setmonofont{Consolas}[Scale=0.90]}{\setmonofont{DejaVu Sans Mono}[Scale=0.90]}
 \XeTeXlinebreaklocale "zh"
 \XeTeXlinebreakskip = 0pt plus 1pt
 \parindent 2em
