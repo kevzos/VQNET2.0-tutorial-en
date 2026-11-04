@@ -1,5 +1,9 @@
 # Minimal makefile for Sphinx documentation
 #
+# 常用构建命令（详见 README.md）：
+#   HTML: make html        -> build/html/index.html
+#   PDF : make latexpdf    -> build/latex/vqnet.pdf  （需 xelatex + Noto CJK/Consolas 字体，
+#                            conf.py 已内置跨平台回退；PDF 索引已移除，无需 xindy）
 
 # You can set these variables from the command line, and also
 # from the environment for the first two.
