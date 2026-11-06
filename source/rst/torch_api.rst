@@ -5512,6 +5512,17 @@ To write a variational quantum circuit model with tensor networks, inherit from 
     In the `torch` backend, defines the base class that tensor-network variational quantum circuit models (`Module`) should inherit from.
     This class is used to execute quantum circuits with tensor-network modules.
 
+    .. warning::
+
+        ``TNQModule`` accepts only quantum child modules (``TNQMachine``, gates,
+        ansatz, measurements, encoders). Classical layers (e.g. ``Linear``) must
+        NOT be assigned as direct children: the JIT compiles a pure quantum
+        circuit and classical computation would be silently dropped or frozen.
+        For a hybrid model keep the classical layers in an outer ``QModule`` /
+        ``torch.nn.Module`` wrapping the ``TNQModule``, or use a bare
+        ``TNQMachine`` for eager hybrid execution (see the ``QPart``/``QM``
+        split in the ansatz interface examples).
+
     :param use_jit: Enables just-in-time compilation. Default: True.
     :param vectorized_argnums: Parameters to vectorize. These parameters should share the same batch shape along the same dimension. Default: 0.
     :param name: Module name.

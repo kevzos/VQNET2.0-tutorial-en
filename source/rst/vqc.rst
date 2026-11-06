@@ -6661,6 +6661,17 @@ Variational quantum circuit models built with tensor networks must inherit from 
     Under the `pyvqnet` backend (the default backend), this is the base class that tensor-network variational quantum circuit models (`Module`) should inherit from.
     The class uses tensor-network modules to execute quantum circuits.
 
+    .. warning::
+
+        ``TNQModule`` accepts only quantum child modules (``TNQMachine``, gates,
+        ansatz, measurements, encoders). Classical layers (e.g. ``Linear``) must
+        NOT be assigned as direct children: the JIT compiles a pure quantum
+        circuit and classical computation would be silently dropped or frozen.
+        For a hybrid model keep the classical layers in an outer plain
+        ``pyvqnet.nn.Module`` wrapping the ``TNQModule``, or use a bare
+        ``TNQMachine`` for eager hybrid execution (see the ``QPart``/``QM``
+        split in the ansatz interface examples).
+
     :param use_jit: Enable just-in-time compilation. Default: True.
     :param vectorized_argnums: Arguments to vectorize. These arguments should share the same batch shape along the same dimension. Default: 0.
     :param name: Module name.
@@ -8310,7 +8321,7 @@ VQC_HardwareEfficientAnsatz
 
     Example::
 
-        from pyvqnet.nn import Linear
+        from pyvqnet.nn import Linear, Module
         from pyvqnet.qnn.vqc.tn.native.qcircuit import VQC_HardwareEfficientAnsatz,RZZ,RZ
         from pyvqnet.qnn.vqc.tn.native import Probability,TNQMachine, TNQModule
         from pyvqnet import tensor
@@ -8318,10 +8329,10 @@ VQC_HardwareEfficientAnsatz
         pyvqnet.backends.set_backend("pyvqnet")
         pyvqnet.utils.set_random_seed(25)
 
-        class QM(TNQModule):
-            def __init__(self, name=""):
+        class QPart(TNQModule):
+            def __init__(self, batch_size, name=""):
                 super().__init__(name)
-                self.linearx = Linear(4,2)
+                self.batch_size = batch_size
                 self.ansatz = VQC_HardwareEfficientAnsatz(4, ["rx", "RY", "rz"],
                                             entangle_gate="cnot",
                                             entangle_rules="linear",
@@ -8330,18 +8341,25 @@ VQC_HardwareEfficientAnsatz
                 self.encode2 = RZ(wires=1)
                 self.measure = Probability(wires=[0, 2])
                 self.device = TNQMachine(4)
-            def forward(self, x, *args, **kwargs):
-                self.device.reset_states(bz)
-                y = self.linearx(x)
+            def forward(self, y, *args, **kwargs):
+                self.device.reset_states(self.batch_size)
                 self.encode1(params = y[0],q_machine = self.device,)
                 self.encode2(params = y[1],q_machine = self.device,)
                 self.ansatz(q_machine =self.device)
                 return self.measure(q_machine =self.device)
 
+        class QM(Module):
+            def __init__(self, batch_size, name=""):
+                super().__init__(name)
+                self.linearx = Linear(4,2)
+                self.qpart = QPart(batch_size)
+            def forward(self, x, *args, **kwargs):
+                return self.qpart(self.linearx(x))
+
         bz =3
         inputx = tensor.arange(1.0,bz*4+1).reshape([bz,4])
         inputx.requires_grad= True
-        qlayer = QM()
+        qlayer = QM(bz)
         y = qlayer(inputx)
         y.backward(pyvqnet.tensor.ones_like(y))
         print(y)
