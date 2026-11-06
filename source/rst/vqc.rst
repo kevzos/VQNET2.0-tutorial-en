@@ -6663,14 +6663,17 @@ Variational quantum circuit models built with tensor networks must inherit from 
 
     .. warning::
 
-        ``TNQModule`` accepts only quantum child modules (``TNQMachine``, gates,
-        ansatz, measurements, encoders). Classical layers (e.g. ``Linear``) must
-        NOT be assigned as direct children: the JIT compiles a pure quantum
-        circuit and classical computation would be silently dropped or frozen.
-        For a hybrid model keep the classical layers in an outer plain
-        ``pyvqnet.nn.Module`` wrapping the ``TNQModule``, or use a bare
-        ``TNQMachine`` for eager hybrid execution (see the ``QPart``/``QM``
-        split in the ansatz interface examples).
+        ``TNQModule`` accepts only quantum child modules (``TNQMachine``,
+        quantum gates, ansatz templates, measurement modules and encoding
+        modules). Classical neural-network layers (e.g. ``Linear``) must not
+        be registered as child modules of ``TNQModule``: JIT compilation covers
+        the pure quantum circuit only, and any classical computation inside it
+        would be ignored, or fixed as compile-time constants. To build a
+        classical-quantum hybrid model, define the classical layers in an
+        outer plain ``pyvqnet.nn.Module`` that contains the ``TNQModule`` as a
+        submodule; to execute without JIT compilation, use ``TNQMachine``
+        directly. See the two-level ``QPart``/``QM`` structure in the ansatz
+        interface examples.
 
     :param use_jit: Enable just-in-time compilation. Default: True.
     :param vectorized_argnums: Arguments to vectorize. These arguments should share the same batch shape along the same dimension. Default: 0.
