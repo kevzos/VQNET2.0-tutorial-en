@@ -3,6 +3,73 @@ VQNet Changelog
 ######################
 
 
+[v2.18.3] - 2026-11-28
+***************************
+
+Added
+===================
+- Added the ``pyvqnet.kcomplex32`` and ``pyvqnet.kfloat16`` data types. ``QMachine`` gained a ``state_storage`` parameter: the state vector can be stored in fp16 (complex32), 4 bytes per amplitude, while the arithmetic inside each gate stays complex64 / float32; ``dtype=torch.complex32`` is equivalent to ``state_storage=torch.complex32``. ``DistributedQMachine`` also accepts ``state_storage``.
+- Added the tiled execution path for adjoint gradients, selected by the environment variable ``VQNET_ADJOINT_MODE`` (``0`` gate by gate only, ``1`` tiles first with a fallback when they are unavailable, ``2`` tiles only, default ``1``). ``VQNET_TILE_PLAN_CACHE`` controls the execution-plan cache (on by default); after the circuit structure changes, call ``QuantumLayerAdjoint.invalidate_execution_plans()``. ``QuantumLayerAdjoint`` gained the ``last_execution_impl`` property.
+- Added automatic precompiled execution: a ``QMachine`` on CUDA records the gates of one forward and executes them fused, without any decorator. ``pyvqnet.qnn.vqc.sv.common.cxx_runner`` provides ``last_execution``, ``fused_plan_cache_stats`` and ``reset_fused_plan_cache``; a tensor-network circuit that cannot be recorded raises ``PrecompileNotSupported``.
+- Added the quantum-information measurement ``QInfoMeasurement`` (purity, entropy, Meyer-Wallach measure, mutual information, variance, Hermitian-matrix expectation); on the state-vector and the density-matrix simulator its gradients are computed through ``QuantumLayerAdjoint``. ``Probability`` supports adjoint gradients.
+- ``VQC_Purity``, ``VQC_VarMeasure`` and ``VQC_DensityMatrixFromQstate`` read a density-matrix simulator directly; added ``VQC_DensityMatrix``, ``VQC_PartialTrace`` and ``VQC_MeyerWallachMeasure``.
+- Added the Monte-Carlo noise channels ``depolarizing``, ``amplitude_damping``, ``phase_damping``, ``decoherence``, ``bit_flip`` and ``readout`` (with ``at_measurement=True`` the readout matrix is folded into the probabilities of ``Probability`` / ``Samples``), and the noise policies ``NoisePolicy`` / ``NoiseRule`` (``pyvqnet.qnn.vqc.common.noise_policy``).
+- Added the exact density-matrix simulator ``pyvqnet.qnn.vqc.dm`` (``native`` and ``torch`` implementations) with noise channels, adjoint gradients and fp16 storage; ``VQNET_DM_MODE`` selects how it executes.
+- Added the finite-shot tools ``ShotConfig``, ``sample_counts``, ``sample_expectation`` and ``fit_shot_scaling``, and the trainability diagnostics ``pyvqnet.qnn.vqc.diagnostics`` (``scan_trainability``, ``summarize_trainability``, ...).
+- Added the ``Unitary`` module class (the class form of ``unitary``); ``MultiRZ`` implements ``generator()`` and accepts any number of two or more qubits.
+- ``QTensor`` gained ``requires_grad_``, ``bernoulli_`` and ``bool``; ``tensor.multinomial`` follows the torch semantics and gained the ``replacement`` parameter; the values returned by ``topk`` are differentiable.
+- ``nn.Module`` gained the ``to`` method (accepts ``torch.device``, ``"cpu"``, ``"cuda:1"``); ``nn.Parameter`` gained the ``from_tensor`` class method; ``state_dict(keep_vars=True)`` returns the ``Parameter`` objects themselves; added the data-loading chapter ``pyvqnet.data.DataLoader`` (``IterableDataset``, ``batch_size=None``, ``persistent_workers``).
+- torch backend: added ``TorchDataParallelVQCLayer`` and the inter-process transfer views ``c32_as_f16_view`` / ``f16_view_as_c32`` for complex32 tensors; ``SPSA`` trains on the torch backend and on GPU.
+- Distributed: ``CommController`` gained the ``timeout`` parameter; NCCL communicators carry a watchdog thread that aborts a stalled collective instead of waiting forever; ``vqnetrun`` gained the ``--timeout`` option; ``ParallelTrainingWrapper`` accepts a declarative ``model_spec`` list with ``vqc_split`` stages and exposes the ``net`` property; ``pyvqnet.distributed.hybrid.pipeline`` provides ``PipelineBoundary``, ``OriginalOrderBoundary``, ``FusedQrBoundary`` and ``DistQuantumSegmentAdjoint`` for pipeline VQC.
+
+
+Changed
+===================
+- ``QMachine`` lost its ``grad_mode`` parameter; passing it raises ``TypeError``. The adjoint gradient of the quantum part is selected through ``QuantumLayerAdjoint``. ``HermitianExpval`` was merged into ``QInfoMeasurement("expectation", obs=...)``.
+- ``pyvqnet.native`` and ``pyvqnet.torch`` moved to ``pyvqnet.backends.native`` and ``pyvqnet.backends.torch``; the import path of ``pyvqnet.torch.trl`` is accordingly ``pyvqnet.backends.torch.trl``. The layer modules of ``pyvqnet.nn`` live under ``nn/native`` and ``nn/common``; the exported names of ``pyvqnet.nn`` are unchanged. ``pyvqnet.qnn.measure`` and ``pyvqnet.qnn.template`` no longer exist; their interfaces are exported by ``pyvqnet.qnn``.
+- Distributed: ``auto_plan`` was renamed to ``plan_pipeline_stages`` and lost its ``trainset`` parameter; ``PipelineParallelTrainingWrapper`` is deprecated and delegates to ``ParallelTrainingWrapper``; ``HybridDistributedQMachine`` lost its ``grad_mode`` parameter; ``VQC_Mutal_Info`` was renamed to ``VQC_Mutual_Info``.
+- Autograd semantics now follow torch: a leaf tensor that requires grad, moved with ``toGPU`` / ``to`` / ``toCPU``, sends its gradient back to the original tensor; ``p.grad = None`` takes effect; ``add_`` / ``sub_`` / ``mul_`` / ``div_`` / ``clamp_`` on a tensor that requires grad raise ``RuntimeError``.
+- ``Module.modules()`` returns all sub-modules recursively (use ``children()`` for the direct sub-modules); ``state_dict()`` returns clones detached from the parameters.
+- Random streams: ``set_random_seed`` also seeds numpy, ``Samples`` draws from the generator of the active backend, and a fixed seed no longer reproduces the 2.18.2 sample sequences.
+- Stricter argument checks: an out-of-range qubit raises ``ValueError``; ``QLSTM`` / ``QGRU`` with ``num_of_qubits`` of 0 raise ``ValueError``; ``ReduceOp`` supports only ``SUM`` and ``AVG``; an unknown ``VQNET_ADJOINT_MODE`` / ``VQNET_DM_MODE`` value is rejected.
+- ``tensor.round`` rounds half to even on the vectorised path as well, like torch and numpy (``round(2.5)`` is 2).
+- Environment variables: ``VQNET_DISABLE_CXX_ENGINE``, ``VQNET_DISABLE_TILING`` and ``USE_OLD_EXP`` are no longer read; ``VQNET_ACC_DEBUG`` was renamed to ``VQNET_DEBUG_ACC`` and ``VQNET_TEST_DEVICE`` to ``VQNET_DEBUG_TEST_DEVICE``.
+
+
+Fixed
+===================
+- The gradients of ``QLinear`` and ``QConv`` were wrong (they failed a finite-difference check).
+- ``QNG`` updated shared parameters, decomposed gates and scaled inputs wrongly, and the second step accumulated on the gradient of the first step.
+- ``tensor.eigvalsh`` returned eigenvalues out of order, and its backward used eigenvectors in an order different from the returned eigenvalues.
+- ``SPSA`` crashed on a model that returns a vector, and a complex ``Parameter`` cast real input data to complex.
+- ``BatchNorm`` in eval mode used the batch statistics in its CPU backward pass; the ``normalize()`` and ``q @ k`` computations of Swin cosine attention were wrong.
+- Lazy conjugation: ``x.conj().detach()`` dropped the conjugate flag, the gradient direction of a ``conj -> resolve`` chain was wrong, and the backward of the rotation gates read a conjugate view with a wrong angle gradient.
+- ``QLSTM`` / ``QGRU`` ignored ``batch_first=False``; ``Quanvolution`` returned a wrong output size and crashed at stride ``(1, 1)``.
+- ``VQC_PartialTrace`` traced out the wrong qubit axes, the Meyer-Wallach measure and ``VQC_VarMeasure`` returned wrong values, and ``Projector`` built its basis-state matrix wrongly.
+- ``MultiRZ`` aborted the process when a derivative was requested under the adjoint gradient.
+- Tensor network: multi-parameter gates (``u3``, ``rot``, ``crot``) were compiled with their trace angles instead of the runtime inputs and daggered gates were compiled to a fixed angle; the variance mapped non-Pauli observables wrongly, and every variance call on an MPS raised ``AttributeError``.
+- An integer, column-sliced ``matmul`` on CPU returned wrong values; ``bmm`` and 4-D ``matmul`` with mismatched dimensions returned wrong results; ``max`` / ``min`` / ``argmax`` of an empty tensor returned ``FLT_MAX`` or ``[0]``.
+- ``tensor.full([1], 0.1, dtype=kfloat64)`` and ``fill_(2.3)`` stored float32-precision values.
+- An exception raised inside ``backward()`` ended the interpreter with exit code 1; it is now rethrown to the caller. ``is_cuda_available()`` stayed false after one transient driver probe failure.
+- torch backend: ``tensor.flip`` / ``tensor.tensordot`` passed a bare integer as ``dims`` to torch >= 2.9; the DLPack export raised ``TypeError``.
+- Distributed: the replicated bias of ``ColumnParallelLinear`` gave ``xW + 2b`` on 2 ranks; the gloo ``all_gather`` returned float32 for complex64; a Python finalizer could terminate the process while destroying an NCCL communicator; ZeRO did not unscale the loss-scaled gradients when ``clip_grad > 0``.
+
+
+Removed
+===================
+- Removed the precompilation interfaces ``wrapper_compile``, ``wrapper_merge_rotations``, ``wrapper_single_qubit_op_fuse``, ``wrapper_commute_controlled``, ``commute_controlled_left`` / ``commute_controlled_right``, ``merge_rotations`` and ``single_qubit_ops_fuse``, and the ``QModule`` switches ``use_merge_rotations`` / ``use_single_qubit_ops_fuse`` / ``use_commute_controlled``; the fusion rules now run on every forward automatically.
+- Removed ``HermitianExpval``, the ``SDG`` / ``TDG`` classes and ``ring_cnot`` / ``RING_CNOT``; the functions ``sdg`` / ``tdg`` remain available.
+- Removed ``pyvqnet.distributed.split_data``, ``DistVQCPipelineWrapper``, ``HybridQuantumLayer``, ``UnifiedPipelineEngine`` and ``HybridDataLoader``; ``BoundaryTransfer`` / ``CanonicalBoundaryTransfer`` / ``FusedQrBoundaryTransfer`` are replaced by ``PipelineBoundary`` / ``OriginalOrderBoundary`` / ``FusedQrBoundary`` in ``pyvqnet.distributed.hybrid.pipeline``; ``post_grad_all_reduce`` lives in ``pyvqnet.distributed.dp.utils``.
+- Removed ``get_if_show_bp_info`` / ``set_if_show_bp_info`` / ``init_if_show_bp``, ``QTensor.id`` and ``generate_unique_id``.
+
+
+Documentation
+===================
+- Added chapters on the quantum-information measurement ``QInfoMeasurement``, noise channels and noise policies, the exact density-matrix simulator, trainability diagnostics, the tiled execution path, precompiled execution and ``PrecompileNotSupported``, fp16 (complex32) state-vector storage, half-precision data types, data loading, the ``timeout`` parameter of ``CommController``, and pipeline VQC boundaries and segment adjoint.
+- Removed the entries of deleted interfaces; ``pyvqnet.torch`` import paths became ``pyvqnet.backends.torch``; examples import the exported names of ``pyvqnet.nn`` instead of ``pyvqnet.nn.<module>``; the overview page lists the 2.18.3 features.
+
+
+
 [v2.18.2] - 2026-08-17
 ***************************
 

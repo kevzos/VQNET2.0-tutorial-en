@@ -35,6 +35,7 @@ Since version 2.15.0, this software has supported `pytorch` as the computational
 
 
 
+
 Basic Backend Configuration
 ===========================
 
@@ -161,13 +162,14 @@ TorchModule
 
 
 
-    .. py:method:: pyvqnet.nn.torch.TorchModule.state_dict(destination=None, prefix='')
+    .. py:method:: pyvqnet.nn.torch.TorchModule.state_dict(destination=None, prefix='',keep_vars=False)
 
         Returns a dictionary containing the entire state of the module, including parameters and buffer values.
         The keys are the names of the corresponding parameters and buffer values.
 
         :param destination: Dictionary used to save the internal module parameters.
         :param prefix: Naming prefix for the parameters and buffer values used.
+        :param keep_vars: If ``False``, returns copies detached from autograd; if ``True``, returns the parameters and buffers of the module themselves. Default: ``False``.
 
         :return: Dictionary containing the entire state of the module.
 
@@ -233,7 +235,7 @@ TorchModule
             print(test_conv.backend)
             #1000
 
-    .. py:method:: pyvqnet.torch.TorchModule.toCPU()
+    .. py:method:: pyvqnet.nn.torch.TorchModule.toCPU()
 
         Moves the parameters and buffer data of the module and its submodules to the specified CPU device.
 
@@ -379,7 +381,7 @@ Classical Neural Network Modules
 --------------------------------------------
 
 The following classical neural network modules inherit from ``pyvqnet.nn.Module`` and ``torch.nn.Module``, and can be added as submodules of ``torch.nn.Module`` to a torch model.
-
+ 
 
 Linear
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -687,7 +689,7 @@ AvgPool2D
 
         y= test_mp.forward(x)
         print(y)
-
+ 
 
 MaxPool2D
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -909,7 +911,7 @@ LayerNormNd
         x = QTensor(np.arange(1,17).reshape([2,2,2,2]),requires_grad=True,dtype=kfloat32)
         y = test_conv.forward(x)
         print(y)
-
+         
 
 LayerNorm2d
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1579,7 +1581,7 @@ Dynamic_LSTM
         seq_unpacked, lens_unpacked = \
         tensor.pad_packed_sequence(output, batch_first=False)
 
-
+ 
 
 
 Interpolate
@@ -2192,7 +2194,7 @@ ReLu
         layer = ReLu()
         y = layer(QTensor([-1, 2.0, -3, 4.0]))
 
-
+        
 
 
 LeakyReLu
@@ -2333,7 +2335,7 @@ The following loss functions are used for large-model fine-tuning based on reinf
 sft_loss
 -----------------------------
 
-.. py:function:: pyvqnet.torch.trl.sft_loss(model, input_ids, labels, ignore_index=-100)
+.. py:function:: pyvqnet.backends.torch.trl.sft_loss(model, input_ids, labels, ignore_index=-100)
 
     Supervised fine-tuning (SFT) cross-entropy loss.
 
@@ -2348,7 +2350,7 @@ sft_loss
         import torch
         torch.manual_seed(42)
         import torch.nn as nn
-        from pyvqnet.torch.trl import sft_loss
+        from pyvqnet.backends.torch.trl import sft_loss
 
         class TinyLM(nn.Module):
             def __init__(self):
@@ -2365,7 +2367,7 @@ sft_loss
 dpo_loss
 -----------------------------
 
-.. py:function:: pyvqnet.torch.trl.dpo_loss(policy_model, ref_model, chosen_ids, rejected_ids, chosen_mask, rejected_mask, beta=0.1)
+.. py:function:: pyvqnet.backends.torch.trl.dpo_loss(policy_model, ref_model, chosen_ids, rejected_ids, chosen_mask, rejected_mask, beta=0.1)
 
     DPO (Direct Preference Optimization) standard sigmoid preference loss. Optimizes by maximizing the implicit reward difference between preferred and dispreferred sequences.
 
@@ -2383,7 +2385,7 @@ dpo_loss
         import torch
         torch.manual_seed(42)
         import torch.nn as nn
-        from pyvqnet.torch.trl import dpo_loss
+        from pyvqnet.backends.torch.trl import dpo_loss
 
         class TinyLM(nn.Module):
             def __init__(self):
@@ -2404,7 +2406,7 @@ dpo_loss
 ppo_loss
 -----------------------------
 
-.. py:function:: pyvqnet.torch.trl.ppo_loss(policy_model, value_model, ref_model, query_responses, context_length, response_mask, old_logprobs, old_values, advantages, returns, cliprange=0.2, cliprange_value=0.2, vf_coef=1.0, temperature=1.0)
+.. py:function:: pyvqnet.backends.torch.trl.ppo_loss(policy_model, value_model, ref_model, query_responses, context_length, response_mask, old_logprobs, old_values, advantages, returns, cliprange=0.2, cliprange_value=0.2, vf_coef=1.0, temperature=1.0)
 
     PPO (Proximal Policy Optimization) joint policy and value function loss. Includes clipped surrogate policy loss and value function loss.
 
@@ -2429,7 +2431,7 @@ ppo_loss
         import torch
         torch.manual_seed(42)
         import torch.nn as nn
-        from pyvqnet.torch.trl import ppo_loss
+        from pyvqnet.backends.torch.trl import ppo_loss
 
         class TinyLM(nn.Module):
             def __init__(self):
@@ -2457,7 +2459,7 @@ ppo_loss
 grpo_loss
 -----------------------------
 
-.. py:function:: pyvqnet.torch.trl.grpo_loss(policy_model, ref_model, input_ids, completion_mask, old_per_token_logps, advantages, beta=0.0, epsilon=0.2, epsilon_low=None, epsilon_high=None)
+.. py:function:: pyvqnet.backends.torch.trl.grpo_loss(policy_model, ref_model, input_ids, completion_mask, old_per_token_logps, advantages, beta=0.0, epsilon=0.2, epsilon_low=None, epsilon_high=None)
 
     GRPO (Group Relative Policy Optimization) clipped surrogate loss. Advantages are computed by grouping multiple completions.
 
@@ -2478,7 +2480,7 @@ grpo_loss
         import torch
         torch.manual_seed(42)
         import torch.nn as nn
-        from pyvqnet.torch.trl import grpo_loss
+        from pyvqnet.backends.torch.trl import grpo_loss
 
         class TinyLM(nn.Module):
             def __init__(self):
@@ -2499,7 +2501,7 @@ grpo_loss
 reward_loss
 -----------------------------
 
-.. py:function:: pyvqnet.torch.trl.reward_loss(model, chosen_ids, rejected_ids, margin=None, center_coef=None)
+.. py:function:: pyvqnet.backends.torch.trl.reward_loss(model, chosen_ids, rejected_ids, margin=None, center_coef=None)
 
     Reward model contrastive loss. Trains the reward model by maximizing the reward difference between preferred and dispreferred sequences.
 
@@ -2515,7 +2517,7 @@ reward_loss
         import torch
         torch.manual_seed(42)
         import torch.nn as nn
-        from pyvqnet.torch.trl import reward_loss
+        from pyvqnet.backends.torch.trl import reward_loss
 
         class TinyLM(nn.Module):
             def __init__(self):
@@ -2547,6 +2549,7 @@ The following are variational quantum circuit training interfaces that use pyqpa
 .. warning::
 
     The quantum computation parts of the following TorchQcloud3QuantumLayer and TorchQpanda3QuantumLayer interfaces use pyqpanda3 https://qcloud.originqc.com.cn/document/qpanda-3/index.html.
+
 
 TorchVQCLayer
 ---------------------------------------------
@@ -2725,6 +2728,7 @@ TorchVQCLayer
         )
         y = layer(QTensor([[0.3], [0.7]]))
         print(y.detach().numpy())
+
 
 TorchQcloud3QuantumLayer
 ---------------------------------------------
@@ -2975,15 +2979,15 @@ QModule
 
 
 QMachine
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.QMachine(num_wires, dtype=pyvqnet.kcomplex64,grad_mode="",save_ir=False)
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.QMachine(num_wires, dtype=pyvqnet.kcomplex64,save_ir=False,state_storage=None)
 
     Simulator class for variational quantum computation, with a states attribute that holds the state vectors of the quantum circuit.
 
     .. warning::
 
-        This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.qnn.QMachine``.
+        This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.qnn.vqc.sv.native.qmachine.QMachine``.
         This class can be added as a submodule of ``torch.nn.Module`` to a torch model.
 
     .. warning::
@@ -2991,10 +2995,13 @@ QMachine
         Before each run of a complete quantum circuit, you must use `pyvqnet.qnn.vqc.sv.torch.QMachine.reset_states(batchsize)` to reinitialize the initial state in the simulator and broadcast it to
         (batchsize,*) dimensions to adapt to batch data training.
 
+        The adjoint gradient mode of the simulator is switched on and restored by ``pyvqnet.qnn.vqc.sv.torch.QuantumLayerAdjoint`` at each forward computation; the constructor has no corresponding parameter.
+        Calling ``reset_states`` directly while the simulator is in adjoint gradient mode raises ``ValueError``.
+
     :param num_wires: Number of qubits.
-    :param dtype: Data type for computation. Default pyvqnet.kcomplex64, corresponding to parameter precision pyvqnet.kfloat32.
-    :param grad_mode: Gradient computation mode, can be "adjoint". Default: "", which uses automatic differentiation simulation.
+    :param dtype: Data type for computation. Default pyvqnet.kcomplex64, corresponding to parameter precision pyvqnet.kfloat32. Passing ``torch.complex32`` is equivalent to the ``kcomplex64`` compute precision plus ``state_storage=torch.complex32``.
     :param save_ir: When set to True, saves operations to originIR. Default: False.
+    :param state_storage: Storage data type of the state vectors, optional. When ``torch.complex32`` is passed, ``states`` is stored in fp16, with 4 bytes per amplitude; default: None, which uses complex64 storage.
 
     :return: Outputs a QMachine object.
 
@@ -3002,9 +3009,26 @@ QMachine
 
         from pyvqnet.qnn.vqc.sv.torch import QMachine
         import pyvqnet
+        import torch
         pyvqnet.backends.set_backend("torch")
+
         qm = QMachine(4)
         print(qm.states)
+        # tensor([[[[[1.+0.j, 0.+0.j],
+        #            [0.+0.j, 0.+0.j]],
+        #
+        #           [[0.+0.j, 0.+0.j],
+        #            [0.+0.j, 0.+0.j]]],
+        #
+        #
+        #          [[[0.+0.j, 0.+0.j],
+        #            [0.+0.j, 0.+0.j]],
+        #
+        #           [[0.+0.j, 0.+0.j],
+        #            [0.+0.j, 0.+0.j]]]]])
+        qm.reset_states(2)
+        print(qm.states.shape, qm.states.dtype)
+        # torch.Size([2, 2, 2, 2, 2]) torch.complex64
 
 
     .. py:method:: reset_states(batchsize)
@@ -3013,6 +3037,171 @@ QMachine
         (batchsize,*) dimensions to adapt to batch data training.
 
         :param batchsize: Batch dimension.
+
+fp16 (complex32) State-Vector Storage
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+With the ``torch`` backend, ``QMachine`` can store its state vectors ``states`` in fp16: pass ``state_storage=torch.complex32`` at construction. Each amplitude then consists of two ``torch.float16`` values and takes 4 bytes, half of the complex64 storage. The compute precision ``dtype`` is still ``pyvqnet.kcomplex64``; passing ``dtype=torch.complex32`` is equivalent to passing ``state_storage=torch.complex32``.
+
+.. note::
+
+    * The data type of ``states`` is ``torch.complex32``; the measurement results of the circuit (``MeasureAll``, ``Probability``, etc.) are ``torch.float16``, with a precision of about :math:`10^{-3}`.
+    * The input data, the ``params`` of the trainable gates and their gradients are still ``torch.float32``, so optimizers are used as usual.
+    * ``state_storage`` accepts only ``torch.complex32`` (or ``pyvqnet.kcomplex32``); any other value raises ``ValueError``. The compute precision must be complex64; using the storage together with ``pyvqnet.kcomplex128`` raises ``ValueError``.
+    * ``torch.complex32`` has no corresponding numpy type, so calling ``.numpy()`` on it raises ``TypeError``; convert it to ``torch.complex64`` or ``torch.float32`` first.
+    * Noise channels, the tiled adjoint gradient path of ``QuantumLayerAdjoint`` and inter-process transfer can all run on complex32 storage.
+
+``c32_fast_available()`` and ``c32_adjoint_kernels_available()`` of ``pyvqnet.backends.get_backend()`` report whether the fast complex32 gate kernels and the complex32 adjoint gradient kernels, respectively, are available in the current environment; when they are not available, state vectors in complex32 storage are computed by the generic complex64 gate kernels.
+
+Example::
+
+        import numpy as np
+        import torch
+
+        import pyvqnet
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet.qnn.vqc.sv.torch import QMachine, QModule, MeasureAll, RX, RY, CNOT, QuantumLayerAdjoint
+        from pyvqnet.tensor import QTensor
+
+
+        class QM(QModule):
+            def __init__(self, state_storage=None):
+                super().__init__()
+                self.qm = QMachine(3, dtype=pyvqnet.kcomplex64, state_storage=state_storage)
+                self.enc = RX(trainable=False, wires=0)
+                self.ry = RY(trainable=True, wires=1)
+                self.cnot = CNOT(wires=[0, 1])
+                self.measure = MeasureAll(obs={"Z0 Z1": 1.0, "Y2": 0.5})
+
+            def forward(self, x):
+                self.qm.reset_states(x.shape[0])
+                self.enc(params=x[:, [0]], q_machine=self.qm)
+                self.ry(q_machine=self.qm)
+                self.cnot(q_machine=self.qm)
+                return self.measure(q_machine=self.qm)
+
+
+        def run(state_storage):
+            pyvqnet.utils.set_random_seed(7)
+            model = QM(state_storage)
+            x = QTensor([[0.3, 0.9], [0.7, 0.2]], requires_grad=True)
+            y = model(x)
+            y.backward(torch.ones_like(y))
+            return model, y, x.grad
+
+
+        gb = pyvqnet.backends.get_backend()
+        print("c32_fast_available:", gb.c32_fast_available())
+        print("c32_adjoint_kernels_available:", gb.c32_adjoint_kernels_available())
+
+        for storage in (None, torch.complex32):
+            model, y, g = run(storage)
+            print("state_storage =", storage)
+            print("  states.dtype:", model.qm.states.dtype, " element_size:", model.qm.states.element_size(),
+                  " qm.dtype:", model.qm.dtype, " ry.params.dtype:", model.ry.params.dtype)
+            print("  y:", y.dtype, y.to(torch.float32).tolist())
+            print("  x.grad:", g.to(torch.float32).tolist())
+            print("  ry.params.grad:", model.ry.params.grad.to(torch.float32).reshape(-1).tolist())
+
+        # dtype=torch.complex32 is an alias of kcomplex64 compute + complex32 storage
+        qm = QMachine(3, dtype=torch.complex32)
+        print("dtype=torch.complex32 -> states.dtype:", qm.states.dtype, " qm.dtype:", qm.dtype)
+
+        # invalid combinations
+        try:
+            QMachine(3, dtype=pyvqnet.kcomplex128, state_storage=torch.complex32)
+        except ValueError as e:
+            print("ValueError:", e)
+        try:
+            QMachine(3, state_storage=torch.float16)
+        except ValueError as e:
+            print("ValueError:", e)
+
+        # complex32 tensors have no numpy dtype: widen before converting
+        qm = QMachine(2, state_storage=torch.complex32)
+        print("np.asarray(complex32):", end=" ")
+        try:
+            np.asarray(qm.states.detach().cpu().numpy())
+        except TypeError as e:
+            print("TypeError:", e)
+        print("widen to complex64:", qm.states.to(torch.complex64)[0].tolist())
+
+        # c32_fast_available: True
+        # c32_adjoint_kernels_available: True
+        # state_storage = None
+        #   states.dtype: torch.complex64  element_size: 8  qm.dtype: complex64  ry.params.dtype: torch.float32
+        #   y: torch.float32 [[0.3161599934101105], [0.31616008281707764]]
+        #   x.grad: [[-7.450580596923828e-09, 0.0], [-7.450580596923828e-09, 0.0]]
+        #   ry.params.grad: [-1.897411823272705]
+        # state_storage = torch.complex32
+        #   states.dtype: torch.complex32  element_size: 4  qm.dtype: complex64  ry.params.dtype: torch.float32
+        #   y: torch.float16 [[0.315673828125], [0.315673828125]]
+        #   x.grad: [[9.953975677490234e-06, 0.0], [0.0002536773681640625, 0.0]]
+        #   ry.params.grad: [-1.8974609375]
+        # dtype=torch.complex32 -> states.dtype: torch.complex32  qm.dtype: complex64
+        # ValueError: state_storage=torch.complex32 requires a complex64 compute dtype (complex32 states, float16 gate angles, complex32 gate matrices, complex64/float32 arithmetic inside the op), got complex128
+        # ValueError: state_storage must be torch.complex32 (fp16 storage) or None, got torch.float16
+        # np.asarray(complex32): TypeError: Got unsupported ScalarType ComplexHalf
+        # widen to complex64: [[(1+0j), 0j], [0j, 0j]]
+
+Example that requires a GPU (a single card, ``CUDA_VISIBLE_DEVICES=1``): on the machine where the examples were run, both ``c32_fast_available()`` and ``c32_adjoint_kernels_available()`` are ``True``. Automatic differentiation and the tiled adjoint gradient computation on CUDA, for state vectors in complex32 storage, are shown below.
+
+Example::
+
+        import numpy as np
+        import torch
+        import pyvqnet
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet.qnn.vqc.sv.torch import QMachine, QModule, MeasureAll, RX, RY, CNOT, QuantumLayerAdjoint
+        from pyvqnet.tensor import QTensor
+
+        gb = pyvqnet.backends.get_backend()
+        print(torch.cuda.is_available(), gb.c32_fast_available(), gb.c32_adjoint_kernels_available())
+
+
+        class QM(QModule):
+            def __init__(self, state_storage=None):
+                super().__init__()
+                self.qm = QMachine(10, dtype=pyvqnet.kcomplex64, state_storage=state_storage)
+                self.enc = RX(trainable=False, wires=0)
+                self.ry = RY(trainable=True, wires=1)
+                self.cnot = CNOT(wires=[0, 1])
+                self.measure = MeasureAll(obs={"Z0 Z1": 1.0, "Y2": 0.5})
+
+            def forward(self, x):
+                self.qm.reset_states(x.shape[0])
+                self.enc(params=x[:, [0]], q_machine=self.qm)
+                self.ry(q_machine=self.qm)
+                self.cnot(q_machine=self.qm)
+                return self.measure(q_machine=self.qm)
+
+
+        for storage in (None, torch.complex32):
+            pyvqnet.utils.set_random_seed(7)
+            model = QM(storage).toGPU()
+            x = QTensor([[0.3, 0.9], [0.7, 0.2]], requires_grad=True).toGPU()
+            y = model(x)
+            y.backward(torch.ones_like(y))
+            print(model.qm.states.dtype, model.qm.states.element_size(), str(model.qm.states.device))
+            print(y.dtype, y.to(torch.float32).tolist(), x.grad.to(torch.float32)[:, 0].tolist())
+            print(model.ry.params.grad.to(torch.float32).reshape(-1).tolist())
+
+        pyvqnet.utils.set_random_seed(7)
+        layer = QuantumLayerAdjoint(QM(torch.complex32).toGPU())
+        x = QTensor([[0.3, 0.9], [0.7, 0.2]], requires_grad=True).toGPU()
+        y = layer(x)
+        y.backward(torch.ones_like(y))
+        print(y.to(torch.float32).tolist(), layer.last_execution_impl)
+
+        # True True True
+        # torch.complex64 8 cuda:0
+        # torch.float32 [[0.3161602318286896], [0.31616026163101196]] [9.899814301661536e-10, 1.2929145754014826e-08]
+        # [-1.8974108695983887]
+        # torch.complex32 4 cuda:0
+        # torch.float16 [[0.31640625], [0.31640625]] [-2.682209014892578e-06, 2.8789043426513672e-05]
+        # [-1.8974609375]
+        # [[0.31640625], [0.31640625]] cpp
+
 
 
 Variational Quantum Logic Gate Modules
@@ -4153,76 +4342,6 @@ MultiRZ
         layer(q_machine = device)
         print(device.states)
 
-
-
-SDG
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.SDG(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
-
-    Defines an SDG quantum gate class.
-
-    .. warning::
-
-        This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
-        It can be added to a torch model as a submodule of ``torch.nn.Module``.
-
-    :param trainable: Whether the gate has trainable parameters. Set to False when the layer builds its gate matrix from external input data, or True when the trainable parameters are initialized in this layer. Default: False.
-    :param init_params: Initialization parameters used to encode classical data as a QTensor. Default: None.
-    :param wires: Indices of the qubits the circuit acts on. Default: None.
-    :param dtype: Data precision of the gate matrix. Can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float and double inputs, respectively.
-    :param use_dagger: Whether to use the conjugate transpose of the gate. Default: False.
-    :return: An SDG quantum gate instance.
-
-    Example::
-
-        from pyvqnet.qnn.vqc.sv.torch import SDG,QMachine
-        import pyvqnet
-        pyvqnet.backends.set_backend("torch")
-        device = QMachine(4)
-        layer = SDG(wires=0)
-        batchsize = 1
-        device.reset_states(1)
-        layer(q_machine = device)
-        print(device.states)
-
-
-
-
-TDG
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.TDG(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
-
-    Defines an SDG quantum gate class.
-
-    .. warning::
-
-        This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
-        It can be added to a torch model as a submodule of ``torch.nn.Module``.
-
-    :param trainable: Whether the gate has trainable parameters. Set to False when the layer builds its gate matrix from external input data, or True when the trainable parameters are initialized in this layer. Default: False.
-    :param init_params: Initialization parameters used to encode classical data as a QTensor. Default: None.
-    :param wires: Indices of the qubits the circuit acts on. Default: None.
-    :param dtype: Data precision of the gate matrix. Can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float and double inputs, respectively.
-    :param use_dagger: Whether to use the conjugate transpose of the gate. Default: False.
-    :return: A TDG quantum gate instance.
-
-    Example::
-
-        from pyvqnet.qnn.vqc.sv.torch import TDG,QMachine
-        import pyvqnet
-        pyvqnet.backends.set_backend("torch")
-        device = QMachine(4)
-        layer = TDG(wires=0)
-        batchsize = 1
-        device.reset_states(1)
-        layer(q_machine = device)
-        print(device.states)
-
-
-
 ControlledPhaseShift
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -4430,72 +4549,98 @@ Samples
         print(y)
 
 
-HermitianExpval
+QInfoMeasurement
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.HermitianExpval(obs=None, name="")
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.QInfoMeasurement(quantity=None, wires=None, obs=None, name="")
 
-    Computes the expectation value of a Hermitian operator for the quantum circuit.
+    Measurement module that measures a quantum information quantity of the circuit; ``quantity`` selects what is measured:
+
+    * ``"expectation"``: expectation value of a Hermitian operator; ``obs`` gives the Hermitian matrix (this is the former measurement of the expectation value of a Hermitian operator).
+    * ``"variance"``: variance of a Hermitian operator, :math:`\langle H^2\rangle - \langle H\rangle^2`.
+    * ``"purity"``: purity of a group of qubits, :math:`\mathrm{Tr}(\rho^2)`.
+    * ``"entropy"``: von Neumann entropy of a group of qubits.
+    * ``"mutual_info"``: mutual information between two groups of qubits.
+    * ``"meyer_wallach"``: Meyer-Wallach entanglement measure of the whole circuit.
 
     .. warning::
 
         This class inherits from ``pyvqnet.qnn.vqc.sv.torch.QModule`` and ``torch.nn.Module``.
         It can be added to a torch model as a submodule of ``torch.nn.Module``.
 
-
-    :param obs: Hermitian operator.
+    :param quantity: The quantity to measure; one of ``"expectation"``, ``"variance"``, ``"purity"``, ``"entropy"``, ``"mutual_info"`` and ``"meyer_wallach"``. ``quantity`` must be given for ``"purity"``, ``"entropy"``, ``"meyer_wallach"`` and ``"mutual_info"``; it can be omitted for ``"expectation"`` when ``obs`` is a dictionary that contains the key ``matrix`` or ``observables``.
+    :param wires: Indices of the qubits the measurement acts on. ``"mutual_info"`` needs two index sequences, for example ``[[0], [1, 2]]``; ``wires`` must be given for ``"purity"``, ``"entropy"`` and ``"meyer_wallach"``, and for ``"expectation"`` and ``"variance"`` when the matrix does not act on the whole simulator.
+    :param obs: Hermitian matrix. For ``"expectation"`` it can be a dictionary of the form ``{'wires': (1, 0), 'observables': matrix}`` or the matrix given directly; for ``"variance"`` the matrix is given directly.
     :param name: Module name. Default: "".
-    :return: A HermitianExpval measurement instance.
+    :return: The measurement result. ``"expectation"`` and ``"variance"`` have shape [b, 1] and the other quantities have shape [b], where b is the batch size given to ``reset_states(b)``.
+
+    .. note::
+
+        ``"expectation"`` and ``"variance"`` can be placed in a module wrapped by ``pyvqnet.qnn.vqc.sv.torch.QuantumLayerAdjoint`` to compute adjoint gradients; the other quantities support only automatic differentiation.
 
     Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.sv.torch import QMachine, rx,ry,\
-            RX, RY, CNOT, PauliX, PauliZ, VQC_RotCircuit,HermitianExpval
+        import numpy as np
+        import torch
+        from pyvqnet.qnn.vqc.sv.torch import QMachine, QModule, RY, CNOT, PauliX, QInfoMeasurement, vqc_rotcircuit
+        from pyvqnet.qnn.vqc import rx, ry, cnot
         from pyvqnet.tensor import QTensor, tensor
         from pyvqnet.nn import Parameter
-        import numpy as np
+
         bsz = 3
         H = np.array([[8, 4, 0, -6], [4, 0, 4, 0], [0, 4, 8, 0], [-6, 0, 0, 0]])
-        class QModel(pyvqnet.nn.Module):
+
+        class QModel(QModule):
             def __init__(self, num_wires, dtype):
                 super(QModel, self).__init__()
-                self.rot_param = Parameter((3, ))
-                self.rot_param.copy_value_from(tensor.QTensor([-0.5, 1, 2.3]))
-                self._num_wires = num_wires
-                self._dtype = dtype
+                rot_param = Parameter((3, ))
+                rot_param.copy_value_from(tensor.QTensor([-0.5, 1, 2.3]))
+                self.rot_param = rot_param
                 self.qm = QMachine(num_wires, dtype=dtype)
-                self.rx_layer1 = VQC_RotCircuit
-                self.ry_layer2 = RY(trainable=True,
-                                    wires=0,
-                                    init_params=tensor.QTensor([-0.5]))
+                self.ry_layer2 = RY(trainable=True, wires=0, init_params=tensor.QTensor([-0.5]))
                 self.xlayer = PauliX(wires=0)
                 self.cnot = CNOT(wires=[0, 1])
-                self.measure = HermitianExpval(obs = {'wires':(1,0),'observables':tensor.to_tensor(H)})
+                self.measure = QInfoMeasurement("expectation", obs={'wires': (1, 0), 'observables': tensor.to_tensor(H)})
 
             def forward(self, x, *args, **kwargs):
                 self.qm.reset_states(x.shape[0])
-
                 rx(q_machine=self.qm, wires=0, params=x[:, [1]])
                 ry(q_machine=self.qm, wires=1, params=x[:, [0]])
                 self.xlayer(q_machine=self.qm)
-                self.rx_layer1(params=self.rot_param, wire=1, q_machine=self.qm)
+                vqc_rotcircuit(params=self.rot_param, wire=1, q_machine=self.qm)
                 self.ry_layer2(q_machine=self.qm)
                 self.cnot(q_machine=self.qm)
-                rlt = self.measure(q_machine = self.qm)
+                return self.measure(q_machine=self.qm)
 
-                return rlt
-
-
-        input_x = tensor.arange(1, bsz * 2 + 1,
-                                dtype=pyvqnet.kfloat32).reshape([bsz, 2])
+        input_x = tensor.arange(1, bsz * 2 + 1, dtype=pyvqnet.kfloat32).reshape([bsz, 2])
         input_x.requires_grad = True
 
         qunatum_model = QModel(num_wires=2, dtype=pyvqnet.kcomplex64)
-
         batch_y = qunatum_model(input_x)
-        batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
+        batch_y.backward(torch.ones_like(batch_y))
+        print(type(batch_y).__name__, batch_y.detach().numpy())
+        print(input_x.grad.detach().numpy())
+        print(qunatum_model.ry_layer2.params.grad.detach().numpy())
+        print(qunatum_model.rot_param.grad.detach().numpy())
+        # Tensor [[5.3798223]
+        #  [7.1294155]
+        #  [0.7028296]]
+        # [[-1.3423371   5.3119035 ]
+        #  [-2.0510895  -2.0441792 ]
+        #  [-0.98083305  0.9307354 ]]
+        # [-2.3934536]
+        # [-0.4425025  3.349732   3.6554465]
+
+        qm = QMachine(2)
+        qm.reset_states(1)
+        ry(q_machine=qm, wires=1, params=QTensor([[0.4]]))
+        cnot(q_machine=qm, wires=[1, 0])
+        print(QInfoMeasurement("purity", wires=[0])(q_machine=qm).detach().numpy())
+        print(QInfoMeasurement("entropy", wires=[0])(q_machine=qm).detach().numpy())
+        # [[0.9241767]]
+        # [0.1662545]
 
 
 Common Quantum Circuit Templates
@@ -4681,7 +4826,7 @@ VQC_QuantumEmbedding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.sv.torch.VQC_QuantumEmbedding(  num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.VQC_QuantumEmbedding(  num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,dtype = None,initial = None,name= "")
 
     Uses RZ, RY, and RZ to create a variational quantum circuit that encodes classical data into a quantum state.
     See `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
@@ -4773,16 +4918,15 @@ ExpressiveEntanglingAnsatz
         pyvqnet.backends.set_backend("torch")
         pyvqnet.utils.set_random_seed(25)
 
-        class QModel(TorchModule):
-            def __init__(self, num_wires, dtype,grad_mode=""):
-                super(QModel, self).__init__()
 
+        class QModel(TorchModule):
+            def __init__(self, num_wires, dtype):
+                super(QModel, self).__init__()
                 self._num_wires = num_wires
                 self._dtype = dtype
-                self.qm = QMachine(num_wires, dtype=dtype,grad_mode=grad_mode)
+                self.qm = QMachine(num_wires, dtype=dtype)
                 self.c1 = ExpressiveEntanglingAnsatz(1,3,2)
-                self.measure = MeasureAll(obs={"Z1":1
-                })
+                self.measure = MeasureAll(obs={"Z1": 1})
 
             def forward(self, x, *args, **kwargs):
                 self.qm.reset_states(x.shape[0])
@@ -4797,14 +4941,17 @@ ExpressiveEntanglingAnsatz
 
         batch_y = qunatum_model(input_x)
         batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
-        print(batch_y)
+        print(batch_y.detach())
+        print([p.grad.reshape(-1)[0].item() for p in qunatum_model.parameters()])
+        # tensor([[-0.2783]])
+        # [0.0, -2.9802322387695312e-08, -0.8037945032119751, -0.20240837335586548, 1.4901161193847656e-08, 1.4901161193847656e-08, -7.450580596923828e-09, 1.4901161193847656e-08, -0.9388510584831238, 2.2351741790771484e-08, 0.0, 1.4901161193847656e-08]
 
 
 
 vqc_basis_embedding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.sv.torch.vqc_basis_embedding(basis_state,q_machine)
+.. py:function:: pyvqnet.qnn.vqc.sv.torch.vqc_basis_embedding(basis_state,q_machine,wires=None)
 
     Encodes n binary features into the basis state of n qubits in ``q_machine``. The function alias is `VQC_BasisEmbedding`.
 
@@ -4812,6 +4959,7 @@ vqc_basis_embedding
 
     :param basis_state: Binary input of size ``(n)``.
     :param q_machine: Quantum machine device.
+    :param wires: Qubits on which the encoding acts; default: None, which uses all the qubits of ``q_machine``.
 
 
     Example::
@@ -5101,7 +5249,7 @@ vqc_fermionic_single_excitation
         exp = m(q_machine=qm)
         print(exp)
 
-
+ 
 
 
 vqc_fermionic_double_excitation
@@ -5155,7 +5303,7 @@ vqc_fermionic_double_excitation
         m = MeasureAll(obs={"Z0": 1})
         exp = m(q_machine=qm)
         print(exp)
-
+ 
 
 vqc_uccsd
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -5256,7 +5404,7 @@ vqc_zfeaturemap
             hadamard(q_machine=qm, wires=[i])
         vqc_zfeaturemap(input_feat=QTensor([[0.1,0.2,0.3]]),q_machine = qm)
         print(qm.states)
-
+ 
 
 vqc_zzfeaturemap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -5388,11 +5536,127 @@ vqc_basisrotation
 
 
 
+Noise Channels
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The noise channel functions below are imported from ``pyvqnet.qnn.vqc`` and used together with the ``QMachine`` of the ``torch`` backend. A channel is called in the same way as a gate function and acts on the current state vectors of ``q_machine``. On the state-vector simulator, the Kraus branches of a channel are sampled per trajectory: the ``b`` batch rows of ``reset_states(b)`` are ``b`` independent trajectories, each trajectory randomly selects one Kraus operator to apply according to the branch probabilities, and the expectation under noise is obtained by averaging the measurement results over the ``b`` trajectories.
+
+The selection of the branch is not differentiable: the gradient flows back to the gate parameters only through the Kraus operator that was actually applied.
+
+.. py:function:: pyvqnet.qnn.vqc.depolarizing(q_machine, wire, p)
+   :noindex:
+
+    Depolarizing channel :math:`E(\rho) = (1 - p)\rho + p I/2`.
+
+    :param q_machine: The simulator the channel acts on.
+    :param wire: The qubit the channel acts on.
+    :param p: Depolarizing strength, in the range [0, 1]; with ``p=1`` the qubit is in the maximally mixed state.
+
+.. py:function:: pyvqnet.qnn.vqc.amplitude_damping(q_machine, wire, gamma)
+   :noindex:
+
+    Amplitude damping channel (energy relaxation) :math:`\rho_{11} \to (1-\gamma)\rho_{11}`; ``gamma`` is the probability of a transition from :math:`|1\rangle` to :math:`|0\rangle`.
+
+    :param q_machine: The simulator the channel acts on.
+    :param wire: The qubit the channel acts on.
+    :param gamma: Damping strength, in the range [0, 1].
+
+.. py:function:: pyvqnet.qnn.vqc.phase_damping(q_machine, wire, gamma)
+   :noindex:
+
+    Phase damping channel (loss of coherence, populations unchanged).
+
+    :param q_machine: The simulator the channel acts on.
+    :param wire: The qubit the channel acts on.
+    :param gamma: Damping strength, in the range [0, 1].
+
+.. py:function:: pyvqnet.qnn.vqc.decoherence(q_machine, wire, T1, T2, gate_time)
+   :noindex:
+
+    T1/T2 relaxation channel over the duration of one gate: :math:`\rho_{11} \to e^{-t/T_1}\rho_{11}` and :math:`\rho_{01} \to e^{-t/T_2}\rho_{01}`, where :math:`t` is ``gate_time``.
+
+    :param q_machine: The simulator the channel acts on.
+    :param wire: The qubit the channel acts on.
+    :param T1: Relaxation time, greater than 0.
+    :param T2: Decoherence time, greater than 0 and not more than :math:`2 T1`; otherwise a ``ValueError`` is raised.
+    :param gate_time: Gate duration, not less than 0.
+
+.. py:function:: pyvqnet.qnn.vqc.bit_flip(q_machine, wire, p)
+   :noindex:
+
+    Bit-flip channel :math:`E(\rho) = (1 - p)\rho + p X\rho X`.
+
+    :param q_machine: The simulator the channel acts on.
+    :param wire: The qubit the channel acts on.
+    :param p: Flip probability, in the range [0, 1].
+
+.. py:function:: pyvqnet.qnn.vqc.readout(q_machine, wire, matrix, at_measurement=False)
+   :noindex:
+
+    Readout error channel. ``matrix[b][o]`` is the probability of observing ``o`` when the true result is ``b``; ``matrix`` is a 2×2 matrix in which each row sums to 1.
+
+    :param q_machine: The simulator the channel acts on.
+    :param wire: The qubit being measured.
+    :param matrix: 2×2 confusion matrix.
+    :param at_measurement: When ``True``, the channel is not applied at its current position but deferred to the next measurement: ``Probability`` and ``Samples`` fold the matrix into the probabilities that are sampled. Default: False.
+
+.. note::
+
+    * The parameters ``p``, ``gamma``, ``T1``, ``T2`` and ``gate_time`` must be numbers; values outside the ranges above raise ``ValueError``.
+    * A channel requires a state-vector simulator whose compute precision is complex64 or complex128: it raises ``ValueError`` on a tensor-network simulator (``TNQMachine``) and on a qubit-reordering simulator.
+    * Noise channels are not supported in adjoint gradient mode: applying a channel inside a module wrapped by ``QuantumLayerAdjoint`` raises ``ValueError``. Use automatic differentiation, the parameter-shift method or SPSA instead.
+
+.. py:method:: pyvqnet.qnn.vqc.sv.torch.QMachine.set_noise_seed(seed)
+
+    Sets the random seed of the Monte Carlo branch sampling of this simulator.
+
+    :param seed: Random seed; ``None`` means that new random entropy is used.
+
+Example::
+
+        import numpy as np
+        import torch
+        import pyvqnet
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet.qnn.vqc import depolarizing, bit_flip, ry
+        from pyvqnet.qnn.vqc.sv.torch import QMachine, MeasureAll, Probability
+        from pyvqnet.tensor import QTensor
+
+        theta, p, shots = 0.7, 0.2, 8192
+        qm = QMachine(1, dtype=torch.complex64)
+        qm.reset_states(shots)            # one batch row = one trajectory
+        qm.set_noise_seed(9)
+        ry(q_machine=qm, wires=0, params=QTensor([[theta]], dtype=pyvqnet.kfloat32))
+        depolarizing(q_machine=qm, wire=0, p=p)
+        y = MeasureAll(obs={"Z0": 1.0})(q_machine=qm)
+        print(type(y).__name__, tuple(y.shape), y.dtype)
+        print(y.to(torch.float32).mean().item(), (1 - p) * np.cos(theta))
+
+        qm = QMachine(1, dtype=pyvqnet.kcomplex64, state_storage=torch.complex32)
+        qm.reset_states(2048)
+        qm.set_noise_seed(5)
+        from pyvqnet.qnn.vqc import x
+        x(q_machine=qm, wires=0)
+        bit_flip(q_machine=qm, wire=0, p=0.25)
+        print(qm.states.dtype)
+        probs = Probability(wires=[0])(q_machine=qm)
+        print(probs.dtype, probs.to(torch.float32).mean(dim=0).tolist())
+
+        try:
+            depolarizing(q_machine=qm, wire=0, p=1.5)
+        except ValueError as e:
+            print("ValueError:", e)
+
+        # Tensor (8192, 1) torch.float32
+        # 0.6130313873291016 0.6118737498275908
+        # torch.complex32
+        # torch.float16 [0.2255859375, 0.7744140625]
+        # ValueError: depolarizing channel parameter must be within [0, 1], got 1.5
+
 QuantumLayerAdjoint
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. py:class:: pyvqnet.qnn.vqc.sv.torch.QuantumLayerAdjoint(vqc_module, name="")
-
 
     An automatically differentiable variational quantum circuit layer that computes gradients with the adjoint method. See `Efficient calculation of gradients in classical simulations of variational quantum algorithms <https://arxiv.org/abs/2009.02823>`_.
 
@@ -5410,45 +5674,50 @@ QuantumLayerAdjoint
 
     .. note::
 
-        The QMachine of vqc_module should set grad_method = "adjoint".
+        The wrapper layer switches the ``QMachine`` in ``vqc_module`` to adjoint gradient mode at each forward computation and restores the previous setting after the computation, so the ``QMachine`` can be constructed in the default way.
 
         Variational circuits composed of the following parameterized gates `RX`, `RY`, `RZ`, `PhaseShift`, `RXX`, `RYY`, `RZZ`, `RZX`, `U1`, `U2`, `U3` and other non-parameterized gates are currently supported.
+
+    .. py:method:: last_execution_impl
+
+        How the most recent forward computation was executed: ``"cpp"`` when the tile execution path ran the forward computation, otherwise ``None``.
+
+        :return: ``"cpp"`` or ``None``.
 
     Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
+        import torch
         from pyvqnet import tensor
-        from pyvqnet.qnn.vqc.sv.torch import QuantumLayerAdjoint, \
-            QMachine, RX, RY, CNOT, T, \
-                MeasureAll, RZ, VQC_HardwareEfficientAnsatz,\
-                    QModule
+        from pyvqnet.qnn.vqc.sv.torch import (
+            QuantumLayerAdjoint, QMachine, RX, RY, CNOT, T, MeasureAll, RZ,
+            VQC_HardwareEfficientAnsatz, QModule,
+        )
+
+        pyvqnet.utils.set_random_seed(25)
+
 
         class QModel(QModule):
-            def __init__(self, num_wires, dtype, grad_mode=""):
+            def __init__(self, num_wires, dtype):
                 super(QModel, self).__init__()
-
                 self._num_wires = num_wires
                 self._dtype = dtype
-                self.qm = QMachine(num_wires, dtype=dtype, grad_mode=grad_mode)
+                self.qm = QMachine(num_wires, dtype=dtype)
                 self.rx_layer = RX(trainable=False, wires=0)
                 self.ry_layer = RY(trainable=False, wires=1)
                 self.rz_layer = RZ(trainable=False, wires=1)
                 self.rz_layer2 = RZ(trainable=True, wires=1)
-
                 self.rot = VQC_HardwareEfficientAnsatz(6, ["rx", "RY", "rz"],
-                                                    entangle_gate="cnot",
-                                                    entangle_rules="linear",
-                                                    depth=5)
+                                                       entangle_gate="cnot",
+                                                       entangle_rules="linear",
+                                                       depth=5)
                 self.tlayer = T(wires=1)
                 self.cnot = CNOT(wires=[0, 1])
-                self.measure = MeasureAll(obs={
-                    "X1":1
-                })
+                self.measure = MeasureAll(obs={"X1": 1})
 
             def forward(self, x, *args, **kwargs):
                 self.qm.reset_states(x.shape[0])
-
                 self.rx_layer(params=x[:, [0]], q_machine=self.qm)
                 self.cnot(q_machine=self.qm)
                 self.ry_layer(params=x[:, [1]], q_machine=self.qm)
@@ -5456,21 +5725,174 @@ QuantumLayerAdjoint
                 self.rz_layer(params=x[:, [2]], q_machine=self.qm)
                 self.rz_layer2(q_machine=self.qm)
                 self.rot(q_machine=self.qm)
-                rlt = self.measure(q_machine=self.qm)
-
-                return rlt
+                return self.measure(q_machine=self.qm)
 
 
         input_x = tensor.QTensor([[0.1, 0.2, 0.3]])
         input_x = tensor.broadcast_to(input_x, [40, 3])
         input_x.requires_grad = True
-        qunatum_model = QModel(num_wires=6,
-                            dtype=pyvqnet.kcomplex64,
-                            grad_mode="adjoint")
+        qunatum_model = QModel(num_wires=6, dtype=pyvqnet.kcomplex64)
         adjoint_model = QuantumLayerAdjoint(qunatum_model)
         adjoint_model.train()
         batch_y = adjoint_model(input_x)
         batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
+        print(type(batch_y).__name__, tuple(batch_y.shape))
+        print(batch_y[0].item())
+        print(input_x.grad[0])
+        print(qunatum_model.rz_layer2.params.grad.reshape(-1).tolist())
+        print(adjoint_model.last_execution_impl)
+        # Tensor (40, 1)
+        # 0.24434790015220642
+        # tensor([ 0.1328, -0.0076,  0.0527])
+        # [2.1095683574676514]
+        # cpp
+
+Tile Execution Path for Adjoint Gradients
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The forward and backward computation of ``QuantumLayerAdjoint`` prefers the tile execution path: the circuit is recorded once, divided into tiles by window and handed to the C++ kernels for execution; later steps in which the circuit structure and the input shape are unchanged replay the existing plan directly. The environment variable ``VQNET_ADJOINT_MODE`` selects how the computation is executed; any other value raises ``ValueError``:
+
+* ``0``: uses only the gate-by-gate execution path.
+* ``1``: the default (when the variable is not set). The tile execution path is preferred; when the circuit does not meet its conditions, the computation falls back to the gate-by-gate execution path.
+* ``2``: uses only the tile execution path and raises ``RuntimeError`` when the circuit does not meet its conditions.
+
+The tile execution path does not take over the following cases: tensor-network simulators, qubit-reordering simulators, simulators with a custom communicator, state-vector simulators with noise channels, simulators whose state-vector data type is not complex64/complex128/complex32, and modules whose circuits contain gates outside the tile bytecode table. ``QuantumLayerAdjoint.last_execution_impl`` reports the path that the most recent forward computation actually used.
+
+The environment variable ``VQNET_TILE_PLAN_CACHE`` controls the plan cache: when it is set to ``0``, the circuit is planned again at every step; with any other value, or when it is not set, steps in which the circuit structure and the input shape are unchanged share one plan. ``pyvqnet.qnn.vqc.sv.common.tile_pass.TILE_PASS_STATS`` records the run counters of the tile execution path.
+
+.. note::
+
+    On a GPU, the tile kernels run on the default CUDA stream of PyTorch. Calling them inside a non-default ``torch.cuda.stream(...)`` or during CUDA graph capture raises ``TileStreamError``; in that case, set ``VQNET_ADJOINT_MODE=0`` to switch to the gate-by-gate execution path.
+
+Example::
+
+        import os
+        import numpy as np
+        import torch
+        import pyvqnet
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet import kcomplex64, kfloat32
+        from pyvqnet.nn import Module, Parameter
+        from pyvqnet.qnn.vqc import MeasureAll, cnot, ry, rz
+        from pyvqnet.qnn.vqc.sv.torch import QMachine, QuantumLayerAdjoint
+        from pyvqnet.qnn.vqc.sv.common import tile_pass
+        from pyvqnet.tensor import QTensor
+
+        N = 6
+
+
+        class Model(Module):
+            def __init__(self):
+                super().__init__()
+                self.qm = QMachine(N, dtype=kcomplex64)
+                self.theta = Parameter([3], dtype=kfloat32)
+                with torch.no_grad():
+                    self.theta.data.copy_(torch.tensor([0.3, 0.5, 0.7]))
+                self.measure = MeasureAll(obs={"X0": 1.0, "Z1 Z2": -0.5})
+
+            def forward(self, x):
+                self.qm.reset_states(x.shape[0])
+                for i in range(N):
+                    ry(q_machine=self.qm, wires=i, params=x[:, i:i + 1])
+                for i in range(N - 1):
+                    cnot(q_machine=self.qm, wires=[i, i + 1])
+                for i in range(3):
+                    rz(q_machine=self.qm, wires=i, params=self.theta[i:i + 1])
+                return self.measure(q_machine=self.qm)
+
+
+        def step(mode):
+            os.environ["VQNET_ADJOINT_MODE"] = mode
+            pyvqnet.utils.set_random_seed(11)
+            layer = QuantumLayerAdjoint(Model())
+            x = QTensor(np.arange(1, 1 + 4 * N, dtype=np.float32).reshape(4, N) / 10.0, requires_grad=True)
+            tile_pass.TILE_PASS_STATS.reset()
+            y = layer(x)
+            loss = (y * y).sum()
+            loss.backward()
+            st = tile_pass.TILE_PASS_STATS
+            print("VQNET_ADJOINT_MODE=%s: last_execution_impl=%s, forward_calls=%d, backward_calls=%d"
+                  % (mode, layer.last_execution_impl, st.forward_calls, st.backward_calls))
+            print("   y =", np.round(y.detach().cpu().numpy(), 6).reshape(-1).tolist())
+            print("   x.grad[0] =", np.round(x.grad[0].detach().cpu().numpy(), 6).tolist())
+            print("   theta.grad =", np.round(layer.vqc_module.theta.grad.detach().cpu().numpy(), 6).tolist())
+
+
+        step("1")
+        step("0")
+        try:
+            step("3")
+        except ValueError as e:
+            print("ValueError:", e)
+
+        # VQNET_ADJOINT_MODE=1: last_execution_impl=cpp, forward_calls=1, backward_calls=1
+        #    y = [-0.45871999859809875, 0.13068799674510956, 0.8717600107192993, 1.0744600296020508]
+        #    x.grad[0] = [-0.1732569932937622, -0.08575599640607834, -0.135561004281044, -0.0, -0.0, 0.0]
+        #    theta.grad = [-1.0660040378570557, 0.0, 0.0]
+        # VQNET_ADJOINT_MODE=0: last_execution_impl=None, forward_calls=0, backward_calls=0
+        #    y = [-0.45871999859809875, 0.13068799674510956, 0.8717600107192993, 1.0744600296020508]
+        #    x.grad[0] = [-0.1732569932937622, -0.08575599640607834, -0.135561004281044, -0.0, 0.0, 0.0]
+        #    theta.grad = [-1.0660040378570557, 0.0, -0.0]
+        # ValueError: VQNET_ADJOINT_MODE must be 0 (per-op only), 1 (tile with fallback) or 2 (tile only), got '3'
+
+
+Example::
+
+        import os
+        import numpy as np
+        import torch
+        import pyvqnet
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet import kcomplex64, kfloat32
+        from pyvqnet.nn import Module, Parameter
+        from pyvqnet.qnn.vqc import MeasureAll, cnot, ry, rz
+        from pyvqnet.qnn.vqc.sv.torch import QMachine, QuantumLayerAdjoint
+        from pyvqnet.qnn.vqc.sv.common import tile_pass
+        from pyvqnet.tensor import QTensor
+
+        N = 6
+
+
+        class Model(Module):
+            def __init__(self):
+                super().__init__()
+                self.qm = QMachine(N, dtype=kcomplex64)
+                self.theta = Parameter([3], dtype=kfloat32)
+                with torch.no_grad():
+                    self.theta.data.copy_(torch.tensor([0.3, 0.5, 0.7]))
+                self.measure = MeasureAll(obs={"X0": 1.0, "Z1 Z2": -0.5})
+
+            def forward(self, x):
+                self.qm.reset_states(x.shape[0])
+                for i in range(N):
+                    ry(q_machine=self.qm, wires=i, params=x[:, i:i + 1])
+                for i in range(N - 1):
+                    cnot(q_machine=self.qm, wires=[i, i + 1])
+                for i in range(3):
+                    rz(q_machine=self.qm, wires=i, params=self.theta[i:i + 1])
+                return self.measure(q_machine=self.qm)
+
+
+        def run(plan_cache):
+            os.environ["VQNET_TILE_PLAN_CACHE"] = plan_cache
+            pyvqnet.utils.set_random_seed(11)
+            layer = QuantumLayerAdjoint(Model())
+            tile_pass.TILE_PASS_STATS.reset()
+            for step in range(3):
+                x = QTensor(np.arange(1, 1 + 4 * N, dtype=np.float32).reshape(4, N) / (10.0 + step), requires_grad=True)
+                y = layer(x)
+                (y * y).sum().backward()
+            st = tile_pass.TILE_PASS_STATS
+            print("VQNET_TILE_PLAN_CACHE=%r: forward_calls=%d, plan_calls=%d"
+                  % (plan_cache, st.forward_calls, st.plan_calls))
+
+
+        run("1")
+        run("0")
+
+        # VQNET_TILE_PLAN_CACHE='1': forward_calls=3, plan_calls=1
+        # VQNET_TILE_PLAN_CACHE='0': forward_calls=3, plan_calls=3
+
 
 
 
@@ -5610,7 +6032,7 @@ Initializing a tensor-network variational quantum circuit device requires ``TNQM
 
     .. warning::
 
-        This class inherits from ``pyvqnet.nn.tn.TorchModule`` and ``pyvqnet.qnn.QMachine``.
+        This class inherits from ``pyvqnet.nn.torch.TorchModule`` and ``pyvqnet.qnn.vqc.sv.native.qmachine.QMachine``.
         It can be added to a ``TNQModule`` model as a submodule of ``torch.nn.Module``.
 
     .. warning::
@@ -5691,6 +6113,75 @@ Initializing a tensor-network variational quantum circuit device requires ``TNQM
     .. py:method:: get_states()
 
         Gets the states in the tensor network.
+
+Precompilation and PrecompileNotSupported
+--------------------------------------------------
+
+On its first call, ``TNQModule`` records the circuit built in ``forward`` and compiles it (JIT); later calls replay the compiled result. When ``forward`` contains an interface that cannot be recorded, ``TNQModule`` raises ``pyvqnet.qnn.vqc.PrecompileNotSupported`` and does not fall back to gate-by-gate execution. Two kinds of situations cannot be recorded:
+
+* The gate angles are computed from the input data. Inside ``TNQModule``, a gate parameter can only be a trainable ``Parameter`` of the module, an input column passed directly (``x[:, [k]]`` or ``x[k]``) or a constant.
+* The interface itself refuses the recorder: the gate angles of ``VQC_IQPEmbedding`` are computed from the input, so calling it inside ``TNQModule`` raises this exception.
+
+When this exception is raised, move the computation of the angles out of ``TNQModule`` (for example, compute them in the outer ``QModule`` and pass them in as additional inputs), or execute gate by gate directly on a stand-alone ``TNQMachine``.
+
+.. py:class:: pyvqnet.qnn.vqc.PrecompileNotSupported
+   :noindex:
+
+    A subclass of ``RuntimeError`` that indicates the circuit cannot take the record-then-precompile path. The message starts with ``TN JIT recording failed`` or ``TN interface '<interface name>' requires eager execution``.
+
+    :return: An exception instance.
+
+Example::
+
+        import pyvqnet
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet.qnn.vqc.tn.torch import TNQModule, TNQMachine, RX, Probability, qcircuit, vqc_iqp_embedding
+        from pyvqnet.qnn.vqc import PrecompileNotSupported
+        from pyvqnet.tensor import QTensor
+
+
+        class IQPModel(TNQModule):
+            def __init__(self):
+                super().__init__()
+                self.device = TNQMachine(3)
+                self.measure = Probability(wires=[0, 2])
+
+            def forward(self, x, *args, **kwargs):
+                self.device.reset_states(x.shape[0])
+                vqc_iqp_embedding(x, q_machine=self.device)
+                return self.measure(q_machine=self.device)
+
+
+        class DerivedAngleModel(TNQModule):
+            def __init__(self):
+                super().__init__()
+                self.device = TNQMachine(1)
+                self.measure = Probability(wires=[0])
+
+            def forward(self, x, *args, **kwargs):
+                self.device.reset_states(x.shape[0])
+                RX(True, init_params=x * x, wires=0)(q_machine=self.device)
+                return self.measure(q_machine=self.device)
+
+
+        x = QTensor([[0.4, 0.5, 0.6]], requires_grad=True)
+        for model in (IQPModel(), DerivedAngleModel()):
+            try:
+                model(x[:, :model.device.num_wires])
+            except PrecompileNotSupported as e:
+                print(type(e).__name__, "| compiled:", model._jit_compiled)
+                print(str(e).split(". ")[0])
+
+        qm = TNQMachine(3)
+        vqc_iqp_embedding(x, q_machine=qm)
+        print(tuple(qm.get_states().shape))
+
+        # PrecompileNotSupported | compiled: False
+        # TN interface 'VQC_IQPEmbedding' requires eager execution: its gate angles are computed from the module input (input-derived arithmetic), which the JIT recorder cannot replay
+        # PrecompileNotSupported | compiled: False
+        # TN JIT recording failed: could not record and compile the circuit for JIT execution (both the JIT and no-JIT retry attempts raised)
+        # (1, 2, 2, 2)
+
 
 Variational Quantum Gate Module
 --------------------------------------------------
@@ -6767,72 +7258,6 @@ MultiRZ
         layer(q_machine = device)
         print(device.get_states())
 
-
-SDG
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.SDG(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
-
-    Defines an SDG quantum gate class.
-
-    .. warning::
-
-        This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
-        It can be added to a torch model as a submodule of ``torch.nn.Module``.
-
-    :param trainable: Whether the gate has trainable parameters. Set to False when the layer builds its gate matrix from external input data, or True when the trainable parameters are initialized in this layer. Default: False.
-    :param init_params: Initialization parameters used to encode classical data as a QTensor. Default: None.
-    :param wires: Indices of the qubits the circuit acts on. Default: None.
-    :param dtype: Data precision of the gate matrix. Can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float and double inputs, respectively.
-    :param use_dagger: Whether to use the conjugate transpose of the gate. Default: False.
-    :return: An SDG quantum gate instance.
-
-    Example::
-
-
-        import pyvqnet
-        pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn.torch import SDG,TNQMachine
-        device = TNQMachine(4)
-        layer = SDG(wires=0)
-        batchsize = 1
-        device.reset_states(1)
-        layer(q_machine = device)
-        print(device.get_states())
-
-TDG
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.TDG(trainable: bool = False,init_params=None,wires=None,dtype=pyvqnet.kcomplex64,use_dagger=False)
-
-    Defines a TDG quantum gate class.
-
-    .. warning::
-
-        This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
-        It can be added to a torch model as a submodule of ``torch.nn.Module``.
-
-    :param trainable: Whether the gate has trainable parameters. Set to False when the layer builds its gate matrix from external input data, or True when the trainable parameters are initialized in this layer. Default: False.
-    :param init_params: Initialization parameters used to encode classical data as a QTensor. Default: None.
-    :param wires: Indices of the qubits the circuit acts on. Default: None.
-    :param dtype: Data precision of the gate matrix. Can be set to pyvqnet.kcomplex64 or pyvqnet.kcomplex128, corresponding to float and double inputs, respectively.
-    :param use_dagger: Whether to use the conjugate transpose of the gate. Default: False.
-    :return: A TDG quantum gate instance.
-
-    Example::
-
-
-        import pyvqnet
-        pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn.torch import TDG,TNQMachine
-        device = TNQMachine(4)
-        layer = TDG(wires=0)
-        batchsize = 1
-        device.reset_states(1)
-        layer(q_machine = device)
-        print(device.get_states())
-
 ControlledPhaseShift
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -7134,71 +7559,97 @@ Samples
 
 
 
-HermitianExpval
+QInfoMeasurement
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.HermitianExpval(obs, name="")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.QInfoMeasurement(quantity=None, wires=None, obs=None, name="")
 
-    Computes the expectation value of a Hermitian operator on a quantum circuit.
+    Measurement module that measures a quantum information quantity of a tensor-network circuit. The tensor-network backend supports three quantities: ``quantity="expectation"`` computes the expectation value of a Hermitian operator, ``quantity="purity"`` computes the purity of a group of qubits :math:`\mathrm{Tr}(\rho^2)`, and ``quantity="variance"`` computes the variance of a Hermitian operator :math:`\langle H^2\rangle - \langle H\rangle^2`.
 
     .. warning::
 
         This class inherits from ``pyvqnet.qnn.vqc.tn.torch.QModule`` and ``torch.nn.Module``.
-        It can be added to a torch model as a submodule of ``torch.nn.Module``.
+        It can be added to a ``TNQModule`` model as a submodule of ``torch.nn.Module``.
 
-
-    :param obs: A Hermitian operator.
+    :param quantity: The quantity to measure: ``"expectation"``, ``"purity"`` or ``"variance"``. ``"expectation"`` can be omitted when ``obs`` is a dictionary that contains the key ``matrix`` or ``observables``. ``"entropy"``, ``"meyer_wallach"`` and ``"mutual_info"`` have no tensor-network implementation and raise ``NotImplementedError`` when called (``PrecompileNotSupported`` is raised inside the ``forward`` of a ``TNQModule``).
+    :param wires: Indices of the measured qubits, as a single index or a list of indices. ``wires`` must be given for ``"purity"``; for ``"expectation"`` and ``"variance"`` it can be omitted when the matrix acts on the whole ``TNQMachine``.
+    :param obs: Hermitian matrix. For ``"expectation"`` it can be a dictionary of the form ``{'wires': (1, 0), 'observables': matrix}`` or the matrix given directly; for ``"variance"`` the matrix is given directly.
     :param name: Module name. Default: "".
-    :return: A HermitianExpval measurement instance.
+    :return: A QInfoMeasurement measurement instance. The measurement result has shape [b], where b is the batch size given to ``TNQMachine.reset_states(b)``.
 
     Example::
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn.torch import TNQModule, TNQMachine, HermitianExpval, RX, RY, CNOT, PauliX, PauliZ, VQC_RotCircuit, rx, ry
+        import numpy as np
+        import torch
+        from pyvqnet.qnn.vqc.tn.torch import (
+            TNQModule, TNQMachine, QInfoMeasurement, vqc_rotcircuit, RY, CNOT, PauliX, qcircuit,
+        )
+        from pyvqnet.qnn.vqc import rx, ry
         from pyvqnet.tensor import QTensor, tensor
         from pyvqnet.nn import Parameter
-        import numpy as np
+
         bsz = 3
         H = np.array([[8, 4, 0, -6], [4, 0, 4, 0], [0, 4, 8, 0], [-6, 0, 0, 0]])
+
+
         class QModel(TNQModule):
             def __init__(self, num_wires, dtype):
                 super(QModel, self).__init__()
-                self.rot_param = Parameter((3, ))
-                self._num_wires = num_wires
-                self._dtype = dtype
+                rot_param = Parameter((3, ))
+                rot_param.copy_value_from(tensor.QTensor([-0.5, 1, 2.3]))
+                self.rot_param = rot_param
                 self.qm = TNQMachine(num_wires, dtype=dtype)
-                self.rx_layer1 = VQC_RotCircuit
-                self.ry_layer2 = RY(trainable=True,
-                                    wires=0,
-                                    init_params=tensor.QTensor([-0.5]))
+                self.ry_layer2 = RY(trainable=True, wires=0, init_params=tensor.QTensor([-0.5]))
                 self.xlayer = PauliX(wires=0)
                 self.cnot = CNOT(wires=[0, 1])
-                self.measure = HermitianExpval(obs = {'wires':(1,0),'observables':tensor.to_tensor(H)})
+                self.measure = QInfoMeasurement("expectation", obs={'wires': (1, 0), 'observables': tensor.to_tensor(H)})
 
             def forward(self, x, *args, **kwargs):
-                self.qm.reset_states(bsz)
-
+                self.qm.reset_states(x.shape[0])
                 rx(q_machine=self.qm, wires=0, params=x[1])
                 ry(q_machine=self.qm, wires=1, params=x[0])
                 self.xlayer(q_machine=self.qm)
-                self.rx_layer1(params=self.rot_param, wire=1, q_machine=self.qm)
+                vqc_rotcircuit(self.qm, 1, self.rot_param)
                 self.ry_layer2(q_machine=self.qm)
                 self.cnot(q_machine=self.qm)
-                rlt = self.measure(q_machine = self.qm)
-
-                return rlt
+                return self.measure(q_machine=self.qm)
 
 
-        input_x = tensor.arange(1, bsz * 2 + 1,
-                                dtype=pyvqnet.kfloat32).reshape([bsz, 2])
+        input_x = tensor.arange(1, bsz * 2 + 1, dtype=pyvqnet.kfloat32).reshape([bsz, 2])
         input_x.requires_grad = True
 
         qunatum_model = QModel(num_wires=2, dtype=pyvqnet.kcomplex64)
-
         batch_y = qunatum_model(input_x)
-        batch_y.backward(pyvqnet.tensor.ones_like(batch_y))
+        batch_y.backward(torch.ones_like(batch_y))
+        print(type(batch_y).__name__, batch_y.detach().numpy())
+        print(input_x.grad.detach().numpy())
+        print(qunatum_model.ry_layer2.params.grad.detach().numpy())
+        print(qunatum_model.rot_param.grad.detach().numpy())
 
+        Z = np.array([[1.0, 0.0], [0.0, -1.0]])
+        qm = TNQMachine(2)
+        qm.reset_states(1)
+        qcircuit.ry(q_machine=qm, wires=1, params=QTensor([[0.4]]))
+        qcircuit.cnot(q_machine=qm, wires=[1, 0])
+        print(QInfoMeasurement("purity", wires=[0])(q_machine=qm).detach().numpy())
+        print(QInfoMeasurement("variance", obs=Z, wires=[0])(q_machine=qm).detach().numpy())
+        try:
+            QInfoMeasurement("entropy", wires=[0])(q_machine=qm)
+        except NotImplementedError as e:
+            print(type(e).__name__)
+
+        # Tensor [5.379823  7.1294165 0.7028296]
+        # [[-1.3423377   5.311905  ]
+        #  [-2.0510893  -2.0441792 ]
+        #  [-0.9808328   0.93073535]]
+        # [-2.3934531]
+        # [-0.4425026  3.3497314  3.6554477]
+        # [0.9241767]
+        # [0.15164657]
+        # NotImplementedError
+ 
 
 
 Common quantum circuit templates
@@ -7388,7 +7839,7 @@ VQC_QuantumEmbedding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-.. py:class:: pyvqnet.qnn.vqc.tn.torch.VQC_QuantumEmbedding(  num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,initial = None,dtype = None,name= "")
+.. py:class:: pyvqnet.qnn.vqc.tn.torch.VQC_QuantumEmbedding(  num_repetitions_input, depth_input, num_unitary_layers, num_repetitions,dtype = None,initial = None,name= "")
 
     Uses RZ, RY, and RZ to create a variational quantum circuit that encodes classical data into quantum states.
     See `Quantum embeddings for machine learning <https://arxiv.org/abs/2001.03622>`_.
@@ -7509,7 +7960,7 @@ ExpressiveEntanglingAnsatz
 vqc_basis_embedding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_basis_embedding(basis_state,q_machine)
+.. py:function:: pyvqnet.qnn.vqc.tn.torch.vqc_basis_embedding(basis_state,q_machine,wires=None)
 
     Encodes n binary features into the basis state of n qubits in ``q_machine``. This function is aliased as `VQC_BasisEmbedding`.
 
@@ -7517,6 +7968,7 @@ vqc_basis_embedding
 
     :param basis_state: Binary input of size ``(n)``.
     :param q_machine: Quantum machine device.
+    :param wires: Qubits on which the encoding acts; default: None, which uses all the qubits of ``q_machine``.
 
 
     Example::
@@ -7603,6 +8055,10 @@ vqc_iqp_embedding
 
     The basic IQP circuit can be repeated by specifying ``rep``.
 
+    .. warning::
+
+        The gate angles of the IQP circuit are computed from the input data, which the JIT recorder of the tensor-network backend cannot replay. This function can only act on a stand-alone ``TNQMachine``; calling it in the ``forward`` of a ``TNQModule`` raises ``pyvqnet.qnn.vqc.PrecompileNotSupported``.
+
     :param input_feat: Array representing the parameters.
     :param q_machine: Quantum machine device.
     :param rep: Number of times the quantum circuit block is repeated. Default: 1.
@@ -7612,11 +8068,35 @@ vqc_iqp_embedding
 
         import pyvqnet
         pyvqnet.backends.set_backend("torch")
-        from pyvqnet.qnn.vqc.tn.torch import vqc_iqp_embedding, TNQMachine
+        from pyvqnet.qnn.vqc.tn.torch import vqc_iqp_embedding, TNQMachine, TNQModule, Probability
+        from pyvqnet.qnn.vqc import PrecompileNotSupported
         from pyvqnet.tensor import QTensor
-        qm  = TNQMachine(3)
+
+        qm = TNQMachine(3)
         vqc_iqp_embedding(QTensor([3.2,-2,-2]), q_machine=qm)
         print(qm.get_states())
+        # tensor([[[[ 0.0309-0.3522j,  0.3256+0.1377j],
+        #           [ 0.3256+0.1377j,  0.2983+0.1897j]],
+        #
+        #          [[ 0.0309+0.3522j, -0.3171-0.1565j],
+        #           [-0.3171-0.1565j, -0.2311-0.2676j]]]])
+
+        class QModel(TNQModule):
+            def __init__(self):
+                super(QModel, self).__init__()
+                self.device = TNQMachine(3)
+                self.measure = Probability(wires=[0, 2])
+
+            def forward(self, x):
+                self.device.reset_states(x.shape[0])
+                vqc_iqp_embedding(x, q_machine=self.device)
+                return self.measure(q_machine=self.device)
+
+        try:
+            QModel()(QTensor([[0.4, 0.5, 0.6]], requires_grad=True))
+        except PrecompileNotSupported as e:
+            print(type(e).__name__)
+        # PrecompileNotSupported
 
 
 
@@ -7802,7 +8282,7 @@ vqc_fermionic_single_excitation
         exp = m(q_machine=qm)
         print(exp)
 
-
+ 
 
 
 vqc_fermionic_double_excitation
@@ -7856,7 +8336,7 @@ vqc_fermionic_double_excitation
         m = MeasureAll(obs={"Z0": 1})
         exp = m(q_machine=qm)
         print(exp)
-
+ 
 
 vqc_uccsd
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -7957,7 +8437,7 @@ vqc_zfeaturemap
             hadamard(q_machine=qm, wires=[i])
         vqc_zfeaturemap(input_feat=QTensor([[0.1,0.2,0.3]]),q_machine = qm)
         print(qm.get_states())
-
+ 
 
 vqc_zzfeaturemap
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -9027,15 +9507,19 @@ The test code is as follows:
     if __name__ == "__main__":
         test_3()
 
+
 Distributed interface
 =================================================
 
 Distributed-related functionality. When using the ``torch`` computing backend, the implementation wraps torch's ``torch.distributed`` functionality and also uses CommController.
 
+
+
+
+
 CommController
 -------------------------
-
-.. py:class:: pyvqnet.distributed.ControlComm.CommController(backend,rank=None,world_size=None)
+.. py:class:: pyvqnet.distributed.ControlComm.CommController(backend,rank=None,world_size=None,timeout=None)
    :noindex:
 
     CommController is a controller for data communication on CPU and GPU. It creates a CPU (gloo) or GPU (nccl) controller based on the ``backend`` parameter.
@@ -9053,42 +9537,10 @@ CommController
     :param backend: Used to create the CPU or GPU data communication controller: 'gloo' or 'nccl'.
     :param rank: Process ID of the current program.
     :param world_size: Total number of processes across all nodes.
+    :param timeout: Communication timeout, as a number of seconds or a ``datetime.timedelta``. Default: None, which means 600 seconds. With the ``torch`` computing backend the timeout of the ``torch.distributed`` process group is fixed to 2 minutes, so this parameter has no effect.
 
     :return:
         A CommController instance.
-
-    Example::
-
-        from pyvqnet.distributed import CommController
-        import pyvqnet
-        pyvqnet.backends.set_backend("torch")
-        import os
-        import multiprocessing as mp
-
-
-        def init_process(rank, size):
-            """ Initialize the distributed environment. """
-            os.environ['MASTER_ADDR'] = '127.0.0.1'
-            os.environ['MASTER_PORT'] = '29500'
-            os.environ['LOCAL_RANK'] = f"{rank}"
-            pp = CommController("gloo", rank=rank, world_size=size)
-
-            local_rank = pp.get_rank()
-            print(local_rank)
-
-
-        if __name__ == "__main__":
-            world_size = 2
-            processes = []
-            mp.set_start_method("spawn")
-            for rank in range(world_size):
-                p = mp.Process(target=init_process, args=(rank, world_size))
-                p.start()
-                processes.append(p)
-
-            for p in processes:
-                p.join()
-        #python test.py
 
     .. py:method:: getRank()
         :noindex:
@@ -9799,3 +10251,106 @@ CommController
                     p.join()
 
             #python test.py
+
+
+TorchDataParallelVQCLayer
+-------------------------
+
+.. py:class:: pyvqnet.qnn.vqc.sv.torch.TorchDataParallelVQCLayer(Comm_OP=None, vqc_module=None, name: str = "")
+
+    A wrapper layer that packs a quantum module for DDP training in PyTorch. The forward computation calls ``vqc_module`` directly, and the parameters of the quantum module are registered in the wrapper layer through ``vqc_module``. ``TorchDataParalledVQCLayer`` is an alias of this class.
+
+    .. warning::
+
+        This class inherits from ``pyvqnet.nn.torch.TorchModule`` and can be added to a torch model as a submodule of ``torch.nn.Module``.
+
+    :param Comm_OP: Optional ``pyvqnet.distributed.CommController`` instance. When it is given, the constructor moves ``vqc_module`` to the GPU of this process (device number ``get_local_rank() + pyvqnet.DEV_GPU_0``); when it is ``None``, the device is decided by the ``to(device)`` call of the outer model.
+    :param vqc_module: A quantum ``TorchModule``, for example an instance of a ``QModule`` subclass.
+    :param name: Module name. Default: "".
+    :return: A wrapper layer instance.
+
+    Example::
+
+        import torch
+        import pyvqnet
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet.qnn.vqc.sv.torch import QMachine, QModule, RY, CNOT, MeasureAll, TorchDataParallelVQCLayer
+        from pyvqnet.tensor import QTensor
+
+        pyvqnet.utils.set_random_seed(42)
+
+
+        class VQCBlock(QModule):
+            def __init__(self):
+                super().__init__()
+                self.qm = QMachine(2)
+                self.ry = RY(trainable=True, wires=0)
+                self.cnot = CNOT(wires=[0, 1])
+                self.measure = MeasureAll(obs={"Z0": 1.0, "Z1": 1.0})
+
+            def forward(self, x):
+                self.qm.reset_states(x.shape[0])
+                self.ry(q_machine=self.qm)
+                self.cnot(q_machine=self.qm)
+                return self.measure(q_machine=self.qm)
+
+
+        layer = TorchDataParallelVQCLayer(vqc_module=VQCBlock(), name="qvc")
+        x = QTensor([[0.5], [0.3]], requires_grad=True)
+        y = layer(x)
+        print(y.detach().numpy())
+        y.backward(torch.ones_like(y))
+        print(layer.vqc_module.ry.params.grad.detach().numpy())
+        print(list(layer.state_dict().keys()))
+
+        # [[1.4773092]
+        #  [1.4773092]]
+        # [[2.6963363]]
+        # ['vqc_module.ry.params']
+
+
+Inter-Process Transfer Views for complex32 Tensors
+--------------------------------------------------
+
+``torch.distributed`` and NCCL have no transport type for complex32. The ``torch`` backend transfers complex32 tensors through a ``torch.float16`` view that shares their storage: a complex32 tensor of shape ``[.., N]`` corresponds to a float16 view of shape ``[.., 2N]``, with the number of bytes unchanged. The point-to-point exchange (``send_recv``) of the NCCL backend uses this view; the gloo backend widens the data to complex64 for the transfer and then copies it back into the complex32 tensor.
+
+.. py:function:: pyvqnet.backends.torch.c32_as_f16_view(t)
+
+    Returns the float16 transfer view of the complex32 tensor ``t``, together with the base tensor of the view.
+
+    :param t: A ``torch.complex32`` tensor. Lazily conjugated (``is_conj``) and non-contiguous tensors are materialized; the base tensor is then a new buffer, and the caller has to copy the result back into the original tensor.
+    :return: ``(view, base)``. ``view`` is a ``torch.float16`` tensor of shape ``t.shape[:-1] + (2 * t.shape[-1],)``; ``base`` is the complex32 base tensor of ``view``.
+
+.. py:function:: pyvqnet.backends.torch.f16_view_as_c32(v)
+
+    The inverse operation of ``c32_as_f16_view``.
+
+    :param v: A ``torch.float16`` tensor whose last dimension has an even length.
+    :return: A complex32 tensor that shares its storage with ``v``, of shape ``v.shape[:-1] + (v.shape[-1] // 2,)``.
+
+Example::
+
+        import torch
+        import pyvqnet
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet.backends.torch import c32_as_f16_view, f16_view_as_c32
+
+        g = torch.Generator().manual_seed(0)
+        t = torch.complex(torch.randn(3, 8, generator=g), torch.randn(3, 8, generator=g)).to(torch.complex32)
+        v, base = c32_as_f16_view(t)
+        print(base is t, v.dtype, tuple(v.shape), v.element_size() * v.numel() == t.element_size() * t.numel())
+        back = f16_view_as_c32(v)
+        print(back.data_ptr() == t.data_ptr(), torch.equal(back.view(torch.int16), t.view(torch.int16)))
+
+        tc = t.conj()                       # lazy conjugate: metadata only
+        v2, base2 = c32_as_f16_view(tc)
+        print(base2 is tc, torch.equal(base2.view(torch.int16), t.conj().resolve_conj().view(torch.int16)))
+
+        s = t[::2]                          # non-contiguous view
+        v3, base3 = c32_as_f16_view(s)
+        print(s.is_contiguous(), base3 is s, tuple(v3.shape))
+
+        # True torch.float16 (3, 16) True
+        # True True
+        # False True
+        # False False (2, 16)

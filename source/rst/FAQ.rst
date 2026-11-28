@@ -36,7 +36,7 @@ In VQNet, users can use ``QuantumBatchAsyncQcloudLayer`` to build a variational 
 A: A VQNet model must be built so that every module it uses is differentiable. If a module cannot compute gradients, that module and all preceding modules cannot compute gradients through the chain rule.
 If you define a custom variational quantum circuit, use the interfaces under :ref:`QuantumLayer_pq3` provided by VQNet. For classical machine learning modules, use the interfaces defined in :doc:`./QTensor` and :doc:`./nn`; these interfaces wrap gradient computation functions, so VQNet can perform automatic differentiation.
 
-If you want to use a list containing multiple modules as a submodule in `Module`, do not use Python's built-in List. Use pyvqnet.nn.module.ModuleList instead of List. This way, the submodules' training parameters are registered in the whole model and can be trained with automatic differentiation.
+If you want to use a list containing multiple modules as a submodule in `Module`, do not use Python's built-in List. Use pyvqnet.nn.ModuleList instead of List. This way, the submodules' training parameters are registered in the whole model and can be trained with automatic differentiation.
 
 
 **Q: Why does my existing code fail to run in 2.0.7 and later?**
@@ -49,4 +49,4 @@ You can use the `astype()` interface to convert to the specified data type, or i
 A: VQNet does not depend on torch and does not install torch automatically.
 
 Using the following features requires installing torch>=2.11.0 separately. Since v2.15.0, we support `torch >=2.11.0 <https://docs.pytorch.org/docs/stable/index.html>`_ as a compute backend for classical neural networks, variational quantum circuits, distributed computation, and more.
-After calling ``pyvqnet.backends.set_backend("torch")``, the interfaces stay the same, but the ``data`` member of VQNet's ``QTensor`` is stored as a ``torch.Tensor`` and computed with torch. Classes under ``pyvqnet.nn.torch`` and ``pyvqnet.qnn.vqc.torch`` inherit from ``torch.nn.Module`` and can form ``torch`` models.
+After calling ``pyvqnet.backends.set_backend("torch")``, the interfaces stay the same, but the ``data`` member of VQNet's ``QTensor`` is stored as a ``torch.Tensor`` and computed with torch. Module classes under ``pyvqnet.nn.torch``, ``pyvqnet.qnn.vqc.sv.torch`` and ``pyvqnet.qnn.vqc.tn.torch`` inherit from ``torch.nn.Module`` and can form ``torch`` models.

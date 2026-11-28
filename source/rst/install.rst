@@ -133,10 +133,10 @@ Training and Test Code Flow
     #Import the required libraries and functions
     from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
     from pyvqnet.optim import adam
-    from pyvqnet.nn.loss import CategoricalCrossEntropy
+    from pyvqnet.nn import CategoricalCrossEntropy
     from pyvqnet.tensor import QTensor
     import numpy as np
-    from pyvqnet.nn.module import Module
+    from pyvqnet.nn import Module
 
 Define the model Model, where the `__init__` function defines each internal neural network module and quantum module, and the `forward` function defines the forward pass. `QuantumLayer` is an abstract class that wraps quantum computation.
 You only need to pass the quantum computing function `qdrl_circuit`, the number of trainable parameters `param_num`, the backend configuration `"cpu"`, and the number of qubits `qbit_num`. The class then computes parameter gradients automatically in `VQNet`.

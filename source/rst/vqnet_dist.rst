@@ -176,14 +176,20 @@ Because the launcher's argument parsing requires ``--nproc_per_node``, this para
 
 CommController
 ^^^^^^^^^^^^^^^^^^^^^^^
-
-.. py:class:: pyvqnet.distributed.ControlComm.CommController(backend=None, rank=None, world_size=None)
+.. py:class:: pyvqnet.distributed.ControlComm.CommController(backend=None, rank=None, world_size=None, timeout=None)
 
     CommController is a controller for controlling data communication on CPU and GPU. Set the `backend` parameter to create a CPU (gloo) or GPU (nccl) controller. (Currently, distributed computing is supported only on Linux.)
 
     :param backend: Controller used for CPU or GPU data communication. If None, both gloo and nccl communication are supported. Defaults to None.
     :param rank: This parameter is useful only with non-pyvqnet backends. Default: None.
     :param world_size: This parameter is useful only with non-pyvqnet backends. Default: None.
+    :param timeout: Communication timeout, as an ``int`` / ``float`` number of seconds or a ``datetime.timedelta``. Default: None, which means 600 seconds. Passing a ``bool`` raises ``TypeError``, and passing a value less than or equal to 0 raises ``ValueError``. With the default backend the timeout is passed to the gloo communicator and the NCCL communicator, and lazily created NCCL controllers and sub-communication groups inherit the same timeout; with the ``torch`` computing backend the timeout of the ``torch.distributed`` process group is fixed to 2 minutes, so this parameter has no effect.
+
+    .. note::
+
+        With ``backend="nccl"``, each NCCL communicator has a watchdog thread that checks for unfinished collective operations every 100 milliseconds. An operation that is still unfinished after ``timeout`` is judged to have failed; the watchdog aborts the communicator that the operation belongs to, and the corresponding ``wait()`` raises a ``RuntimeError`` whose message starts with ``Watchdog caught collective operation timeout``.
+
+        In a process started by ``vqnetrun``, a controller is registered when it is constructed; when the process receives ``SIGTERM``, it first destroys all registered controllers and then exits according to the signal.
 
     :return:
         A CommController instance.
@@ -191,7 +197,7 @@ CommController
     Example::
 
         from pyvqnet.distributed import CommController
-        Comm_OP = CommController("nccl") # init nccl controller
+        Comm_OP = CommController("nccl", timeout=120) # init nccl controller, 120 s timeout
 
     .. py:method:: getRank()
 
@@ -715,6 +721,8 @@ CommController
         NCCL resources. If not called, NCCL communicators may leak memory or
         cause errors during CUDA driver shutdown.
 
+        The watchdog thread attached to the NCCL communicator is stopped in this step, and the communicator resources are released.
+
         Example::
 
             from pyvqnet.distributed import CommController
@@ -722,30 +730,36 @@ CommController
             # ... uses Comm_OP ...
             Comm_OP.destroy()  # Call before exit
 
-split_data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The timeout Parameter of CommController
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In multiprocessing, use ``split_data`` to split data according to the number of processes and return the data for the corresponding process.
+``timeout`` of ``CommController`` accepts a number of seconds or a ``datetime.timedelta`` and defaults to 600 seconds; ``bool`` values and non-positive numbers are rejected. The code below does not require starting multiple processes.
 
-.. py:function:: pyvqnet.distributed.datasplit.split_data(x_train, y_train, shuffle=False)
+Example::
 
-    Set distributed computing parameters.
+        from datetime import timedelta
 
-    :param x_train: `np.array` - Training data.
-    :param y_train: `np.array` - Training data labels.
-    :param shuffle: `bool` - Whether to shuffle before splitting. Default: False.
+        import pyvqnet
+        from pyvqnet.distributed import CommController
+        from pyvqnet.distributed.ControlComm import _ControlComm
 
-    :return: The split training data and labels.
+        print(_ControlComm._DEFAULT_NCCL_TIMEOUT_MS)
+        for timeout in (True, 0, -3, timedelta(0)):
+            try:
+                CommController("nccl", timeout=timeout)
+            except (TypeError, ValueError) as e:
+                print(type(e).__name__, "|", e)
 
-    Example::
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet.backends.torch import _distributed
+        print(_distributed._DEFAULT_INIT_TIMEOUT.total_seconds())
 
-        from pyvqnet.distributed import split_data
-        import numpy as np
-
-        x_train = np.random.randint(255, size = (100, 5))
-        y_train = np.random.randint(2, size = (100, 1))
-
-        x_train, y_train= split_data(x_train, y_train)
+        # 600000
+        # TypeError | timeout must be a number of seconds or datetime.timedelta, not bool
+        # ValueError | timeout must be positive
+        # ValueError | timeout must be positive
+        # ValueError | timeout must be positive
+        # 120.0
 
 get_local_rank
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -813,15 +827,26 @@ PipelineParallelTrainingWrapper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. py:class:: pyvqnet.distributed.pp.PipelineParallelTrainingWrapper(args,join_layers,trainset)
 
-    Pipeline Parallel Training Wrapper implements 1F1B training. It is available only on Linux with GPUs.
-    More algorithm details can be found at (https://www.deepspeed.ai/tutorials/pipeline/).
+    Compatibility wrapper for classical pipeline parallel training. The constructor emits a ``DeprecationWarning`` and delegates the training to ``pyvqnet.distributed.hybrid.ParallelTrainingWrapper``: ``join_layers`` is passed to the unified wrapper as a flat list of layers and split over the pipeline stages according to ``args["partition_method"]``.
 
-    :param args: Parameter dictionary. See the example.
-    :param join_layers: List of Sequential modules.
+    :param args: Parameter dictionary. See the example. ``pipeline_parallel_size`` is the number of pipeline stages; ``partition_method`` is ``"parameters"`` (default, balanced by the number of parameters) or ``"uniform"`` (uniform split); when ``data_parallel_size`` is not given, it is the total number of processes divided by ``pipeline_parallel_size`` (integer division).
+    :param join_layers: List of ``Module`` layers. Function layers (for example ``lambda``) are not supported and raise ``ValueError`` when passed; write the function logic as a ``Module`` subclass instead.
     :param trainset: Dataset.
 
     :return:
         A PipelineParallelTrainingWrapper instance.
+
+    .. py:method:: net
+
+        Attribute. The pipeline model held by the unified wrapper, which can be used for ``state_dict()`` and inspecting the parameters.
+
+        :return: The pipeline model.
+
+    .. py:method:: train_batch()
+
+        Runs ``args["steps"]`` training steps.
+
+        :return: A dictionary that records the loss of each step.
 
     The following uses the CIFAR10 dataset `CIFAR10_Dataset` to train a classification task on AlexNet with 2 GPUs.
     In this example, the training is split into two pipeline parallel processes with `pipeline_parallel_size` = 2.
@@ -843,7 +868,7 @@ PipelineParallelTrainingWrapper
         from pyvqnet.nn import Module,Sequential,CrossEntropyLoss
         from pyvqnet.nn import Linear
         from pyvqnet.nn import Conv2D
-        from pyvqnet.nn import activation as F
+        from pyvqnet.nn.native import activation as F
         from pyvqnet.nn import MaxPool2D
         from pyvqnet.nn import CrossEntropyLoss
 
@@ -908,10 +933,14 @@ PipelineParallelTrainingWrapper
 
                 return x
 
+        class Flatten(Module):
+            def forward(self, x):
+                return tensor.flatten(x, 1)
+
         def join_layers(vision_model):
             layers = [
                 *vision_model.features,
-                lambda x: tensor.flatten(x, 1),
+                Flatten(),
                 *vision_model.cls,
             ]
             return layers
@@ -919,13 +948,12 @@ PipelineParallelTrainingWrapper
 
         if __name__ == "__main__":
 
-
             args = {
             "backend":'nccl',
             "train_batch_size" : 64,
             "train_micro_batch_size_per_gpu" : 32,
             "epochs":5,
-        "optimizer": {
+            "optimizer": {
             "type": "Adam",
             "params": {
             "lr": 0.001
@@ -937,8 +965,6 @@ PipelineParallelTrainingWrapper
             os.environ["LOCAL_RANK"] = str(dist.get_local_rank())
             trainset = cifar_trainset_vqnet(args["local_rank"])
             w = PipelineParallelTrainingWrapper(args,join_layers(Model()),trainset)
-
-            all_loss = {}
 
             for i in range(args["epochs"]):
                 w.train_batch()
@@ -1047,7 +1073,7 @@ ZeroModelInitial
                 self.fc3 = nn.Linear(256, 128)
                 self.fc4 = nn.Linear(128, 64)
                 self.fc5 = nn.Linear(64, 10)
-                self.ac = nn.activation.ReLu()
+                self.ac = nn.ReLu()
 
             def forward(self, x:pyvqnet.QTensor):
 
@@ -1237,7 +1263,7 @@ ColumnParallelLinear
                 self.fc3 = RowParallelLinear(256, 128, tp_comm = Comm_OP)
                 self.fc4 = ColumnParallelLinear(128, 64, tp_comm = Comm_OP)
                 self.fc5 = RowParallelLinear(64, 10, tp_comm = Comm_OP)
-                self.ac = nn.activation.ReLu()
+                self.ac = nn.ReLu()
 
             def forward(self, x:pyvqnet.QTensor):
 
@@ -1411,7 +1437,7 @@ RowParallelLinear
                 self.fc3 = RowParallelLinear(256, 128, tp_comm = Comm_OP)
                 self.fc4 = ColumnParallelLinear(128, 64, tp_comm = Comm_OP)
                 self.fc5 = RowParallelLinear(64, 10, tp_comm = Comm_OP)
-                self.ac = nn.activation.ReLu()
+                self.ac = nn.ReLu()
 
 
             def forward(self, x:pyvqnet.QTensor):
@@ -1487,14 +1513,14 @@ Qubit reordering is a technique in bit parallelism. Its core idea is to reduce t
 
 
 DistributedQMachine
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. py:class:: pyvqnet.distributed.qubits_reorder.DistributedQMachine(num_wires, dtype=kcomplex64, grad_mode="")
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. py:class:: pyvqnet.distributed.qubits_reorder.DistributedQMachine(num_wires, dtype=kcomplex64, state_storage=None)
 
     A simulation class for variational quantum computing in bit parallelism, containing the quantum states on the subset of qubits held by each node. Through MPI, each node creates an instance of this class to perform distributed variational quantum circuit simulation. The value of N must equal 2 raised to the power of the number of bit-parallel qubits `global_qubit`, which can be configured through `set_qr_config`.
 
     :param num_wires: Number of qubits in the full quantum circuit.
     :param dtype: Data type for computation. Default is pyvqnet.kcomplex64, with a corresponding parameter precision of pyvqnet.kfloat32.
-    :param grad_mode: Set to adjoint when performing backpropagation in ``DistQuantumLayerAdjoint``.
+    :param state_storage: Storage data type of the state vectors, optional. When ``torch.complex32`` or ``pyvqnet.kcomplex32`` is passed, the state vectors held by this process are stored in fp16 (4 bytes per amplitude) and the compute precision stays complex64; default: None, which uses complex64 storage.
 
     .. note::
 
@@ -1527,12 +1553,12 @@ DistributedQMachine
         batch_size = 5
 
         class QModel(pyvqnet.nn.Module):
-            def __init__(self, num_wires, dtype, grad_mode=""):
+            def __init__(self, num_wires, dtype):
                 super(QModel, self).__init__()
 
                 self._num_wires = num_wires
                 self._dtype = dtype
-                self.qm = DistributedQMachine(num_wires, dtype=dtype, grad_mode=grad_mode)
+                self.qm = DistributedQMachine(num_wires, dtype=dtype)
 
                 self.qm.set_just_defined(True)
                 self.qm.set_save_op_history_flag(True) # open save op
@@ -1564,8 +1590,7 @@ DistributedQMachine
         input_x.requires_grad = True
 
         quantum_model = QModel(num_wires=qubit,
-                            dtype=pyvqnet.kcomplex64,
-                            grad_mode="adjoint").toGPU(pyvqnet.DEV_GPU_0+get_rank())
+                            dtype=pyvqnet.kcomplex64).toGPU(pyvqnet.DEV_GPU_0+get_rank())
 
         adjoint_model = DistQuantumLayerAdjoint(quantum_model)
         adjoint_model.train()
@@ -1608,17 +1633,17 @@ DistQuantumLayerAdjoint
         batch_size = 5
 
         class QModel(pyvqnet.nn.Module):
-            def __init__(self, num_wires, dtype, grad_mode=""):
+            def __init__(self, num_wires, dtype):
                 super(QModel, self).__init__()
 
                 self._num_wires = num_wires
                 self._dtype = dtype
-                self.qm = DistributedQMachine(num_wires, dtype=dtype, grad_mode=grad_mode)
+                self.qm = DistributedQMachine(num_wires, dtype=dtype)
 
                 self.qm.set_just_defined(True)
                 self.qm.set_save_op_history_flag(True) # open save op
                 self.qm.set_qr_config({"qubit": num_wires, # open qubit reordered, set config
-                                            "global_qubit": 1}) # global_qubit == log2(nproc)
+                                        "global_qubit": 1}) # global_qubit == log2(nproc)
 
                 self.params = pyvqnet.nn.Parameter([qubit])
 
@@ -1645,8 +1670,7 @@ DistQuantumLayerAdjoint
         input_x.requires_grad = True
 
         quantum_model = QModel(num_wires=qubit,
-                            dtype=pyvqnet.kcomplex64,
-                            grad_mode="adjoint").toGPU(pyvqnet.DEV_GPU_0+get_rank())
+                            dtype=pyvqnet.kcomplex64).toGPU(pyvqnet.DEV_GPU_0+get_rank())
 
         adjoint_model = DistQuantumLayerAdjoint(quantum_model)
         adjoint_model.train()
@@ -1658,10 +1682,12 @@ DistQuantumLayerAdjoint
         # vqnetrun --nproc_per_node 2 python test.py
 
 ParallelTrainingWrapper
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. py:class:: pyvqnet.distributed.hybrid.ParallelTrainingWrapper(args, pipeline_def, trainset, strategy=None)
 
     A unified parallel training wrapper that supports three parallel modes: classical layer pipeline parallelism (PP), data parallelism (DP), and bit parallelism (Bit). It can interleave classical layers and variational quantum circuits (VQC) into a multi-level pipeline for execution.
+
+    ``pyvqnet.distributed.hybrid.ParallelTrainingWrapper`` is the wrapper used by the default backend; the ``torch`` computing backend uses ``pyvqnet.distributed.hybrid.torch.wrapper.ParallelTrainingWrapper``. The two take the same parameters, and ``pyvqnet.distributed.hybrid.get_parallel_wrapper()`` returns the class that corresponds to the current backend.
 
     :param args: Training configuration dictionary. The following keys are supported:
 
@@ -1689,6 +1715,12 @@ ParallelTrainingWrapper
             Print interval in steps.
         ``seed`` (int, default 42)
             Random seed for determinism of VQC recording.
+        ``partition`` (``"manual"`` / ``"auto"``, default ``"manual"``)
+            With ``"auto"``, ``pipeline_def`` must be a flat list of layers and the wrapper splits it uniformly into ``pipeline_parallel_size`` consecutive stages; with ``"manual"``, ``pipeline_def`` is handled in the forms of ``pipeline_def`` described below. Any other value raises ``ValueError``.
+        ``backend`` (``"gloo"`` / ``"nccl"``, may be omitted)
+            Used only with the ``torch`` computing backend: the communication backend of the process group. When omitted, ``"nccl"`` is used if ``device="gpu"`` and CUDA is available, and ``"gloo"`` otherwise.
+        ``zero_optimization`` (dict, may be omitted)
+            Used only with the default backend: when it is ``{"stage": 1}`` and ``data_parallel_size > 1``, the optimizer is wrapped with the ZeRO stage-1 optimizer wrapper.
 
     :param pipeline_def: Model definition. The following four forms are supported:
 
@@ -1696,7 +1728,7 @@ ParallelTrainingWrapper
 
            ``[{"type": "classical", "layers": [...]}, ...]``
 
-           Each entry is a stage dictionary and supports three types: ``classical``, ``vqc_split``, and ``vqc_whole``.
+           Each entry is a stage dictionary and supports three types: ``classical``, ``vqc_split`` and ``vqc_whole``.
 
         2. Pure classical model: a list of ``nn.Module`` layers, automatically assigned to stages.
 
@@ -1704,33 +1736,121 @@ ParallelTrainingWrapper
 
         4. Hybrid model: a list of ``("classical", [layers])`` / ``("vqc", VQCClass)`` tuples.
 
-        Forms 2-4 are automatically compiled by ``auto_plan`` into the legacy dictionary-list intermediate representation.
+        Forms 2-4 are declarative model descriptions. The wrapper first compiles them into the dictionary-list intermediate representation of form 1 with ``pyvqnet.distributed.hybrid.pipeline_partition.plan_pipeline_stages``. Splitting a VQC block requires the number of gates of its circuit: the wrapper records the circuit of each VQC block once, with ``trainset[0][0]`` as the input, to count the gates.
 
     :param trainset: Dataset. It must have ``.data`` and ``.labels`` attributes, and ``__getitem__`` must return a ``(data, label)`` pair.
     :param strategy: Strategy dictionary, used only for declarative model definitions (forms 2-4). Optional keys:
 
-        - ``classical_split`` (``"uniform"`` | ``"auto"``, default ``"auto"``): Classical layer assignment strategy.
+        - ``classical_split`` (``"uniform"`` | ``"auto"``, default ``"auto"``): Classical layer assignment strategy. With ``"auto"``, the layers are split evenly by their number of parameters.
         - ``vqc_split`` (``None`` | ``False``, default ``None``): ``None`` means automatically split VQC blocks; ``False`` means keep each VQC block intact.
-        - ``compression_policy`` (default ``"greedy"``): Stage merging strategy.
+        - ``compression_policy`` (default ``"greedy"``): Stage merging strategy. Only ``"greedy"`` is currently implemented; any other value raises ``ValueError``.
 
     .. note::
 
         ``pipeline_parallel_size`` must equal the total number of stages in ``pipeline_def``.
 
-        At startup, the number of processes must be specified through ``vqnetrun``, and ``data_parallel_size × pipeline_parallel_size × qubits_parallel_size`` must equal the total number of processes.
+        At startup, the number of processes must be specified through ``vqnetrun``, and ``data_parallel_size × pipeline_parallel_size × qubits_parallel_size`` must equal the total number of processes. With the ``torch`` computing backend the processes are started by ``torchrun`` (the environment variables ``RANK`` and ``WORLD_SIZE`` are required); when neither variable exists, the wrapper runs as a single process.
 
     .. warning::
 
         This interface supports only Linux.
 
-        It must be started through ``vqnetrun --nproc_per_node <N>``; ``mpirun`` is not supported.
+        With multiple processes it must be started through ``vqnetrun --nproc_per_node <N>``.
 
     .. py:method:: train_batch()
 
-        Execute the complete training process for one batch (forward, backward, and parameter update).
+        Executes the complete training process for one batch (forward → backward → parameter update), for ``args["steps"]`` steps in total.
 
+        :return: A dictionary that records the loss of each step.
+
+    .. py:method:: net
+
+        Attribute. The pipeline model, which can be used for ``state_dict()`` and inspecting the parameters.
+
+        :return: The pipeline model.
 
     Example::
+
+        import numpy as np
+        import torch
+        import pyvqnet
+        from pyvqnet.logger import logger
+        logger.setLevel("WARNING")   # keep the INFO plan log out of the printed output
+        pyvqnet.backends.set_backend("torch")
+        pyvqnet.utils.set_random_seed(0)
+        torch.manual_seed(0)
+        from pyvqnet.distributed.hybrid import get_parallel_wrapper
+        ParallelTrainingWrapper = get_parallel_wrapper()
+        from pyvqnet.distributed.hybrid.common.partition import StageType
+        from pyvqnet.qnn.vqc.sv.torch import QMachine, QModule, MeasureAll, RY, rx
+
+
+        class VQCModel(QModule):
+            def __init__(self, bit_rank=0):
+                super().__init__()
+                self.qm = QMachine(3)
+                self.params = torch.nn.Parameter(torch.tensor([0.1, 0.2, 0.3]))
+                self.enc = [RY(trainable=False, wires=[i]) for i in range(3)]
+                self.measure = MeasureAll(obs={"Z0": 1.0})
+
+            def forward(self, x):
+                self.qm.reset_states(x.shape[0])
+                for i in range(3):
+                    rx(q_machine=self.qm, params=self.params[i], wires=i)
+                    self.enc[i](params=x[:, i].reshape(-1, 1), q_machine=self.qm)
+                return self.measure(q_machine=self.qm)
+
+
+        class LinearBlock(torch.nn.Module):
+            def __init__(self, in_dim=3, out_dim=3):
+                super().__init__()
+                self.lin = torch.nn.Linear(in_dim, out_dim)
+
+            def forward(self, x):
+                return self.lin(x)
+
+
+        class Dataset:
+            def __init__(self, n=16):
+                rng = np.random.default_rng(0)
+                self.data = rng.standard_normal((n, 3)).astype(np.float32)
+                self.labels = rng.standard_normal((n,)).astype(np.float32)
+                self.num_samples = n
+
+            def __len__(self):
+                return self.num_samples
+
+            def __getitem__(self, i):
+                return self.data[i], self.labels[i]
+
+
+        args = {
+            "device": "cpu",
+            "data_parallel_size": 1,
+            "pipeline_parallel_size": 1,
+            "qubits_parallel_size": 1,
+            "train_batch_size": 8,
+            "train_micro_batch_size_per_gpu": 8,
+            "epochs": 1,
+            "steps": 2,
+            "loss": lambda labels, y: torch.nn.functional.mse_loss(y.reshape(-1, 1), labels.reshape(-1, 1)),
+            "optimizer": {"type": "Adam", "params": {"lr": 0.01}},
+        }
+        model_spec = [("classical", [LinearBlock()]), ("vqc", VQCModel)]
+        w = ParallelTrainingWrapper(args, model_spec, Dataset())
+        print(w.stage_spec.stage_type.name, w.partition.total_pp_size)
+        print([s.stage_type.name for s in w.stage_spec.sub_stages])
+        loss_dict = w.train_batch()
+        print(loss_dict)
+        print([tuple(p.shape) for p in w.executor.get_params()])
+        # STAGE 1
+        # ['CLASSICAL', 'VQC_WHOLE']
+        # {0: 1.4253586530685425, 1: 1.9046924114227295}
+        # [(3, 3), (3,), (3,)]
+
+    The following is an example of a multi-process hybrid classical-VQC pipeline (default backend, ``vqnetrun --nproc_per_node 4 -- python your_script.py``):
+
+    .. code-block:: python
 
         import os
         import sys
@@ -1743,10 +1863,7 @@ ParallelTrainingWrapper
         from pyvqnet.qnn.vqc import rx, ry, rz, crx, MeasureAll
         from pyvqnet.nn import CrossEntropyLoss
         from pyvqnet.distributed.configs import comm as dist
-        from pyvqnet.distributed.hybrid.distributed_qmachine import (
-            HybridDistributedQMachine,
-        )
-        from pyvqnet.distributed.hybrid import ParallelTrainingWrapper
+        from pyvqnet.distributed.hybrid import HybridDistributedQMachine, ParallelTrainingWrapper
 
         NUM_WIRES = 8
         N_VQC_PARAMS = NUM_WIRES * 4  # 32
@@ -1757,11 +1874,10 @@ ParallelTrainingWrapper
 
 
         class MyVQC(nn.Module):
+
             def __init__(self, bit_rank):
                 super().__init__()
-                self.qm = HybridDistributedQMachine(
-                    NUM_WIRES, 2, bit_rank, grad_mode="adjoint"
-                )
+                self.qm = HybridDistributedQMachine(NUM_WIRES, 2, bit_rank)
                 self.qm.set_just_defined(True)
                 self.qm.set_save_op_history_flag(True)
                 self.qm.set_qr_config({"qubit": NUM_WIRES, "global_qubit": 1})
@@ -1820,7 +1936,7 @@ ParallelTrainingWrapper
 
             # 2-stage composite pipeline: classical+VQC | VQC+classical
             args = {
-                "device": os.environ.get("VQNET_TEST_DEVICE", "cpu"),
+                "device": "cpu",
                 "train_batch_size": BSZ,
                 "train_micro_batch_size_per_gpu": BSZ,
                 "epochs": 1,
@@ -1869,4 +1985,155 @@ ParallelTrainingWrapper
         if __name__ == "__main__":
             main()
 
-        # vqnetrun --nproc_per_node 4 -- python your_script.py
+
+Pipeline VQC Boundaries and Segment Adjoint
+===========================================
+
+When ``ParallelTrainingWrapper`` splits a VQC block over several pipeline stages, the circuit of each stage is wrapped by ``DistQuantumSegmentAdjoint``, and the layout of the state vectors between stages and how they are sent and received are decided by the boundary strategy. The interfaces below live in ``pyvqnet.distributed.hybrid.pipeline`` and are used internally by the wrapper.
+
+.. py:class:: pyvqnet.distributed.hybrid.pipeline.PipelineBoundary(comm, num_wires, num_proc)
+
+    Abstract base class of a pipeline boundary. It defines the layout strategy of the state vectors between stages and the send/receive methods: ``send_forward_state(states, dest_rank)``, ``recv_forward_state(buffer, src_rank)``, ``send_weighted_bra(weighted_bra, dest_rank)`` and ``recv_grad_output(buffer, src_rank)`` send and receive, through the point-to-point communication of ``pyvqnet.backends.global_backend``, the forward state vectors and the weighted adjoint states of the backward pass, respectively.
+
+    :param comm: Point-to-point communication handle of the backend: the ``CommController`` of the default backend, a ``torch.distributed`` process group of the ``torch`` backend, or ``None``.
+    :param num_wires: Total number of qubits (local qubits plus global qubits).
+    :param num_proc: Number of processes of a qubit group, i.e. :math:`2^{\text{global\_qubit}}`.
+
+.. py:class:: pyvqnet.distributed.hybrid.pipeline.OriginalOrderBoundary(comm, num_wires, num_proc)
+
+    Boundary strategy that restores the state vectors to the original qubit order (local qubits first, global qubits after) before sending. ``restores_original_order`` is ``True``, and ``forward_order(qm)`` returns ``list(range(num_wires))``.
+
+    :param comm: Point-to-point communication handle of the backend.
+    :param num_wires: Total number of qubits.
+    :param num_proc: Number of processes of a qubit group.
+
+.. py:class:: pyvqnet.distributed.hybrid.pipeline.FusedQrBoundary(comm, num_wires, num_proc, start_order=None)
+
+    Boundary strategy that keeps the qubit-reordering order inherent to the circuit of the stage and does not restore it. ``restores_original_order`` is ``False``, ``restore_original_qubit_order(states, qm)`` returns ``states`` unchanged, and ``forward_order(qm)`` returns a copy of ``qm.final_qubit_order``.
+
+    :param comm: Point-to-point communication handle of the backend.
+    :param num_wires: Total number of qubits.
+    :param num_proc: Number of processes of a qubit group.
+    :param start_order: Reserved parameter that the current path does not use. Default: ``None``.
+
+.. py:class:: pyvqnet.distributed.hybrid.pipeline.DistQuantumSegmentAdjoint(vqc_segment, boundary, is_last_stage=False, name="")
+
+    Segment adjoint gradient wrapper of one stage of a VQC circuit in a pipeline (default backend). The ``torch`` backend uses ``pyvqnet.distributed.hybrid.pipeline.torch.segment_adjoint.DistQuantumSegmentAdjointTorch``, which takes the same parameters.
+
+    :param vqc_segment: VQC module that contains a ``DistributedQMachine`` within the scope of a qubit group.
+    :param boundary: ``PipelineBoundary`` boundary strategy.
+    :param is_last_stage: Whether this stage contains the measurement.
+    :param name: Module name. Default: "".
+
+.. py:function:: pyvqnet.distributed.hybrid.pipeline.stage_adjoint_backward(qm, ket, weighted_bras, ops, is_last_stage, obs_list=None, start_order=None, fep=None, rev_qr_ops=None, return_rewound_bras=False)
+
+    Performs one adjoint backpropagation over the gate sequence of one stage of the circuit (default backend).
+
+    :param qm: The ``DistributedQMachine`` of this stage.
+    :param ket: The state vectors after the forward computation of this stage.
+    :param weighted_bras: The weighted adjoint states passed back from the next stage.
+    :param ops: The gate sequence recorded for this stage.
+    :param is_last_stage: Whether this stage contains the measurement.
+    :param obs_list: List of observables of the last stage.
+    :param start_order: Qubit order at the start of the circuit of this stage.
+    :param fep: Qubit order at the end of the circuit of this stage.
+    :param rev_qr_ops: The qubit-reordering operations in reverse order.
+    :param return_rewound_bras: When ``True``, additionally returns the rewound adjoint states.
+    :return: ``(local_jac_or_grads, out_weighted_bra, ket, final_qubit_order)``, i.e. the Jacobian matrix or the gradients of this stage, the weighted adjoint states handed to the previous stage, the rewound state vectors and the final qubit order.
+
+Example::
+
+        import types
+        import pyvqnet
+        from pyvqnet.distributed.hybrid.pipeline import (
+            PipelineBoundary, OriginalOrderBoundary, FusedQrBoundary, DistQuantumSegmentAdjoint, stage_adjoint_backward,
+        )
+
+        print(issubclass(OriginalOrderBoundary, PipelineBoundary), issubclass(FusedQrBoundary, PipelineBoundary))
+        qm = types.SimpleNamespace(final_qubit_order=[2, 0, 1])
+        states = [[1.0, 0.0], [0.0, 1.0]]
+        fused = FusedQrBoundary(comm=None, num_wires=3, num_proc=2, start_order=[2, 0, 1])
+        print(fused.restore_original_qubit_order(states, qm) is states, fused.restores_original_order)
+        print(fused.forward_order(qm))
+        original = OriginalOrderBoundary(comm=None, num_wires=3, num_proc=2)
+        print(original.forward_order(qm), original.restores_original_order)
+
+        # True True
+        # True False
+        # [2, 0, 1]
+        # [0, 1, 2] True
+
+
+Inter-Process Transfer of complex32 State Vectors
+=================================================
+
+With the ``torch`` backend, state vectors in complex32 (fp16 storage) can be transferred across processes. The point-to-point exchange ``send_recv(send, dst, recv, src, group=None)`` requires the buffers on the sending and the receiving side to be complex32: the NCCL backend transfers them through a float16 view that shares the storage (``pyvqnet.backends.torch.c32_as_f16_view``), and the gloo backend widens the data to complex64 for the transfer and copies it back afterwards. Lazily conjugated and non-contiguous buffers are materialized first.
+
+Example::
+
+        import torch
+        import pyvqnet
+        pyvqnet.backends.set_backend("torch")
+        from pyvqnet.backends.torch import c32_as_f16_view, f16_view_as_c32
+
+        g = torch.Generator().manual_seed(0)
+        t = torch.complex(torch.randn(3, 8, generator=g), torch.randn(3, 8, generator=g)).to(torch.complex32)
+        v, base = c32_as_f16_view(t)
+        print(base is t, v.dtype, tuple(v.shape), v.element_size() * v.numel() == t.element_size() * t.numel())
+        back = f16_view_as_c32(v)
+        print(back.data_ptr() == t.data_ptr(), torch.equal(back.view(torch.int16), t.view(torch.int16)))
+
+        tc = t.conj()                       # lazy conjugate: metadata only
+        v2, base2 = c32_as_f16_view(tc)
+        print(base2 is tc, torch.equal(base2.view(torch.int16), t.conj().resolve_conj().view(torch.int16)))
+
+        s = t[::2]                          # non-contiguous view
+        v3, base3 = c32_as_f16_view(s)
+        print(s.is_contiguous(), base3 is s, tuple(v3.shape))
+
+        # True torch.float16 (3, 16) True
+        # True True
+        # False True
+        # False False (2, 16)
+
+
+The two processes below each use a ``torch.distributed`` gloo process group to exchange complex32 tensors (not executed in the run environment of this documentation):
+
+.. code-block:: python
+
+    import multiprocessing as mp
+    import torch
+    import torch.distributed as dist
+    import pyvqnet
+    pyvqnet.backends.set_backend("torch")
+    from pyvqnet.backends.torch._distributed import send_recv
+
+
+    def _c32(shape, seed=0):
+        g = torch.Generator().manual_seed(seed)
+        return torch.complex(torch.randn(shape, generator=g), torch.randn(shape, generator=g)).to(torch.complex32)
+
+
+    def exchange(rank, port):
+        dist.init_process_group("gloo", init_method=f"tcp://127.0.0.1:{port}", world_size=2, rank=rank)
+        try:
+            a = _c32((4, 8), seed=rank + 1)
+            b = torch.zeros_like(a)
+            if rank == 0:
+                send_recv(a, 1, b, 1)
+            else:
+                send_recv(a, 0, b, 0)
+            # b now holds the tensor sent by the other rank, bit for bit
+            expected = _c32((4, 8), seed=(1 - rank) + 1)
+            print(rank, torch.equal(b.view(torch.int16), expected.view(torch.int16)))
+        finally:
+            dist.destroy_process_group()
+
+
+    if __name__ == "__main__":
+        ctx = mp.get_context("spawn")
+        procs = [ctx.Process(target=exchange, args=(r, 29711)) for r in range(2)]
+        for p in procs:
+            p.start()
+        for p in procs:
+            p.join()

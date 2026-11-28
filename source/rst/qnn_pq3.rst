@@ -111,7 +111,7 @@ If you are familiar with pyqpanda3 syntax, you can use the QuantumLayer interfac
         rlt.backward(grad)
 
         print(pqc.m_para.grad)
-
+        
 
 
 
@@ -723,6 +723,9 @@ VQCLayer
         y = layer(QTensor([[0.3], [0.7]], requires_grad=True))
         print(y)
 
+
+
+
 QiskitLayer
 =================================
 
@@ -757,11 +760,11 @@ QiskitLayer
         sys.path.insert(0,"../../")
         random.seed(42)
         np.random.seed(42)
-        from pyvqnet.nn.module import Module
+        from pyvqnet.nn import Module
         from pyvqnet.optim import Adam
         import pyvqnet
         pyvqnet.utils.set_random_seed(42)
-        from pyvqnet.nn.loss import MeanSquaredError
+        from pyvqnet.nn import MeanSquaredError
         from pyvqnet.qnn.utils import QiskitLayer
 
         import qiskit
@@ -1010,6 +1013,7 @@ QiskitLayer
 
             Run_qiskit()
 
+
 CirqLayer
 =================================
 
@@ -1032,12 +1036,12 @@ CirqLayer
         import random
         random.seed(42)
         np.random.seed(42)
-        from pyvqnet.nn.module import Module
+        from pyvqnet.nn import Module
         import pyvqnet
         pyvqnet.utils.set_random_seed(42)
         from pyvqnet.optim import Adam
 
-        from pyvqnet.nn.loss import MeanSquaredError
+        from pyvqnet.nn import MeanSquaredError
         from pyvqnet.qnn.utils import CirqLayer
 
 
@@ -1240,6 +1244,7 @@ CirqLayer
 
             run_cirq()
 
+
 grad
 ==============
 .. py:function:: pyvqnet.qnn.pq3.quantumlayer.grad(quantum_prog_func, input_params, *args)
@@ -1376,7 +1381,7 @@ The quantum circuit first inserts :math:`RY` and :math:`RZ` gates on each qubit 
         #  [0.7992646, 0.7992646]]]
         # ]
 
-
+ 
 
 Quantum logic gates
 ***********************************
@@ -1803,7 +1808,7 @@ UCCSD
                                         d_wires=[[[0, 1], [2, 3]], [[0, 1], [2, 3, 4, 5]], [[0, 1], [3, 4]], [[0, 1], [4, 5]]],
                                         init_state=[1, 1, 0, 0, 0, 0],
                                         qubits=qlists)
-
+ 
 
 
 HardwareEfficientAnsatz
@@ -2204,7 +2209,7 @@ Mutal_Info
         print(Mutal_Info(qstate, [0], [2], 2))
         #0.13763425302805887
 
-
+ 
 
 Purity
 =========================

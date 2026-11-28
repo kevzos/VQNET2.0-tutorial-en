@@ -40,9 +40,9 @@ In this example, we encode the binary input into qubits in the corresponding ord
 .. code-block::
 
     import pyqpanda3.core as pq
-    from pyvqnet.nn.module import Module
+    from pyvqnet.nn import Module
     from pyvqnet.optim.sgd import SGD
-    from pyvqnet.nn.loss import CategoricalCrossEntropy
+    from pyvqnet.nn import CategoricalCrossEntropy
     from pyvqnet.tensor.tensor import QTensor
     from pyvqnet.data import data_generator as dataloader
 
@@ -275,12 +275,12 @@ In Quantum Data Re-uploading (QDRL) tasks, however, the data must be re-uploaded
     import sys
     sys.path.insert(0, "../")
     import numpy as np
-    from pyvqnet.nn.linear import Linear
+    from pyvqnet.nn import Linear
     from pyvqnet.qnn.qdrl.vqnet_model import vmodel
     from pyvqnet.optim import sgd
-    from pyvqnet.nn.loss import CategoricalCrossEntropy
+    from pyvqnet.nn import CategoricalCrossEntropy
     from pyvqnet.tensor.tensor import QTensor
-    from pyvqnet.nn.module import Module
+    from pyvqnet.nn import Module
 
     from pyvqnet.data import data_generator as get_minibatch_data
 
@@ -433,15 +433,15 @@ Local quantum circuits on each qubit in VSQL are shown below:
         import os.path
         import struct
         import gzip
-        from pyvqnet.nn.module import Module
-        from pyvqnet.nn.loss import CategoricalCrossEntropy
+        from pyvqnet.nn import Module
+        from pyvqnet.nn import CategoricalCrossEntropy
         from pyvqnet.optim.adam import Adam
         from pyvqnet.data.data import data_generator
         from pyvqnet.tensor import tensor
         from pyvqnet.qnn.pq3.measure import expval
         from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
         from pyvqnet.qnn.pq3.template import AmplitudeEmbeddingCircuit
-        from pyvqnet.nn.linear import Linear
+        from pyvqnet.nn import Linear
         import numpy as np
         import pyqpanda3.core as pq
         import matplotlib.pyplot as plt
@@ -789,13 +789,13 @@ MNIST dataset definition
     import gzip
     import sys
     sys.path.insert(0, "../")
-    from pyvqnet.nn.module import Module
-    from pyvqnet.nn.loss import NLL_Loss
+    from pyvqnet.nn import Module
+    from pyvqnet.nn import NLL_Loss
     from pyvqnet.optim.adam import Adam
     from pyvqnet.data.data import data_generator
     from pyvqnet.tensor import tensor
     from pyvqnet.qnn.pq3.measure import expval
-    from pyvqnet.nn.linear import Linear
+    from pyvqnet.nn import Linear
     import numpy as np
     from pyvqnet.qnn.qcnn import Quanvolution
     import matplotlib.pyplot as plt
@@ -1072,8 +1072,8 @@ QAE quantum circuit:
     import sys
     sys.path.insert(0,'../')
     import numpy as np
-    from pyvqnet.nn.module import Module
-    from pyvqnet.nn.loss import  fidelityLoss
+    from pyvqnet.nn import Module
+    from pyvqnet.nn.native.loss import fidelityLoss
     from pyvqnet.optim.adam import Adam
     from pyvqnet.data.data import data_generator
     from pyvqnet.qnn.qae.qae import QAElayer
@@ -1463,13 +1463,13 @@ We first load MNIST and filter samples containing 0 and 1. These samples are spl
     import os
     import struct
     import gzip
-    from pyvqnet.nn.module import Module
-    from pyvqnet.nn.linear import Linear
-    from pyvqnet.nn.conv import Conv2D
+    from pyvqnet.nn import Module
+    from pyvqnet.nn import Linear
+    from pyvqnet.nn import Conv2D
 
-    from pyvqnet.nn import activation as F
-    from pyvqnet.nn.pooling import MaxPool2D
-    from pyvqnet.nn.loss import CategoricalCrossEntropy
+    from pyvqnet.nn.native import activation as F
+    from pyvqnet.nn import MaxPool2D
+    from pyvqnet.nn import CategoricalCrossEntropy
     from pyvqnet.optim.adam import Adam
     from pyvqnet.data.data import data_generator
     from pyvqnet.tensor import tensor
@@ -1866,16 +1866,16 @@ Transfer learning is a well-established artificial neural network training techn
     import numpy as np
     import matplotlib.pyplot as plt
 
-    from pyvqnet.nn.module import Module
-    from pyvqnet.nn.linear import Linear
-    from pyvqnet.nn.conv import Conv2D
+    from pyvqnet.nn import Module
+    from pyvqnet.nn import Linear
+    from pyvqnet.nn import Conv2D
     from pyvqnet.utils.storage import load_parameters, save_parameters
 
-    from pyvqnet.nn import activation as F
-    from pyvqnet.nn.pooling import MaxPool2D
+    from pyvqnet.nn.native import activation as F
+    from pyvqnet.nn import MaxPool2D
 
-    from pyvqnet.nn.batch_norm import BatchNorm2d
-    from pyvqnet.nn.loss import SoftmaxCrossEntropy
+    from pyvqnet.nn import BatchNorm2d
+    from pyvqnet.nn import SoftmaxCrossEntropy
 
     from pyvqnet.optim.sgd import SGD
     from pyvqnet.optim.adam import Adam
@@ -1884,7 +1884,7 @@ Transfer learning is a well-established artificial neural network training techn
     from pyvqnet.tensor.tensor import QTensor
     import pyqpanda3.core as pq
     import matplotlib
-    from pyvqnet.nn.module import *
+    from pyvqnet.nn import *
     from pyvqnet.utils.initializer import *
     from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
     from pyvqnet.qnn.pq3.measure import expval
@@ -2575,11 +2575,11 @@ Import required libraries and functions
 
     import os
     import numpy as np
-    from pyvqnet.nn.module import Module
-    from pyvqnet.nn.conv import Conv2D, ConvT2D
-    from pyvqnet.nn import activation as F
-    from pyvqnet.nn.batch_norm import BatchNorm2d
-    from pyvqnet.nn.loss import BinaryCrossEntropy
+    from pyvqnet.nn import Module
+    from pyvqnet.nn import Conv2D, ConvT2D
+    from pyvqnet.nn.native import activation as F
+    from pyvqnet.nn import BatchNorm2d
+    from pyvqnet.nn import BinaryCrossEntropy
     from pyvqnet.optim.adam import Adam
     from pyvqnet.dtype import *
     from pyvqnet.tensor import tensor
@@ -3099,14 +3099,14 @@ Building the hybrid classical-quantum neural network
     import matplotlib.pyplot as plt
     import pyqpanda3.core as pq
     import pyvqnet
-    from pyvqnet.nn.module import Module
-    from pyvqnet.nn.loss import CrossEntropyLoss
+    from pyvqnet.nn import Module
+    from pyvqnet.nn import CrossEntropyLoss
     from pyvqnet.optim.adam import Adam
 
     from pyvqnet.qnn.pq3.measure import expval
     from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
-    from pyvqnet.nn.pooling import AvgPool2D
-    from pyvqnet.nn.linear import Linear
+    from pyvqnet.nn import AvgPool2D
+    from pyvqnet.nn import Linear
     from pyvqnet.data.data import data_generator
 
     try:
@@ -3477,8 +3477,8 @@ Install ``gym`` == 0.23.0 and ``pygame`` == 2.1.2 .
     import time
     from matplotlib import animation
     import pyqpanda3.core as pq
-    from pyvqnet.nn.module import Module
-    from pyvqnet.nn.loss import MeanSquaredError
+    from pyvqnet.nn import Module
+    from pyvqnet.nn import MeanSquaredError
     from pyvqnet.optim.adam import Adam
     from pyvqnet.tensor.tensor import QTensor
     from pyvqnet import kfloat32
@@ -3734,6 +3734,7 @@ Data is generated randomly with make_blobs from scipy, and a function is defined
         centers = data[1]
         return points, centers
 
+
 1.3.3 Quantum circuit
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -3906,6 +3907,7 @@ Compute cluster centers for the clustering data
     if __name__ == "__main__":
         qkmeans_run()
 
+
 1.3.6 Data distribution before clustering
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -4053,8 +4055,8 @@ Create input data, define a serial quantum model, and build a training model wit
     Quantum Fourier Series Serial
     """
     import numpy as np
-    from pyvqnet.nn.module import Module
-    from pyvqnet.nn.loss import MeanSquaredError
+    from pyvqnet.nn import Module
+    from pyvqnet.nn import MeanSquaredError
     from pyvqnet.optim.adam import Adam
     from pyvqnet.tensor.tensor import QTensor
     import pyqpanda3.core as pq
@@ -4357,8 +4359,8 @@ Create input data, define a parallel quantum model, and build a training model w
     """
     import numpy as np
 
-    from pyvqnet.nn.module import Module
-    from pyvqnet.nn.loss import MeanSquaredError
+    from pyvqnet.nn import Module
+    from pyvqnet.nn import MeanSquaredError
     from pyvqnet.optim.adam import Adam
     from pyvqnet.tensor.tensor import QTensor
     import pyqpanda3.core as pq
@@ -4859,6 +4861,7 @@ It is foreseeable that for circuits built from arbitrary parameterized gates, as
 
 |
 
+
 Quantum perceptron
 ===================================
 
@@ -4957,7 +4960,7 @@ VQNet implements an example of this algorithm: using VQE to find the ground stat
     import numpy as np
     import pyqpanda3.core as pq
     from pyvqnet.qnn.pq3.template import StronglyEntanglingTemplate
-    from pyvqnet.qnn.measure import Hermitian_expval
+    from pyvqnet.qnn import Hermitian_expval
     from pyvqnet.qnn import QuantumLayer
     from pyvqnet.optim import SGD
     from pyvqnet.tensor import QTensor,to_tensor
@@ -5143,10 +5146,10 @@ Below is an example of gradient pruning on a QVC classification task.
     import pyqpanda3.core as pq
 
     from pyvqnet.data import data_generator as dataloader
-    from pyvqnet.nn.module import Module
+    from pyvqnet.nn import Module
     from pyvqnet.optim import sgd
     from pyvqnet.qnn.pq3.quantumlayer import QuantumLayer
-    from pyvqnet.nn.loss import CategoricalCrossEntropy
+    from pyvqnet.nn import CategoricalCrossEntropy
     from pyvqnet.tensor.tensor import QTensor
     from pyvqnet.qnn import Gradient_Prune_Instance
     random.seed(1234)
@@ -5383,12 +5386,12 @@ This example builds the circuit with pyqpanda3
 
 .. code-block::
 
-    from pyvqnet.nn.module import Module
+    from pyvqnet.nn import Module
     from pyvqnet.optim import sgd
     import numpy as np
     import os
     from pyvqnet.data import data_generator as dataloader
-    from pyvqnet.nn.loss import CategoricalCrossEntropy
+    from pyvqnet.nn import CategoricalCrossEntropy
 
     from pyvqnet.tensor.tensor import QTensor
     import random
