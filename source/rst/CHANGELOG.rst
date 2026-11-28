@@ -47,6 +47,7 @@ Fixed
 - ``QLSTM`` / ``QGRU`` ignored ``batch_first=False``; ``Quanvolution`` returned a wrong output size and crashed at stride ``(1, 1)``.
 - ``VQC_PartialTrace`` traced out the wrong qubit axes, the Meyer-Wallach measure and ``VQC_VarMeasure`` returned wrong values, and ``Projector`` built its basis-state matrix wrongly.
 - ``MultiRZ`` aborted the process when a derivative was requested under the adjoint gradient.
+- ``multirz`` / ``MultiRZ`` with one angle per sample on a subset of the qubits produced a wrong state vector in gate-by-gate execution (the angles of the samples were flattened into one diagonal matrix); one matrix is built per angle now.
 - Tensor network: multi-parameter gates (``u3``, ``rot``, ``crot``) were compiled with their trace angles instead of the runtime inputs and daggered gates were compiled to a fixed angle; the variance mapped non-Pauli observables wrongly, and every variance call on an MPS raised ``AttributeError``.
 - An integer, column-sliced ``matmul`` on CPU returned wrong values; ``bmm`` and 4-D ``matmul`` with mismatched dimensions returned wrong results; ``max`` / ``min`` / ``argmax`` of an empty tensor returned ``FLT_MAX`` or ``[0]``.
 - ``tensor.full([1], 0.1, dtype=kfloat64)`` and ``fill_(2.3)`` stored float32-precision values.
